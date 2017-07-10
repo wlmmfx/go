@@ -26,20 +26,47 @@
 <script src="__JS__/excanvas.min.js"></script>
 <![endif]-->
 
-<script src="__JS__/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="__JS__/jquery.ui.touch-punch.min.js"></script>
-<script src="__JS__/jquery.slimscroll.min.js"></script>
-<script src="__JS__/jquery.easy-pie-chart.min.js"></script>
-<script src="__JS__/jquery.sparkline.min.js"></script>
-<script src="__JS__/flot/jquery.flot.min.js"></script>
-<script src="__JS__/flot/jquery.flot.pie.min.js"></script>
-<script src="__JS__/flot/jquery.flot.resize.min.js"></script>
-
 <!-- ace scripts -->
 
 <script src="__JS__/ace-elements.min.js"></script>
 <script src="__JS__/ace.min.js"></script>
 
 <!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function($) {
+        var oTable1 = $('#sample-table-2').dataTable( {
+            "aoColumns": [
+                { "bSortable": false },
+                null, null,null, null, null,
+                { "bSortable": false }
+            ] } );
+
+
+        $('table th input:checkbox').on('click' , function(){
+            var that = this;
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
+                .each(function(){
+                    this.checked = that.checked;
+                    $(this).closest('tr').toggleClass('selected');
+                });
+
+        });
+
+
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+    })
+</script>
 </body>
 </html>

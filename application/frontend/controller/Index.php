@@ -9,6 +9,8 @@
 namespace app\frontend\controller;
 
 use app\frontend\model\User;
+use Faker\Factory;
+use Faker\Provider\Uuid;
 use FFMpeg\FFMpeg;
 use think\Controller;
 use think\Loader;
@@ -22,8 +24,10 @@ class Index extends Controller
     /**
      * 测试是否合并这里的部分
      */
-    public function banckend(){
-
+    public function backend(){
+        $faker = Factory::create();
+        $faker2 = Uuid::uuid();
+        var_dump($faker2);
     }
 
     /**

@@ -33,7 +33,7 @@ class Index extends Controller
     }
 
     /**
-     * 拉取用户信息
+         * 拉取用户信息
      */
     public function getUserInfo()
     {

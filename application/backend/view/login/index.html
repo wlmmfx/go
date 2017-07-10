@@ -159,11 +159,13 @@
                                     </div>
 
                                     <div>
+                                        {if condition='$Think.config.webinfo.REGIS_ON eq 1'}
                                         <a href="#" onclick="show_box('signup-box'); return false;"
                                            class="user-signup-link">
                                             立即注册
                                             <i class="icon-arrow-right"></i>
                                         </a>
+                                        {/if}
                                     </div>
                                 </div>
                             </div><!-- /widget-body -->

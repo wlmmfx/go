@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#group-list">
+                        <i class="green icon-home bigger-110"></i>
+                        用户组列表
+                    </a>
+                </li>
+
+                <li>
+                    <a data-toggle="tab" href="#group-add">
+                        <i class="green icon-home bigger-110"></i>
+                        添加用户组
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="group-list" class="tab-pane in active">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th colspan="7" scope="col">角色表
+
+                            </th>
+                        </tr>
+                        <tr class="text-c">
+                            <th>#ID</th>
+                            <th>角色名称</th>
+                            <th>状态</th>
+                            <th>规则</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='vo'}
+                        <tr class="text-c">
+                            <td>{$vo.id}</td>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.status}</td>
+                            <td>{$vo.rules}</td>
+                            <td>
+                                <a href="{:url('Home/Rbac/addnode',array('rid' => $vo['id']))}" class="btn btn-xs btn-primary">配置权限</a>
+                                <if condition="$vo.status eq 1">
+                                    <button class="btn btn-xs btn-yellow set" value="{$vo.id}">禁用</button>
+                                    <else/>
+                                    <button class="btn btn-xs btn-warning set" value="{$vo.id}">启用</button>
+                                </if>
+                                <button class="btn btn-xs btn-danger del" value="{$vo.id}">角色删除</button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div id="group-add" class="tab-pane">
+                    <form action="{:url('/backend/category/store')}" method="post" class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户组名称</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-1" placeholder="用户组名称" name="title" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 状态 </label>
+
+                            <div class="col-sm-9">
+                                <input name="switch-field-1" class="ace ace-switch ace-switch-5" type="checkbox" />
+                                <span class="lbl"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 添加规则 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-3" placeholder="添加规则" name="rules"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->
+

@@ -32,7 +32,7 @@ class Admin extends Model
      * 设置当前模型对应的完整数据表名称
      * @var string
      */
-    protected $table = "tinywan_user";
+    protected $table = "resty_user";
 
     /**
      * 登录验证

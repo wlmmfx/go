@@ -17,7 +17,7 @@ use think\Model;
 class Category extends Model
 {
     protected $pk = "id";
-    protected $table = "tinywan_category"; //完整的表名
+    protected $table = "resty_category"; //完整的表名
 
     /**
      * 需要改进

@@ -60,7 +60,6 @@ class Index extends Controller
     public function systemTag()
     {
         //var_dump($_SERVER);
-        session('email', "tinwyan@123.com");
         cookie('username', "Tinywan");
         return $this->fetch();
     }

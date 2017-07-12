@@ -20,23 +20,80 @@ class Index extends Controller
 {
     public function index()
     {
-        return " frontend Index index";
+        // github 按钮显示 https://ghbtns.com/
+        return $this->fetch();
     }
 
     public function gitApi()
     {
-        $url = "https://github.com/login/oauth/authorize";
+        $github_url = "https://github.com/login/oauth/authorize";
         // 这个参数是必须的，这就是我们在第一步注册应用程序之后获取到的Client ID；
         $client_id = "5e70ee2d904f655b0c31";
         // 该参数可选，当我们从Github获取到code码之后跳转到我们自己网站的URL
         $redirect_uri = "http://www.tinywan.xyz:8086/frontend/index/redirect_uri";
-
-        return " frontend Index index";
+        $url = $github_url . "?client_id=" . $client_id . "&redirect_uri=" . $redirect_uri;
+        header('location:' . $url);
     }
 
-    public function redirect_uri(){
-        echo '1111111111111';
-        halt($_GET);
+    public function redirect_uri(Request $request)
+    {
+        //'code' => string '137b34c45d7282436d53'
+        $code = $request->get('code');
+        $client_id = "5e70ee2d904f655b0c31";
+        $client_secret = "d190c915d36b5feff7ceeb017ce35ab92e7cb38c";
+        $url1 = "https://github.com/login/oauth/access_token";
+        //第一步:取全局access_token
+        $postRes = $this->curl_request($url1, [
+            "client_id" => $client_id,
+            "client_secret" => $client_secret,
+            "code" => $code,
+        ]);
+        //第三步:根据全局access_token和openid查询用户信息
+        $jsonRes = json_decode($postRes,true);
+        $access_token = $jsonRes["access_token"];
+        $userUrl = "https://api.github.com/user?access_token=".$access_token;
+        $userInfo = $this->curl_request($userUrl);
+        $userJsonRes = json_decode($userInfo,true);
+        //第五步，如何设置Wordpress中登录状态
+        halt($userJsonRes);
+    }
+
+
+    //参数1：访问的URL，参数2：post数据(不填则为GET)，参数3：提交的$cookies,参数4：是否返回$cookies
+    public function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
+    {
+        $headers = ["Accept: application/json"];
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)');
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_REFERER, "http://XXX");
+        if ($post) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post));
+        }
+        if ($cookie) {
+            curl_setopt($curl, CURLOPT_COOKIE, $cookie);
+        }
+        curl_setopt($curl, CURLOPT_HEADER, $returnCookie);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $data = curl_exec($curl);
+        if (curl_errno($curl)) {
+            return curl_error($curl);
+        }
+        curl_close($curl);
+        if ($returnCookie) {
+            list($header, $body) = explode("\r\n\r\n", $data, 2);
+            preg_match_all("/Set\-Cookie:([^;]*);/", $header, $matches);
+            $info['cookie'] = substr($matches[1][0], 1);
+            $info['content'] = $body;
+            return $info;
+        } else {
+            return $data;
+        }
     }
 
     /**

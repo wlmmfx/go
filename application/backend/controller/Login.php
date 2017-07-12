@@ -141,6 +141,33 @@ class Login extends Controller
     }
 
 
+    /**
+     * ------------------------------------------OAuth Login--------------------------------------------------------
+     */
+    public function oAuthLogin(Request $request)
+    {
+        $email = "overcome.wan@gmail.com";
+        $name = ' ShaoBo Wan';
+        //临时关闭当前模板的布局功能
+        $this->view->engine->layout(false);
+        //1 验证数据
+        if ($request->isPost()) {
+            $res = (new Admin())->login(input("post."));
+            if ($res['valid']) {
+                //success
+                $this->success($res['msg'], "backend/entry/index");
+                exit;
+            } else {
+                //fail
+                $this->error($res['msg']);
+                exit;
+            }
+        }
+        $this->assign('name',$name);
+        $this->assign('email',$email);
+        return $this->fetch();
+    }
+
     public function faker()
     {
         $faker = Factory::create($locale = 'zh_CN');

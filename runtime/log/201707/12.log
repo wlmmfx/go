@@ -1,0 +1,1717 @@
+---------------------------------------------------------------
+[ 2017-07-12T12:28:44+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.066004s][吞吐率：15.15req/s] [内存消耗：3,964.91kb] [文件加载：64]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.014001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:28:48+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.045003s][吞吐率：22.22req/s] [内存消耗：3,726.50kb] [文件加载：64]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '61',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+  'status' => 'on',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:28:51+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.053003s][吞吐率：18.87req/s] [内存消耗：3,746.63kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001001s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:29:17+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.062003s][吞吐率：16.13req/s] [内存消耗：3,746.83kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:29:20+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.038002s][吞吐率：26.31req/s] [内存消耗：3,549.13kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '51',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:29:23+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.041002s][吞吐率：24.39req/s] [内存消耗：3,746.63kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:30:04+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.050003s][吞吐率：20.00req/s] [内存消耗：3,746.83kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:30:07+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.039002s][吞吐率：25.64req/s] [内存消耗：3,549.16kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '61',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+  'status' => 'on',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:30:10+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.048003s][吞吐率：20.83req/s] [内存消耗：3,746.63kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:30:48+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.064004s][吞吐率：15.62req/s] [内存消耗：3,747.26kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:30:51+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.065004s][吞吐率：15.38req/s] [内存消耗：3,579.66kb] [文件加载：61]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '51',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:31:25+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.037002s][吞吐率：27.03req/s] [内存消耗：3,579.66kb] [文件加载：61]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '51',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:31:26+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.040002s][吞吐率：25.00req/s] [内存消耗：3,579.66kb] [文件加载：61]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '51',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:31:27+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.059004s][吞吐率：16.95req/s] [内存消耗：3,965.13kb] [文件加载：64]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:27+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.045003s][吞吐率：22.22req/s] [内存消耗：3,747.26kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:28+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.062004s][吞吐率：16.13req/s] [内存消耗：3,747.26kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.013001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:32+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.040003s][吞吐率：25.00req/s] [内存消耗：3,580.23kb] [文件加载：61]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '61',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+  'status' => 'on',
+  'rules' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:31:39+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.073005s][吞吐率：13.70req/s] [内存消耗：3,747.05kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.025001s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:39+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.060003s][吞吐率：16.67req/s] [内存消耗：3,747.26kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:43+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.042002s][吞吐率：23.81req/s] [内存消耗：3,580.20kb] [文件加载：61]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '51',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'validate(false)',
+  'rules' => 'validate(false)',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:31:58+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.045002s][吞吐率：22.22req/s] [内存消耗：3,746.63kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:31:58+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.050003s][吞吐率：20.00req/s] [内存消耗：3,746.83kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:32:04+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.033002s][吞吐率：30.30req/s] [内存消耗：3,549.15kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '36',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'erwerew',
+  'status' => 'on',
+  'rules' => 'rewrwe',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:32:08+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.040002s][吞吐率：25.00req/s] [内存消耗：3,746.63kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:32:28+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.063003s][吞吐率：15.87req/s] [内存消耗：3,733.76kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:32:34+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.173010s][吞吐率：5.78req/s] [内存消耗：3,660.48kb] [文件加载：65]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '35',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => 'ewwre',
+  'status' => 'on',
+  'rules' => 'rewrewr',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.012001s ]
+[ error ] [10501]SQLSTATE[HY000]: General error: 1366 Incorrect integer value: 'on' for column 'status' at row 1[D:\wamp64\www\thinkphp5-study-line\thinkphp\library\think\db\Connection.php:451]
+---------------------------------------------------------------
+[ 2017-07-12T12:33:03+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.075004s][吞吐率：13.33req/s] [内存消耗：3,733.55kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.024001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:33:17+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.077005s][吞吐率：12.99req/s] [内存消耗：3,677.18kb] [文件加载：63]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '92',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => '白银用户',
+  'rules' => 'rewrewr白银用户',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] INSERT INTO `resty_auth_group` (`title` , `rules`) VALUES ('白银用户' , 'rewrewr白银用户') [ RunTime:0.027001s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:33:20+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/category/index.html
+[ info ] www.php_ffmpeg.com/backend/category/index.html [运行时间：0.063004s][吞吐率：15.87req/s] [内存消耗：3,650.02kb] [文件加载：63]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'category',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:20+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/login/login.html
+[ info ] www.php_ffmpeg.com/backend/login/login.html [运行时间：0.045003s][吞吐率：22.22req/s] [内存消耗：2,581.03kb] [文件加载：55]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'login',
+    2 => 'login',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ RUN ] app\backend\controller\Login->login[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\Login.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\login\index.html [ array (
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:21+08:00 ] 127.0.0.1 127.0.0.1 GET /captcha.html
+[ info ] www.php_ffmpeg.com/captcha.html [运行时间：0.786045s][吞吐率：1.27req/s] [内存消耗：1,928.95kb] [文件加载：45]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'method',
+  'method' => 
+  array (
+    0 => '\\think\\captcha\\CaptchaController',
+    1 => 'index',
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'image/webp,image/*,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/login/login.html',
+)
+[ info ] [ PARAM ] array (
+  'id' => NULL,
+)
+[ info ] [ RUN ] think\captcha\CaptchaController->index[ D:\wamp64\www\thinkphp5-study-line\vendor\topthink\think-captcha\src\CaptchaController.php ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:27+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/category/index.html
+[ info ] www.php_ffmpeg.com/backend/category/index.html [运行时间：0.044003s][吞吐率：22.73req/s] [内存消耗：3,651.05kb] [文件加载：63]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'category',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:27+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/login/login.html
+[ info ] www.php_ffmpeg.com/backend/login/login.html [运行时间：0.021001s][吞吐率：47.62req/s] [内存消耗：2,375.85kb] [文件加载：53]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'login',
+    2 => 'login',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ RUN ] app\backend\controller\Login->login[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\Login.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\login\index.html [ array (
+) ]
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:27+08:00 ] 127.0.0.1 127.0.0.1 GET /captcha.html
+[ info ] www.php_ffmpeg.com/captcha.html [运行时间：0.086005s][吞吐率：11.63req/s] [内存消耗：1,929.10kb] [文件加载：45]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'method',
+  'method' => 
+  array (
+    0 => '\\think\\captcha\\CaptchaController',
+    1 => 'index',
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'image/webp,image/*,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/login/login.html',
+)
+[ info ] [ PARAM ] array (
+  'id' => NULL,
+)
+[ info ] [ RUN ] think\captcha\CaptchaController->index[ D:\wamp64\www\thinkphp5-study-line\vendor\topthink\think-captcha\src\CaptchaController.php ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:33:51+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.067004s][吞吐率：14.92req/s] [内存消耗：3,735.18kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:33:52+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.049003s][吞吐率：20.41req/s] [内存消耗：3,735.38kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:34:04+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.072004s][吞吐率：13.89req/s] [内存消耗：3,677.56kb] [文件加载：63]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '157',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => '黄金用户',
+  'rules' => '黄金用户黄金用户黄金用户',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] INSERT INTO `resty_auth_group` (`title` , `rules`) VALUES ('黄金用户' , '黄金用户黄金用户黄金用户') [ RunTime:0.006000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:34:07+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/index.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/index.html [运行时间：0.047003s][吞吐率：21.28req/s] [内存消耗：3,572.73kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:34:26+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/index.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/index.html [运行时间：0.043002s][吞吐率：23.25req/s] [内存消耗：3,572.73kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2017-07-12T12:34:30+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.079005s][吞吐率：12.66req/s] [内存消耗：3,735.80kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/system/config.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:34:36+08:00 ] 127.0.0.1 127.0.0.1 POST /backend/auth_group/store.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/store.html [运行时间：0.035002s][吞吐率：28.57req/s] [内存消耗：3,677.66kb] [文件加载：63]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'store',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'content-length' => '176',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cache-control' => 'max-age=0',
+  'content-type' => 'application/x-www-form-urlencoded',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'origin' => 'http://www.php_ffmpeg.com',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/grouplist.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+  'title' => '黄金用户111111',
+  'rules' => '黄金用户黄金用户黄金用户1111111111111',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->store[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\thinkphp\tpl\dispatch_jump.tpl [ array (
+  0 => 'code',
+  1 => 'msg',
+  2 => 'data',
+  3 => 'url',
+  4 => 'wait',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] INSERT INTO `resty_auth_group` (`title` , `rules`) VALUES ('黄金用户111111' , '黄金用户黄金用户黄金用户1111111111111') [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2017-07-12T12:34:39+08:00 ] 127.0.0.1 127.0.0.1 GET /backend/auth_group/grouplist.html
+[ info ] www.php_ffmpeg.com/backend/auth_group/grouplist.html [运行时间：0.046003s][吞吐率：21.74req/s] [内存消耗：3,736.42kb] [文件加载：62]
+[ info ] [ LANG ] D:\wamp64\www\thinkphp5-study-line\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'backend',
+    1 => 'auth_group',
+    2 => 'grouplist',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'www.php_ffmpeg.com',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate, sdch',
+  'accept-language' => 'zh-CN,zh;q=0.8',
+  'cookie' => 'PHPSESSID=s9rp4q8munk4ujrhapol0k7ov6',
+  'proxy-connection' => 'keep-alive',
+  'referer' => 'http://www.php_ffmpeg.com/backend/auth_group/store.html',
+  'upgrade-insecure-requests' => '1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\backend\controller\AuthGroup->groupList[ D:\wamp64\www\thinkphp5-study-line\application\backend\controller\AuthGroup.php ]
+[ info ] [ VIEW ] D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\auth_group\grouplist.html [ array (
+  0 => 'lists',
+) ]
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+  'httponly' => true,
+  'secure' => false,
+)
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=thinkphp5;host=127.0.0.1;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `resty_auth_group` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `resty_auth_group` [ RunTime:0.000000s ]

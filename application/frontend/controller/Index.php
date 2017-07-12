@@ -6,6 +6,7 @@
  * Date: 2017/6/24
  * Time: 22:33
  */
+
 namespace app\frontend\controller;
 
 use app\frontend\model\User;
@@ -17,14 +18,32 @@ use think\Loader;
 
 class Index extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return " frontend Index index";
+    }
+
+    public function gitApi()
+    {
+        $url = "https://github.com/login/oauth/authorize";
+        // 这个参数是必须的，这就是我们在第一步注册应用程序之后获取到的Client ID；
+        $client_id = "5e70ee2d904f655b0c31";
+        // 该参数可选，当我们从Github获取到code码之后跳转到我们自己网站的URL
+        $redirect_uri = "http://www.tinywan.xyz:8086/frontend/index/redirect_uri";
+
+        return " frontend Index index";
+    }
+
+    public function redirect_uri(){
+        echo '1111111111111';
+        halt($_GET);
     }
 
     /**
      * 测试是否合并这里的部分
      */
-    public function backend(){
+    public function backend()
+    {
         $faker = Factory::create();
         $faker2 = Uuid::uuid();
         var_dump($faker2);
@@ -51,7 +70,8 @@ class Index extends Controller
     /**
      * User model
      */
-    public function userModelTest1(){
+    public function userModelTest1()
+    {
         // [1]
         $res = User::get(27);
         var_dump($res->toArray());
@@ -64,7 +84,8 @@ class Index extends Controller
     /**
      * 使用Loader 查询数据
      */
-    public function userModelTest2(){
+    public function userModelTest2()
+    {
         // 使用Loader
         $user1 = Loader::model("User");
         $user = model("User");
@@ -75,18 +96,19 @@ class Index extends Controller
     /**
      * 使用模型查询数据
      */
-    public function userModelTest3(){
+    public function userModelTest3()
+    {
         // 【1】直接查询
         $user = User::get(27); // 返回为一个对象
         var_dump($user->username);
         // 【2】通过闭包查询
-        $user1 = User::get(function ($query){
-            $query->where("username","eq","tinywan001");
+        $user1 = User::get(function ($query) {
+            $query->where("username", "eq", "tinywan001");
         });
         var_dump($user1->toArray());
         // 【3】静态方法
         $user2 = new User();
-        $res3 = $user2->where('username',"tinywan001")
+        $res3 = $user2->where('username', "tinywan001")
             ->field("user_id,username")
             ->find();
         var_dump($res3->toArray());
@@ -95,18 +117,20 @@ class Index extends Controller
     /**
      * 使用模型查询更新数据
      */
-    public function userModelTest4(){
+    public function userModelTest4()
+    {
         // 【1】直接查询
         $user = User::update([
             "username" => "33333333333"
-        ],["user_id"=>27]);
+        ], ["user_id" => 27]);
         var_dump($user);
     }
 
     /**
      *  模型获取器
      */
-    public function userModelTest5(){
+    public function userModelTest5()
+    {
         $user = User::get(18);
         var_dump($user->status);
         var_dump($user->toArray());
@@ -117,12 +141,13 @@ class Index extends Controller
     /**
      *  模型修改器-+自动完成
      */
-    public function userModelTest6(){
+    public function userModelTest6()
+    {
         $data = [
-            "username"=>"USER".rand(00000,99999),
-            "password"=>"password".rand(55555,99999),
-            "apikey_value"=>"756684177@qq.com",
-            "description"=>"模型修改器",
+            "username" => "USER" . rand(00000, 99999),
+            "password" => "password" . rand(55555, 99999),
+            "apikey_value" => "756684177@qq.com",
+            "description" => "模型修改器",
         ];
         //使用模型插入一条记录
         $user = User::create($data);
@@ -132,7 +157,8 @@ class Index extends Controller
     /**
      * 模型时间戳+软删除
      */
-    public function userModelTest7(){
+    public function userModelTest7()
+    {
 //        $data = [
 //            "username"=>"Tinywan:".rand(00000,99999),
 //            "password"=>"password::".rand(55555,99999),
@@ -153,7 +179,8 @@ class Index extends Controller
     /**
      * 软删除
      */
-    public function userModelTest8(){
+    public function userModelTest8()
+    {
         # 执行软删除
         //$userModel = User::destroy(85); # success return 1
         //var_dump($userModel);

@@ -36,13 +36,58 @@ function get_uri($url)
 }
 
 /**
+ * 参数1：访问的URL，参数2：post数据(不填则为GET)，参数3：提交的$cookies,参数4：是否返回$cookies
+ * @param $url
+ * @param string $post
+ * @param string $cookie
+ * @param int $returnCookie
+ * @return mixed|string
+ */
+function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
+{
+    // 设置头部信息返回为json 格式
+    $headers = ["Accept: application/json"];
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)');
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+    curl_setopt($curl, CURLOPT_REFERER, "http://XXX");
+    if ($post) {
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post));
+    }
+    if ($cookie) {
+        curl_setopt($curl, CURLOPT_COOKIE, $cookie);
+    }
+    curl_setopt($curl, CURLOPT_HEADER, $returnCookie);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    $data = curl_exec($curl);
+    if (curl_errno($curl)) {
+        return curl_error($curl);
+    }
+    curl_close($curl);
+    if ($returnCookie) {
+        list($header, $body) = explode("\r\n\r\n", $data, 2);
+        preg_match_all("/Set\-Cookie:([^;]*);/", $header, $matches);
+        $info['cookie'] = substr($matches[1][0], 1);
+        $info['content'] = $body;
+        return $info;
+    } else {
+        return $data;
+    }
+}
+
+/**
  * 生成 auth_key
  * @param string $check_str
  * @return string
  */
 function get_auth_key($check_str)
 {
-    if(empty($check_str)) return ['valid' => 0, 'msg' => "参数不合适"];
+    if (empty($check_str)) return ['valid' => 0, 'msg' => "参数不合适"];
     // 1 过期时间
     $send_email_expire_time = config('email.EMAIL_SEND_EXPIRE_TIME');
     // 2 私有密钥
@@ -63,7 +108,7 @@ function get_auth_key($check_str)
  */
 function check_auth_key($check_str, $auth_key)
 {
-    if(empty($check_str) && empty($auth_key)) return ['valid' => 0, 'msg' => "参数不合适"];
+    if (empty($check_str) && empty($auth_key)) return ['valid' => 0, 'msg' => "参数不合适"];
     $send_email_expire_time = substr($auth_key, 0, 10);
     if ($send_email_expire_time < time()) return ['valid' => 0, 'msg' => "该URL地址已经过期了"];
     $uuid = 0;
@@ -137,3 +182,47 @@ function send_email($address, $subject, $content)
     }
     return ["error" => 0];
 }
+
+//---------------------------------------------auth2.0
+/**
+ * 获取github信息
+ */
+function oauth_github()
+{
+    $github_url = config('github.OAUTH_URL');
+    // 这个参数是必须的，这就是我们在第一步注册应用程序之后获取到的Client ID；
+    $client_id = config('github.OAUTH_URL');
+    // 该参数可选，当我们从Github获取到code码之后跳转到我们自己网站的URL
+    $redirect_uri = config('github.OAUTH_URL');
+    $url = $github_url . "?client_id=" . $client_id . "&redirect_uri=" . $redirect_uri;
+    header('location:' . $url);
+}
+
+/**
+ * github 回调地址
+ * @param Request $request
+ */
+function github_redirect_uri(Request $request)
+{
+    //'code' => string '137b34c45d7282436d53'
+    $code = $request->get('code');
+    $client_id = config('github.OAUTH_URL');
+    $client_secret = config('github.OAUTH_URL');
+    $access_token_url = config('github.ACCESS_TOKEN_URL');
+    //第一步:取全局access_token
+    $postRes = $this->curl_request($access_token_url, [
+        "client_id" => $client_id,
+        "client_secret" => $client_secret,
+        "code" => $code,
+    ]);
+    //第三步:根据全局access_token和openid查询用户信息
+    $jsonRes = json_decode($postRes,true);
+    $access_token = $jsonRes["access_token"];
+    $userUrl = config('github.USER_INFO_URL')."?access_token=".$access_token;
+    $userInfo = $this->curl_request($userUrl);
+    $userJsonRes = json_decode($userInfo,true);
+    //第五步，如何设置Wordpress中登录状态
+    return $userJsonRes;
+}
+
+

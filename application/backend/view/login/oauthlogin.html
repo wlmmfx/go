@@ -78,33 +78,32 @@
                                     <div class="space-6"></div>
                                     <p>输入您的详细信息以开始: </p>
 
-                                    <form action="/backend/login/emailRegister" method="post" class="form-horizontal">
+                                    <form action="/backend/login/oauthemailregister" method="post" class="form-horizontal">
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" checked
-                                                                   name="name" value="{$name}" readonly="readonly"/>
+															<input type="text" class="form-control" name="name" id="name" value="{$name}" readonly="readonly"/>
 															<i class="icon-envelope"></i>
 														</span>
                                             </label>
 
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" checked
-                                                                   name="email" value="{$email}" readonly="readonly"/>
+															<input type="text" class="form-control" checked id="email" name="email" value="{$email}" readonly="readonly"/>
 															<i class="icon-envelope"></i>
 														</span>
                                             </label>
 
                                             <label class="block clearfix">
-                                                <button type="submit" class="width-100 pull-right btn btn-sm btn-info">
+                                                <button type="button" onclick="sendCode()"
+                                                        class="width-100 pull-right btn btn-sm btn-info">
                                                     发送验证码
                                                 </button>
                                             </label>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="密码" name="password"/>
+															<input type="text" class="form-control"
+                                                                   placeholder="邮箱验证码" name="emailcode"/>
 															<i class="icon-lock"></i>
 														</span>
                                             </label>
@@ -112,29 +111,15 @@
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" class="form-control"
-                                                                   placeholder="再次输入密码" name="repassword"/>
+                                                                   placeholder="输入密码" name="password"/>
 															<i class="icon-retweet"></i>
 														</span>
                                             </label>
 
-                                            <label class="block">
-                                                <input type="checkbox" class="ace"/>
-                                                <span class="lbl">
-															我同意
-															<a href="#">该网站用户注册协议</a>
-														</span>
-                                            </label>
-
-                                            <div class="space-24"></div>
-
                                             <div class="clearfix">
-                                                <button type="reset" class="width-30 pull-left btn btn-sm">
-                                                    <i class="icon-refresh"></i>
-                                                    重填
-                                                </button>
 
                                                 <button type="submit"
-                                                        class="width-65 pull-right btn btn-sm btn-success">
+                                                        class="width-100 pull-right btn btn-sm btn-success">
                                                     注册
                                                     <i class="icon-arrow-right icon-on-right"></i>
                                                 </button>
@@ -186,6 +171,24 @@
     function show_box(id) {
         jQuery('.widget-box.visible').removeClass('visible');
         jQuery('#' + id).addClass('visible');
+    }
+</script>
+<script type="text/javascript">
+    function sendCode() {
+        var url = "{:url('/backend/login/oauthsendemail')}";
+        console.log('1111111111111');
+        var data = {
+            "name": $("#name").val(),
+            "email": $("#email").val()
+        }
+        var success = function (response) {
+            if (response.code == 200) {
+                alert(response.msg);
+            } else {
+                alert(response.msg);
+            }
+        }
+        $.post(url, data, success, 'json');
     }
 </script>
 </body>

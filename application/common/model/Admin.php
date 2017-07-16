@@ -265,6 +265,43 @@ html;
         session('admin.admin_id', $userInfo['id']);
         session('admin.username', $userInfo['username']);
         return ['valid' => 1, 'msg' => "邮箱密码修改成功，正在跳转到主页面..."];
-
     }
+
+    /**
+     * oAuth 邮箱发送邮件
+     * @param $data
+     * @return array
+     */
+    public function oAuthSendEmail($data)
+    {
+        // 1 验证数据
+        $validate = new Validate([
+            'email' => 'require|email',
+        ], [
+            'email.require' => "邮箱是不能为空！",
+        ]);
+        if (!$validate->check($data)) {
+            return ['valid' => 0, 'msg' => $validate->getError()];
+        }
+        // 2 检测邮箱是否被注册
+        $userInfo = $userInfo = $this->where('email', $data['email'])->find();
+        if ($userInfo) return ['valid' => 0, 'msg' => "该邮箱已经被注册"];
+        // 4 发送邮件
+        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $checkstr = base64_encode($data['email']);
+        $auth_key = get_auth_key($data['email']);
+        $email_code = mt_rand(1111,9999);
+        $str = <<<html
+            您好！你的验证码：<p></p>
+            <h1>$email_code</h1><p></p>
+html;
+        //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
+        $result = send_email($data["email"], '物联网智能数据 邮件验证码：', $str);
+        if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
+        //存储方便验证
+        session($data['email'].':email_code',$email_code);
+        return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
+    }
+
+
 }

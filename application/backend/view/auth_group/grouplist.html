@@ -33,10 +33,31 @@
                         {volist name='lists' id='user'}
                         <tr class="text-c">
                             <td>{$user.id}</td>
-                            <td>{$user.title}</td>
-                            <td>{$user.status}</td>
-                            <td>{$user.rules}</td>
-                            <td>编辑</td>
+                            <td>{$user['title']}</td>
+                            <td>
+                                {if condition="$user['status'] eq 1"}
+                                    <button class="btn btn-xs btn-yellow set" value="{$user['id']}"><i class="icon-eye-open"></i>启用</button>
+                                {else /}
+                                    <button class="btn btn-xs btn-warning set" value="{$user['id']}"><i class="icon-eye-close"></i>禁用</button>
+                                {/if}
+                            </td>
+                            <td>{$user['rules']}</td>
+                            <td>
+                                <a href="{:url('backend/auth_group/addrules',['id'=>$user['id']])}">
+                                    <button class="btn btn-xs btn-warning">
+                                        <i class="icon-edit"></i>配置权限
+                                    </button>
+                                </a>
+                                <a href="{:url('backend/auth_group/edit',['id'=>$user['id']])}">
+                                    <button class="btn btn-xs btn-primary">
+                                        <i class="icon-edit"></i>编辑
+                                    </button>
+                                </a>
+                                <button class="btn btn-xs btn-danger" onclick="group_del({$user['id']})">
+                                    <i class="icon-trash"></i>删除
+                                </button>
+
+                            </td>
                         </tr>
                         {/volist}
                         </tbody>
@@ -80,4 +101,22 @@
     </div><!-- /span -->
 
 </div><!-- /row -->
+<script type="text/javascript">
+    function group_del($id) {
+        var $msg = confirm('确认删除该用户组吗？删除后不可恢复！');
+        var url = "{:url('/backend/auth_group/delete')}";
+        var data = {
+            "id": $id
+        };
+        var success = function (response) {
+            if (response.status == 200) {
+                alert('删除success');
+                window.location.reload();
+            } else {
+                alert('请求错误');
+            }
+        };
+        if($msg) $.post(url, data, success, 'json');
+    }
 
+</script>

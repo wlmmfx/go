@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use think\Controller;
+use think\Db;
 use think\Request;
 
 class Admin extends Controller
@@ -15,63 +16,68 @@ class Admin extends Controller
     public function adminList()
     {
         $adminInfo = db('user')->paginate(10);
+        $groups = db('auth_group')->select();
+        $this->assign('groups',$groups);
         $this->assign('lists',$adminInfo);
         return $this->fetch();
     }
 
     /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
-    public function save(Request $request)
+    public function store(Request $request)
     {
-        //
+        if ($request->isPost()) {
+            $data = input('post.');
+            $groupId = $data['groupid'];
+            $data['password'] = md5('123456');
+            $data['logintime'] = time();
+            unset($data['groupid']);
+            //事务操作
+            Db::startTrans();
+            try{
+                $userId = db('user')->insertGetId($data);
+                $groupData['group_id'] = $groupId;
+                $groupData['uid'] = $userId;
+                $res = db('auth_group_access')->insertGetId($groupData);
+                Db::commit();
+            }catch (\Exception $e){
+                $res = $e->getMessage();
+                Db::rollback();
+            }
+            halt($res);
+        }
     }
 
     /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
+     * 改变用户角色
+     * 可以支持不执行SQL而只是返回SQL语句:$User->fetchSql(true)->add($data);
      */
-    public function read($id)
+    public function updateGroup()
     {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        if(request()->isPost()){
+            $uid = input('post.uid');
+            $groupId = input('post.group_id');
+            $res = db('auth_group_access')->where('uid',$uid)->setField('group_id',$groupId);
+            if ($res) {
+                $this->success('改变用户组成功', "backend/admin/adminlist");
+                exit;
+            } else {
+                $this->error($res["改变用户组失败"]);
+                exit;
+            }
+        }
+        $userId = input('param.id');
+        $userInfo = Db::table('resty_user')
+            ->alias('u')
+            ->join('resty_auth_group_access access','u.id = access.uid')
+            ->where(['access.uid'=>$userId])->find();
+        $this->assign('groups',db('auth_group')->select());
+        $this->assign('userInfo',$userInfo);
+        return $this->fetch();
     }
 
     /**

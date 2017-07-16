@@ -44,6 +44,21 @@ class Category extends Model
     }
 
     /**
+     * 编辑分类
+     * @param $data
+     * @return array
+     */
+    public function edit($data)
+    {
+        // id 已经存在的，只能更新
+        $result = $this->validate(true)->save($data, [$this->pk => $data['id']]);
+        if (false === $result) {
+            return ['valid' => 0, 'msg' => $this->getError()];
+        }
+        return ['valid' => 1, 'msg' => "编辑成功"];
+    }
+
+    /**
      * 获取分类编辑name
      */
     public function getEditCategory($id)
@@ -68,16 +83,6 @@ class Category extends Model
             }
         }
         return $tmp;
-    }
-
-    public function edit($data)
-    {
-        // id 已经存在的，只能更新
-        $result = $this->validate(true)->save($data, [$this->pk => $data['id']]);
-        if (false === $result) {
-            return ['valid' => 0, 'msg' => $this->getError()];
-        }
-        return ['valid' => 1, 'msg' => "编辑成功"];
     }
 
     public function del($id)

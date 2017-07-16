@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#sub-add">
+                        <i class="green icon-home bigger-110"></i>
+                        编辑栏目
+                    </a>
+                </li>
+                <li >
+                    <a data-toggle="tab" href="#category-list">
+                        <i class="green icon-home bigger-110"></i>
+                        栏目列表
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="sub-add" class="tab-pane  in active">
+                    <form action="{:url('/backend/category/edit')}" method="post" class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分类名称</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-1" placeholder="分类名称" name="name" value="{$old_data['name']}" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+
+                            <div class="col-sm-9">
+                                <select name="pid" id="select">
+                                    <option value="0">顶级栏目</option>
+                                    {volist name="last_data" id="vo"}
+                                    <option {if condition="$old_data['pid']==$vo['id']"}selected{/if} value="{$vo['id']}">{$vo['_name']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 排序 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-2" placeholder="排序" name="level" value="{$old_data['level']}"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 详细描述 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-3" placeholder="详细描述" name="remark" value="{$old_data['remark']}" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <input type="hidden" name="id" value="{:input('param.id')}">
+                            <button type="submit" class="btn btn-success">确认</button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->

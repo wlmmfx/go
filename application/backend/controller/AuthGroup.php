@@ -2,6 +2,7 @@
 
 namespace app\backend\controller;
 
+use houdunwang\arr\Arr;
 use think\Controller;
 use think\Request;
 
@@ -23,14 +24,14 @@ class AuthGroup extends Controller
     public function groupList()
     {
         $groupInfo = db('auth_group')->select();
-        $this->assign('lists',$groupInfo);
+        $this->assign('lists', $groupInfo);
         return $this->fetch();
     }
 
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function store(Request $request)
@@ -48,20 +49,8 @@ class AuthGroup extends Controller
     }
 
     /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
+     * 编辑数据.
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -70,25 +59,51 @@ class AuthGroup extends Controller
     }
 
     /**
-     * 保存更新的资源
+     * 删除指定资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function delete()
     {
-        //
+        if (request()->isPost()) {
+            $delGroup = db('auth_group')->delete(input("param.id"));
+            if ($delGroup) {
+                return json(['status' => 200, 'msg' => 'success']);
+            } else {
+                return json(['status' => 500, 'msg' => 'fail']);
+            }
+        }
+        return json(['status' => 403, 'msg' => 'forbidden']);
     }
 
     /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
+     * 用户组添加规则
      */
-    public function delete($id)
+    public function addRules()
     {
-        //
+        if(request()->isPost()){
+            halt($_POST);
+
+        }
+        $id = input('param.id');
+        $groupTitle = db('auth_group')->where('id',$id)->find()['title'];
+        $allRules = Arr::tree(db('auth_rule')->select(), 'title', $fieldPri = 'id', $fieldPid = 'pid');
+        $node_arr = array();
+//        foreach ($allRules as $value) {
+//            $conditions['node_id'] = $value['id'];
+//            $conditions['role_id'] = $rid;
+//            $count = $access->where($conditions)->count();
+//            if ($count) {
+//                $value['access'] = '1';
+//            } else {
+//                $value['access'] = '0';
+//            }
+//            $node_arr[] = $value;
+//        }
+//        halt($node_arr);
+        $this->assign('groupTitle',$groupTitle);
+        $this->assign('allRules',$allRules);
+        return $this->fetch();
     }
 }

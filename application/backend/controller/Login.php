@@ -144,28 +144,51 @@ class Login extends Controller
     /**
      * ------------------------------------------OAuth Login--------------------------------------------------------
      */
-    public function oAuthLogin(Request $request)
+    public function oAuthLogin()
     {
-        $email = "overcome.wan@gmail.com";
+        $email = "756684177@qq.com";
         $name = ' ShaoBo Wan';
-        //临时关闭当前模板的布局功能
-        $this->view->engine->layout(false);
-        //1 验证数据
-        if ($request->isPost()) {
-            $res = (new Admin())->login(input("post."));
-            if ($res['valid']) {
-                //success
-                $this->success($res['msg'], "backend/entry/index");
-                exit;
-            } else {
-                //fail
-                $this->error($res['msg']);
-                exit;
-            }
-        }
         $this->assign('name',$name);
         $this->assign('email',$email);
+        $this->view->engine->layout(false);
         return $this->fetch();
+    }
+
+    /**
+     * oAuth send code
+     */
+    public function oauthSendEmail(Request $request)
+    {
+        //1 验证数据
+        if ($request->isPost()) {
+            $res = (new Admin())->oAuthSendEmail(input("post."));
+            if ($res['valid']) {
+                return json(['code'=>200,'msg'=>$res['msg']]);
+            } else {
+                return json(['code'=>500,'msg'=>$res['msg']]);
+            }
+        }
+        return json(['code'=>403,'msg'=>"no auth"]);
+    }
+
+    /**
+     * 邮箱验证码注册
+     * @param Request $request
+     * @return \think\response\Json
+     */
+    public function oauthEmailRegister(Request $request)
+    {
+        halt($_POST);
+        //1 验证数据
+        if ($request->isPost()) {
+            $res = (new Admin())->oAuthSendEmail(input("post."));
+            if ($res['valid']) {
+                return json(['code'=>200,'msg'=>$res['msg']]);
+            } else {
+                return json(['code'=>500,'msg'=>$res['msg']]);
+            }
+        }
+        return json(['code'=>403,'msg'=>"no auth"]);
     }
 
     public function faker()

@@ -9,6 +9,11 @@ class AuthGroup extends Model
     protected $pk = "id";
     protected $table = "resty_auth_group"; //完整的表名
 
+    /**
+     * 保存数据
+     * @param $data
+     * @return array
+     */
     public function store($data)
     {
         $result = $this->validate(false)->save($data);

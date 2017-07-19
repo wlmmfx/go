@@ -3,19 +3,19 @@
         <form action="{:url('backend/auth_group/addrules')}" method="post" >
         <div class="widget-box">
             <div class="widget-header">
-                <h4>全部权限列表</h4>
+                <h4>全部权限列表: {$groupTitle}</h4>
             </div>
 
             <div class="widget-body" style="height: auto; padding-bottom: 50px; padding-right: 30px; padding-top: 20px;">
                 {volist name='allRules' id='vo'}
-                <p style="text-indent: {$vo['level']*20}px; padding-left:10px;padding-right: -40px; {if condition="$vo['level'] neq 0"}float:left;{else/}clear:both;{/if}">
-                <input type="checkbox" id="{$vo['id']}" name="actions[]" value="{$vo['id']}_{$vo['level']}" pid="{$vo['pid']}" level="{$vo['level']}">
+                <p style="text-indent: {$vo['level']*20}px; padding-left:10px;padding-right: -40px; {if condition="$vo['level'] neq 1"}float:left;{else/}clear:both;{/if}">
+                <input type="checkbox" id="{$vo['id']}" name="rules[]" value="{$vo['id']}" pid="{$vo['pid']}" level="{$vo['level']}"  {if condition="$vo['access']" }checked="checked"{/if}>
                 <span style="font-weight: bolder;font-size: 14px;">{$vo['title']}</span>
                 </p>
                 {/volist}
             </div>
             <div>
-                <input type="hidden" name="rid" value="{}" />
+                <input type="hidden" name="groupId" value="{$groupId}" />
                 <button type="submit" class="btn btn-primary btn-block">确认</button>
             </div>
         </div>
@@ -28,6 +28,7 @@
     $(function(){
         $("input:checkbox").click(function(){
             $level = $(this).attr('level'); //获取当前按钮框值。1（表示项目），2（模块），3（操作）
+            console.log($level);
             //如果选择 level=1 的话，则会选择它一下的所有checkbox
             if($level == 1){
                 $str = '_';

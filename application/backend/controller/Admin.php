@@ -2,6 +2,7 @@
 
 namespace app\backend\controller;
 
+use think\Config;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -15,10 +16,17 @@ class Admin extends Controller
      */
     public function adminList()
     {
-        $adminInfo = db('user')->paginate(10);
+        $auth = new Auth();
+        // 获取用户组 $groups = $auth->getGroups(session("admin.admin_id"));
+        $adminInfo = db('user')->select();
         $groups = db('auth_group')->select();
+        $adminArr = [];
+        foreach ($adminInfo as $k => $v){
+            $v['title'] = $auth->getGroups($v['id'])[0]['title'];
+            $adminArr[] = $v;
+        }
         $this->assign('groups',$groups);
-        $this->assign('lists',$adminInfo);
+        $this->assign('lists',$adminArr);
         return $this->fetch();
     }
 

@@ -83,25 +83,50 @@ class AuthGroup extends Controller
     public function addRules()
     {
         if(request()->isPost()){
+            $data = input('post.');
+            if($data["rules"]){
+                $data["rules"] = implode(',',$data["rules"]);
+                $res = db('auth_group')->where('id',$data["groupId"])->update(['rules'=>$data["rules"]]);
+                if ($res) {
+                    $this->success('success', "backend/auth_group/grouplist");
+                    exit;
+                } else {
+                    $this->error('error');
+                    exit;
+                }
+            }
+        }
+        $id = input('param.id');
+        $groups = db('auth_group')->where('id',$id)->find();
+        $allRules = Arr::tree(db('auth_rule')->select(), 'title', $fieldPri = 'id', $fieldPid = 'pid');
+        $checkedRules = [];
+        foreach ($allRules as $value){
+            if(in_array($value['id'],explode(',',$groups['rules']))){
+                $value['access'] = '1';
+            }else{
+                $value['access'] = '0';
+            }
+            $checkedRules[] = $value;
+        }
+
+        $this->assign('groupTitle',$groups['title']);
+        $this->assign('groupId',$id);
+        $this->assign('allRules',$checkedRules);
+        return $this->fetch();
+    }
+
+    /**
+     * 用户组删除规则
+     */
+    public function delRules()
+    {
+        if(request()->isPost()){
             halt($_POST);
 
         }
         $id = input('param.id');
         $groupTitle = db('auth_group')->where('id',$id)->find()['title'];
         $allRules = Arr::tree(db('auth_rule')->select(), 'title', $fieldPri = 'id', $fieldPid = 'pid');
-        $node_arr = array();
-//        foreach ($allRules as $value) {
-//            $conditions['node_id'] = $value['id'];
-//            $conditions['role_id'] = $rid;
-//            $count = $access->where($conditions)->count();
-//            if ($count) {
-//                $value['access'] = '1';
-//            } else {
-//                $value['access'] = '0';
-//            }
-//            $node_arr[] = $value;
-//        }
-//        halt($node_arr);
         $this->assign('groupTitle',$groupTitle);
         $this->assign('allRules',$allRules);
         return $this->fetch();

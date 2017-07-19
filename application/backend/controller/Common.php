@@ -17,13 +17,25 @@ use think\Request;
 class Common extends Controller
 {
     //
-    public function __construct(Request $request = null)
+    public function _initialize(Request $request = null)
     {
-        parent::__construct($request);
         //执行登录验证
         #$_SESSION["admin"]["admin_id"];
         if(!session('admin.admin_id')){
             $this->redirect("backend/login/login");
         }
+        $instance = Request::instance();
+        $con = $instance->controller();
+        $action = $instance->action();
+        $name = $con.'/'.$action;
+        $auth = new Auth();
+        $check = $auth->check($name,session('admin.admin_id'));
+        // 公共权限
+        $noCheck = config('auth_config')['open_auth'];
+//        if(!$check){
+//            if(!in_array($name,$noCheck)){
+//                $this->error('没有权限',"backend/entry/index");
+//            }
+//        }
     }
 }

@@ -41,7 +41,7 @@ class AuthRule extends Controller
             $data = (input('post.'));
             // 获取上级权限的pid
             $pLevel = db("auth_rule")->where('id', $data['pid'])->field('level')->find();
-            $data['level'] = 0;
+            $data['level'] = 1;
             if ($pLevel) $data['level'] = $pLevel['level'] + 1;
             $res = db('auth_rule')->insert($data);
             if ($res) {
@@ -92,7 +92,6 @@ class AuthRule extends Controller
         $id = input('param.id');
         $oldData = $this->db->find($id);
         $lastData = $this->db->getEditRule($id);
-        echo '11111111111111';die;
         $this->assign('old_data',$oldData);
         $this->assign('last_data',$lastData);
         return $this->fetch();
@@ -104,7 +103,7 @@ class AuthRule extends Controller
      * @param  int $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete()
     {
         $id = input('param.id');
         $res = $this->db->del($id);

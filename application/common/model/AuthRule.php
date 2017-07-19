@@ -88,10 +88,10 @@ class AuthRule extends Model
     }
 
     /**
-     * 获取子权限
-     * @param $id
-     * @return mixed
-     */
+ * 获取子权限
+ * @param $id
+ * @return mixed
+ */
     public function getChildrenId($id)
     {
         // 1 首先查找到 $id 的子集
@@ -108,6 +108,32 @@ class AuthRule extends Model
             if ($id == $v['pid']) {
                 $tmp[] = $v['id'];
                 $this->_getChildrenId($allData, $v['id']);
+            }
+        }
+        return $tmp;
+    }
+
+    /**
+     * 获取父权限
+     * @param $id
+     * @return mixed
+     */
+    public function getParentId($authRuleId)
+    {
+        // 1 首先查找到 $id 的子集
+        $subIds = $this->_getgetParentId(db('auth_rule')->select(), $authRuleId);
+        // 2 将当前的分类id追加进去
+        $subIds[] = $authRuleId;
+        return $subIds;
+    }
+
+    public function _getgetParentId($allData, $authRuleId)
+    {
+        static $tmp = [];
+        foreach ($allData as $k => $v) {
+            if ($authRuleId == $v['pid']) {
+                $tmp[] = $v['id'];
+                $this->_getChildrenId($allData, $v['pid']);
             }
         }
         return $tmp;

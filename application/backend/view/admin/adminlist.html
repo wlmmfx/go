@@ -24,6 +24,7 @@
                         <tr class="text-c">
                             <th>ID</th>
                             <th>用户名</th>
+                            <th>所属户组</th>
                             <th>邮箱</th>
                             <th>排序</th>
                             <th>备注</th>
@@ -35,6 +36,7 @@
                         <tr class="text-c">
                             <td>{$user.id}</td>
                             <td>{$user.username}</td>
+                            <td>{$user.title}</td>
                             <td>{$user.email}</td>
                             <td>{$user.status}</td>
                             <td>{$user.email}</td>
@@ -59,7 +61,7 @@
                         {/volist}
                         </tbody>
                     </table>
-                    {$lists->render()}
+
                 </div>
 
                 <div id="admin-add" class="tab-pane">

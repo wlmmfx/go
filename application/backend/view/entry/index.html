@@ -40,7 +40,7 @@
                 <div class="profile-info-name"> 最近登录时间 </div>
 
                 <div class="profile-info-value">
-                    <span class="editable" id="login">3 小时之前</span>
+                    <span class="editable" id="login">{$user.login_points|points_to_level}</span>
                 </div>
             </div>
 
@@ -51,24 +51,21 @@
                     <span class="editable" id="about">超级管理员</span>
                 </div>
             </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Github </div>
+
+                <div class="profile-info-value">
+                    <span class="editable" id="github">
+                           php-project-practice ：<iframe src="https://ghbtns.com/github-btn.html?user=Tinywan&repo=php-project-practice&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe><p></p>
+        Html5-m3u8-RTMP ：<iframe src="https://ghbtns.com/github-btn.html?user=Tinywan&repo=Html5-m3u8-RTMP&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe><p></p>
+        Lua-Nginx-Redis ：<iframe src="https://ghbtns.com/github-btn.html?user=Tinywan&repo=Lua-Nginx-Redis&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<button class="copy-link" data-fulllink="要被复制的内容在这里～">复制链接</button>
-
-<!-- 空白节点，缓存数据，尽量使用下面的样式将该节点隐藏起来 -->
-<div class="copy-area"></div>
-
-<style>
-    .copy-area {
-        position: absolute;
-        z-index: -1;
-        width: 0;
-        height: 0;
-        opacity: 0;
-    }
-</style>
 
 <script type="application/javascript">
     function copyLink(event){

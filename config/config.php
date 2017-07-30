@@ -35,4 +35,6 @@ return [
         // 验证成功后是否重置
         'reset'    => true
     ],
+    //独立配置文件数据库配置文件
+    'extra_config_list'     => ['database','session'],
 ];

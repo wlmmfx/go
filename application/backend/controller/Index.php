@@ -12,7 +12,10 @@
 
 namespace app\backend\controller;
 
+use redis\BaseRedis;
 use think\Controller;
+use think\Session;
+use think\session\driver\Redis;
 use think\View;
 
 class Index extends Controller
@@ -117,6 +120,24 @@ class Index extends Controller
         $this->assign('lists', $lists);
         $this->assign('title',"Composer安装");
         return $this->fetch('index');
+    }
+
+    public function redisTest(){
+//        ini_set("session.save_handler","redis");
+//        ini_set("session.save_path","tcp://127.0.0.1:6379");
+//        session_start();
+//        $_SESSION["user_id"] = ['name' => 'Tinywan', 'num' =>123213];
+//        $_SESSION["class2"] = ['name' => 'Tinywan22222', 'num' =>12321322222222222];
+        session("Lua",['123','Openresty']);
+
+        //检查session_id
+//        echo 'session_id:' . session_id() . '<br/>';
+        //redis存入的session（redis用session_id作为key,以string的形式存储）
+//        echo 'redis_session:' . $redis->get('PHPREDIS_SESSION:' . session_id()) . '<br/>';
+
+        //redis存入的session（redis用session_id作为key,以string的形式存储）
+        //php获取session值
+//        echo 'php_session:' . json_encode($_SESSION['class']);
     }
 
 }

@@ -47,7 +47,7 @@
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
                                 <th colspan='2'><span
-                                        class="label label-xlg arrowed-right arrowed-in-right">系统基本信息配置</span></th>
+                                        class="label label-xlg arrowed-right arrowed-in-right">网站基本信息配置</span></th>
                             </tr>
                             <tr>
                                 <td width='10%' align='right'>网站名称：</td>
@@ -111,6 +111,80 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td align='right'>环境切换：</td>
+                                <td>
+                                    <label for="o1">
+                                        <input type="radio" id='o1' name='env' value='1' {if
+                                               condition='$Think.config.webinfo.WEB_STATE' }checked='checked' {/if}/>&nbsp;线上
+                                    </label>&nbsp;&nbsp;
+                                    <label for="o0">
+                                        <input type="radio" id='o0' name='env' value='0' {if
+                                               condition='$Think.config.webinfo.WEB_STATE neq 1' }checked='checked' {/if}/>&nbsp;测试
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan='2' align='center' height='60'>
+                                    <input type="submit" value='保存' class='btn btn-success'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <!-- PAGE CONTENT ENDS -->
+                    <!-- PAGE CONTENT BEGINS -->
+                    <form action="{:url('backend/system/sessionconfig')}" method="post" class="form-horizontal"
+                          role="form">
+                        <table class="table table-border table-bordered table-bg mt-20">
+                            <tr>
+                                <th colspan='2'><span
+                                        class="label label-xlg arrowed-right arrowed-in-right">SESSION配置</span></th>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>存储方式：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='type'  disabled="disabled" value='{$Think.config.session.type}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>主机：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='host' value='{$Think.config.session.host}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>端口号：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='port' value='{$Think.config.session.port}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>密码：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='password' value='{$Think.config.session.password}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>有效期(秒)：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='expire'
+                                           value='{$Think.config.session.expire}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>超时时间(秒)：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='timeout'
+                                           value='{$Think.config.session.timeout}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>sessionkey前缀：</td>
+                                <td>
+                                    <input type="text" class="col-sm-6" name='session_name'
+                                           value='{$Think.config.session.session_name}' class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan='2' align='center' height='60'>
                                     <input type="submit" value='保存' class='btn btn-success'/>
                                 </td>
@@ -129,13 +203,13 @@
                                         class="label label-xlg arrowed-right arrowed-in-right">权限基本配置信息</span></th>
                             </tr>
                             <tr>
-                                <td align='right'>权限开关：</td>
+                                <td align='right'>开关：</td>
                                 <td>
                                     <input type="text" class="col-sm-3" name='auth_on' value='{$Think.config.auth_config.auth_on}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
-                                <td width='10%' align='right'>权限表前缀：</td>
+                                <td width='10%' align='right'>表前缀：</td>
                                 <td>
                                     <input type="text" class="col-sm-3" name='db_prefix' value='{$Think.config.auth_config.db_prefix}' class='len400'/>
                                 </td>

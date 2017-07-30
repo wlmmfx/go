@@ -216,13 +216,148 @@ function github_redirect_uri(Request $request)
         "code" => $code,
     ]);
     //第三步:根据全局access_token和openid查询用户信息
-    $jsonRes = json_decode($postRes,true);
+    $jsonRes = json_decode($postRes, true);
     $access_token = $jsonRes["access_token"];
-    $userUrl = config('github.USER_INFO_URL')."?access_token=".$access_token;
+    $userUrl = config('github.USER_INFO_URL') . "?access_token=" . $access_token;
     $userInfo = $this->curl_request($userUrl);
-    $userJsonRes = json_decode($userInfo,true);
+    $userJsonRes = json_decode($userInfo, true);
     //第五步，如何设置Wordpress中登录状态
     return $userJsonRes;
 }
 
+
+function get_global_db_config()
+{
+    $global_db_config = array(
+        'log_table' => config('database.log_table'),
+        'username' => config('database.username'),
+        'password' => config('database.password'),
+        'hostname' => config('database.hostname'),
+        'database' => config('database.database'),
+    );
+    return $global_db_config;
+}
+
+/**
+ * 记录操作日志
+ * @param null $desc
+ * @param string $unique_flag
+ * @param $app
+ * @param $action
+ * @param $method
+ * @return bool
+ */
+function add_operation_log($desc = null, $unique_flag = 'system')
+{
+    $instance = \think\Request::instance();
+    $module = $instance->module();
+    $controller = $instance->controller();
+    $action = $instance->action();
+    $config = get_global_db_config();
+    $conn = new \mysqli($config['hostname'], $config['username'], $config['password'], $config['database']);
+    if ($conn->connect_error) {
+        die("连接失败: " . $conn->connect_error);
+    }
+    mysqli_query($conn, 'set names utf8');
+    $account = get_admin_account();
+    $nickname = get_admin_nickname();
+    $user_id = get_admin_user_id();
+    $ipaddr = request()->ip();
+    $query_string = implode('--', array_merge($_GET, $_POST,input()));
+    $is_desc = 0;
+
+    if ($desc) $is_desc = 1;
+    $insert_time = date('Y-m-d H:i:s');
+    $query = "INSERT INTO `" . $config['log_table'] . "` (`guid`,`account`,`nickname`,`addtime`,`module`,`controller`,
+    `action`,`query_string`,`is_desc`,`desc`,`ipaddr`,`unique_flag`) VALUES ('$user_id','$account','$nickname','$insert_time','$module',
+    '$controller','$action','$query_string','$is_desc','$desc','$ipaddr','$unique_flag');";
+    if (mysqli_query($conn, $query)) {
+        $result = TRUE;
+    } else {
+        //$		result = "Error:" . $query . "<br/>" . mysqli_error($conn);
+        //用于以后调试
+        $result = FALSE;
+    }
+    return $result;
+}
+
+/**
+ * @return mixed
+ */
+function get_admin_account()
+{
+    return session('admin.username');
+}
+
+/**
+ * 获取用户昵称
+ * @return mixed
+ */
+function get_admin_nickname()
+{
+    return session('admin.username');
+}
+
+
+/**
+ * 获取用户ID信息，这条信息是用户登陆的时候保存的
+ * @return mixed
+ */
+
+function get_admin_user_id()
+{
+    return session('admin.admin_id');
+}
+
+
+/*************************************经验值转换为等级 **********************************
+ *
+ * @param  [type] $exp [description]
+ * @return [type]      [description]
+ */
+function points_to_level($exp)
+{
+    switch (true) {
+        case $exp >= config('points.LV20') :
+            return LV20;
+        case $exp >= config('points.LV19') :
+            return 19;
+        case $exp >= config('points.LV18') :
+            return 18;
+        case $exp >= config('points.LV17') :
+            return 17;
+        case $exp >= config('points.LV16') :
+            return 16;
+        case $exp >= config('points.LV15') :
+            return 15;
+        case $exp >= config('points.LV14') :
+            return 14;
+        case $exp >= config('points.LV13') :
+            return 13;
+        case $exp >= config('points.LV12') :
+            return 12;
+        case $exp >= config('points.LV11') :
+            return 11;
+        case $exp >= config('points.LV10') :
+            return 10;
+        case $exp >= config('points.LV9') :
+            return 9;
+        case $exp >= config('points.LV8') :
+            return 8;
+        case $exp >= config('points.LV7') :
+            return 7;
+        case $exp >= config('points.LV6') :
+            return 6;
+        case $exp >= config('points.LV5') :
+            return 5;
+        case $exp >= config('points.LV4') :
+            return 4;
+        case $exp >= config('points.LV3') :
+            return 3;
+        case $exp >= config('points.LV2') :
+            return 2;
+        default :
+            return 1;
+    }
+}
 

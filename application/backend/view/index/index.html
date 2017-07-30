@@ -6,19 +6,21 @@
             <button type="button" class="close" data-dismiss="alert">
                 <i class="icon-remove"></i>
             </button>
-
-            <i class="icon-ok green"></i>
-
-            Welcome to
-            <strong class="green">
-                Ace
-                <small>(v1.2)</small>
-            </strong>
-            ,
-            the TInywan 00000000000000000000
             <h1>{$title}</h1>
         </div>
         <div class="hr hr32 hr-dotted"></div>
+        <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+        <style>
+            video {
+                width: 640px;
+                height: 360px;
+            }
+        </style>
+        <div>
+            <video data-dashjs-player autoplay src="http://dash.edgesuite.net/envivio/EnvivioDash3/manifest.mpd" controls></video>
+            <video data-dashjs-player autoplay src="http://115.29.8.55:8000/play/dash/sintel/index.mpd" controls></video>
+            <!--<video data-dashjs-player autoplay src="http://115.29.8.55:8000/play/dash/sintel/index.mpd" controls></video>-->
+        </div>
         <!-- PAGE CONTENT ENDS -->
     </div><!-- /.col -->
 </div><!-- /.row -->

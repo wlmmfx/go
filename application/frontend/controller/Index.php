@@ -14,13 +14,28 @@ use Faker\Factory;
 use Faker\Provider\Uuid;
 use FFMpeg\FFMpeg;
 use think\Controller;
+use think\Db;
 use think\Loader;
 
 class Index extends Controller
 {
     public function index()
     {
-        // github 按钮显示 https://ghbtns.com/
+        $tags = Db::table('resty_tag')
+            ->alias('t')
+            ->join('resty_article_tag at',"t.id = at.tag_id")
+            ->field('t.name,count(at.article_id) as art_num,at.tag_id')
+            ->group('t.id')
+            ->select();
+        $article = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_category c', 'c.id = a.cate_id')
+            ->join('resty_user u', 'u.id = a.author_id')
+            ->field("a.title,a.create_time,a.content,a.id,a.views,c.name as c_name,u.username")
+            ->order("a.create_time desc,a.id desc")
+            ->paginate(4);
+        $this->assign('tags', $tags);
+        $this->assign('list', $article);
         return $this->fetch();
     }
 
@@ -49,12 +64,12 @@ class Index extends Controller
             "code" => $code,
         ]);
         //第三步:根据全局access_token和openid查询用户信息
-        $jsonRes = json_decode($postRes,true);
+        $jsonRes = json_decode($postRes, true);
         $access_token = $jsonRes["access_token"];
-        $userUrl = "https://api.github.com/user?access_token=".$access_token;
+        $userUrl = "https://api.github.com/user?access_token=" . $access_token;
         $userInfo = $this->curl_request($userUrl);
-        $userJsonRes = json_decode($userInfo,true);
-        //第五步，如何设置Wordpress中登录状态
+        $userJsonRes = json_decode($userInfo, true);
+        //第五步，如何设置登录状态
         halt($userJsonRes);
     }
 
@@ -265,6 +280,68 @@ class Index extends Controller
         $res2 = User::get(84);
         $resdel = $res2->delete(true);
         var_dump($resdel);
+    }
 
+    public function hello()
+    {
+        $tags = Db::table('resty_tag')->select();
+        $this->assign('tags', $tags);
+        return $this->fetch();
+    }
+
+    public function articleByTag()
+    {
+        $tagId = input("param.id");
+        $article = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_article_tag at', 'a.id = at.article_id')
+            ->where('at.tag_id', $tagId)
+            ->select();
+        halt($article);
+    }
+
+    /**
+     * 根据标签查询文章
+     */
+    public function searchByTagId()
+    {
+        $tagId = input("param.id");
+        $articles = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_article_tag at', 'a.id = at.article_id')
+            ->join('resty_category c', 'c.id = a.cate_id')
+            ->join('resty_user u', 'u.id = a.author_id')
+            ->field("a.title,a.create_time,a.update_time,a.id,a.views,c.name as c_name,u.username")
+            ->where('at.tag_id', $tagId)
+            ->order("a.create_time desc , a.id desc")
+            ->paginate(6);
+        $this->assign("articles", $articles);
+        return $this->fetch("search");
+    }
+
+    /**
+     * 文章详细信息
+     */
+    public function detail()
+    {
+        $id = input("param.id");
+        $article = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_category c', 'c.id = a.cate_id')
+            ->join('resty_user u', 'u.id = a.author_id')
+            ->field("a.title,a.create_time,a.content,a.views,c.name as c_name,u.username")
+            ->where('a.id', $id)
+            ->find();
+        $tags = Db::table("resty_tag")
+            ->alias('t')
+            ->join("resty_article_tag at","at.tag_id = t.id")
+            ->where("at.article_id",$id)
+            ->select();
+//        halt($tags);
+        // 文章浏览次数加1
+        Db::table('resty_article')->where('id',$id)->setInc('views');
+        $this->assign('article',$article);
+        $this->assign('tags',$tags);
+        return $this->fetch();
     }
 }

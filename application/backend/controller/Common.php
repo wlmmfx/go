@@ -17,7 +17,7 @@ use think\Request;
 class Common extends Controller
 {
     //
-    public function _initialize(Request $request = null)
+    public function _initialize()
     {
         //执行登录验证
         #$_SESSION["admin"]["admin_id"];

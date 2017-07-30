@@ -15,6 +15,7 @@ namespace app\backend\controller;
 use app\common\model\Admin;
 use Faker\Provider\Uuid;
 use think\Controller;
+use think\Db;
 use think\Request;
 
 class Entry extends Common
@@ -22,6 +23,8 @@ class Entry extends Common
     //个人
     public function index()
     {
+        $user = Db::table('resty_user')->where('id',session('admin.admin_id'))->field("username,logintime,loginip,login_points")->find();
+        $this->assign('user',$user);
         return $this->fetch();
     }
 

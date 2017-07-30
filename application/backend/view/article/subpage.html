@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#sub-add">
+                        <i class="green icon-home bigger-110"></i>
+                        添加子集栏目
+                    </a>
+                </li>
+                <li >
+                    <a data-toggle="tab" href="#category-list">
+                        <i class="green icon-home bigger-110"></i>
+                        栏目列表
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="sub-add" class="tab-pane  in active">
+                    <form action="{:url('/backend/category/store')}" method="post" class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分类名称</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-1" placeholder="分类名称" name="name" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+
+                            <div class="col-sm-9">
+                                <select name="pid" id="select">
+                                        <option value="{$sub['id']}">{$sub['name']}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 详细描述 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-2" placeholder="详细描述" name="remark"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">确认</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="category-list" class="tab-pane">
+                    <table class="table table-border table-bordered table-bg">
+                        <thead>
+                        <tr class="text-c">
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>排序</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name='categorys' key='key' item='vo'}
+                            <tr class="text-c">
+                                <td>{$vo["id"]}</td>
+                                <td>{$vo["_name"]}</td>
+                                <td>{$vo["level"]}</td>
+                                <td>{$vo["remark"]}</td>
+                                <td>
+                                    <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
+                                        <button class="btn btn-success btn-sm">
+                                            <i class="icon-folder-open"></i>添加二级
+                                        </button>
+                                    </a>
+                                    <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="icon-edit"></i>编辑
+                                        </button>
+                                    </a>
+                                    <a href="{:url('backend/category/del',['id'=>$vo['id']])}">
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="icon-trash"></i>删除
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->

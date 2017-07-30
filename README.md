@@ -58,6 +58,8 @@ ffmpeg
 ## URL路由
 +   a 连接：`<a href="{:url('backend/entry/modpass')}">`
 +   from 表单提交：`<form action="/backend/login/forgotPassword" method="post">`
+##  控制器
++   命令行新建控制器：``
 
 ## 功能添加
 +   邮箱注册、登录、找回密码、忘记密码功能

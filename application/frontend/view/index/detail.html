@@ -1,0 +1,144 @@
+<!-- 主要内容 -->
+<div class="container">
+    <ul class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active">搜索</li>
+    </ul>
+    <!-- 简介 -->
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="page-title J_postId" data-id="270">
+                <h3>{$article["title"]} <span>[{$article.c_name}]</span></h3>
+                <span>作者：<a href="/member/index/1.html">{$article.username}</a></span>
+                <span>发布于：{$article["create_time"]|date="Y/m/d H:i:s",###}</span>
+                <span>浏览：{$article['views']}次</span>
+                <span><a href="javascript:;" class="j-collect">收藏</a></span>
+            </div>
+
+            <div class="page-content">
+                <p>
+                    </p>{$article.content}
+                <div class="post-donate">
+                    <span>如果文章对您有所帮助，希望继续支持我们，您的支持是我们最大的动力</span>
+                    <a href="/donate/index.html" class="btn btn-success">￥打赏</a>
+                </div>
+                <div class="page-tag">
+                    <b>标签：</b>
+                    {volist name="tags" id="vo"}
+                    <span><a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}">{$vo['name']}</a></span>
+                    {/volist}
+                    <div class="page-declare">
+                        <b>声明：</b><span>文章内容由作者原创或整理，未经允许，不得转载！</span>
+                    </div>
+                    <div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1501417808870">
+                        <a href="#" class="bds_more" data-cmd="more"></a>
+                        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    </div>
+                    <script>window._bd_share_config = {
+                        "common": {
+                            "bdSnsKey": {},
+                            "bdText": "",
+                            "bdMini": "2",
+                            "bdPic": "",
+                            "bdStyle": "0",
+                            "bdSize": "16"
+                        },
+                        "share": {},
+                        "image": {
+                            "viewList": ["qzone", "tsina", "tqq", "renren", "weixin"],
+                            "viewText": "分享到：",
+                            "viewSize": "16"
+                        }
+                    };
+                    with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+                </div>
+
+                <div class="page-comment">
+                    <div id="comments" style="margin-top: 10px;">
+                        <div class="page-header">
+                            <h2>共 0 条评论</h2>
+                        </div>
+                        <ul id="reply" class="media-list J_mediaList">
+
+                        </ul>
+                    </div>
+                    <input type="hidden" value="/comment/reply.html" class="j_reply_url"></div>
+
+                <div class="page-comment">
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="well danger">您需要登录后才可以评论。<a href="/site/login.html">登录</a> | <a
+                                    href="/site/signup.html">立即注册</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="panel">
+                <div class="panel-title box-title">
+                    <span>最新文章</span>
+                    <span class="pull-right"><a href="/post/index.html" class="font-12">更多»</a></span>
+                </div>
+                <div class="new last-post J_lastTime">
+                    <ul>
+                        <li class="hov">
+                            <a href="/post/detail/526.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">03</span>/<span class="y">07月</span>
+                                </div>
+                                <div class="title">php model里时间处理</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/post/detail/514.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">28</span>/<span class="y">04月</span>
+                                </div>
+                                <div class="title">unix命令大全--文件编辑器 vi</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/post/detail/513.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">28</span>/<span class="y">04月</span>
+                                </div>
+                                <div class="title">unix命令大全--电子邮件(E-mail)的使用简介</div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="/post/detail/512.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">28</span>/<span class="y">04月</span>
+                                </div>
+                                <div class="title">unix命令大全--系统中的使用者</div>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="/post/detail/511.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">28</span>/<span class="y">04月</span>
+                                </div>
+                                <div class="title">unix命令大全--I/O control</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/post/detail/510.html" target="_blank">
+                                <div class="time">
+                                    <span class="r">28</span>/<span class="y">04月</span>
+                                </div>
+                                <div class="title">unix命令大全--history</div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

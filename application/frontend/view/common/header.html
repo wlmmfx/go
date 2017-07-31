@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>{$Think.config.app_title}</title>
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="__COMMON__/bootstrap-3.3.5/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 50px;
+            color: #5a5a5a;
+        }
+        .footer {
+            padding-bottom: 10px;
+            background: #222;
+            color: #9D9D9D;
+        }
+        .footer hr {
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #333;
+            margin: 10px 0;
+        }
+        .footer a {
+            color: #9D9D9D;
+        }
+        .navbar-form {
+            margin-right: -15px;
+            margin-bottom: 8px;
+            margin-left: -15px;
+        }
+        .tag-cloud a {
+            border: 1px solid #ebebeb;
+            padding: 2px 7px;
+            color: #333;
+            line-height: 2em;
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 7px 7px 0;
+            transition: all 0.2s ease;
+        }
+
+        .panel ul.post-list li {
+            line-height: 2.4em;
+            color: #ccc;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .media-list .media-body h2.media-heading {
+            font-size: 14px;
+        }
+        .media-heading {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        .media-list .media .media-object {
+            width: 48px;
+            height: 48px;
+            padding: 1px;
+            border: #ddd solid 1px;
+        }
+        .box-title {
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #CBCBCB;
+            padding-bottom: 5px;
+        }
+        .media-list .media {
+            border-bottom: #eee solid 1px;
+            line-height: 30px;
+        }
+        .page-title span {
+            color: #999;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .post-label > img {
+             margin-left: auto;
+             margin-right: auto;
+             display: block;
+             height: 150px;
+            width: 100%;
+        }
+        .border-bottom {
+            border-bottom: 1px solid #ccc;
+        }
+        .btn-group, .btn-group-vertical {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 26px;
+        }
+        .panel ul {
+            list-style-type: none;
+            margin-left: -30px;
+        }
+    </style>
+</head>
+<body>
+<!-- 顶部导航 -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="menu-nav">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="__COMMON__/images/logo.png" alt="Yii Framework 中文社区" height="35">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-left nav">
+                <li class="active"><a href="/">首页</a></li>
+                <li><a href="#summary-container">下载</a></li>
+                <li><a href="#summary-container">文档</a></li>
+                <li><a href="#summary-container">教程</a></li>
+                <li><a href="#summary-container">扩展</a></li>
+                <li><a href="#summary-container">源码</a></li>
+                <li><a href="#summary-container">回答</a></li>
+                <li><a href="#summary-container">话题</a></li>
+                <li><a href="#summary-container">视频</a></li>
+                <li><a href="#summary-container">案例</a></li>
+                <li><a href="#summary-container">排行</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">特点 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#feature-tab" data-tab="tab-chrome">Chrome</a></li>
+                        <li><a href="#feature-tab" data-tab="tab-firefox">Firefox</a></li>
+                        <li><a href="#feature-tab" data-tab="tab-safari">Safari</a></li>
+                        <li><a href="#feature-tab" data-tab="tab-opera">Opera</a></li>
+                        <li><a href="#feature-tab" data-tab="tab-ie">IE</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">提交</button>
+                    </form>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right nav">
+                <li><a href="#summary-container">注册</a></li>
+                <li><a href="#summary-container">登录</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+

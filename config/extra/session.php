@@ -7,7 +7,7 @@
   'port' => '6379',
   'password' => '',
   'select' => 0,
-  'expire' => '1100',
+  'expire' => '7200',
   'timeout' => '0',
   'persistent' => true,
   'session_name' => 'RESTY_PHPSESSID:',

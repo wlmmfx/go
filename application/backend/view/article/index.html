@@ -56,23 +56,21 @@
                     </table>
                 </div>
 
-
-                <div id="category-add" class="tab-pane">
+                <div id="category-add" class="tab-pane left">
                     <form action="{:url('/backend/article/store')}" method="post" class="form-horizontal" role="form">
-
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章标题</label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="form-field-1" placeholder="文章标题" name="title" class="col-xs-10 col-sm-5"/>
+                                <input type="text" id="title" placeholder="文章标题" name="title" class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 所属栏目</label>
 
                             <div class="col-sm-9">
-                                <select name="cate_id" id="select">
+                                <select name="cate_id" id="cate_id">
                                     {volist name="categorys" id="vo"}
                                     <option value="{$vo['id']}">{$vo['_name']}</option>
                                     {/volist}
@@ -81,46 +79,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 标签</label>
 
                             <div class="col-sm-9">
                                 <label class="middle">
                                     {volist name="tags" id="vo"}
-                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="id-disable-check" />
+                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
                                     <span class="lbl"> {$vo['name']}</span>
                                     {/volist}
                                 </label>
                             </div>
                         </div>
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 排序 </label>-->
-
-                            <!--<div class="col-sm-9">-->
-                                <!--<input type="text" id="form-field-2" placeholder="排序" name="level" value="1" class="col-xs-10 col-sm-5"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 缩略图 </label>-->
-
-                            <!--<div class="col-sm-9">-->
-                                <!--<input type="text" id="form-field-4" placeholder="详细描述" name="remark"-->
-                                       <!--class="col-xs-10 col-sm-5"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章摘要 </label>-->
-
-                            <!--<div class="col-sm-9">-->
-                                <!--<input type="text" id="form-field-5" placeholder="详细描述" name="remark"-->
-                                       <!--class="col-xs-10 col-sm-5"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章内容 </label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 文章内容 </label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="form-field-6" placeholder="详细描述" name="content"
-                                       class="col-xs-10 col-sm-5"/>
+                                <textarea name="content" id="editor" style="width:1024px;height:500px;"></textarea>
                             </div>
                         </div>
                         <div class="form-actions center">
@@ -134,3 +108,40 @@
     </div><!-- /span -->
 
 </div><!-- /row -->
+<script type="text/javascript" charset="utf-8">
+window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+var ue = UE.getEditor('editor',{
+    initialFrameWidth: 1100,   //初始化宽度
+    initialFrameHeight: 500,   //初始化高度
+    serverUrl:"{:url('/backend/article/saveinfo')}"
+});
+
+//$(document).ready(function(){
+//    $("form").submit(function(e){
+//        var tag = $("#tag").val();
+//        console.log("----------------"+tag);
+//        var data = ue.getContent();
+//        console.log(data);
+//        $.ajax({
+//            cache:true,
+//            type:"post",
+//            url:url,
+//            data:{
+//                "title":$("#title").val(),
+//                "cate_id":$("#cate_id").val(),
+//                "tag":$("#tag").val(),
+//                "content":data,
+//            },
+//            async:false,
+//            error:function (request) {
+//                alert("Connection error");
+//            },
+//            success:function (response) {
+//                console.log("success = "+response.code);
+//                console.log("success = "+response.msg);
+//            }
+//        });
+//    });
+//});
+
+</script>

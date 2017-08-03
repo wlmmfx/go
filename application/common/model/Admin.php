@@ -61,7 +61,7 @@ class Admin extends Model
         $today = strtotime(date('Y-m-d')); // 获取今天0时0分0秒的时间
         // 如果上次的登录时间小于今天的时间，则增加经验值
         if ($infoUser['logintime'] < $today) {
-            $this->where('id',$infoUser['id'])->setInc('expire', 10);
+            $this->where('id',$infoUser['id'])->setInc('login_points', 10);
         }
         return ['valid' => 1, 'msg' => "登录成功"];
     }

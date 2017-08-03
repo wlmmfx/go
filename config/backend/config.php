@@ -13,6 +13,7 @@ return [
         "__JS__" => "/backend/js",
         "__CSS__" => "/backend/css",
         "__IMAGES__" => "/backend/images",
+        "__COMMON__" => "/common"
     ],
     'template'               => [
         // 模板引擎类型 支持 php think 支持扩展

@@ -38,7 +38,8 @@
         "houdunwang/crypt": "^1.0",
         "php-ai/php-ml": "^0.4.1",
         "fzaninotto/faker": "^1.6",
-        "houdunwang/arr": "^1.0"
+        "houdunwang/arr": "^1.0",
+        "phpoffice/phpexcel": "^1.8"
     },
     "extra": {
         "think-path": "thinkphp"

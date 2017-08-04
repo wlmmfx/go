@@ -35,7 +35,7 @@ class Index extends Controller
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $this->assign('tags', $tags);
-        $this->assign('list', $article);
+        $this->assign('list', $article); DS;
         return $this->fetch();
     }
 

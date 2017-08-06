@@ -1,7 +1,6 @@
-#!/usr/bin/env php
 <?php
 // +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
@@ -10,11 +9,12 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-// 定义项目路径
-define('APP_PATH', __DIR__ . '/application/');
+return [
+    // 'connector' => 'Sync'
 
-// 定义配置文件目录和应用目录同级
-define('CONF_PATH', __DIR__ . '/config/');
-
-// 加载框架引导文件
-require './thinkphp/console.php';
+    'connector' => 'Database',   // 数据库驱动
+    'expire'    => 60,           // 任务的过期时间，默认为60秒; 若要禁用，则设置为 null
+    'default'   => 'default',    // 默认的队列名称
+    'table'     => 'jobs',       // 存储消息的表名，不带前缀
+    'dsn'       => [],
+];

@@ -20,6 +20,15 @@ use think\Request;
 class Login extends Controller
 {
     /**
+     * 测试队列
+     */
+    public function testQueue()
+    {
+        $res = (new Admin())->sendMailQueue();
+        halt($res);
+    }
+
+    /**
      * 登录
      * @param Request $request
      * @return mixed
@@ -150,8 +159,8 @@ class Login extends Controller
     {
         $email = "756684177@qq.com";
         $name = ' ShaoBo Wan';
-        $this->assign('name',$name);
-        $this->assign('email',$email);
+        $this->assign('name', $name);
+        $this->assign('email', $email);
         $this->view->engine->layout(false);
         return $this->fetch();
     }
@@ -165,12 +174,12 @@ class Login extends Controller
         if ($request->isPost()) {
             $res = (new Admin())->oAuthSendEmail(input("post."));
             if ($res['valid']) {
-                return json(['code'=>200,'msg'=>$res['msg']]);
+                return json(['code' => 200, 'msg' => $res['msg']]);
             } else {
-                return json(['code'=>500,'msg'=>$res['msg']]);
+                return json(['code' => 500, 'msg' => $res['msg']]);
             }
         }
-        return json(['code'=>403,'msg'=>"no auth"]);
+        return json(['code' => 403, 'msg' => "no auth"]);
     }
 
     /**
@@ -185,12 +194,12 @@ class Login extends Controller
         if ($request->isPost()) {
             $res = (new Admin())->oAuthSendEmail(input("post."));
             if ($res['valid']) {
-                return json(['code'=>200,'msg'=>$res['msg']]);
+                return json(['code' => 200, 'msg' => $res['msg']]);
             } else {
-                return json(['code'=>500,'msg'=>$res['msg']]);
+                return json(['code' => 500, 'msg' => $res['msg']]);
             }
         }
-        return json(['code'=>403,'msg'=>"no auth"]);
+        return json(['code' => 403, 'msg' => "no auth"]);
     }
 
     public function faker()

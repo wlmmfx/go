@@ -6,7 +6,9 @@ use function EasyWeChat\Payment\get_client_ip;
 use Faker\Factory;
 use houdunwang\crypt\Crypt;
 use think\Loader;
+use think\Log;
 use think\Model;
+use think\Queue;
 use think\Validate;
 
 class Admin extends Model
@@ -35,6 +37,45 @@ class Admin extends Model
     protected $table = "resty_user";
 
     /**
+     * 发送邮件队列
+     */
+    public function sendMailQueue($data = [])
+    {
+        /**
+         * 1、当前任务将由哪个类来负责处理（job目录的Mail类）
+         *    当轮到该任务时，系统将生成一个该类的实例，并调用其 fire 方法
+         */
+        $jobHandlerClassName = 'application\backend\job\Mail';
+        /**
+         * 2.当前任务归属的队列名称，如果为新队列，会自动创建
+         */
+        $jobQueueName = "helloJobQueue";
+        /**
+         * 3、当前任务所需的业务数据 . 不能为 resource 类型，其他类型最终将转化为json形式的字符串
+         *   jobData 为对象时，需要在先在此处手动序列化，否则只存储其public属性的键值对
+         */
+        //$jobData = ['ts' => time(), 'bizId' => uniqid(), 'a' => 1];
+        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $jobData = ["mail"=>"1722318623@qq.com","str"=>"http://{$emailSendDomain}/backend/login/emailRegisterUrlValid"];
+        Log::error("[1]开始发布邮件队列 ".json_encode($jobData));
+        /**
+         *  4、将该任务推送到消息队列，等待对应的消费者去执行
+         */
+        $isPushed = Queue::push($jobHandlerClassName, $jobData, $jobQueueName);
+        /**
+         * 5、返回值
+         *  [1]database 驱动时，返回值为 1|false
+         *  [2]redis 驱动时，返回值为 随机字符串|false
+         */
+        if ($isPushed !== false) {
+            Log::error("[2]邮件队列发布结果：".$isPushed);
+            return date('Y-m-d H:i:s') . "11 a new Hello Job is Pushed to the Mail" . "<br>";
+        } else {
+            return 'Oops, something went wrong.';
+        }
+    }
+
+    /**
      * 登录验证
      * @param $data
      * @return array
@@ -61,7 +102,7 @@ class Admin extends Model
         $today = strtotime(date('Y-m-d')); // 获取今天0时0分0秒的时间
         // 如果上次的登录时间小于今天的时间，则增加经验值
         if ($infoUser['logintime'] < $today) {
-            $this->where('id',$infoUser['id'])->setInc('login_points', 10);
+            $this->where('id', $infoUser['id'])->setInc('login_points', 10);
         }
         return ['valid' => 1, 'msg' => "登录成功"];
     }
@@ -72,6 +113,62 @@ class Admin extends Model
      * @return array
      */
     public function emailRegister($data)
+    {
+        // 1 验证数据
+        $validate = new Validate([
+            'email' => 'require|email',
+            'password' => 'require',
+            'repassword' => 'require|confirm:password'
+        ], [
+            'password.require' => "密码不能为空！",
+            'repassword.require' => "两次密码输入不一致！",
+            'repassword.confirm' => "两次密码输入不一致！"
+        ]);
+        if (!$validate->check($data)) {
+            return ['valid' => 0, 'msg' => $validate->getError()];
+        }
+        // 2 检测邮箱是否被注册
+        $time = time();
+        $passwordToken = md5($data['email'] . md5($data['password']) . $time); //创建用于激活识别码
+        $userInfo = $userInfo = $this->where('email', $data['email'])->find();
+        if ($userInfo) return ['valid' => 0, 'msg' => "该邮箱已经被注册"];
+        // 3 插入数据库
+        $res = $this->data([
+            'username' => self::getRandUserName(),
+            'password' => md5($data["password"]),
+            'email' => $data["email"],
+            'password_token' => $passwordToken,
+            'loginip' => "127.0.0.1",
+        ])->save();
+        if (!$res) return ['valid' => 0, 'msg' => "数据库添加数据失败"];
+        // 4 发送邮件
+
+        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $checkstr = base64_encode($data['email']);
+        $auth_key = get_auth_key($data['email']);
+        $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
+        $str = <<<html
+            您好！<p></p>
+            感谢您在Tinywan世界注册帐户！<p></p>
+			帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
+            点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
+			$link
+html;
+        $data["str"] = $str;
+        //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
+        $result = $this->sendMailQueue($data);
+        log::info("消息推送结果：".$result);
+//        $result = send_email($data["email"], '物联网智能数据 帐户激活邮件--', $str);
+//        if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
+        return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
+    }
+
+    /**
+     * 邮箱注册
+     * @param $data
+     * @return array
+     */
+    public function emailRegisterCli($data)
     {
         // 1 验证数据
         $validate = new Validate([
@@ -296,7 +393,7 @@ html;
         $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
         $checkstr = base64_encode($data['email']);
         $auth_key = get_auth_key($data['email']);
-        $email_code = mt_rand(1111,9999);
+        $email_code = mt_rand(1111, 9999);
         $str = <<<html
             您好！你的验证码：<p></p>
             <h1>$email_code</h1><p></p>
@@ -305,7 +402,7 @@ html;
         $result = send_email($data["email"], '物联网智能数据 邮件验证码：', $str);
         if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
         //存储方便验证
-        session($data['email'].':email_code',$email_code);
+        session($data['email'] . ':email_code', $email_code);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 

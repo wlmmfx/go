@@ -4,6 +4,7 @@
  * User: tinywan
  * Date: 2017/6/27
  * Time: 22:01
+ * 参考文章：https://github.com/PHPOffice/PHPExcel/wiki/User%20Documentation
  */
 
 namespace app\frontend\controller;
@@ -13,6 +14,35 @@ use think\Db;
 
 class Excel extends Controller
 {
+    /**
+     * [0] init
+     * URL：http://test.thinkphp5-line.com/frontend/excel/multipleSheet
+     */
+    public function init()
+    {
+        $objPHPExcel = new \PHPExcel();
+        $objSheet = $objPHPExcel->getActiveSheet();
+
+        $data = array(
+            array('1', '小王', '男', '20', '100'),
+            array('2', '小李', '男', '20', '101'),
+            array('3', '小张', '女', '20', '102'),
+            array('4', '小赵', '女', '20', '103')
+        );
+        // 3、直接加载数据块来填充数据（不推荐）
+        $objSheet->fromArray($data);
+        // 4、生成指定格式(2007excel格式)xlsx文件
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition:attachment;filename=demo.xlsx');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+    }
+
+
+    /**
+     * [1] Excel 入门简单的测试
+     */
     public function index()
     {
         //创建对象
@@ -41,7 +71,7 @@ class Excel extends Controller
         }
         //创建Excel输入对象
         $write = new \PHPExcel_Writer_Excel5($excel);
-//        $write->save(ROOT_PATH . 'public' . DS . 'Excel'.date('Y-m-d',time()).mt_rand(0,999).'.xls'); resty_invitation_live_info
+        //$write->save(ROOT_PATH . 'public' . DS . 'Excel'.date('Y-m-d',time()).mt_rand(0,999).'.xls'); resty_invitation_live_info
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
@@ -55,9 +85,153 @@ class Excel extends Controller
     }
 
     /**
-     * 根据活动好导出导出邀请码数据
+     * [3] 多个sheet的操作
+     *     默认会自动创建一个sheet,以下案例创建3个sheet
+     *     URL：http://test.thinkphp5-line.com/frontend/excel/multipleSheet
      */
-    public function invitation()
+    public function multipleSheet()
+    {
+        $liveId = "L02359";
+        //0、实例化PHPExcel类，等同于在桌面新建一个Excel文件
+        $objPHPExcel = new \PHPExcel();
+        //1、循环创建多个sheet
+        for ($i = 1; $i <= 3; $i++) {
+            // [创建] 如果是多个sheet,则创建多个sheet
+            if ($i > 1) $objPHPExcel->createSheet();//创建新的内置标
+            // [设置] 把新创建的sheet设置为当前的活动sheet
+            $objPHPExcel->setActiveSheetIndex($i - 1);
+            // [获取] 获取当前的活动sheet
+            $objSheet = $objPHPExcel->getActiveSheet();
+            // [设置] 设置sheet名称
+            $objSheet->setTitle("部门" . $i);
+            // [填充] 填充表格第一列(表格头部)
+            $objSheet->setCellValue("A1", "活动ID")
+                ->setCellValue("B1", "用户昵称")
+                ->setCellValue("C1", "邀请码")
+                ->setCellValue("D1", "创建时间")
+                ->setCellValue("E1", "使用时间");
+            // [填充] 循环填充数据
+            $data = Db::table("resty_invitation_info")
+                ->alias('l')
+                ->join("resty_invitation i", "i.infoId = l.id")
+                ->where("l.liveId", $liveId)
+                ->select();
+            //从第二行开始填充
+            $j = 2;
+            foreach ($data as $key => $val) {
+                $objSheet->setCellValue("A" . $j, $val["liveId"])
+                    ->setCellValue("B" . $j, $val["userId"])
+                    ->setCellValue("C" . $j, $val["code"])
+                    ->setCellValue("D" . $j, $val["createTime"])
+                    ->setCellValue("E" . $j, $val["usedTime"]);
+                $j++;
+            }
+        }
+        // 4、生成指定格式(2007excel格式)xlsx文件
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition:attachment;filename=' . $liveId . '活动邀请码.xlsx');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+    }
+
+    /**
+     *  [4] Excel样式控制
+     *  功能：单元格合并、设置行高、设置默认字体、设置字体颜色
+     *  URL：http://test.thinkphp5-line.com/frontend/excel/styleControl
+     */
+    public function styleControl()
+    {
+        $liveId = "L02359";
+        //创建对象
+        $objPHPExcel = new \PHPExcel();
+        //这里是根据Get过来的数组判断要导出的Excel的列数目
+        $letterPost = ['11A', 'B11', 'C111', 'D1', 'D1', 'D1', 'D123423432', "weqweqw"];
+        static $letter = [];
+        //获取Excel 头部的大写字母
+        for ($i = 65; $i < (64 + count($letterPost)); $i++) {
+            $letter[] = strtoupper(chr($i));
+        }
+
+        //表头数组
+        $tableHeader = ['活动ID', '用户昵称', '邀请码', '邀请码创建时间', '邀请码使用时间', '到期时间', "联系电话"];
+        $objSheet = $objPHPExcel->getActiveSheet();   //获取当前活动sheet
+        $objSheet->setTitle($liveId . " 活动邀请码");   //给当前活动sheet起个名称
+        // 设置水平垂直居中
+        $objSheet->getDefaultRowDimension()->setVisible(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objSheet->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        //设置默认行高
+        $objSheet->getDefaultRowDimension()->setRowHeight(20);
+        //设置列的宽度
+        $objSheet->getDefaultColumnDimension()->setWidth(20);
+        $objSheet->getColumnDimension("A")->setWidth(10);
+        $objSheet->getColumnDimension("B")->setWidth(10);
+        $objSheet->getColumnDimension("C")->setWidth(10);
+        // 设置默认字体
+        $objSheet->getDefaultStyle()->getFont()->setSize(14)->setName("华文宋体");
+
+        $objSheet->getStyle("A3:G3")->getFont()->setBold(true);
+        $objSheet->getStyle("A2:K2")->getFont()->setSize(20)->setBold(true);
+        $objSheet->getRowDimension("A2:K2")->setRowHeight(40);
+
+        //填充表头信息
+        $objSheet->setCellValue("A4", "活动ID");
+        $objSheet->setCellValue("B4", "用户昵称");
+        $objSheet->setCellValue("C4", "邀请码");
+        $objSheet->setCellValue("D4", "创建时间");
+        $objSheet->setCellValue("E4", "使用时间");
+        $objSheet->setCellValue("F4", "到期时间");
+        $objSheet->setCellValue("G4", "联系电话");
+
+        $objSheet->setCellValue("A2", $liveId."微信邀请码的详细信息一览表");
+        $objSheet->setCellValue("A3", "活动基本信息");
+        $objSheet->setCellValue("D3", "时间基本信息");
+        //合并单元格
+        $objSheet->mergeCells('A2:K2');
+        $objSheet->mergeCells('A3:C3');
+        $objSheet->mergeCells('D3:G3');
+        // 单元格添加边框
+        //给表格添加数据
+        for ($i = 0; $i < count($tableHeader); $i++) {
+            //查询数据库
+            $data = Db::table("resty_invitation_info")
+                ->alias('l')
+                ->join("resty_invitation i", "i.infoId = l.id")
+                ->where("l.liveId", $liveId)
+                ->select();
+            $j = 5;
+            //填充表格信息
+            foreach ($data as $key => $val) {
+                $objSheet->setCellValue("A" . $j, $val["liveId"])
+                    ->setCellValue("B" . $j, $val["userId"])
+                    ->setCellValue("C" . $j, $val["code"])
+                    ->setCellValue("D" . $j, $val["createTime"])
+                    ->setCellValue("E" . $j, $val["usedTime"])
+                    ->setCellValue("F" . $j, $val["createTime"])
+                    ->setCellValue("G" . $j, $val["tel"]);
+                // 设置格式
+                if ($val["userId"] != 0) {
+                    // 设置字体颜色
+                    $objSheet->getStyle("A" . $j . ":F" . $j)->getFont()->setUnderline(\PHPExcel_Style_Font::UNDERLINE_SINGLE)->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_RED);
+                }
+                $j++;
+            }
+        }
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition:attachment;filename=' . $liveId . '活动邀请码.xlsx');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+    }
+
+
+    /**
+     * [2] 功能：导出Mysql数据数据到Excel表格，根据活动好导出导出邀请码数据
+     *     需求：可以根据Get过来的参数拼装成一个数组，然后根据数组的长度来打印所需要的格式
+     *     URL：http://test.thinkphp5-line.com/frontend/excel/findMysqlToExcelTable
+     */
+    public function findMysqlToExcelTable()
     {
         $liveId = "L02359";
         //创建对象
@@ -83,7 +257,7 @@ class Excel extends Controller
         //给表格添加数据
         for ($i = 0; $i < count($tableHeader); $i++) {
             //查询数据库
-            $data = Db::table("resty_invitation_live_info")
+            $data = Db::table("resty_invitation_info")
                 ->alias('l')
                 ->join("resty_invitation i", "i.infoId = l.id")
                 ->where("l.liveId", $liveId)
@@ -116,20 +290,10 @@ class Excel extends Controller
         $write->save('php://output');
     }
 
-    public function test()
-    {
-        $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'F', 'G');
-        static $letterArr = [];
-        //获取大写字母
-        for ($i = 65; $i < (64 + count($letter)); $i++) {
-            $letterArr[] = strtoupper(chr($i));
-            echo strtoupper(chr($i)) . ' ';
-        }
-        halt($letterArr);
-    }
-
     /**
-     * 根据活动好导出导出邀请码数据
+     * [3] 功能：导出Mysql数据数据到Excel表格
+     *     需求：设置输出Excel格式的样式，文本格式，
+     *     URL：http://test.thinkphp5-line.com/frontend/excel/readMysqlToExcelTable
      */
     public function readMysqlToExcelTable()
     {
@@ -165,7 +329,7 @@ class Excel extends Controller
         //给表格添加数据
         for ($i = 0; $i < count($tableHeader); $i++) {
             //查询数据库
-            $data = Db::table("resty_invitation_live_info")
+            $data = Db::table("resty_invitation_info")
                 ->alias('l')
                 ->join("resty_invitation i", "i.infoId = l.id")
                 ->where("l.liveId", $liveId)
@@ -187,13 +351,12 @@ class Excel extends Controller
                     // 设置字体颜色
                     $objSheet->getStyle("A" . $j . ":F" . $j)->getFont()->setUnderline(\PHPExcel_Style_Font::UNDERLINE_SINGLE)->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_RED);
                     //设置背景颜色
-//                    $objSheet->getStyle( "E" . $j)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB(\PHPExcel_Style_Color::COLOR_GREEN);
+                    $objSheet->getStyle( "E" . $j)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB(\PHPExcel_Style_Color::COLOR_GREEN);
                 }
                 $j++;
             }
         }
 
-        // 生成2007excel格式的xlsx文件
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition:attachment;filename=' . $liveId . '活动邀请码.xlsx');
@@ -294,18 +457,21 @@ class Excel extends Controller
     }
 
     /**
-     * 插入测试
+     *  插入测试
+     *  需求：设置输出Excel格式的样式，文本格式，
+     *  URL：http://test.thinkphp5-line.com/frontend/excel/readExcelInsertMysqlTest
      */
     public function readExcelInsertMysqlTest()
     {
         $basePath = ROOT_PATH . 'public' . DS;
         $filePath = $basePath . 'uploads/L02359.xlsx';
         $res = $this->readExcelInsertMysql($filePath);
+        // 存储所有Tel 到一个数组中去
         $telArr = [];
         foreach ($res as $key => $value) {
             $telArr[] = $value["G"];
         }
-        //删除读取Excel表格的头部,剩下的全部为一个手机好的数组集合
+        //删除读取Excel表格的头部,剩下的全部为一个手机号码的数组集合
         unset($telArr[0]);
         // 循环$telArr 手机号码数组，发送短信
         $req = new AlibabaAliqinFcSmsNumSend;
@@ -318,5 +484,60 @@ class Excel extends Controller
                 ->setSmsTemplateCode('SMS_15105357');
         }
         halt($telArr);
+    }
+
+    public function test()
+    {
+        $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'F', 'G');
+        static $letterArr = [];
+        //获取大写字母
+        for ($i = 65; $i < (64 + count($letter)); $i++) {
+            $letterArr[] = strtoupper(chr($i));
+            echo strtoupper(chr($i)) . ' ';
+        }
+        halt($letterArr);
+        return array (
+            // 阿里大鱼短信配置 SMS_18380268
+            'dayu_appkey'=>'xxxxxx',
+            'dayu_secretKey'=>'xxxxxxxxxxxxxxxxxxxxx',
+            'dayu_template_register' => array('signname'=>'注册验证','templatecode'=>'SMS_9655457'),
+            'dayu_template_alteration' => array('signname'=>'变更验证','templatecode'=>'SMS_9655454'),
+            'dayu_template_identity' => array('signname'=>'身份验证','templatecode'=>'SMS_9655461'),
+            'dayu_template_sold'=> array('signname'=>'点多多','templatecode'=>'SMS_12800188'),
+            'dayu_template_buysuccess'=> array('signname'=>'点多多','templatecode'=>'SMS_12775103'),
+            'dayu_template_newagent'=> array('signname'=>'点多多','templatecode'=>'SMS_12815193'),
+        );
+    }
+
+    // 发送大于短信 更牛逼的
+    protected function sendDayuSmsPlus($tel,$type,$data) {
+        $dayu_template = 'dayu_template_'.$type;
+        $signname = C($dayu_template.".signname");
+        $templatecode = C($dayu_template.".templatecode");
+        // require LIB_PATH . 'ORG/Taobao-sdk-php/TopSdk.php';
+        include_once LIB_PATH . 'ORG/Taobao-sdk-php/TopSdk.php';
+        $c = new TopClient;
+        $c->appkey = C('dayu_appkey');
+        $c->secretKey = C('dayu_secretKey');
+        $req = new AlibabaAliqinFcSmsNumSendRequest;
+        $req->setSmsType("normal");
+        $req->setSmsFreeSignName("{$signname}");
+        switch($type) {
+            case 'sold':
+                $req->setSmsParam('{"name":"'. $data['name'] .'"}');
+                break;
+            case 'buysuccess':
+                $req->setSmsParam('{"name":"'. $data['name'] .'","product":"'. $data['product'] .'"}');
+                break;
+            case 'newagent':
+                $req->setSmsParam('{"name":"'. $data['name'] .'"}');
+                break;
+            default:
+                $req->setSmsParam('{"code":"'. $data['code'] .'","product":"'. $data['product'] .'"}');
+        }
+        $req->setRecNum("{$tel}");
+        $req->setSmsTemplateCode("{$templatecode}");
+        $resp = $c->execute($req);
+        return $resp;
     }
 }

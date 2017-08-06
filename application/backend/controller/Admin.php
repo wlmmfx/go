@@ -2,7 +2,6 @@
 
 namespace app\backend\controller;
 
-use think\Config;
 use think\Controller;
 use think\Db;
 use think\Request;

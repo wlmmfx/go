@@ -10,7 +10,7 @@
  */
 namespace app\queue\consumer;
 
-use think\Exception;
+use think\Log;
 
 class HelloJob
 {
@@ -27,7 +27,9 @@ class HelloJob
     private function consume( $payload )
     {
         try {
-            echo ' Job Processed!' . ' payload: '. PHP_EOL . var_export($payload,true) .PHP_EOL;
+            Log::error("think-queue running on windows".date("Y-m-d H:i:s"));
+            send_email($payload["mail"], '物联网智能数据 帐户激活邮件--', $payload["url"]);
+            echo ' Job Processed send_email!' . ' payload: '. PHP_EOL . var_export($payload,true) .PHP_EOL;
             return true;
         } catch (\Exception $e) {
             echo 'Hello Job Process Failed!' ;

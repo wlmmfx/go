@@ -1,0 +1,112 @@
+
+
+<!-- 主要内容 -->
+<div class="container">
+    <ul class="breadcrumb"><li><a href="/">首页</a></li>
+        <li class="active">搜索</li>
+    </ul>
+    <!-- 简介 -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="question-top clearfix ">
+                <span class="question-top-tips pull-left">还是没能解决您的问题？快去提出疑问吧！</span>
+                <a class="btn btn-success pull-right" href="/question/create.html">我要提问</a>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="panel-title box-title">
+                <span>搜索结果</span>
+            </div>
+            <br>
+            <ul id="w1" class="media-list">
+                {volist name="articles" id="vo"}
+                <li class="media" data-key="0">
+                    <div class="media-left">
+                        <a href="/member/index/4961.html" rel="author" data-original-title="" title="">
+                            <img class="media-object" src="https://avatars3.githubusercontent.com/u/14959876?v=3" alt="{$vo['username']}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">[{$vo["c_name"]}]
+                            <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}" target="_blank">{$vo["title"]}</a>
+                        </h2>
+                        <div class="media-action">
+                            <a href="/member/index/4961.html" rel="author" data-original-title="" title="">{$vo["username"]}</a> 发布于 {$vo["create_time"]|date="Y/m/d H:i:s",###}
+                        </div>
+                    </div>
+                    <div class="media-right media-browse"><a href="#">浏览<em>{$vo['views']}</em></a></div>
+                    <div class="media-right media-answer"><a href="#">评论<em>{$vo['views']}</em></a></div>
+                </li>
+                {/volist}
+            </ul>
+            {$articles->render()}
+        </div>
+
+        <div class="col-lg-3">
+            <div class="panel">
+                <div class="panel-title box-title">
+                    <span>热门问题</span>
+                    <span class="pull-right"><a href="/question/index.html" class="font-12">更多»</a></span>
+                </div>
+                <div class="panel-body hot-body">
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-1">1</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/107.html">关于第三方登录（QQ，微信）</a>
+                            <span class="browser">阅读(2609)</span>
+                        </div>
+                    </div>
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-2">2</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/200.html">[问答技巧]怎样提问才能让我的问题更快速被解答？</a>
+                            <span class="browser">阅读(2432)</span>
+                        </div>
+                    </div>
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-3">3</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/87.html">关于后台管理系统layout下的模板渲染</a>
+                            <span class="browser">阅读(1653)</span>
+                        </div>
+                    </div>
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-4">4</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/136.html">RBAC 权限验证问题</a>
+                            <span class="browser">阅读(1627)</span>
+                        </div>
+                    </div>
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-5">5</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/125.html">yii2中如何使用redis？</a>
+                            <span class="browser">阅读(1541)</span>
+                        </div>
+                    </div>
+                    <div class="clearfix hot-list">
+                        <div class="pull-left media-left">
+                            <span class="sort sort-6">6</span>
+                        </div>
+                        <div class="media-right">
+                            <a href="/question/detail/101.html">求 动态url伪静态重写</a>
+                            <span class="browser">阅读(1441)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

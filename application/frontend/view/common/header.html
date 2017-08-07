@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>{$Think.config.app_title}</title>
-    <meta name="description" content="overview &amp; stats" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="__COMMON__/bootstrap-3.3.5/css/bootstrap.css" />
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="__COMMON__/bootstrap-3.3.5/css/bootstrap.css"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -16,24 +16,29 @@
             padding-bottom: 50px;
             color: #5a5a5a;
         }
+
         .footer {
             padding-bottom: 10px;
             background: #222;
             color: #9D9D9D;
         }
+
         .footer hr {
             border-top: 1px solid #000;
             border-bottom: 1px solid #333;
             margin: 10px 0;
         }
+
         .footer a {
             color: #9D9D9D;
         }
+
         .navbar-form {
             margin-right: -15px;
             margin-bottom: 8px;
             margin-left: -15px;
         }
+
         .tag-cloud a {
             border: 1px solid #ebebeb;
             padding: 2px 7px;
@@ -52,53 +57,80 @@
             white-space: nowrap;
             overflow: hidden;
         }
+
         .media-list .media-body h2.media-heading {
             font-size: 14px;
         }
+
         .media-heading {
             margin-top: 0;
             margin-bottom: 5px;
         }
+
         .media-list .media .media-object {
             width: 48px;
             height: 48px;
             padding: 1px;
             border: #ddd solid 1px;
         }
+
         .box-title {
             color: #333;
             font-size: 18px;
             border-bottom: 2px solid #CBCBCB;
             padding-bottom: 5px;
         }
+
         .media-list .media {
             border-bottom: #eee solid 1px;
             line-height: 30px;
         }
+
         .page-title span {
             color: #999;
             font-size: 14px;
             margin-right: 5px;
         }
+
         .post-label > img {
-             margin-left: auto;
-             margin-right: auto;
-             display: block;
-             height: 150px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            height: 150px;
             width: 100%;
         }
+
         .border-bottom {
             border-bottom: 1px solid #ccc;
         }
+
         .btn-group, .btn-group-vertical {
             position: relative;
             display: inline-block;
             vertical-align: middle;
             line-height: 26px;
         }
+
         .panel ul {
             list-style-type: none;
             margin-left: -30px;
+        }
+
+        ul {
+            display: block;
+            list-style-type: disc;
+            -webkit-margin-before: 1em;
+            -webkit-margin-after: 1em;
+            -webkit-margin-start: 0px;
+            -webkit-margin-end: 0px;
+            -webkit-padding-start: 40px;
+        }
+
+        ul li {
+            display: inline;
+            list-style-type: none;
+            height: 40px;
+            text-align: center
         }
     </style>
 </head>
@@ -150,8 +182,12 @@
                 </li>
             </ul>
             <ul class="navbar-nav navbar-right nav">
-                <li><a href="#summary-container">注册</a></li>
-                <li><a href="#summary-container">登录</a></li>
+                {if condition="$Think.session.frontend.username"}
+                <li><a href="{:url('frontend/member/signin121')}">{$Think.session.frontend.username}</a></li>
+                {else /}
+                <li><a href="{:url('frontend/member/signup')}">注册</a></li>
+                <li><a href="{:url('frontend/member/signin')}">登录</a></li>
+                {/if}
             </ul>
         </div>
     </div>

@@ -7,6 +7,10 @@
  */
 return [
     'app_title'          => '快速智能平台',
+    //    // 是否开启路由
+//    'url_route_on'           => true,
+    // 是否强制使用路由
+//    'url_route_must'         => false,
     // 视图输出字符串内容替换
     'view_replace_str' => [
         "__STATIC__" => "/frontend",

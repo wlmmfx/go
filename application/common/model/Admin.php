@@ -112,7 +112,7 @@ class Admin extends Model
      * @param $data
      * @return array
      */
-    public function emailRegister($data)
+    public function emailRegister($data,$scene)
     {
         // 1 验证数据
         $validate = new Validate([
@@ -147,6 +147,7 @@ class Admin extends Model
         $checkstr = base64_encode($data['email']);
         $auth_key = get_auth_key($data['email']);
         $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
+        if($scene == "frontend")  $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
         $str = <<<html
             您好！<p></p>
             感谢您在Tinywan世界注册帐户！<p></p>
@@ -155,11 +156,8 @@ class Admin extends Model
 			$link
 html;
         $data["str"] = $str;
-        //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
-        $result = $this->sendMailQueue($data);
-        log::info("消息推送结果：".$result);
-//        $result = send_email($data["email"], '物联网智能数据 帐户激活邮件--', $str);
-//        if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
+        $result = send_email($data["email"], '物联网智能数据 帐户激活邮件--', $str);
+        if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 
@@ -222,7 +220,7 @@ html;
      * @param $data
      * @return array
      */
-    public function emailRegisterUrlValid($data)
+    public function emailRegisterUrlValid($data,$scene)
     {
         $email = base64_decode($data['checkstr']);
         // 签名验证
@@ -238,8 +236,13 @@ html;
         ], [$this->pk => $userInfo['id']]);
         if (!$res) return ['valid' => 0, 'msg' => "邮件激活失败"];
         // 4 记录session
-        session('admin.admin_id', $userInfo['id']);
-        session('admin.username', $userInfo['username']);
+        if($scene == "frontend"){
+            session('frontend.id', $userInfo['id']);
+            session('frontend.username', $userInfo['username']);
+        }else{
+            session('admin.admin_id', $userInfo['id']);
+            session('admin.username', $userInfo['username']);
+        }
         return ['valid' => 1, 'msg' => "邮箱激活成功，正在跳转到主页面..."];
     }
 

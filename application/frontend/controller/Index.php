@@ -344,4 +344,9 @@ class Index extends Controller
         $this->assign('tags',$tags);
         return $this->fetch();
     }
+
+    public function info($id)
+    {
+        return "{$id}";
+    }
 }

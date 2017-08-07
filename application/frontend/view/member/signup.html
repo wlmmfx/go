@@ -1,0 +1,79 @@
+<!-- 主要内容 -->
+<div class="container">
+    <div class="site-signup">
+        <div class="page-header">
+            <h1>注册</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <form id="form-signup" action="/frontend/member/signup" method="post">
+                    <div class="form-group field-signupform-email required">
+                        <label class="control-label" for="signupform-email">电子邮箱</label>
+                        <input type="text" id="signupform-email" class="form-control" name="email" placeholder="请输入邮箱"
+                               aria-required="true">
+
+                        <div class="help-block"></div>
+                    </div>
+                    <div class="form-group field-signupform-password required">
+                        <label class="control-label" for="signupform-password">密码</label>
+                        <input type="password" id="signupform-password" class="form-control" name="password" placeholder="密码"
+                               aria-required="true">
+
+                        <div class="help-block"></div>
+                    </div>
+                    <div class="form-group field-signupform-password_repeat required">
+                        <label class="control-label" for="signupform-password_repeat">重复密码</label>
+                        <input type="password" id="signupform-password_repeat" class="form-control" placeholder="重复密码输入"
+                               name="repassword" aria-required="true">
+
+                        <div class="help-block"></div>
+                    </div>
+                    <div class="form-group field-signupform-verifycode">
+                        <label class="control-label" for="signupform-verifycode">验证码</label>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <img src="{:captcha_src()}" alt="captcha" onclick="this.src=this.src+'?'+Math.random()"/>
+                            </div>
+                        </div>
+                        <div class="help-block"></div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control"
+                                       placeholder="验证码" name="code"/>
+                                <i class="icon-retweet"></i>
+                            </div>
+                        </div>
+
+                        <div class="help-block"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">注册</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-5 pull-right">
+                <div id="w0">
+                    <ul class="auth-clients">
+                        <li class="auth-client"><a class="auth-link" href="/auth?authclient=qq" title="QQ 登录"><span
+                                class="auth-icon fa fa-qq fa-2x"></span></a></li>
+                        <li class="auth-client"><a class="auth-link" href="/auth?authclient=weibo" title="微博登录"><span
+                                class="auth-icon fa fa-weibo fa-2x"></span></a></li>
+                        <li class="auth-client"><a class="auth-link" href="/auth?authclient=github"
+                                                   title="GitHub 登录"><span class="auth-icon fa fa-github fa-2x"></span></a>
+                        </li>
+                    </ul>
+                </div>
+                已有帐号？ <a href="/signin">点此登录</a>
+                <h2>登录后可以？</h2>
+                <ol>
+                    <li>分享您的教程，扩展，源码</li>
+                    <li>参与问题和帖子的讨论，回复和评分</li>
+                    <li>收藏具有价值的教程和帖子</li>
+                    <li>发布招聘信息、找工作</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -14,17 +14,6 @@ use think\Validate;
 class Admin extends Model
 {
     /**
-     * 获取随机姓名
-     * @return string
-     * @static
-     */
-    public static function getRandUserName()
-    {
-        $faker = Factory::create($locale = 'zh_CN');
-        return $faker->country . '-' . $faker->name;
-    }
-
-    /**
      * 主键
      * @var string
      */
@@ -35,6 +24,17 @@ class Admin extends Model
      * @var string
      */
     protected $table = "resty_user";
+
+    /**
+     * 获取随机姓名
+     * @return string
+     * @static
+     */
+    public static function getRandUserName()
+    {
+        $faker = Factory::create($locale = 'zh_CN');
+        return $faker->country . '-' . $faker->name;
+    }
 
     /**
      * 发送邮件队列
@@ -56,8 +56,8 @@ class Admin extends Model
          */
         //$jobData = ['ts' => time(), 'bizId' => uniqid(), 'a' => 1];
         $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
-        $jobData = ["mail"=>"1722318623@qq.com","str"=>"http://{$emailSendDomain}/backend/login/emailRegisterUrlValid"];
-        Log::error("[1]开始发布邮件队列 ".json_encode($jobData));
+        $jobData = ["mail" => "1722318623@qq.com", "str" => "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid"];
+        Log::error("[1]开始发布邮件队列 " . json_encode($jobData));
         /**
          *  4、将该任务推送到消息队列，等待对应的消费者去执行
          */
@@ -68,7 +68,7 @@ class Admin extends Model
          *  [2]redis 驱动时，返回值为 随机字符串|false
          */
         if ($isPushed !== false) {
-            Log::error("[2]邮件队列发布结果：".$isPushed);
+            Log::error("[2]邮件队列发布结果：" . $isPushed);
             return date('Y-m-d H:i:s') . "11 a new Hello Job is Pushed to the Mail" . "<br>";
         } else {
             return 'Oops, something went wrong.';
@@ -112,7 +112,7 @@ class Admin extends Model
      * @param $data
      * @return array
      */
-    public function emailRegister($data,$scene)
+    public function emailRegister($data, $scene)
     {
         // 1 验证数据
         $validate = new Validate([
@@ -147,7 +147,7 @@ class Admin extends Model
         $checkstr = base64_encode($data['email']);
         $auth_key = get_auth_key($data['email']);
         $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
-        if($scene == "frontend")  $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
+        if ($scene == "frontend") $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
         $str = <<<html
             您好！<p></p>
             感谢您在Tinywan世界注册帐户！<p></p>
@@ -220,7 +220,7 @@ html;
      * @param $data
      * @return array
      */
-    public function emailRegisterUrlValid($data,$scene)
+    public function emailRegisterUrlValid($data, $scene)
     {
         $email = base64_decode($data['checkstr']);
         // 签名验证
@@ -236,10 +236,10 @@ html;
         ], [$this->pk => $userInfo['id']]);
         if (!$res) return ['valid' => 0, 'msg' => "邮件激活失败"];
         // 4 记录session
-        if($scene == "frontend"){
+        if ($scene == "frontend") {
             session('frontend.id', $userInfo['id']);
             session('frontend.username', $userInfo['username']);
-        }else{
+        } else {
             session('admin.admin_id', $userInfo['id']);
             session('admin.username', $userInfo['username']);
         }
@@ -409,5 +409,39 @@ html;
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 
+    /**
+     * 手机注册
+     * @param $data
+     * @return array
+     */
+    public function mobileRegister($data)
+    {
+        // 1 手机验证码验证
+        Log::error("----------手机验证码验证--------" . json_encode($data));
+        $serverCode = session("TINYWAN:" . $data["mobile"]);
+        if ($serverCode != $data["code"]) return ['valid' => 0, 'msg' => "手机验证码错误"];
+        // 2 验证数据
+        $validate = new Validate([
+            'mobile' => 'require',
+            'password' => 'require'
+        ], [
+            'mobile.require' => "手机号码不能为空！",
+            'password.require' => "密码不能为空！"
+        ]);
+        if (!$validate->check($data)) {
+            return ['valid' => 0, 'msg' => $validate->getError()];
+        }
+        // 3 插入数据库
+        $res = $this->data([
+            'username' => self::getRandUserName(),
+            'password' => md5($data["password"]),
+            'mobile' => $data["mobile"],
+            'loginip' => "127.0.0.1",
+        ])->save();
+        if (!$res) return ['valid' => 0, 'msg' => "数据库添加数据失败"];
+        session('frontend.id', $this->pk);
+        session('frontend.username', $data["mobile"]);
+        return ['valid' => 1, 'msg' => "注册成功"];
+    }
 
 }

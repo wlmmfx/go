@@ -10,6 +10,7 @@
 namespace app\frontend\controller;
 
 
+use League\OAuth2\Client\Provider\Github;
 use think\Controller;
 
 class Auth extends Controller
@@ -39,12 +40,50 @@ class Auth extends Controller
             "code" => $code,
         ]);
         //第三步:根据全局access_token和openid查询用户信息
-        $jsonRes = json_decode($postRes,true);
+        $jsonRes = json_decode($postRes, true);
         $access_token = $jsonRes["access_token"];
-        $userUrl = "https://api.github.com/user?access_token=".$access_token;
+        $userUrl = "https://api.github.com/user?access_token=" . $access_token;
         $userInfo = $this->curl_request($userUrl);
-        $userJsonRes = json_decode($userInfo,true);
+        $userJsonRes = json_decode($userInfo, true);
         //第五步，如何设置Wordpress中登录状态
         halt($userJsonRes);
+    }
+
+    public function index()
+    {
+        $provider = new Github([
+            'clientId' => '5e70ee2d904f655b0c31',
+            'clientSecret' => 'd190c915d36b5feff7ceeb017ce35ab92e7cb38c',
+            'redirectUri' => 'http://www.tinywan.xyz:8086/frontend/index/redirect_uri',
+        ]);
+
+        if (!isset($_GET["code"])) {
+            // If we don't have an authorization code then get one
+            $authUrl = $provider->getAuthorizationUrl();
+            $_SESSION['oauth2state'] = $provider->getState();
+            header('Location: ' . $authUrl);
+            exit;
+            // Check given state against previously stored one to mitigate CSRF attack
+        } elseif (empty($_GET['state']) || ($_GET["state"] !== $_SESSION['oauth2state'])) {
+            unset($_SESSION['oauth2state']);
+            exit('Invalid state');
+        } else {
+            // Try to get an access token (using the authorization code grant)
+            $token = $provider->getAccessToken('authorization_code', [
+                'code' => $_GET["code"]
+            ]);
+            // Optional: Now you have a token you can look up a users profile data
+            try {
+                // We got an access token, let's now get the user's details
+                $user = $provider->getResourceOwner($token);
+                // Use these details to create a new profile
+                printf('Hello %s!', $user->getNickname());
+            } catch (\Exception $e) {
+                // Failed to get user details
+                exit('Oh dear...');
+            }
+            // Use this to interact with an API on the users behalf
+            echo $token->getToken();
+        }
     }
 }

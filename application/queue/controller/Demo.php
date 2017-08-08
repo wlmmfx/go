@@ -29,10 +29,10 @@ class Demo
         $link = "http://www.baidu.com/backend/login/emailRegisterUrlValid?checkstr=11111111111&auth_key=909090909090";
         $payLoad = [
             'time' => time(),
-            'mail' => "1722318623@qq.com",
+            'mail' => "756684177@qq.com",
             'url' => $link,
             ];
-        $queue = 'helloJobQueue123';
+        $queue = 'mail';
 
         $pushed = Queue::push($consumer ,$payLoad ,$queue);
         if ($pushed) {
@@ -41,5 +41,20 @@ class Demo
         }else{
             echo 'Oops, something wrong with your queue';
         }
+    }
+
+    /**
+     * 命令行执行
+     */
+    public function cmdCliTest(  )
+    {
+        // echo CLI_PATH."cli.php Library/index/test";
+        echo '------------------------------------启动一个CLi进程 开始--------------------------------';
+        exec("php think queue:work --queue mail",$output, $return_val);
+        echo "<hr/>";
+        var_dump($output);  //命令执行后生成的数组
+        echo "<hr/>";
+        var_dump("执行的状态:".$return_val); //执行的状态
+        echo '-----------------------------------启动一个CLi进程 结束----------------------------------';
     }
 }

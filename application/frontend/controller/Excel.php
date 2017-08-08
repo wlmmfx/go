@@ -11,6 +11,7 @@ namespace app\frontend\controller;
 
 use think\Controller;
 use think\Db;
+use think\Log;
 
 class Excel extends Controller
 {
@@ -183,7 +184,7 @@ class Excel extends Controller
         $objSheet->setCellValue("F4", "到期时间");
         $objSheet->setCellValue("G4", "联系电话");
 
-        $objSheet->setCellValue("A2", $liveId."微信邀请码的详细信息一览表");
+        $objSheet->setCellValue("A2", $liveId . "微信邀请码的详细信息一览表");
         $objSheet->setCellValue("A3", "活动基本信息");
         $objSheet->setCellValue("D3", "时间基本信息");
         //合并单元格
@@ -293,7 +294,7 @@ class Excel extends Controller
     /**
      * [3] 功能：导出Mysql数据数据到Excel表格
      *     需求：设置输出Excel格式的样式，文本格式，
-     *     URL：http://test.thinkphp5-line.com/frontend/excel/readMysqlToExcelTable
+     *     URL：http://www.tinywan_thinkphp5.com/frontend/excel/readMysqlToExcelTable
      */
     public function readMysqlToExcelTable()
     {
@@ -351,7 +352,7 @@ class Excel extends Controller
                     // 设置字体颜色
                     $objSheet->getStyle("A" . $j . ":F" . $j)->getFont()->setUnderline(\PHPExcel_Style_Font::UNDERLINE_SINGLE)->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_RED);
                     //设置背景颜色
-                    $objSheet->getStyle( "E" . $j)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB(\PHPExcel_Style_Color::COLOR_GREEN);
+                    $objSheet->getStyle("E" . $j)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB(\PHPExcel_Style_Color::COLOR_GREEN);
                 }
                 $j++;
             }
@@ -457,14 +458,21 @@ class Excel extends Controller
     }
 
     /**
-     *  插入测试
-     *  需求：设置输出Excel格式的样式，文本格式，
+     *  数据验证码发送
+     *  需求：自动给客户发送微信邀请码
+     *  功能：
+     *      1、客户自动导入Excel表格（命名规则为liveId）
+     *      2、根据LiveId 查询对应的数据的微信邀请码
+     *      3、循环遍历发送给指定的手机号码
+     *      4、插入队列发送，待做...
      *  URL：http://test.thinkphp5-line.com/frontend/excel/readExcelInsertMysqlTest
      */
     public function readExcelInsertMysqlTest()
     {
         $basePath = ROOT_PATH . 'public' . DS;
         $filePath = $basePath . 'uploads/L02359.xlsx';
+        //获取文件名称
+        $liveId = pathinfo($filePath, PATHINFO_FILENAME);
         $res = $this->readExcelInsertMysql($filePath);
         // 存储所有Tel 到一个数组中去
         $telArr = [];
@@ -473,71 +481,48 @@ class Excel extends Controller
         }
         //删除读取Excel表格的头部,剩下的全部为一个手机号码的数组集合
         unset($telArr[0]);
-        // 循环$telArr 手机号码数组，发送短信
-        $req = new AlibabaAliqinFcSmsNumSend;
-        foreach ($telArr as $key => $value) {
-            $req->setRecNum($value)
-                ->setSmsParam([
-                    'number' => rand(100000, 999999) //邀请码
-                ])
-                ->setSmsFreeSignName('叶子坑')
-                ->setSmsTemplateCode('SMS_15105357');
+        /**
+         *  循环$telArr 手机号码数组，发送短信,查询数据库 status == NULL 的验证码
+         */
+        $codeArr = Db::table("resty_invitation_info")
+            ->alias('l')
+            ->join("resty_invitation i", "i.infoId = l.id")
+            ->where("l.liveId", $liveId)
+            ->whereNull('i.status')
+            ->select();
+        /**
+         * 根据手机号码发送邀请码
+         */
+        try {
+            for ($j = 1; $j < count($codeArr) + 1; $j++) {
+                if ($j > count($telArr)) break;
+                echo $telArr[$j] . '--' . $codeArr[$j]["code"] . "<br/>";
+//                $resTT = send_dayu_sms($telArr[$j], "live", ["number" => '12', 'code' => $codeArr[$j]["code"]]);
+                $resTT = send_dayu_sms($telArr[$j], "register", ["number" => '12', 'code' => $codeArr[$j]["code"]]);
+                //判断返回的是否是一个对象，发送验证成功，修改当前数据的状态数据
+                if (isset($resTT->result->success) && ($resTT->result->success == true)) {
+                    Db::table("resty_invitation")->where('code', $codeArr[$j]["code"])->update([
+                        "send_time" => date("Y-m-d H:i:s", time()),
+                        "send_tel" => $telArr[$j],
+                        "status" => 1
+                    ]);
+                    Log::info("--------------------验证码 : " . $codeArr[$j]["code"] . " 发送成功");
+                } else {
+                    Log::error("-------------------验证码 : " . $codeArr[$j]["code"] . " 发送失败 ，错误原因：".$resTT->sub_msg);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("-----------验证码发送抛出异常 : " . $e->getMessage());
         }
-        halt($telArr);
+
     }
 
-    public function test()
+    /**
+     * 单条短信测试
+     */
+    public function sendDayuSmsPlus()
     {
-        $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'F', 'G');
-        static $letterArr = [];
-        //获取大写字母
-        for ($i = 65; $i < (64 + count($letter)); $i++) {
-            $letterArr[] = strtoupper(chr($i));
-            echo strtoupper(chr($i)) . ' ';
-        }
-        halt($letterArr);
-        return array (
-            // 阿里大鱼短信配置 SMS_18380268
-            'dayu_appkey'=>'xxxxxx',
-            'dayu_secretKey'=>'xxxxxxxxxxxxxxxxxxxxx',
-            'dayu_template_register' => array('signname'=>'注册验证','templatecode'=>'SMS_9655457'),
-            'dayu_template_alteration' => array('signname'=>'变更验证','templatecode'=>'SMS_9655454'),
-            'dayu_template_identity' => array('signname'=>'身份验证','templatecode'=>'SMS_9655461'),
-            'dayu_template_sold'=> array('signname'=>'点多多','templatecode'=>'SMS_12800188'),
-            'dayu_template_buysuccess'=> array('signname'=>'点多多','templatecode'=>'SMS_12775103'),
-            'dayu_template_newagent'=> array('signname'=>'点多多','templatecode'=>'SMS_12815193'),
-        );
-    }
-
-    // 发送大于短信 更牛逼的
-    protected function sendDayuSmsPlus($tel,$type,$data) {
-        $dayu_template = 'dayu_template_'.$type;
-        $signname = C($dayu_template.".signname");
-        $templatecode = C($dayu_template.".templatecode");
-        // require LIB_PATH . 'ORG/Taobao-sdk-php/TopSdk.php';
-        include_once LIB_PATH . 'ORG/Taobao-sdk-php/TopSdk.php';
-        $c = new TopClient;
-        $c->appkey = C('dayu_appkey');
-        $c->secretKey = C('dayu_secretKey');
-        $req = new AlibabaAliqinFcSmsNumSendRequest;
-        $req->setSmsType("normal");
-        $req->setSmsFreeSignName("{$signname}");
-        switch($type) {
-            case 'sold':
-                $req->setSmsParam('{"name":"'. $data['name'] .'"}');
-                break;
-            case 'buysuccess':
-                $req->setSmsParam('{"name":"'. $data['name'] .'","product":"'. $data['product'] .'"}');
-                break;
-            case 'newagent':
-                $req->setSmsParam('{"name":"'. $data['name'] .'"}');
-                break;
-            default:
-                $req->setSmsParam('{"code":"'. $data['code'] .'","product":"'. $data['product'] .'"}');
-        }
-        $req->setRecNum("{$tel}");
-        $req->setSmsTemplateCode("{$templatecode}");
-        $resp = $c->execute($req);
-        return $resp;
+        $res = send_dayu_sms("15168276370", "register", ['code' => rand(100000, 999999)]);
+        halt($res);
     }
 }

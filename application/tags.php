@@ -25,4 +25,24 @@ return [
     'log_write'    => [],
     // 应用结束
     'app_end'      => [],
+    // 任务失败统一回调,有四种定义方式
+    'queue_failed'=> [
+
+        // 数组形式，[ 'ClassName' , 'methodName']
+        ['application\\behavior\\MyQueueFailedLogger', 'logAllFailedQueues']
+
+        // 字符串(静态方法)，'StaicClassName::methodName'
+        // 'MyQueueFailedLogger::logAllFailedQueues'
+
+        // 字符串(对象方法)，'ClassName'，此时需在对应的ClassName类中添加一个名为 queueFailed 的方法
+        // 'application\\behavior\\MyQueueFailedLogger'
+
+        // 闭包形式
+        /*
+        function( &$jobObject , $extra){
+            // var_dump($jobObject);
+            return true;
+        }
+        */
+    ]
 ];

@@ -183,7 +183,7 @@ function send_email($address, $subject, $content)
     return ["error" => 0];
 }
 
-//---------------------------------------------auth2.0
+//--------------------------------------------------auth2.0------------------------------------------------------------
 /**
  * 获取github信息
  */
@@ -263,7 +263,7 @@ function add_operation_log($desc = null, $unique_flag = 'system')
     $nickname = get_admin_nickname();
     $user_id = get_admin_user_id();
     $ipaddr = request()->ip();
-    $query_string = implode('--', array_merge($_GET, $_POST,input()));
+    $query_string = implode('--', array_merge($_GET, $_POST, input()));
     $is_desc = 0;
 
     if ($desc) $is_desc = 1;
@@ -359,5 +359,67 @@ function points_to_level($exp)
         default :
             return 1;
     }
+}
+
+/**
+ * -----------------------------------------------------------文件管理-------------------------------------
+ */
+
+/**
+ * 转换字节大小 Bytes/Kb/MB/GB/TB/EB
+ * @param $size
+ * @return string
+ */
+function trans_byte($size)
+{
+    $size_arr = ["B", "KB", "MB", "GB", "TB", "EB"];
+    $i = 0;
+    while ($size >= 1024) {
+        $size = $size / 1024;
+        $i++;
+    }
+    return round($size, 2) . $size_arr[$i];
+}
+
+/**
+ * ---------------------------------------------------------------短信------------------------------------
+ */
+
+/**
+ * 阿里大于发送模板
+ * @param $tel   电话号码，如：13669361192
+ * @param $type  发送模板类型，如：live
+ * @param $data  模板发送的数据，如：["number" => '89', 'code' => "888888"]
+ * @return mixed
+ */
+function send_dayu_sms($tel, $type, $data)
+{
+    $dayu_template = 'template_' . $type; //template_register
+    $signname = config("sms")['dayu'][$dayu_template]["sign_name"];
+    $templatecode = config("sms")['dayu'][$dayu_template]["code"];
+    $config = [
+        'app_key' => config("sms")['dayu']['app_key'],
+        'app_secret' => config("sms")['dayu']['app_secret']
+    ];
+    $client = new \Flc\Alidayu\Client(new \Flc\Alidayu\App($config));
+    $req = new \Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend();
+    $req->setRecNum("{$tel}");
+    switch ($type) {
+        case 'register':
+            $req->setSmsParam('{"code":"' . $data['code'] . '"}');
+            break;
+        case 'live':
+            $req->setSmsParam('{"number":"' . $data['number'] . '","code":"' . $data['code'] . '"}');
+            break;
+        case 'identity':
+            $req->setSmsParam('{"name":"' . $data['name'] . '"}');
+            break;
+        default:
+            $req->setSmsParam('{"code":"' . $data['code'] . '","product":"' . $data['product'] . '"}');
+    }
+    $req->setSmsFreeSignName("{$signname}");
+    $req->setSmsTemplateCode("{$templatecode}");
+    $resp = $client->execute($req);
+    return $resp;
 }
 

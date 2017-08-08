@@ -75,8 +75,6 @@ class Member extends Controller
     {
         return $this->fetch();
     }
-<<<<<<< HEAD
-=======
 
     /**
      * 手机注册
@@ -179,6 +177,4 @@ class Member extends Controller
         halt(session("TINYWAN:13669361192"));
     }
 
-
->>>>>>> 5e6cea5693a25fcaf4b3b413a50cf18930fd9673
 }

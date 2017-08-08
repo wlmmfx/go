@@ -62,7 +62,15 @@ class Index extends Controller
     public function videoConcat()
     {
         $this->assign([
-            'title' => ' MisssYang 视频合并 12345'
+            'title' => ' MisssYang 视频合并 12345 1231'
+        ]);
+        return $this->fetch();
+    }
+
+    public function MisssYang()
+    {
+        $this->assign([
+            'title' => ' MisssYang 视频合并 12345 1231'
         ]);
         return $this->fetch();
     }

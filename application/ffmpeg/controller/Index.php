@@ -49,7 +49,7 @@ class Index extends Controller
     public function videoCut()
     {
         $this->assign([
-            'title' => 'MisssYang 视频剪切',
+            'title' => 'MisssYang 视频剪切 12345',
             'video_path' => MEDIA_PATH . 'test_mp4_640k.mp4'
         ]);
         return $this->fetch();
@@ -62,7 +62,7 @@ class Index extends Controller
     public function videoConcat()
     {
         $this->assign([
-            'title' => ' MisssYang 视频合并'
+            'title' => ' MisssYang 视频合并 12345'
         ]);
         return $this->fetch();
     }

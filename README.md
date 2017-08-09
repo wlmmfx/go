@@ -1,6 +1,10 @@
 # thinkphp5-study-line
-thinkphp5-study-line
-ffmpeg
++ thinkphp5-study-line
++ ffmpeg
++ MissYang Linux 1.1
++ MissYang Linux 2.0
++ MissYang Linux 3.4
+
 ##  定义独立的配置目录 .
 ```bash
 ├─application         应用目录

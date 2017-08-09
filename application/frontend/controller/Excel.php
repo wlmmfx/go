@@ -522,7 +522,7 @@ class Excel extends Controller
      */
     public function sendDayuSmsPlus()
     {
-        $res = send_dayu_sms("15168276370", "register", ['code' => rand(100000, 999999)]);
+        $res = send_dayu_sms("13669361192", "register", ['code' => rand(100000, 999999)]);
         halt($res);
     }
 }

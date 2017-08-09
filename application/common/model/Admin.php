@@ -2,7 +2,6 @@
 
 namespace app\common\model;
 
-use function EasyWeChat\Payment\get_client_ip;
 use Faker\Factory;
 use houdunwang\crypt\Crypt;
 use think\Loader;

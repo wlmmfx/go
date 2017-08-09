@@ -77,7 +77,7 @@ class Member extends Controller
     }
 
     /**
-     * 手机注册
+     *  ---------------------------------------------------------------------------------手机注册
      *  http://www.tinywan_thinkphp5.com/frontend/member/mobileSignUp
      * @return mixed
      */
@@ -88,7 +88,7 @@ class Member extends Controller
             $res = (new Admin())->mobileRegister(input("post."));
             if ($res['valid']) {
                 //success
-                add_operation_log('登录成功');
+                add_operation_log('注册成功');
                 $this->success($res['msg'], "frontend/index/index");
                 exit;
             } else {
@@ -140,27 +140,10 @@ class Member extends Controller
     }
 
     /**
-     * 手机注册
-     * @return mixed
+     * -------------------------------------------------------------------------------个人中心
      */
-    public function phoneSignUp(Request $request)
-    {
-        //1 验证数据
-        if ($request->isPost()) {
-            $res = (new Admin())->mobileRegister(input("post."));
-            if ($res['valid']) {
-                //success
-                add_operation_log('注册成功');
-                $this->success($res['msg'], "frontend/index/index");
-                exit;
-            } else {
-                //fail
-                add_operation_log('登录失败');
-                $this->error($res['msg']);
-                exit;
-            }
-        }
-        return $this->fetch();
+    public function dd(){
+
     }
 
     public function getCode()

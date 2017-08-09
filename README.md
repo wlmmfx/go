@@ -12,12 +12,12 @@ ffmpeg
 │  │  ├─config.php    index模块配置文件
 │  │  └─database.php  index模块数据库配置文件
 ```
-<<<<<<< HEAD
 +   自己封装的函数写在helper.php 文件中
 ##   PHPer这样写代码也许更优雅
 +   master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活
 ##  微信
 +   网页授权
++   MisssYang
 
 ##   PHPer这样写代码也许更优雅
 +   master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活
@@ -67,7 +67,10 @@ ffmpeg
 +   支付宝即时到账
 ##  Auth 权限系统
 +   分支：auth
-
+##  Excel 表格数据导出功能
++   MySQL数据的数据导出
++   Excel数据的导入
++   微信邀请码的发送
 
 
 

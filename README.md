@@ -77,7 +77,10 @@
 +   MySQL数据的数据导出
 +   Excel数据的导入
 +   微信邀请码的发送
-
+##  Frontend & Backend User Register or Login 
++  携带参数
++  回调地址
++  封装成一个Model
 
 
 

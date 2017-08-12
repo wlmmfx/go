@@ -1,10 +1,7 @@
 # thinkphp5-study-line
-+ thinkphp5-study-line
-+ ffmpeg
 + MissYang Linux 1.1
 + MissYang Linux 2.0
 + MissYang Linux 3.4
-+ MissYang Linux 4.4
 + MissYang Linux 5.8
 
 ##  定义独立的配置目录 .
@@ -84,5 +81,7 @@
 ##  GoEath007 README
 +  第一次提交代码注释
 +  163邮箱注册
+##  AI 分支功能管理
++   Linux shell 监控
 
 

@@ -14,4 +14,26 @@ class Web extends Controller
     {
         return $this->fetch();
     }
+
+    public function workerMan()
+    {
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    /**
+     * 内存管理
+     */
+    public function internalManage()
+    {        //  监控的服务器IP
+        $moniServerIp = "127.0.0.1";
+        $moniServerSshUsername = "www";
+        $moniServerSshPassword = "www123456";
+        $this->view->engine->layout(false);
+        return $this->fetch("internalManage",[
+            "moniServerIp"=>$moniServerIp,
+            "moniServerSshUsername"=>$moniServerSshUsername,
+            "moniServerSshPassword"=>$moniServerSshPassword,
+        ]);
+    }
 }

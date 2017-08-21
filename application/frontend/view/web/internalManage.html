@@ -27,6 +27,7 @@
     var wsData = 0.0;
     wsSend = {
         "action": moniMehtod,
+        "name": "tinywan",
         "param": {
             "ip": moniServerIp,
             "ssh_username": moniServerSshUsername,
@@ -46,7 +47,6 @@
         };
         ws.onmessage = function (e) {
             var response = JSON.parse(e.data);
-            console.log(e);
             if (Number(response.errcode) !== 0) {
                 console.log(String(response.errmsg));
                 ws.close();

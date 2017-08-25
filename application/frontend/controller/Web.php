@@ -49,8 +49,8 @@ class Web extends Controller
     public function redisLogin()
     {
         $redis = BaseRedis::Instance();
-        $redis->connect("121.40.181.215",63789);
-        $redis->auth("redistomysqlcron");
+        $redis->connect("127.0.0.1",63789);
+        $redis->auth("12312312");
         var_dump($redis->keys("*"));
         $REDIS_MEMORY_INFO = $redis->lRange("REDIS_MEMORY_INFO:001",0,-1);
         //通过索引获取列表中的元素

@@ -22,7 +22,7 @@ class Sms extends Controller
     public function init()
     {
         $ac = "1001@";
-        $authkey = "";
+        $authkey = "2312";
         $cgid = 6;
         $mobile_code1 = rand(100000, 999999);
         $mobile_code2 = rand(100000, 999999);

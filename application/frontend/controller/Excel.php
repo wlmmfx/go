@@ -9,12 +9,35 @@
 
 namespace app\frontend\controller;
 
+use redis\BaseRedis;
 use think\Controller;
 use think\Db;
 use think\Log;
 
 class Excel extends Controller
 {
+    /**
+     * Redis Instance
+     * @return \Redis
+     * @static
+     */
+    public static function redis()
+    {
+        $redis = BaseRedis::Instance();
+        $redis->connect("127.0.0.1", 6379);
+        return $redis;
+    }
+
+    /** 格式化时间
+     * @param $time
+     * @return false|string
+     * @static
+     */
+    private static function formatDate($time)
+    {
+        return date('Y-m-d H:i:s', $time);
+    }
+
     /**
      * [0] init
      * URL：http://test.thinkphp5-line.com/frontend/excel/multipleSheet
@@ -370,8 +393,6 @@ class Excel extends Controller
      */
     public function readExcel()
     {
-        //创建对象
-        $excel = new \PHPExcel();
         $basePath = ROOT_PATH . 'public' . DS;
         $inputFileName = $basePath . 'uploads/L02359.xlsx';
         // Check if file exists
@@ -497,7 +518,7 @@ class Excel extends Controller
             for ($j = 1; $j < count($codeArr) + 1; $j++) {
                 if ($j > count($telArr)) break;
                 echo $telArr[$j] . '--' . $codeArr[$j]["code"] . "<br/>";
-//                $resTT = send_dayu_sms($telArr[$j], "live", ["number" => '12', 'code' => $codeArr[$j]["code"]]);
+                // $resTT = send_dayu_sms($telArr[$j], "live", ["number" => '12', 'code' => $codeArr[$j]["code"]]);
                 $resTT = send_dayu_sms($telArr[$j], "register", ["number" => '12', 'code' => $codeArr[$j]["code"]]);
                 //判断返回的是否是一个对象，发送验证成功，修改当前数据的状态数据
                 if (isset($resTT->result->success) && ($resTT->result->success == true)) {
@@ -508,7 +529,7 @@ class Excel extends Controller
                     ]);
                     Log::info("--------------------验证码 : " . $codeArr[$j]["code"] . " 发送成功");
                 } else {
-                    Log::error("-------------------验证码 : " . $codeArr[$j]["code"] . " 发送失败 ，错误原因：".$resTT->sub_msg);
+                    Log::error("-------------------验证码 : " . $codeArr[$j]["code"] . " 发送失败 ，错误原因：" . $resTT->sub_msg);
                 }
             }
         } catch (\Exception $e) {
@@ -518,11 +539,244 @@ class Excel extends Controller
     }
 
     /**
-     * 单条短信测试
+     * Excel 队列的加入
+     */
+    public function addExcelList()
+    {
+        // 接受用户ID
+        $liveId = request()->get("liveId");
+        // 请输入要接受的邮箱信息
+        $email = request()->get("email");
+        Log::info("[ . self::formatDate(time()) . ']: 插入了一个新的任务:" . $email);
+        if (empty($liveId) || empty($email)) return json(["code" => 403, "msg" => '参数不能为空']);
+        // cli 去执行这个命令吧
+        $exportExcelUrl = $_SERVER["HTTP_HOST"] . "/frontend/excel/exportExcelList?liveId={$liveId}";
+        $exportExcelCallBackUrl = $_SERVER["HTTP_HOST"] . "/frontend/excel/exportExcelListCallBack?liveId={$liveId}&email={$email}";
+        echo '------------------------------------启动一个CLi进程 开始--------------------------------';
+        exec("/usr/bin/php /home/www/tinywan/cli/send_mail.php '{$exportExcelUrl}' '{$exportExcelCallBackUrl}' >/dev/null 2>&1 &", $output, $return_val);
+        if ($return_val != 0) Log::error('[' . $this->formatDate(time()) . ']:' . '插入了一个新的任务事件脚本执行错误');
+        Log::info('[' . $this->formatDate(time()) . ']:' . '事件脚本执行OK');
+        echo '-----------------------------------启动一个CLi进程 结束----------------------------------';
+        exit("执行成功");
+    }
+
+    /**
+     * Excel 导出队列
+     */
+    public function exportExcelList()
+    {
+        Log::info('[' . self::formatDate(time()) . ']: Excel 导出队列任务处理开始');
+        $liveId = "L02359";
+        //创建对象
+        $objPHPExcel = new \PHPExcel();
+        //这里是根据Get过来的数组判断要导出的Excel的列数目
+        $letterPost = ['11A', 'B11', 'C111', 'D1', 'D1', 'D1', 'D123423432', "weqweqw"];
+        static $letter = [];
+        //获取Excel 头部的大写字母
+        for ($i = 65; $i < (64 + count($letterPost)); $i++) {
+            $letter[] = strtoupper(chr($i));
+        }
+        //表头数组
+        $tableHeader = ['活动ID', '用户昵称', '邀请码', '邀请码创建时间', '邀请码使用时间', '到期时间', "联系电话"];
+        $objSheet = $objPHPExcel->getActiveSheet();   //获取当前活动sheet
+        $objSheet->setTitle($liveId . " 活动邀请码");   //给当前活动sheet起个名称
+        // 设置水平垂直居中
+        $objSheet->getDefaultRowDimension()->setVisible(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objSheet->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        // 设置默认字体
+        $objSheet->getDefaultStyle()->getFont()->setSize(14)->setName("华文宋体");
+        $objSheet->getStyle("A1:F1")->getFont()->setBold(true);
+        //设置默认行高
+        $objSheet->getDefaultRowDimension()->setRowHeight(20);
+        //设置列的宽度
+        $objSheet->getDefaultColumnDimension()->setWidth(20);
+        $objSheet->getColumnDimension("A")->setWidth(10);
+        $objSheet->getColumnDimension("B")->setWidth(10);
+        $objSheet->getColumnDimension("C")->setWidth(10);
+
+        //给表格添加数据
+        for ($i = 0; $i < count($tableHeader); $i++) {
+            //查询数据库
+            $data = Db::table("resty_invitation_info")
+                ->alias('l')
+                ->join("resty_invitation i", "i.infoId = l.id")
+                ->where("l.liveId", $liveId)
+                ->select();
+            //填充表头信息
+            $objSheet->setCellValue("$letter[$i]1", "$tableHeader[$i]");
+            $j = 2;
+            //填充表格信息
+            foreach ($data as $key => $val) {
+                $objSheet->setCellValue("A" . $j, $val["liveId"])
+                    ->setCellValue("B" . $j, $val["userId"])
+                    ->setCellValue("C" . $j, $val["code"])
+                    ->setCellValue("D" . $j, $val["createTime"])
+                    ->setCellValue("E" . $j, $val["usedTime"])
+                    ->setCellValue("F" . $j, $val["createTime"])
+                    ->setCellValue("G" . $j, $val["tel"]);
+                // 设置格式
+                if ($val["userId"] != 0) {
+                    // 设置字体颜色
+                    $objSheet->getStyle("A" . $j . ":F" . $j)->getFont()->setUnderline(\PHPExcel_Style_Font::UNDERLINE_SINGLE)->getColor()->setARGB(\PHPExcel_Style_Color::COLOR_RED);
+                    //设置背景颜色
+                    $objSheet->getStyle("E" . $j)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB(\PHPExcel_Style_Color::COLOR_GREEN);
+                }
+                $j++;
+            }
+        }
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
+        $basePath = ROOT_PATH . 'public' . DS;
+        $inputFileName = $basePath . "uploads/{$liveId}.xlsx";
+        $objWriter->save($inputFileName);
+        return json(["code" => 200, "msg" => 'finish']);
+    }
+
+
+    /**
+     * Excel 表格导出成功后执行的回调函数
+     */
+    public function exportExcelListCallBack()
+    {
+        // 接受用户ID
+        $liveId = request()->get("liveId");
+        // 请输入要接受的邮箱信息
+        $email = request()->get("email");
+        $str = <<<html
+            您好！ <h1>$liveId</h1> 活动的评论导出详细信息：<p></p>
+html;
+        $basePath = ROOT_PATH . 'public' . DS;
+        $fileName = $liveId . '.xlsx';
+        $filePath = $basePath . 'uploads/' . $fileName;
+        //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
+        $result = send_email_file($email, '邀请码的详细信息已经发动到你的邮箱', $str, $filePath, $fileName);
+        halt($result);
+    }
+
+    /**
+     * ------------------------------------------------------------------------邮件队列信息---------------------------
+     * 把邮件写入Redis队列
+     */
+    public function addRedisListToMail()
+    {
+        $redis = self::redis();
+        //接受用户ID
+        $taskId = request()->get("mail");
+        echo $taskId . "<br/>";
+        $TaskName = "task-queue";
+        /**
+         * 【1】将任务插入任务队列：task-queue
+         * 【2】Redis Lpush 命令将一个或多个值插入到列表头部。 如果 key 不存在，一个空列表会被创建并执行 LPUSH 操作。 当 key 存在但不是列表类型时，返回一个错误。
+         * 【3】如果直接存贮的话有一个问题，邮件发送失败
+         */
+        $addRes = $redis->lPush($TaskName, json_encode($taskId));
+        if (false === $addRes) exit("添加失败");
+        Log::info("[ . self::formatDate(time()) . ']: 插入了一个新的任务:" . $taskId);
+        // cli 去执行这个命令吧
+        $sendURL = $_SERVER["HTTP_HOST"] . "/frontend/excel/redisListSendMail";
+        echo '------------------------------------启动一个CLi进程 开始--------------------------------';
+        exec("/usr/bin/php /home/www/tinywan/cli/send_mail.php '{$sendURL}' >/dev/null 2>&1 &", $output, $return_val);
+        if ($return_val != 0) Log::error('[' . $this->formatDate(time()) . ']:' . '插入了一个新的任务事件脚本执行错误');
+        Log::info('[' . $this->formatDate(time()) . ']:' . '事件脚本执行OK');
+        echo '-----------------------------------启动一个CLi进程 结束----------------------------------';
+        exit("执行成功");
+    }
+
+    /**
+     * 使用Redis 队列发送邮件
+     */
+    public function redisListSendMail()
+    {
+        Log::info('[' . self::formatDate(time()) . ']: 开始任务处理，被清除');
+        while (true) {
+            $redis = self::redis();
+            // 列表长度为空的，跳出该循环体
+            if ($redis->lLen("task-queue") == 0) break;
+            // $taskId == mail
+            $taskId = $redis->rpoplpush("task-queue", "tmp-queue");
+            $email = json_decode($taskId);
+            //发送邮件了
+            sleep(5);
+            $email_code = mt_rand(1111, 9999);
+            $sendResult = send_email($email, 'Redis List 物联网智能数据邮件验证码:', $email_code);
+            if ($sendResult["error"] == 0) {
+                // 将本次任务从暂存队列"tmp-queue"中清除,Redis rPop 命令用于移除并返回列表的最后一个元素
+                $redis->rPop("tmp-queue");
+                Log::info('[' . self::formatDate(time()) . ']:' . $taskId . " 任务处理成功，被清除");
+            } else {
+                //将本次处理失败的任务从暂存队列"tmp-queue"中，弹回任务队列"task-queue"
+                $redis->rpoplpush("tmp-queue", "task-queue");
+                Log::error('[' . self::formatDate(time()) . ']:' . $taskId . " 任务处理失败，任务已经被弹回,错误原因: " . $sendResult["message"]);
+            }
+            sleep(10);
+        }
+        return json(["code" => 200, "msg" => 'finish']);
+    }
+
+    /**
+     * 使用Redis 队列发送邮件
+     */
+    public function sendMail()
+    {
+        $liveId = "L02359";
+        $str = <<<html
+            您好！ <h1>$liveId</h1> 活动的评论导出详细信息：<p></p>
+html;
+        $basePath = ROOT_PATH . 'public' . DS;
+        $fileName = 'L02359.xlsx';
+        $filePath = $basePath . 'uploads/' . $fileName;
+        //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
+        $result = send_email_file("756684177@qq.com", '可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件 物联网智能数据 邮件验证码：', $str, $filePath, $fileName);
+        halt($result);
+    }
+
+
+    /**
+     * 单条短信测试Excel.php
      */
     public function sendDayuSmsPlus()
     {
         $res = send_dayu_sms("13669361192", "register", ['code' => rand(100000, 999999)]);
         halt($res);
     }
+
+    /**
+     * -------------------------------------------------CSV 部分--------------------------------------------------------
+     * 【1】csv 数据格式导出
+     * @param $filename
+     * @param $data
+     */
+    public function export_csv($filename, $data)
+    {
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=" . $filename);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo $data;
+    }
+
+    /**
+     * 【2】csv 数据表格填充
+     */
+    public function exportCsv()
+    {
+        $liveId = "L01410";
+        $result = Db::table("resty_invitation_info")
+            ->alias('l')
+            ->join("resty_invitation i", "i.infoId = l.id")
+            ->where("l.liveId", $liveId)
+            ->select();
+        $str = "活动ID,用户昵称,邀请码,创建时间,使用时间,到期时间,联系电话\n";
+        //中文转码
+        $str = iconv('utf-8', 'gb2312', $str);
+        foreach ($result as $key => $val) {
+            $liveId = iconv('utf-8', 'gb2312', $val['liveId']);
+            $userId = iconv('utf-8', 'gb2312', $val['userId']);
+            $str .= $liveId . "," . $userId . "," . $val['code'] . "," . $val['createTime'] . "," . $val['usedTime'] . "," .$val['send_time'] . "," . $val['tel'] . "\n"; //用引文逗号分开
+        }
+        $filename = $liveId . '.csv'; //设置文件名
+        $this->export_csv($filename, $str); //导出
+    }
+
 }

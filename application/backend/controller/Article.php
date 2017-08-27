@@ -35,7 +35,7 @@ class Article extends Controller
             $res = $this->db->store(input('post.'));
             if ($res["valid"]) {
 //                return json(['code' => 200, 'msg' => $res["msg"]]);
-                $this->success($res["msg"], "backend/category/index");
+                $this->success($res["msg"], "backend/article/index");
                 exit;
             } else {
                 return json(['code' => 500, 'msg' => $res["msg"]]);

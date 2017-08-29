@@ -20,6 +20,11 @@ class WebsocketClient extends Controller
      *  http://test.thinkphp5-line.com/frontend/websocket_client/index
      * @return string
      */
+    public function test()
+    {
+        halt(config());
+    }
+
     public function index()
     {
         $this->view->engine->layout(false);

@@ -12,14 +12,14 @@
 
 namespace app\backend\controller;
 
-use redis\BaseRedis;
 use think\Controller;
-use think\Session;
-use think\session\driver\Redis;
-use think\View;
 
 class LinuxShell extends Controller
 {
+    const SERVER_USER_NAME = "www";
+    const SERVER_AUTH = "12312";
+    const SERVER_IP = "139.224.239.21";
+    const WS_SERVER_PORT = "63800";
     /**
      * Linux 系统管理
      */
@@ -33,6 +33,11 @@ class LinuxShell extends Controller
      */
     public function internalStorage()
     {
+        $this->assign('moniServerIp',self::SERVER_IP);
+        $this->assign('wsServerIP',self::SERVER_IP);
+        $this->assign('wsServerPort',self::WS_SERVER_PORT);
+        $this->assign('memoryTitle',self::SERVER_IP."系统实时空闲内存监控");
+        $this->assign('dishTitle',"视频存放空间占比率");
         return $this->fetch();
     }
 

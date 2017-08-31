@@ -24,18 +24,17 @@ class Common extends Controller
         if(!session('admin.admin_id')){
             $this->redirect("backend/login/login");
         }
-        $instance = Request::instance();
-        $con = $instance->controller();
-        $action = $instance->action();
-        $name = $con.'/'.$action;
+        $controllerName = strtolower($this->request->controller());
+        $actionName = strtolower($this->request->action());
+        $name = $controllerName . '/' . $actionName;
         $auth = new Auth();
         $check = $auth->check($name,session('admin.admin_id'));
         // 公共权限
         $noCheck = config('auth_config')['open_auth'];
-//        if(!$check){
-//            if(!in_array($name,$noCheck)){
-//                $this->error('没有权限',"backend/entry/index");
-//            }
-//        }
+        if(!$check){
+            if(!in_array($name,$noCheck)){
+                $this->error('没有权限');
+            }
+        }
     }
 }

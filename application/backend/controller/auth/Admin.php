@@ -1,7 +1,8 @@
 <?php
 
-namespace app\backend\controller;
+namespace app\backend\controller\auth;
 
+use app\backend\controller\Auth;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -70,7 +71,7 @@ class Admin extends Controller
             $groupId = input('post.group_id');
             $res = db('auth_group_access')->where('uid',$uid)->setField('group_id',$groupId);
             if ($res) {
-                $this->success('改变用户组成功', "backend/admin/adminlist");
+                $this->success('改变用户组成功', "backend/auth.admin/adminlist");
                 exit;
             } else {
                 $this->error($res["改变用户组失败"]);

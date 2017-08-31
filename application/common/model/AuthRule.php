@@ -45,7 +45,6 @@ class AuthRule extends Model
         $subIds[] = $id;
         // 3 找到除了自己和自己子集的所有数据,构成树结构
         $res = db('auth_rule')->whereNotIn('id', $subIds)->select();
-        halt($res);
         return Arr::tree($res, 'title', $fieldPri = 'id', $fieldPid = 'pid');
 
     }

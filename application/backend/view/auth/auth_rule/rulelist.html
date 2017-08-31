@@ -37,23 +37,25 @@
                         <tr class="text-c">
                             <td>{$user['id']}</td>
                             <td>{$user['_title']}</td>
-                            <td><span class="label label-info label-lg arrowed-right arrowed-in">{$user['name']} </span></td>
+                            <td>
+                                <span class="label {if condition="$user['_level'] neq 3"}label-info{else/}label-light{/if} label-lg arrowed-right arrowed-in">{$user['name']}</span>
+                            </td>
                             <td>{$user['type']}</td>
                             <td>{$user['status']}</td>
                             <td>{$user['_level']}</td>
                             <td>{$user['condition']}</td>
                             <td>
-                                <a href="{:url('backend/auth_rule/subpage',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.auth_rule/subpage',['id'=>$user['id']])}">
                                     <button class="btn btn-success btn-xs">
                                         <i class="icon-folder-open"></i>添加子规则
                                     </button>
                                 </a>
-                                <a href="{:url('backend/auth_rule/edit',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.auth_rule/edit',['id'=>$user['id']])}">
                                     <button class="btn btn-primary btn-xs">
                                         <i class="icon-edit"></i>编辑
                                     </button>
                                 </a>
-                                <a href="{:url('backend/auth_rule/delete',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.auth_rule/delete',['id'=>$user['id']])}">
                                     <button class="btn btn-danger btn-xs">
                                         <i class="icon-trash"></i>删除
                                     </button>
@@ -67,7 +69,7 @@
 
 
                 <div id="category-add" class="tab-pane">
-                    <form action="{:url('/backend/auth_rule/store')}" method="post" class="form-horizontal" role="form">
+                    <form action="{:url('/backend/auth.auth_rule/store')}" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> (控制器/方法)规则URL:</label>
 

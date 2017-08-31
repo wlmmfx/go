@@ -1,12 +1,12 @@
 <?php
 
-namespace app\backend\controller;
+namespace app\backend\controller\auth;
 
+use app\backend\controller\Common;
 use houdunwang\arr\Arr;
-use think\Controller;
 use think\Request;
 
-class AuthRule extends Controller
+class AuthRule extends Common
 {
     protected $db;
 
@@ -45,7 +45,7 @@ class AuthRule extends Controller
             if ($pLevel) $data['level'] = $pLevel['level'] + 1;
             $res = db('auth_rule')->insert($data);
             if ($res) {
-                $this->success('success', "backend/auth_rule/rulelist");
+                $this->success('success', "backend/auth.auth_rule/rulelist");
                 exit;
             } else {
                 $this->error('fail');
@@ -62,7 +62,7 @@ class AuthRule extends Controller
         if (request()->isPost()) {
             $res = $this->db->store(input('post.'));
             if ($res["valid"]) {
-                $this->success($res["msg"], "backend/category/index");
+                $this->success($res["msg"], "backend/auth.auth_rule/index");
                 exit;
             } else {
                 $this->error($res["msg"]);
@@ -76,13 +76,19 @@ class AuthRule extends Controller
         $this->assign('sub', $sub);
         return $this->fetch();
     }
+
+
+    /**
+     * 编辑规则
+     * @return mixed
+     */
     public function edit()
     {
-        $this->assign('sub_title',"规则编辑");
-        if(request()->isPost()){
+        $this->assign('sub_title', "规则编辑");
+        if (request()->isPost()) {
             $res = $this->db->edit(input('post.'));
             if ($res["valid"]) {
-                $this->success($res["msg"], "backend/auth_rule/rulelist");
+                $this->success($res["msg"], "backend/auth.auth_rule/rulelist");
                 exit;
             } else {
                 $this->error($res["msg"]);
@@ -92,8 +98,8 @@ class AuthRule extends Controller
         $id = input('param.id');
         $oldData = $this->db->find($id);
         $lastData = $this->db->getEditRule($id);
-        $this->assign('old_data',$oldData);
-        $this->assign('last_data',$lastData);
+        $this->assign('old_data', $oldData);
+        $this->assign('last_data', $lastData);
         return $this->fetch();
     }
 
@@ -108,7 +114,7 @@ class AuthRule extends Controller
         $id = input('param.id');
         $res = $this->db->del($id);
         if ($res["valid"]) {
-            $this->success($res["msg"], "backend/auth_rule/rulelist");
+            $this->success($res["msg"], "backend/auth.auth_rule/rulelist");
             exit;
         } else {
             $this->error($res["msg"]);

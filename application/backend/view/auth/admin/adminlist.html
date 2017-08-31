@@ -41,17 +41,17 @@
                             <td>{$user.status}</td>
                             <td>{$user.email}</td>
                             <td>
-                                <a href="{:url('backend/admin/updategroup',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.admin/updategroup',['id'=>$user['id']])}">
                                     <button class="btn btn-warning btn-xs">
                                         <i class="icon-folder-open"></i>修改用户组
                                     </button>
                                 </a>
-                                <a href="{:url('backend/admin/edit',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.admin/edit',['id'=>$user['id']])}">
                                     <button class="btn btn-primary btn-xs">
                                         <i class="icon-edit"></i>编辑
                                     </button>
                                 </a>
-                                <a href="{:url('backend/admin/delete',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.admin/delete',['id'=>$user['id']])}">
                                     <button class="btn btn-danger btn-xs">
                                         <i class="icon-trash"></i>删除
                                     </button>
@@ -65,7 +65,7 @@
                 </div>
 
                 <div id="admin-add" class="tab-pane">
-                    <form action="{:url('/backend/admin/store')}" method="post" class="form-horizontal" role="form">
+                    <form action="{:url('/backend/auth.admin/store')}" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名:</label>
 

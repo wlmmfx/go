@@ -20,17 +20,17 @@
                             <td>{$vo["level"]}</td>
                             <td>{$vo["remark"]}</td>
                             <td>
-                                <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
+                                <a href="{:url('backend/auth.auth_group/subpage',['id'=>$vo['id']])}">
                                     <button class="btn btn-success btn-sm">
                                         <i class="icon-folder-open"></i>添加二级
                                     </button>
                                 </a>
-                                <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
+                                <a href="{:url('backend/auth.auth_group/edit',['id'=>$vo['id']])}">
                                     <button class="btn btn-primary btn-sm">
                                         <i class="icon-edit"></i>编辑
                                     </button>
                                 </a>
-                                <a href="{:url('backend/category/del',['id'=>$vo['id']])}">
+                                <a href="{:url('backend/auth.auth_group/del',['id'=>$vo['id']])}">
                                     <button class="btn btn-danger btn-sm">
                                         <i class="icon-trash"></i>删除
                                     </button>

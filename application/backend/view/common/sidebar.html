@@ -77,21 +77,21 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="{:url('backend/admin/adminlist')}">
+                    <a href="{:url('backend/auth.admin/adminlist')}">
                         <i class="icon-group"></i>
                         管理员管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="{:url('backend/auth_group/grouplist')}">
+                    <a href="{:url('backend/auth.auth_group/grouplist')}">
                         <i class="icon-double-angle-right"></i>
                         用户组管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="{:url('backend/auth_rule/rulelist')}">
+                    <a href="{:url('backend/auth.auth_rule/rulelist')}">
                         <i class="icon-double-angle-right"></i>
                         规则管理
                     </a>
@@ -101,25 +101,25 @@
 
 
         <li>
-            <a href="{:url('backend/category/index')}">
-                <i class="icon-text-width"></i>
-                <span class="menu-lock"> 栏目管理 </span>
-            </a>
-        </li>
-
-        <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-group"></i>
-                <span class="menu-text"> 标签管理 </span>
+                <i class="icon-bookmark"></i>
+                <span class="menu-text"> 栏目标签管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
             </a>
 
             <ul class="submenu">
                 <li>
+                    <a href="{:url('backend/category/index')}">
+                        <i class="icon-group"></i>
+                        分类管理
+                    </a>
+                </li>
+
+                <li>
                     <a href="{:url('backend/tag/index')}">
                         <i class="icon-group"></i>
-                        标签列表
+                        标签管理
                     </a>
                 </li>
 
@@ -128,7 +128,7 @@
 
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-group"></i>
+                <i class="icon-book"></i>
                 <span class="menu-text"> 文章管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
@@ -141,14 +141,6 @@
                         文章列表
                     </a>
                 </li>
-
-                <li>
-                    <a href="{:url('backend/auth_group/grouplist')}">
-                        <i class="icon-double-angle-right"></i>
-                        用户组管理
-                    </a>
-                </li>
-
             </ul>
         </li>
 
@@ -171,72 +163,8 @@
                 <li>
                     <a href="{:url('backend/system/dbConfig')}">
                         <i class="icon-double-angle-right"></i>
-                        数据库配置
+                        微信支付
                     </a>
-                </li>
-
-                <li>
-                    <a href="{:url('backend/system/emailconfig')}">
-                        <i class="icon-double-angle-right"></i>
-                        邮箱配置
-                    </a>
-                </li>
-
-                <li>
-                    <a href="jquery-ui.html">
-                        <i class="icon-double-angle-right"></i>
-                        jQuery UI
-                    </a>
-                </li>
-
-                <li>
-                    <a href="nestable-list.html">
-                        <i class="icon-double-angle-right"></i>
-                        Nestable Lists
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="dropdown-toggle">
-                        <i class="icon-double-angle-right"></i>
-
-                        Three Level Menu
-                        <b class="arrow icon-angle-down"></b>
-                    </a>
-
-                    <ul class="submenu">
-                        <li>
-                            <a href="#">
-                                <i class="icon-leaf"></i>
-                                Item #1
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="dropdown-toggle">
-                                <i class="icon-pencil"></i>
-
-                                4th level
-                                <b class="arrow icon-angle-down"></b>
-                            </a>
-
-                            <ul class="submenu">
-                                <li>
-                                    <a href="#">
-                                        <i class="icon-plus"></i>
-                                        Add Product
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="icon-eye-open"></i>
-                                        View Products
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </li>
@@ -244,7 +172,7 @@
         <li>
             <a href="#" class="dropdown-toggle">
                 <i class="icon-list"></i>
-                <span class="menu-text"> Linux监控 </span>
+                <span class="menu-text"> 系统监控管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
             </a>
@@ -253,14 +181,14 @@
                 <li>
                     <a href="{:url('backend/linux_shell/internalStorage')}">
                         <i class="icon-double-angle-right"></i>
-                        系统内存
+                        内存实时监控
                     </a>
                 </li>
 
                 <li>
                     <a href="jqgrid.html">
                         <i class="icon-double-angle-right"></i>
-                        视频存放空间
+                        磁盘监控
                     </a>
                 </li>
             </ul>

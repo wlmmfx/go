@@ -83,5 +83,6 @@
 +  163邮箱注册
 ##  AI 分支功能管理
 +   Linux shell 监控
++   多级控制器访问规则：`auth.authgroup/grouplist`
 
 

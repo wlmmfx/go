@@ -8,7 +8,7 @@
                         编辑栏目
                     </a>
                 </li>
-                <li >
+                <li>
                     <a data-toggle="tab" href="#category-list">
                         <i class="green icon-home bigger-110"></i>
                         栏目列表
@@ -18,13 +18,15 @@
 
             <div class="tab-content">
                 <div id="sub-add" class="tab-pane  in active">
-                    <form action="{:url('/backend/admin/updategroup')}" method="post" class="form-horizontal" role="form">
+                    <form action="{:url('/backend/auth.admin/updategroup')}" method="post" class="form-horizontal"
+                          role="form">
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名称:</label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="form-field-1" name="username" value="{$userInfo['username']}" class="col-xs-10 col-sm-5"/>
+                                <input type="text" id="form-field-1" name="username" value="{$userInfo['username']}"
+                                       class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -32,7 +34,9 @@
                             <div class="col-sm-9">
                                 <select name="group_id" id="select">
                                     {volist name="groups" id="vo"}
-                                    <option value="{$vo['id']}" {if condition="$vo['id'] == $userInfo['group_id']"}selected{/if} >{$vo['title']} </option>
+                                    <option value="{$vo['id']}" {if condition="$vo['id'] == $userInfo['group_id']"
+                                            }selected{
+                                    /if} >{$vo['title']} </option>
                                     {/volist}
                                 </select>
                             </div>

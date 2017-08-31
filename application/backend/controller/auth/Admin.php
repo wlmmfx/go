@@ -3,11 +3,11 @@
 namespace app\backend\controller\auth;
 
 use app\backend\controller\Auth;
-use think\Controller;
+use app\backend\controller\Common;
 use think\Db;
 use think\Request;
 
-class Admin extends Controller
+class Admin extends Common
 {
     /**
      * 显示资源列表

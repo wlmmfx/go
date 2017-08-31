@@ -26,11 +26,12 @@ class Common extends Controller
         }
         $controllerName = strtolower($this->request->controller());
         $actionName = strtolower($this->request->action());
-        $name = $controllerName . '/' . $actionName;
-        $auth = new Auth();
-        $check = $auth->check($name,session('admin.admin_id'));
-        // 公共权限
-        $noCheck = config('auth_config')['open_auth'];
+        $checkAuth = $controllerName . '/' . $actionName;
+        $authInstance = new Auth();
+        $check = $authInstance->check($checkAuth,session('admin.admin_id'));
+        // public auth
+        $openAuth = config('auth_config')['open_auth'];
+        if(in_array($checkAuth,$openAuth)) return true;
         if(!$check){
             if(!in_array($name,$noCheck)){
                 $this->error('没有权限');

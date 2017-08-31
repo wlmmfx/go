@@ -6,7 +6,6 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/8/26 14:42
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
 
 namespace app\frontend\controller;

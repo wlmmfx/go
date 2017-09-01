@@ -43,12 +43,12 @@ class Login extends Controller
             $res = (new Admin())->login(input("post."));
             if ($res['valid']) {
                 //success
-                add_operation_log('登录成功');
+                add_operation_log($res['msg']);
                 $this->success($res['msg'], "backend/entry/index");
                 exit;
             } else {
                 //fail
-                add_operation_log('登录失败');
+                add_operation_log($res['msg']);
                 $this->error($res['msg']);
                 exit;
             }

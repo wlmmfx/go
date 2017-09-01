@@ -94,14 +94,16 @@ class AuthGroup extends BaseBackend
             $data = input('post.');
             if ($data["rules"]) {
                 $data["rules"] = implode(',', $data["rules"]);
-                $res = db('auth_group')->where('id', $data["groupId"])->update(['rules' => $data["rules"]]);
-                if ($res) {
-                    $this->success('success', "backend/auth.auth_group/grouplist");
+                $res = db('auth_group')->where('id', $data["groupId"])->setField('rules', $data["rules"]);
+                // 注意：当使用“===”判断时，由于判断了变量的类型，0 和 false就不相等了，问题解决
+                if ($res !== false) {
+                    $this->success('success' . json_encode($res), "backend/auth.auth_group/grouplist");
                     exit;
                 } else {
-                    $this->error('error');
+                    $this->success('error');
                     exit;
                 }
+
             }
         }
         $id = input('param.id');

@@ -55,6 +55,6 @@ return [
         // Query类
         'query' => '\\think\\db\\Query',
         // Log 日志
-        'log_table' => 'resty_logs',
+        'log_table' => 'resty_logs'
     ]
 ];

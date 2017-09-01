@@ -1,4 +1,5 @@
 <?php
+
 /** .-------------------------------------------------------------------
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
@@ -12,9 +13,9 @@
 
 namespace app\backend\controller;
 
-use think\Controller;
+use app\common\controller\BaseBackend;
 
-class LinuxShell extends Controller
+class LinuxShell extends BaseBackend
 {
     const SERVER_USER_NAME = "www";
     const SERVER_AUTH = "12312";

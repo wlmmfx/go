@@ -274,9 +274,9 @@ function add_operation_log($desc = null, $unique_flag = 'system')
     if (mysqli_query($conn, $query)) {
         $result = TRUE;
     } else {
-        //$		result = "Error:" . $query . "<br/>" . mysqli_error($conn);
+        $result = "Error:" . $query . "<br/>" . mysqli_error($conn);
         //用于以后调试
-        $result = FALSE;
+//        $result = FALSE;
     }
     return $result;
 }

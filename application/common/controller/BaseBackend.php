@@ -24,7 +24,6 @@ class BaseBackend extends Controller
 
     public function _initialize()
     {
-        //执行登录验证
         #$_SESSION["admin"]["admin_id"];
         if (!session('admin.admin_id')) {
             $this->redirect("backend/login/login");
@@ -32,15 +31,12 @@ class BaseBackend extends Controller
         $controllerName = strtolower($this->request->controller());
         $actionName = strtolower($this->request->action());
         $checkAuth = $controllerName . '/' . $actionName;
+        //halt($checkAuth);
         $this->auth = new Auth();
         $checkResult = $this->auth->check($checkAuth, session('admin.admin_id'));
         // public auth
         $openAuth = config('auth_config')['open_auth'];
-        if (in_array($checkAuth, $openAuth)) return true;
-        if (!$checkResult) {
-            if (!in_array($checkAuth, $openAuth)) {
-                $this->error('没有权限');
-            }
-        }
+        if (is_array($openAuth) AND in_array($checkAuth, $openAuth)) return true;
+        if (!$checkResult) $this->error('没有权限');
     }
 }

@@ -18,6 +18,6 @@ return [
     'open_auth' => [
         'entry/index',
         'entry/modpass',
-        'login/Login',
+        'login/Login'
     ]
 ];

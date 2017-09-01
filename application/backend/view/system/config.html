@@ -247,7 +247,8 @@
                             <tr>
                                 <td align='right'>open_auth：</td>
                                 <td>
-                                    <textarea name="open_auth" id="" class="col-sm-3" cols="30" rows="10">{$open_auth}</textarea>
+                                    <span class="label label-lg label-warning"><i class="icon-warning-sign bigger-120"></i> 多个权限之间用","分隔</span><p></p>
+                                    <textarea style="font-size: 16px;" name="open_auth" id="" class="col-sm-3" cols="30" rows="10">{$Think.config.auth_config.open_auth|implode=','}</textarea>
                                 </td>
                             </tr>
                             <tr>

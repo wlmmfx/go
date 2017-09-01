@@ -1,4 +1,4 @@
-config.php
 database.php
 *.xml
 *.log
+runtime/*

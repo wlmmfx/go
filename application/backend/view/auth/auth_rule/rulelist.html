@@ -36,9 +36,19 @@
                         {volist name='lists' id='user'}
                         <tr class="text-c">
                             <td>{$user['id']}</td>
-                            <td>{$user['_title']}</td>
                             <td>
-                                <span class="label {if condition="$user['_level'] neq 3"}label-info{else/}label-light{/if} label-lg arrowed-right arrowed-in">{$user['name']}</span>
+                                {if condition="$user['_level'] eq 1"}
+                                <span class="label label-lg label-info arrowed-right">{$user['_title']}</span>
+                                {elseif condition="$user['_level'] eq 2"/}
+                                <span class="label label-lg label-grey arrowed-right">{$user['_title']}</span>
+                                label-grey{else/}
+                                <span class="label label-lg label-light arrowed-right">{$user['_title']}</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <span class="label {if condition="$user['_level'] eq 1"}label-info{elseif condition="$user['_level'] eq 2"/}label-grey{else/}label-light{/if} label-lg arrowed-right arrowed-in">
+                                {$user['name']}
+                                </span>
                             </td>
                             <td>{$user['type']}</td>
                             <td>{$user['status']}</td>

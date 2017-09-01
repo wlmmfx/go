@@ -2,16 +2,17 @@
 
 namespace app\backend\controller;
 
+use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
-use think\Controller;
 use think\Log;
 
-class Article extends Controller
+class Article extends BaseBackend
 {
     protected $db;
 
     public function _initialize()
     {
+        parent::_initialize();
         $this->db = new \app\common\model\Article();
     }
 

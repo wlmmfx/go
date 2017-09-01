@@ -2,10 +2,10 @@
 
 namespace app\backend\controller;
 
-
+use app\common\controller\BaseBackend;
 use think\Db;
 
-class System extends Common
+class System extends BaseBackend
 {
     /**
      * 系统配置

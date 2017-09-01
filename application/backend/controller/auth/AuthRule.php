@@ -2,11 +2,11 @@
 
 namespace app\backend\controller\auth;
 
-use app\backend\controller\Common;
+use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
 use think\Request;
 
-class AuthRule extends Common
+class AuthRule extends BaseBackend
 {
     protected $db;
 

@@ -17,11 +17,6 @@ class System extends BaseBackend
      */
     public function config()
     {
-//        $open_auth = config('auth_config')['open_auth'];
-//        halt($open_auth);
-//////        die;
-//        $this->assign('sub_title', "系统配置");
-//        $this->assign('open_auth', implode(',', $open_auth));
         return $this->fetch();
     }
 
@@ -57,6 +52,23 @@ class System extends BaseBackend
     }
 
     /**
+     * 开发配置
+     * @return mixed
+     */
+    public function developmentConfig()
+    {
+        $file = CONF_PATH . 'config.php';
+        $develop_config = array_merge(include $file, array_change_key_case($_POST,CASE_LOWER));
+        // 以下将一个数组转换成一个字符串
+        $str = "<?php\r\n return " . var_export($develop_config, true) . ";\r\n?>";
+        if (file_put_contents($file, $str)) {
+            return $this->success('环境切换成功');
+        }
+        return $this->success('环境切换失败');
+    }
+
+    /**
+     * 邮箱配置
      * @return mixed
      */
     public function emailConfig()

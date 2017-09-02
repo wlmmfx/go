@@ -1,5 +1,4 @@
 <?php
-
 /** .-------------------------------------------------------------------
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
@@ -7,7 +6,7 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/9/2 8:12
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: 公司场景配置
+ * |  Function: 开发场景配置
  * '-------------------------------------------------------------------*/
 return [
     "app_address" => "office",

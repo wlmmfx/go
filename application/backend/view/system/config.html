@@ -10,6 +10,13 @@
                 </li>
 
                 <li>
+                    <a data-toggle="tab" href="#develop-config">
+                        <i class="blue   icon-laptop bigger-110"></i>
+                        开发配置
+                    </a>
+                </li>
+
+                <li>
                     <a data-toggle="tab" href="#auth-config">
                         <i class="blue  icon-cogs bigger-110"></i>
                         权限配置
@@ -110,17 +117,50 @@
                                     </label>
                                 </td>
                             </tr>
+
                             <tr>
-                                <td align='right'>环境切换：</td>
+                                <td colspan='2' align='center' height='60'>
+                                    <input type="submit" value='保存' class='btn btn-success'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <!-- PAGE CONTENT ENDS -->
+
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+
+                <!-- 邮箱配置 -->
+                <div id="develop-config" class="tab-pane">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <form action="{:url('backend/system/developmentConfig')}" method="post" class="form-horizontal"
+                          role="form">
+                        <table class="table table-border table-bordered table-bg mt-20">
+                            <tr>
+                                <th colspan='2'><span
+                                        class="label label-xlg arrowed-right arrowed-in-right">当前配置环境：</span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>环境切换：</td>
                                 <td>
                                     <label for="o1">
-                                        <input type="radio" id='o1' name='env' value='1' {if
-                                               condition='$Think.config.webinfo.WEB_STATE' }checked='checked' {/if}/>&nbsp;线上
+                                        <input type="radio" id='app_status1' name='app_status' value='production' {if
+                                               condition="$Think.config.app_status == 'production'" } checked='checked' {/if}/>&nbsp;生产
                                     </label>&nbsp;&nbsp;
-                                    <label for="o0">
-                                        <input type="radio" id='o0' name='env' value='0' {if
-                                               condition='$Think.config.webinfo.WEB_STATE neq 1' }checked='checked' {/if}/>&nbsp;测试
-                                    </label>
+                                    <label for="o1">
+                                        <input type="radio" id='app_status2' name='app_status' value='development' {if
+                                               condition="$Think.config.app_status == 'development'" }checked='checked' {/if}/>&nbsp;开发
+                                    </label>&nbsp;&nbsp;
+                                    <label for="o1">
+                                        <input type="radio" id='app_status3' name='app_status' value='office' {if
+                                               condition="$Think.config.app_status == 'office'" }checked='checked' {/if}/>&nbsp;公司
+                                    </label>&nbsp;&nbsp;
+                                    <label for="o1">
+                                        <input type="radio" id='app_status4' name='app_status' value='home' {if
+                                               condition="$Think.config.app_status == 'home'" }checked='checked' {/if}/>&nbsp;家里
+                                    </label>&nbsp;&nbsp;
+
                                 </td>
                             </tr>
                             <tr>
@@ -131,7 +171,6 @@
                         </table>
                     </form>
                     <!-- PAGE CONTENT ENDS -->
-                    <!-- PAGE CONTENT BEGINS -->
                     <form action="{:url('backend/system/sessionconfig')}" method="post" class="form-horizontal"
                           role="form">
                         <table class="table table-border table-bordered table-bg mt-20">
@@ -191,7 +230,6 @@
                             </tr>
                         </table>
                     </form>
-                    <!-- PAGE CONTENT ENDS -->
                 </div>
 
                 <div id="auth-config" class="tab-pane">

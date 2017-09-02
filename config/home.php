@@ -1,11 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tinywan
- * Date: 2017/6/23
- * Time: 22:23
- * ****************************家里场景配置**********************************
- */
+
+/** .-------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |-------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2017/9/2 8:12
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Function: 家里场景配置
+ * '-------------------------------------------------------------------*/
 return [
     "app_address" => "home",
     "app_tel" => "13669361192",

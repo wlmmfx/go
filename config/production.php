@@ -1,5 +1,4 @@
 <?php
-
 /** .-------------------------------------------------------------------
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
@@ -7,24 +6,24 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/9/2 8:12
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: 公司场景配置
+ * |  Function: 生产场景配置
  * '-------------------------------------------------------------------*/
 return [
-    "app_address" => "office",
-    "app_tel" => "0571-26877261",
+    "app_address" => "home",
+    "app_tel" => "13669361192",
     "database" => [
         // 数据库类型
         'type' => 'mysql',
         // 数据库连接DSN配置
         'dsn' => '',
         // 服务器地址
-        'hostname' => 'rdshcnvt1o401vaib374.mysql.rds.aliyuncs.com',
+        'hostname' => '127.0.0.1',
         // 数据库名
-        'database' => 'resty',
+        'database' => 'thinkphp5',
         // 数据库用户名
-        'username' => 'tinywan',
+        'username' => 'root',
         // 数据库密码
-        'password' => 'wwwOracle11g',
+        'password' => '',
         // 数据库连接端口
         'hostport' => '',
         // 数据库连接参数

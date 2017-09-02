@@ -90,6 +90,9 @@ class Admin extends Model
         }
         // 2 验证用户名的正确性 查找不到返回 null
         $infoUser = $this->where("email", $data['email'])->where("password", md5($data['password']))->find();
+        if ($infoUser['deleted'] == 1) {
+            return ['valid' => 0, 'msg' => "该用户已经被冻结"];
+        }
         if (!$infoUser) {
             // 数据库中为匹配到
             return ['valid' => 0, 'msg' => "邮箱或者密码错误"];

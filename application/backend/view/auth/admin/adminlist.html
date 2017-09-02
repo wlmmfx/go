@@ -8,13 +8,6 @@
                         管理员列表
                     </a>
                 </li>
-
-                <li>
-                    <a data-toggle="tab" href="#admin-add">
-                        <i class="green icon-home bigger-110"></i>
-                        新增管理员
-                    </a>
-                </li>
             </ul>
 
             <div class="tab-content">
@@ -64,39 +57,6 @@
 
                 </div>
 
-                <div id="admin-add" class="tab-pane">
-                    <form action="{:url('/backend/auth.admin/store')}" method="post" class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名:</label>
-
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-1" placeholder="User1" name="username" class="col-xs-10 col-sm-5"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属用户组:</label>
-
-                            <div class="col-sm-9">
-                                <select name="groupid" id="select">
-                                    {volist name="groups" id="vo"}
-                                    <option value="{$vo['id']}">{$vo['title']}</option>
-                                    {/volist}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 邮箱:</label>
-
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-3" placeholder="756684177@qq.com" name="email" class="col-xs-10 col-sm-5"/>
-                            </div>
-                        </div>
-
-                        <div class="form-actions center">
-                            <button type="submit" class="btn btn-success">提交</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div><!-- /span -->

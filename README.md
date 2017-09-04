@@ -1,5 +1,6 @@
-# thinkphp5-study-line
-+ Update Default Branch is Develop
+##  分支管理
++  当前默认分支为Develop分支(Update Default Branch is Develop)
++  以后开发的代码全部提交到Develop分支，Master分支只负责发布版本
 
 
 ##  定义独立的配置目录 .
@@ -18,6 +19,9 @@
 +   master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活
 ##  微信
 +   网页授权
++   MisssYang
++   MisssYang
++   MisssYang
 +   MisssYang
 
 ##   PHPer这样写代码也许更优雅

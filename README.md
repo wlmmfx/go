@@ -1,8 +1,6 @@
 # thinkphp5-study-line
-+ MissYang Linux 1.1
-+ MissYang Linux 2.0
-+ MissYang Linux 3.4
-+ MissYang Linux 5.8
++ Update Default Branch is Develop
+
 
 ##  定义独立的配置目录 .
 ```bash

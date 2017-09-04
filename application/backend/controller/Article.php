@@ -2,8 +2,10 @@
 
 namespace app\backend\controller;
 
+use aliyun\oss\OssInstance;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
+use OSS\Core\OssException;
 use think\Log;
 
 class Article extends BaseBackend
@@ -30,18 +32,62 @@ class Article extends BaseBackend
         return $this->fetch();
     }
 
+    public function oss()
+    {
+        $bucket = config('aliyun_oss.bucket');
+        $object = 'uploads/20170904/29fb780a66238b5fe04e397b1c7dccce.png';
+        $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
+        $res = unlink($object);
+        halt($res);
+        $oss = OssInstance::Instance();
+        try {
+            $res = $oss->uploadFile($bucket, $object, $file);
+            if ($res['info']['http_code'] == 200) {
+                rmdir('/' . $object);
+            }
+        } catch (OssException $e) {
+            var_dump($e->getMessage());
+        }
+    }
+
     public function store()
     {
         if (request()->isPost()) {
-            $res = $this->db->store(input('post.'));
-            if ($res["valid"]) {
-//                return json(['code' => 200, 'msg' => $res["msg"]]);
-                $this->success($res["msg"], "backend/article/index");
-                exit;
-            } else {
-                return json(['code' => 500, 'msg' => $res["msg"]]);
+            //图片上传
+            if ($_FILES['thumb']['tmp_name']) {
+                $data = input('post.');
+                $file = request()->file("thumb");
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+                if ($info) {
+                    //获取文件名
+                    $data['thumb'] = "/uploads/" . $info->getSaveName();
+                    // oss upload
+                    $bucket = config('aliyun_oss.bucket');
+                    $object = 'uploads/' . $info->getSaveName();
+                    $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
+                    $oss = OssInstance::Instance();
+                    try {
+                        $res = $oss->uploadFile($bucket, $object, $file);
+                        if ($res['info']['http_code'] == 200) {
+                            $data['oss_upload_status'] = 1;
+                            if (!is_dir($object)) unlink($object);
+                        }
+                    } catch (OssException $e) {
+                        $data['oss_upload_status'] = json_encode($e->getMessage());
+                    }
+                }
+                $res = $this->db->store($data);
+                if ($res["valid"]) {
+                    $this->success($res["msg"], "backend/article/index");
+                    exit;
+                } else {
+                    return json(['code' => 500, 'msg' => $res["msg"]]);
+                }
             }
+            return json(['code' => 500, 'msg' => "Not Forbidden"]);
         }
+        return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
 
     /**
@@ -67,7 +113,7 @@ class Article extends BaseBackend
                 // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
                 if ($info) {
-                    $url = "http://".$_SERVER["HTTP_HOST"]  . "/uploads/" . $info->getSaveName();
+                    $url = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $info->getSaveName();
                     Log::info("url == " . $url);
                     $result = json_encode(array(
                         'url' => $url,

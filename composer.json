@@ -42,7 +42,14 @@
         "phpoffice/phpexcel": "^1.8",
         "league/oauth2-github": "^2.0",
         "chrisboulton/php-resque": "1.2.x",
-        "flc/alidayu": "^2.0"
+        "flc/alidayu": "^2.0",
+        "aliyuncs/oss-sdk-php": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Openresty\\": "vendor/phplua",
+            "AliyunMNS\\": "vendor/aliyun/AliyunMNS"
+        }
     },
     "extra": {
         "think-path": "thinkphp"

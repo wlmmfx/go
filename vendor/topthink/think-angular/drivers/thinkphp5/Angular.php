@@ -26,7 +26,7 @@ class Angular
     {
         $default = [
             'debug'            => App::$debug, // 是否开启调试模式
-            'tpl_path'         => App::$modulePath . 'view' . DS, // 模板目录
+            'tpl_path'         => App::$modulePath . 'LuaRedis' . DS, // 模板目录
             'tpl_suffix'       => '.html', // 模板后缀
             'tpl_cache_path'   => RUNTIME_PATH . 'temp' . DS, // 模板缓存目录
             'tpl_cache_suffix' => '.php', // 模板缓存文件后缀

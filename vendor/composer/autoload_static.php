@@ -61,7 +61,7 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         'P' => 
         array (
             'Psr\\Log\\' => 8,
-            'Psr\\Http\\Message\\' => 17,
+            'Psr\\http\\Message\\' => 17,
             'Phinx\\' => 6,
         ),
         'M' => 
@@ -87,6 +87,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Cache\\' => 22,
+        ),
+        'A' => 
+        array (
+            'Acme\\' => 5,
         ),
     );
 
@@ -182,7 +186,7 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
@@ -226,6 +230,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         'Doctrine\\Common\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+        ),
+        'Acme\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phplua',
         ),
     );
 

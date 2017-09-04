@@ -31,7 +31,7 @@ class Index extends Controller
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
             ->join('resty_user u', 'u.id = a.author_id')
-            ->field("a.title,a.create_time,a.content,a.id,a.views,c.name as c_name,u.username")
+            ->field("a.title,a.create_time,a.content,a.id,a.views,a.thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $this->assign('tags', $tags);

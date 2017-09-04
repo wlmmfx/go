@@ -26,7 +26,6 @@
                data-slide="next">&rsaquo;
             </a>
         </div>
-        <hr>
         <div class="panel">
             <div class="panel-title box-title">
                 <span>最新文章</span>
@@ -37,25 +36,25 @@
                     {volist name="list" id="vo"}
                     <div class="row">
                         <div class="col-lg-4 label-img-size">
-                            <a href="#" class="post-label">
-                                <img src="http://up.yii-china.com/image/20160505/1462417912122071.png"
-                                     alt="{$vo['title']}">
+                            <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}" class="post-label">
+                                <img src="http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com{$vo['thumb']}" alt="{$vo['title']}" >
                             </a>
                         </div>
                         <div class="col-lg-8 btn-group">
-                            <h4><a href="{:url('frontend/index/detail',['id'=>$vo['id']])}l">{$vo['title']}</a>&nbsp;<span class="cat">[{$vo['c_name']}]</span></h4>
+                            <h4><a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">{$vo['title']}</a>&nbsp;<span class="cat">[{$vo['c_name']}]</span></h4>
                             <span class="post-tags">
                         <span class="glyphicon glyphicon-user"></span><a href="/member/index/1.html">{$vo['username']}</a>&nbsp;
                         <span class="glyphicon glyphicon-time"></span>&nbsp;{$vo['create_time']|date="Y-m-d",###}&nbsp;
                         <span class="glyphicon glyphicon-eye-open"></span>&nbsp;{$vo['views']}
                         <span class="glyphicon glyphicon-comment"></span><a href="/post/detail/226.html">&nbsp;18</a>
                     </span>
-                            <p class="post-content">
-                            {$vo["content"]|mb_substr=0,84}
+                            <p class="post-content" style="text-indent: 24px;">
+                            {$vo["desc"]|mb_substr=0,64}...
                             </p>
                             <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">
                                 <button class="btn btn-warning no-radius btn-sm pull-right">阅读全文</button>
                             </a>
+
                         </div>
                     </div>
                     <hr>
@@ -65,11 +64,6 @@
         </div>
     </div>
     <div class="col-lg-3 col-md-3">
-        <div class="btn-group btn-group-justified">
-            <a class="btn btn-success disabled" href="/registration"><i class="fa fa-calendar-check-o"></i>
-                今日已签到<br>已连续177天</a> <a class="btn btn-primary" href="/registration">2017年07月30日<br>今日已有91人签到</a>
-        </div>
-        <p></p>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="panel-title"><i class="fa fa-file-code-o"></i> 标签库</h2>
@@ -81,19 +75,6 @@
                         {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
                     {/volist}
                 </div>
-            </div>
-        </div>
-        <!--最新教程-->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title"><i class="fa fa-file-word-o"></i> 最新教程</h2>
-            </div>
-            <div class="panel-body" style="padding-left: -19px;">
-                <ul class="post-list">
-                    {volist name="list" id="vo"}
-                    <li><i class="fa fa-angle-double-right"></i> <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">{$vo['title']}</a></li>
-                    {/volist}
-                </ul>
             </div>
         </div>
     </div>

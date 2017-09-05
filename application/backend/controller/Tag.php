@@ -16,7 +16,6 @@ class Tag extends BaseBackend
 
     public function index()
     {
-        exit('111111111111111');
         $this->assign('tags', db('tag')->select());
         return $this->fetch();
     }

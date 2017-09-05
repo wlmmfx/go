@@ -37,4 +37,7 @@ return [
     ],
     //独立配置文件数据库配置文件
     'extra_config_list'     => ['database','session'],
+    // 默认跳转页面对应的模板文件
+    'dispatch_success_tmpl'  => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_error_tmpl'    => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
 ];

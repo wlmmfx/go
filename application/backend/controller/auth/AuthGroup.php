@@ -97,10 +97,10 @@ class AuthGroup extends BaseBackend
                 $res = db('auth_group')->where('id', $data["groupId"])->setField('rules', $data["rules"]);
                 // 注意：当使用“===”判断时，由于判断了变量的类型，0 和 false就不相等了，问题解决
                 if ($res !== false) {
-                    $this->success('success' . json_encode($res), "backend/auth.auth_group/grouplist");
+                    $this->success('用户组添加规则成功', "backend/auth.auth_group/grouplist");
                     exit;
                 } else {
-                    $this->success('error');
+                    $this->success('用户组添加规则失败');
                     exit;
                 }
 

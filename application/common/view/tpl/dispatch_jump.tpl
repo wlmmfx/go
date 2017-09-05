@@ -29,7 +29,7 @@
     <body>
         <div class="system-message <?php echo $code == 1 ? 'success' : ($code == 0 ? 'error' : 'info');?>">
             <div class="image">
-                <img src="__CDN__/assets/img/<?php echo $code == 1 ? 'success' : ($code == 0 ? 'error' : 'info');?>.svg" alt="" width="150" />
+                <img src="__COMMON__/images/<?php echo $code == 1 ? 'success' : ($code == 0 ? 'error' : 'info');?>.svg" alt="" width="150" />
             </div>
             <h1><?php echo($msg);?></h1>
             <p class="jump">

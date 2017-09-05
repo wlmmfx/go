@@ -213,7 +213,7 @@ html;
      * @param $data
      * @return array
      */
-    public function changePassword($data,$scene)
+    public function changePassword($data)
     {
         // 1 验证数据
         $validate = new Validate([

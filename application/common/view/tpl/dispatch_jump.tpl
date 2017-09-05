@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>跳转提示</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="__CDN__/assets/img/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <style type="text/css">
             *{box-sizing:border-box;margin:0;padding:0;font-family:Lantinghei SC,Open Sans,Arial,Hiragino Sans GB,Microsoft YaHei,"微软雅黑",STHeiti,WenQuanYi Micro Hei,SimSun,sans-serif;-webkit-font-smoothing:antialiased}
             body{padding:70px 0;background:#edf1f4;font-weight:400;font-size:1pc;-webkit-text-size-adjust:none;color:#333}
@@ -41,7 +41,7 @@
             </p>
         </div>
         <div class="copyright">
-            <p>Powered by <a href="http://www.fastadmin.net/?ref=jump">FastAdmin</a></p>
+            <p> Powered by <a href="http://139.224.239.21/?ref=jump">Tinywan</a></p>
         </div>
         <script type="text/javascript">
             (function () {

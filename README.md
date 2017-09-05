@@ -2,7 +2,6 @@
 +  当前默认分支为Develop分支(Update Default Branch is Develop)
 +  以后开发的代码全部提交到Develop分支，Master分支只负责发布版本
 
-
 ##  定义独立的配置目录 .
 ```bash
 ├─application         应用目录
@@ -84,5 +83,6 @@
 ##  AI 分支功能管理
 +   Linux shell 监控
 +   多级控制器访问规则：`auth.authgroup/grouplist`
++   公司新建本地Develop分支，以及提交到Develop远程分支,控制器访问规则：`auth.authgroup/grouplist`
 
 

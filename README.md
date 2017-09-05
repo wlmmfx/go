@@ -84,6 +84,5 @@
 +   Linux shell 监控
 +   多级控制器访问规则：`auth.authgroup/grouplist`
 +   (1)公司新建本地Develop分支，以及提交到Develop远程分支,控制器访问规则：`auth.authgroup/grouplist`
-+   (2)公司新建本地Develop分支，以及提交到Develop远程分支,控制器访问规则：`auth.authgroup/grouplist`
 
 

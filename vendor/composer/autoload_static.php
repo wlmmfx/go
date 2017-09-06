@@ -61,8 +61,13 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         'P' => 
         array (
             'Psr\\Log\\' => 8,
-            'Psr\\http\\Message\\' => 17,
+            'Psr\\Http\\Message\\' => 17,
             'Phinx\\' => 6,
+        ),
+        'O' => 
+        array (
+            'Openresty\\' => 10,
+            'OSS\\' => 4,
         ),
         'M' => 
         array (
@@ -90,7 +95,7 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         ),
         'A' => 
         array (
-            'Acme\\' => 5,
+            'AliyunMNS\\' => 10,
         ),
     );
 
@@ -135,6 +140,7 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/../..' . '/thinkphp/library/think',
             1 => __DIR__ . '/..' . '/topthink/think-queue/src',
+            2 => __DIR__ . '/..' . '/topthink/think-image/src',
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
@@ -186,13 +192,21 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\http\\Message\\' =>
+        'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Phinx\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/phinx/src/Phinx',
+        ),
+        'Openresty\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phplua',
+        ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
         'Monolog\\' => 
         array (
@@ -231,9 +245,9 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
         ),
-        'Acme\\' => 
+        'AliyunMNS\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phplua',
+            0 => __DIR__ . '/..' . '/aliyun/AliyunMNS',
         ),
     );
 

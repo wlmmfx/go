@@ -43,7 +43,8 @@
         "league/oauth2-github": "^2.0",
         "chrisboulton/php-resque": "1.2.x",
         "flc/alidayu": "^2.0",
-        "aliyuncs/oss-sdk-php": "^2.2"
+        "aliyuncs/oss-sdk-php": "^2.2",
+        "topthink/think-image": "^1.0"
     },
     "autoload": {
         "psr-4": {

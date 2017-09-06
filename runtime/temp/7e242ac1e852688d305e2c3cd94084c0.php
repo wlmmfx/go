@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\login\index.html";i:1504076413;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:86:"D:\wamp64\www\thinkphp5-study-line\public/../application/backend\view\login\index.html";i:1504660065;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +7,7 @@
 
     <meta name="description" content="User login page"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+    <link rel="shortcut icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
     <!-- basic styles -->
 
     <link href="__CSS__/bootstrap.min.css" rel="stylesheet"/>

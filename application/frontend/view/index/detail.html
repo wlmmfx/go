@@ -59,30 +59,30 @@
                 <div class="page-comment">
                     <div id="comments" style="margin-top: 10px;">
                         <div class="page-header">
-                            <h2>共 1 条评论</h2>
+                            <h2>共 {$commentCounts} 条评论</h2>
                         </div>
                         <ul id="reply" class="media-list J_mediaList">
                             {volist name="comments" id="vo"}
                             <li>
                                 <div class="media-left">
                                     <a href="/member/index/5086.html" rel="author" data-original-title="" title=""><img
-                                            class="media-object" src="https://avatars3.githubusercontent.com/u/14959876?v=3"
+                                            class="media-object" src="{$vo.avatar}"
                                             alt="a314603132" data-bd-imgshare-binded="1"></a>
                                 </div>
                                 <div class="media-body">
                                     <div class="media-heading">
-                                        <a href="/member/index/5086.html" rel="author" data-original-title="" title="">Tinywan</a>
+                                        <a href="/member/index/5086.html" rel="author" data-original-title="" title="">{$vo.account}</a>
                                         评论于 {$vo.create_time|date="Y-m-d H:i:s",###}
                                     </div>
                                     <div class="media-content">
 
-                                    <div class="J-media">
+                                        <div class="J-media">
 
-                                        <div class="media">
-                                            {$vo.comment_content}
+                                            <div class="media">
+                                                {$vo.comment_content}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </li>
                             {/volist}
                         </ul>
@@ -92,12 +92,14 @@
 
                 <div class="page-comment">
                     <div class="panel">
+
+                        {if condition="$Think.session.open_user_username"}
                         <div class="panel-content">
                             <form id="w1" action="{:url('/frontend/index/commentStore')}" method="post" role="form">
                                 <input type="hidden" id="commentform-post_id" class="form-control" name="post_id"
                                        value="{$article.id}">
                                 <input type="hidden" id="commentform-user_id" class="form-control" name="user_id"
-                                       value="{$user_id}">
+                                       value="{$userInfo.id}">
                                 <textarea name="comment_content" id="comment_content"
                                           style="width:600px;height:200px;"></textarea>
                                 <div class="form-actions center">
@@ -105,6 +107,10 @@
                                 </div>
                             </form>
                         </div>
+                        {else /}
+                        <div class="well danger">您需要登录后才可以评论哦! <a href="{:url('frontend/member/signin')}">登录</a> | <a
+                                href="{:url('frontend/member/signup')}">立即注册</a></div>
+                        {/if}
                     </div>
                 </div>
             </div>

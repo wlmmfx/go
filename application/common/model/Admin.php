@@ -198,13 +198,8 @@ html;
             return ['valid' => 0, 'msg' => "邮件激活失败"];
         }
         // 4 记录session
-        if ($scene == "frontend") {
-            session('frontend.id', $userInfo['id']);
-            session('frontend.username', $userInfo['username']);
-        } else {
-            session('admin.admin_id', $userInfo['id']);
-            session('admin.username', $userInfo['username']);
-        }
+        session('admin.admin_id', $userInfo['id']);
+        session('admin.username', $userInfo['username']);
         return ['valid' => 1, 'msg' => "邮箱激活成功，正在跳转到主页面..."];
     }
 

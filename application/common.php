@@ -36,9 +36,12 @@ function get_uri($url)
 }
 
 /**
- * 参数1：访问的URL，参数2：post数据(不填则为GET)，参数3：提交的$cookies,参数4：是否返回$cookies
- * @param $url
- * @param string $post
+ * 参数1：
+ * 参数2：
+ * 参数3：提交的$cookies
+ * 参数4：是否返回$cookies
+ * @param $url  访问的URL
+ * @param string $post  post数据(不填则为GET)
  * @param string $cookie
  * @param int $returnCookie
  * @return mixed|string

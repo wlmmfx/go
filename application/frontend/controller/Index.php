@@ -9,21 +9,29 @@
 
 namespace app\frontend\controller;
 
+use app\common\model\Comment;
 use app\frontend\model\User;
 use Faker\Factory;
 use Faker\Provider\Uuid;
-use FFMpeg\FFMpeg;
 use think\Controller;
 use think\Db;
 use think\Loader;
 
 class Index extends Controller
 {
+    protected $comment_db;
+
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->comment_db = new Comment();
+    }
+
     public function index()
     {
         $tags = Db::table('resty_tag')
             ->alias('t')
-            ->join('resty_article_tag at',"t.id = at.tag_id")
+            ->join('resty_article_tag at', "t.id = at.tag_id")
             ->field('t.name,count(at.article_id) as art_num,at.tag_id')
             ->group('t.id')
             ->select();
@@ -35,7 +43,8 @@ class Index extends Controller
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $this->assign('tags', $tags);
-        $this->assign('list', $article); DS;
+        $this->assign('list', $article);
+        DS;
         return $this->fetch();
     }
 
@@ -329,20 +338,122 @@ class Index extends Controller
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
             ->join('resty_user u', 'u.id = a.author_id')
-            ->field("a.title,a.create_time,a.content,a.views,c.name as c_name,u.username")
+            ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
             ->where('a.id', $id)
             ->find();
         $tags = Db::table("resty_tag")
             ->alias('t')
-            ->join("resty_article_tag at","at.tag_id = t.id")
-            ->where("at.article_id",$id)
+            ->join("resty_article_tag at", "at.tag_id = t.id")
+            ->where("at.article_id", $id)
             ->select();
+        $comments = Db::table("resty_comment")->where("post_id",$id)->order('create_time desc')->select();
 //        halt($tags);
         // 文章浏览次数加1
-        Db::table('resty_article')->where('id',$id)->setInc('views');
-        $this->assign('article',$article);
-        $this->assign('tags',$tags);
+        Db::table('resty_article')->where('id', $id)->setInc('views');
+        $this->assign('article', $article);
+        $this->assign('tags', $tags);
+        $this->assign('user_id', 13669361192);
+        $this->assign('comments', $comments);
         return $this->fetch();
+    }
+
+    /**
+     * 百度编辑器
+     */
+    public function saveInfo()
+    {
+        $ueditor_config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents(ROOT_PATH . 'public' . DS . "common/plugins/ueditor/php/config.json")), true);
+        $action = $_GET['action'];
+        switch ($action) {
+            case 'config':
+                $result = json_encode($ueditor_config);
+                break;
+            /* 上传图片 */
+            case 'uploadimage':
+                /* 上传涂鸦 */
+            case 'uploadscrawl':
+                /* 上传视频 */
+            case 'uploadvideo':
+                /* 上传文件 */
+            case 'uploadfile':
+                $file = request()->file("upfile");
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+                if ($info) {
+                    //获取文件名
+                    $data['thumb'] = "/uploads/" . $info->getSaveName();
+                    // oss upload
+                    $bucket = config('aliyun_oss.bucket');
+                    $object = 'uploads/' . $info->getSaveName();
+                    $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
+                    $oss = OssInstance::Instance();
+                    try {
+                        $res = $oss->uploadFile($bucket, $object, $file);
+                        if ($res['info']['http_code'] == 200) {
+                            // 返回数据
+                            $url = "http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com" . DS . $object;
+                            Log::info("url == " . $url);
+                            $result = json_encode(array(
+                                'url' => $url,
+                                'title' => htmlspecialchars("11111111111", ENT_QUOTES),
+                                'original' => $url,
+                                'state' => 'SUCCESS'
+                            ));
+                            if (!is_dir($object)) unlink($object);
+                        }
+                    } catch (OssException $e) {
+                        $url = "http://" . $_SERVER["HTTP_HOST"] . "/uploads/" . $info->getSaveName();
+                        Log::info("url == " . $url);
+                        $result = json_encode(array(
+                            'url' => $url,
+                            'title' => htmlspecialchars("2222222222", ENT_QUOTES),
+                            'original' => $url,
+                            'state' => 'FAIL'
+                        ));
+                    }
+
+                } else {
+                    $result = json_encode(array(
+                        'state' => $file->getError(),
+                    ));
+                }
+                break;
+            default:
+                $result = json_encode(array(
+                    'state' => '请求地址出错'
+                ));
+                break;
+        }
+        /* 输出结果 */
+        if (isset($_GET["callback"])) {
+            if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
+                echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+            } else {
+                echo json_encode(array(
+                    'state' => 'callback参数不合法'
+                ));
+            }
+        } else {
+            echo $result;
+        }
+    }
+
+
+    /**
+     * 发表评论处理
+     */
+    public function commentStore()
+    {
+        if (request()->isPost()) {
+            $res = $this->comment_db->store(input('post.'));
+            if ($res["valid"]) {
+                $this->success($res["msg"]);
+                exit;
+            } else {
+                $this->error($res["msg"]);
+                exit;
+            }
+        }
     }
 
     public function info($id)

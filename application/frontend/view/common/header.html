@@ -13,6 +13,9 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <script type="text/javascript" charset="utf-8" src="__COMMON__/plugins/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__COMMON__/plugins/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__COMMON__/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
     <script type="text/javascript" src="__COMMON__/plugins/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
     <link rel="stylesheet" href="__COMMON__/plugins/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css">
     <link rel="stylesheet" href="__CSS__/site.css">
@@ -145,6 +148,24 @@
             line-height: 1.42857;
             padding: 4px;
             transition: border 0.2s ease-in-out 0s;
+        }
+
+        .media:first-child {
+            margin-top: 15px;
+        }
+        .media-list .media {
+            border-bottom: #eee solid 1px;
+            padding-bottom: 15px;
+        }
+        .media:first-child {
+            margin-top: 0;
+        }
+        .media, .media-body {
+            overflow: hidden;
+            zoom: 1;
+        }
+        .media {
+            margin-top: 15px;
         }
     </style>
 </head>

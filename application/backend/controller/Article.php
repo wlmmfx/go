@@ -148,8 +148,7 @@ class Article extends BaseBackend
     /**
      * 百度编辑器
      */
-    public
-    function saveInfo()
+    public function saveInfo()
     {
         $ueditor_config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents(ROOT_PATH . 'public' . DS . "common/plugins/ueditor/php/config.json")), true);
         $action = $_GET['action'];

@@ -111,7 +111,7 @@ class Article extends BaseBackend
                     //  定义缩略图保存路径
                     $thumbObjectPath = ROOT_PATH . 'public' . DS . 'uploads/article' . DS . $thumbName;
                     // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
-                    $image->thumb(300, 300)->save($thumbObjectPath);
+                    $image->thumb(240, 150)->save($thumbObjectPath);
                     $localDirectory = $ossbObject . DS;
                     /**
                      * 给缩略图左上角添加水印并保存
@@ -124,8 +124,8 @@ class Article extends BaseBackend
                     try {
                         $ossUploadRes = $oss->uploadDir($bucket, $ossbObject, $localDirectory);
                         $data['oss_upload_status'] = 1;
-                        $data['image_thumb'] = $thumbName;
-                        $data['image_origin'] = $info->getFilename();
+                        $data['image_thumb'] = '/'.$ossbObject.DS.$thumbName;
+                        $data['image_origin'] = '/'.$ossbObject.DS.$info->getFilename();
                         // 遍历删除原图和缩略图
                         $this->rmdirs(ROOT_PATH . 'public' . DS . 'uploads/article');
                     } catch (OssException $e) {

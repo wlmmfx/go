@@ -50,7 +50,7 @@ class Index extends Controller
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
             ->join('resty_user u', 'u.id = a.author_id')
-            ->field("a.title,a.create_time,a.content,a.id,a.views,a.thumb,a.desc,c.name as c_name,u.username")
+            ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
@@ -137,6 +137,8 @@ class Index extends Controller
             ->where('at.tag_id', $tagId)
             ->order("a.create_time desc , a.id desc")
             ->paginate(6);
+        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
+        $this->assign('userInfo', $userInfo);
         $this->assign("articles", $articles);
         return $this->fetch("search");
     }
@@ -160,15 +162,8 @@ class Index extends Controller
             ->where("at.article_id", $id)
             ->select();
         $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
-        $commentInfos = Db::table("resty_comment")
-            ->alias('c')
-            ->join('resty_open_user ou', 'c.user_id = ou.id')
-            ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.create_time,ou.account,ou.avatar')
-            ->where('c.post_id', $id)
-            ->order('c.create_time desc')
-            ->select();
-//        halt($tags);
-        // 文章浏览次数加1
+        $commentInfos = $this->getCommlist($id);
+//        halt($commentInfos);
         Db::table('resty_article')->where('id', $id)->setInc('views');
         $this->assign('article', $article);
         $this->assign('tags', $tags);
@@ -177,6 +172,141 @@ class Index extends Controller
         $this->assign('commentCounts', count($commentInfos));
         return $this->fetch();
     }
+
+    public function getCommlist($post_id, $parent_id = 0, &$result = array())
+    {
+        $arr = Db::table("resty_comment")
+            ->alias('c')
+            ->join('resty_open_user ou', 'c.user_id = ou.id')
+            ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+            ->where('c.post_id', $post_id)
+            ->where('c.parent_id', $parent_id)
+            ->order('c.create_time desc')
+            ->select();
+        if (empty($arr)) {
+            return array();
+        }
+        foreach ($arr as $cm) {
+            $thisArr =& $result[];
+            $cm["children"] = $this->getCommlist($cm["post_id"], $cm["comment_id"], $thisArr);
+            $thisArr = $cm;
+        }
+        return $result;
+    }
+
+
+    /**
+     * 发表评论处理
+     */
+    public function commentStore1()
+    {
+        if (request()->isPost()) {
+            $res = $this->comment_db->store(input('post.'));
+            if ($res["valid"]) {
+                $this->success($res["msg"]);
+                exit;
+            } else {
+                $this->error($res["msg"]);
+                exit;
+            }
+        }
+    }
+
+    /**
+     * 发表评论处理
+     */
+    public function commentStore()
+    {
+        if (request()->isPost()) {
+            $data['post_id'] = input('post.post_id');
+            $data['parent_id'] = input('post.parent_id');
+            $data['user_id'] = input('post.user_id');
+            $data['comment_content'] = input('post.comment_content');
+            $res = $this->comment_db->store($data);
+            if ($res["valid"]) {
+                /**
+                 * 这里要返回的信息应该是新插入的数据显示哦
+                 */
+                $arr = Db::table("resty_comment")
+                    ->alias('c')
+                    ->join('resty_open_user ou', 'c.user_id = ou.id')
+                    ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+                    ->where('c.comment_id', $res["id"])
+                    ->find();
+                //格式化时间输出
+                $arr['create_time'] = date('Y-m-d H:i:s', $arr['create_time']);
+                $res = [
+                    "code" => 200,
+                    "msg" => "success",
+                    'list' => $arr
+                ];
+            } else {
+                $res = ["code" => 500, "msg" => "fail"];
+            }
+            return json($res);
+        }
+    }
+
+    /**
+     * 评论回复处理
+     * @param $id
+     * @return string
+     */
+    public function commentReply2()
+    {
+        if (request()->isPost()) {
+            $res = $this->comment_db->commentReply(input('post.'));
+            if ($res["valid"]) {
+                $this->success($res["msg"]);
+                exit;
+            } else {
+                $this->error($res["msg"]);
+                exit;
+            }
+        }
+    }
+
+    /**
+     * 评论回复处理
+     * @param $id
+     * @return string
+     */
+    public function commentReply()
+    {
+        if (request()->isPost()) {
+            $data['post_id'] = input('post.post_id');
+            $data['parent_id'] = input('post.parent_id');
+            $data['user_id'] = input('post.user_id');
+            $data['comment_content'] = input('post.comment_content');
+            $res = $this->comment_db->commentReply($data);
+            if ($res["valid"]) {
+                $responseData['post_id'] = $data['post_id'];
+                $responseData['parent_id'] = $data['parent_id'];
+                $responseData['user_id'] = $data['user_id'];
+                $responseData['comment_content'] = $data['comment_content'];
+                $responseData['num'] = count($commentInfos = $this->getCommlist($data['post_id']));
+                // 这里要查询出用户信息表啊！
+                $res = [
+                    "code" => 200,
+                    "msg" => "success",
+                    'list' => $responseData
+                ];
+            } else {
+                $res = ["code" => 500, "msg" => "fail"];
+            }
+            return json($res);
+        }
+    }
+
+    public function commenttest()
+    {
+        //临时关闭当前模板的布局功能
+        $this->view->engine->layout(false);
+        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
+        $this->assign('userInfo', $userInfo);
+        return $this->fetch();
+    }
+
 
     /**
      * 百度编辑器
@@ -256,24 +386,6 @@ class Index extends Controller
             }
         } else {
             echo $result;
-        }
-    }
-
-
-    /**
-     * 发表评论处理
-     */
-    public function commentStore()
-    {
-        if (request()->isPost()) {
-            $res = $this->comment_db->store(input('post.'));
-            if ($res["valid"]) {
-                $this->success($res["msg"]);
-                exit;
-            } else {
-                $this->error($res["msg"]);
-                exit;
-            }
         }
     }
 

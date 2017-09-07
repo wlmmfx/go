@@ -20,7 +20,7 @@ class LinuxShell extends BaseBackend
     const SERVER_USER_NAME = "www";
     const SERVER_AUTH = "12312";
     const SERVER_IP = "139.224.239.21";
-    const WS_SERVER_PORT = "63800";
+    const WS_SERVER_PORT = "8081";
 
     public function _initialize()
     {

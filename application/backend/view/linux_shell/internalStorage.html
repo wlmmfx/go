@@ -124,7 +124,7 @@
     }
 
     $(document).ready(function () {
-        var ws = new WebSocket("ws://" + wsServerIP + ":" + wsServerPort);
+        var ws = new WebSocket("ws://" + wsServerIP + ":" + wsServerPort+'/chat/');
         ws.onopen = function () {
             ws.send(JSON.stringify(wsSend));
         };

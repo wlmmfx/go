@@ -73,6 +73,12 @@ class Category extends Model
 
     }
 
+    /**
+     * 获取二级分类
+     * @param $allData
+     * @param $id
+     * @return array
+     */
     public function getSubCategory($allData, $id)
     {
         static $tmp = [];
@@ -85,6 +91,11 @@ class Category extends Model
         return $tmp;
     }
 
+    /**
+     * 删除
+     * @param $id
+     * @return array
+     */
     public function del($id)
     {
         //1 获取当前删除数据id 的pid的值

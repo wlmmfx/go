@@ -9,6 +9,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
+
 namespace app\common\model;
 
 use think\Model;
@@ -22,7 +23,7 @@ class Comment extends Model
     protected $autoWriteTimestamp = true;
 
     //如果数据库没有创建create_time和更新时间create_time,则按照以下的做一个映射既可以
-    protected $createTime  = "create_time";
+    protected $createTime = "create_time";
 
     //插入的时候自动完成
     protected $insert = [
@@ -41,7 +42,39 @@ class Comment extends Model
             // 验证失败 输出错误信息
             return ['valid' => 0, 'msg' => $this->getError()];
         }
-        return ['valid' => 1, 'msg' => "添加成功"];
+        return ['valid' => 1, 'msg' => "添加成功",'id'=>$this->comment_id];
+    }
+
+    /**
+     * commentReply
+     * @param $data
+     */
+    public function commentReply($data)
+    {
+        $result = $this->validate(true)->save($data);
+        if (false === $result) {
+            // 验证失败 输出错误信息
+            return ['valid' => 0, 'msg' => $this->getError()];
+        }
+        return ['valid' => 1, 'msg' => "回复成功"];
+    }
+
+    /**
+     * 更具评论获取回复
+     * @param $allData
+     * @param $id
+     * @return array
+     */
+    public function getReplyByCommentId($allData, $id)
+    {
+        static $tmp = [];
+        foreach ($allData as $k => $v) {
+            if ($id == $v['parent_id']) {
+                $tmp[] = $v['id'];
+                $this->getReplyByCommentId($allData, $v['id']);
+            }
+        }
+        return $tmp;
     }
 
 }

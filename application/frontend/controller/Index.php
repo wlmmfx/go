@@ -9,15 +9,11 @@
 
 namespace app\frontend\controller;
 
+use app\common\controller\BaseFrontend;
 use app\common\model\Comment;
-use app\frontend\model\User;
-use Faker\Factory;
-use Faker\Provider\Uuid;
-use think\Controller;
 use think\Db;
-use think\Loader;
 
-class Index extends Controller
+class Index extends BaseFrontend
 {
     /**
      * 评论实例
@@ -53,10 +49,8 @@ class Index extends Controller
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
-        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
         $this->assign('tags', $tags);
         $this->assign('list', $article);
-        $this->assign('userInfo', $userInfo);
         return $this->fetch();
     }
 
@@ -161,13 +155,11 @@ class Index extends Controller
             ->join("resty_article_tag at", "at.tag_id = t.id")
             ->where("at.article_id", $id)
             ->select();
-        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
         $commentInfos = $this->getCommlist($id);
 //        halt($commentInfos);
         Db::table('resty_article')->where('id', $id)->setInc('views');
         $this->assign('article', $article);
         $this->assign('tags', $tags);
-        $this->assign('userInfo', $userInfo);
         $this->assign('comments', $commentInfos);
         $this->assign('commentCounts', count($commentInfos));
         return $this->fetch();
@@ -227,18 +219,19 @@ class Index extends Controller
                 /**
                  * 这里要返回的信息应该是新插入的数据显示哦
                  */
-                $arr = Db::table("resty_comment")
+                $responseData = Db::table("resty_comment")
                     ->alias('c')
                     ->join('resty_open_user ou', 'c.user_id = ou.id')
                     ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
                     ->where('c.comment_id', $res["id"])
                     ->find();
+                $responseData['num'] = count($this->getCommlist($data['post_id']));
                 //格式化时间输出
-                $arr['create_time'] = date('Y-m-d H:i:s', $arr['create_time']);
+                $responseData['create_time'] = date('Y-m-d H:i:s', $responseData['create_time']);
                 $res = [
                     "code" => 200,
                     "msg" => "success",
-                    'list' => $arr
+                    'list' => $responseData
                 ];
             } else {
                 $res = ["code" => 500, "msg" => "fail"];
@@ -280,11 +273,13 @@ class Index extends Controller
             $data['comment_content'] = input('post.comment_content');
             $res = $this->comment_db->commentReply($data);
             if ($res["valid"]) {
-                $responseData['post_id'] = $data['post_id'];
-                $responseData['parent_id'] = $data['parent_id'];
-                $responseData['user_id'] = $data['user_id'];
-                $responseData['comment_content'] = $data['comment_content'];
-                $responseData['num'] = count($commentInfos = $this->getCommlist($data['post_id']));
+                $responseData = Db::table("resty_comment")
+                    ->alias('c')
+                    ->join('resty_open_user ou', 'c.user_id = ou.id')
+                    ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+                    ->where('c.comment_id', $res["id"])
+                    ->find();
+                $responseData['num'] = count($this->getCommlist($data['post_id']));
                 // 这里要查询出用户信息表啊！
                 $res = [
                     "code" => 200,

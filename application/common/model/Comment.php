@@ -56,7 +56,7 @@ class Comment extends Model
             // 验证失败 输出错误信息
             return ['valid' => 0, 'msg' => $this->getError()];
         }
-        return ['valid' => 1, 'msg' => "回复成功"];
+        return ['valid' => 1, 'msg' => "回复成功",'id'=>$this->comment_id];
     }
 
     /**

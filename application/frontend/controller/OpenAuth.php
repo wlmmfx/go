@@ -12,12 +12,12 @@
 
 namespace app\frontend\controller;
 
-use think\Controller;
+use app\common\controller\BaseFrontend;
 use app\common\model\OpenUser;
 use League\OAuth2\Client\Provider\Github;
 use think\Db;
 
-class OpenAuth extends Controller
+class OpenAuth extends BaseFrontend
 {
     protected $_db;
 

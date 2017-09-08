@@ -11,32 +11,17 @@
 
 namespace app\common\controller;
 
-use app\common\library\Auth;
 use think\Controller;
+use think\Db;
 
-class BaseBackend extends Controller
+class BaseFrontend extends Controller
 {
     /**
-     * 权限实例
-     * @var
+     * 初始化用户信息
      */
-    protected $auth;
-
     public function _initialize()
     {
-        #$_SESSION["admin"]["admin_id"];
-        if (!session('admin.admin_id')) {
-            $this->redirect("backend/login/login");
-        }
-        $controllerName = strtolower($this->request->controller());
-        $actionName = strtolower($this->request->action());
-        $checkAuth = $controllerName . '/' . $actionName;
-        //halt($checkAuth);
-        $this->auth = new Auth();
-        $checkResult = $this->auth->check($checkAuth, session('admin.admin_id'));
-        // public auth
-        $openAuth = config('auth_config')['open_auth'];
-        if (is_array($openAuth) AND in_array($checkAuth, $openAuth)) return true;
-        if (!$checkResult) $this->error('没有权限');
+        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
+        $this->assign('userInfo', $userInfo);
     }
 }

@@ -1,17 +1,23 @@
 <?php
-
+/** .-------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |-------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2017/9/10 16:43
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Created by PhpStorm
+ * '-------------------------------------------------------------------*/
 namespace app\common\model;
 
 use Faker\Factory;
-use houdunwang\crypt\Crypt;
 use think\Db;
 use think\Loader;
 use think\Log;
-use think\Model;
 use think\Queue;
 use think\Validate;
 
-class Admin extends Model
+class Admin extends BaseModel
 {
     /**
      * 主键

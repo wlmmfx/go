@@ -116,7 +116,7 @@
                                         {/volist}
                                     </div>
 
-                                    <div class="media-action">
+                                    <div class="media-action" >
                                         <a class="comment-reply" href="javascript:void(0);" replyswitch="off"
                                            post_id="{$vo.post_id}" comment_id="{$vo.comment_id}"
                                            replay_user_name="{$vo.account}">
@@ -205,6 +205,8 @@
     var $ueInstance = UE.getEditor('comment_content');
     var $user_id = "{$userInfo.id}";
     $(function () {
+
+        // 共同的Ajax异步提交
         function commonRequest(opt) {
             var url = opt.url;
             var data = opt.data;
@@ -243,7 +245,6 @@
                             $(".comment-ul").prepend($newli);
                         }
                         else {
-
                             //二级评论的回复按钮要添加回复关闭锁属性
                             $newli =
                                 "<div class='media' > " +
@@ -261,6 +262,12 @@
                     } else {
                         alert(response.msg);
                     }
+                },
+                // 错误信息
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
                 }
             });
         }
@@ -273,9 +280,7 @@
             }
         }
 
-        /**
-         * 点击提交评论内容
-         */
+        // 评论提交
         $('body').delegate('.comment-submit', 'click', function () {
             islogin();
             //参数；
@@ -292,7 +297,6 @@
             $ueInstance.execCommand('cleardoc');
             // 3、通过 parent_id 判断是评论还是回复，评论是使用的ueditor 而回复则是普通文本域
             $parent_id = $(this).attr("parent_id");
-            // POST 提交数据整理
             var $url = "{:url('/frontend/index/commentStore')}";
             var $data = {
                 "post_id": $("#commentform-post_id").val(),
@@ -306,9 +310,7 @@
             commonRequest(opt);
         });
 
-        /**
-         * 点击回复评论提交异步操作
-         */
+        // 回复提交
         $("body").delegate(".replay-submit", "click", function () {
             islogin();
             // 1、判断是否有评论内容
@@ -317,7 +319,7 @@
             if ("" == $content) {
                 alert("回复内容不能为空!");
             } else {
-                var $_url = "{:url('/frontend/index/commentReply')}";
+                var $_url = "{:url('/frontend/index/commentStore')}";
                 var $_postData = {
                     "post_id": $("#replay_post_id").val(),
                     "parent_id": $("#replay_parent_id").val(),
@@ -330,9 +332,8 @@
                 commonRequest(opt);
             }
         });
-        /**
-         * 评论回复显示操作
-         */
+
+        // 回复显示
         $("body").delegate(".comment-reply", "click", function () {
             // 判断当前用户是否登录
             islogin();

@@ -7,8 +7,6 @@
         </div>
         <div class="panel">
             <div class="panel-title box-title">
-                <span>最新文章</span>
-                <span class="pull-right"><a href="/post/index-all.html" class="font-12">更多»</a></span>
             </div>
             <div class="new-list">
                 <div class="panel-body border-bottom">
@@ -56,6 +54,32 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"> <i class="fa fa-commenting-o"></i> 说吧</h2>
+            </div>
+            <div class="panel-body">
+                <div class="tag-cloud">
+                    {volist name='tags' id='vo',mod="2"}
+                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}"  >
+                        {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="fa fa-history"></i> 最新Bug</h2>
+            </div>
+            <div class="panel-body">
+                <div class="tag-cloud">
+                    {volist name='tags' id='vo',mod="2"}
+                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}"  >
+                        {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -63,7 +87,7 @@
 <script src="__COMMON__/plugins/jwplayer/jwplayer.js"></script>
 <script type="text/javascript">
     jwplayer("my-video").setup({
-        file: "https://vodcdn.alicdn.com/oss/taobao-ugc/1dde6e764244406cbe5962b26eee078c/1476754829/video.mp4", //视频/直播 播放地址
+        file: "rtmp://live.hkstv.hk.lxdns.com/live/hks", //视频/直播 播放地址
         image: "__PUBLIC__/Common/static/images/videodemo.png", //播放前的 LOGO 图片地址
         width: "100%", //宽度
         height: "370", //高度

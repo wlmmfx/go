@@ -31,8 +31,8 @@
 </style>
 <script type="text/javascript">
     var ws;
-    var wsServerIP = "115.29.8.55";
-    var wsServerPort = "12345";
+    var wsServerIP = "139.224.239.21";
+    var wsServerPort = "8082";
     var SocketCreated = false;
     var isUserloggedout = false;
 
@@ -104,10 +104,10 @@
 //            Log("准备连接到聊天服务器 ...");
             try {
                 if ("WebSocket" in window) {
-                    ws = new WebSocket("ws://" + wsServerIP + ":" + wsServerPort);
+                    ws = new WebSocket("ws://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
                 }
                 else if ("MozWebSocket" in window) {
-                    ws = new MozWebSocket("ws://" + wsServerIP + ":" + wsServerPort);
+                    ws = new MozWebSocket("ws://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
                 }
                 SocketCreated = true;
                 isUserloggedout = false;
@@ -219,10 +219,10 @@
     $(document).ready(function () {
         var WebSocketsExist = true;
         try {
-            var dummy = new WebSocket("ws://115.29.8.55:12345");
+            var dummy = new WebSocket("ws://139.224.239.21:8082/chatroom/");
         } catch (ex) {
             try {
-                webSocket = new MozWebSocket("ws://115.29.8.55:12345");
+                webSocket = new MozWebSocket("ws://139.224.239.21:8082/chatroom/");
             }
             catch (ex) {
                 WebSocketsExist = false;

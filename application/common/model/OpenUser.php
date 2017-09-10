@@ -3,18 +3,15 @@
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
- * |  Author: Tinywan(SHaoBo Wan)
- * |  Date: 2017/1/20
- * |  Time: 16:25
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2017/9/10 16:43
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm.
+ * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
 
 namespace app\common\model;
 
-use think\Model;
-
-class OpenUser extends Model
+class OpenUser extends BaseModel
 {
     protected $pk = "id";
     protected $table = "resty_open_user"; //完整的表名

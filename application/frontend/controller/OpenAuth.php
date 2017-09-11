@@ -36,7 +36,7 @@ class OpenAuth extends BaseFrontend
         // 这个参数是必须的，这就是我们在第一步注册应用程序之后获取到的Client ID；
         $client_id = "5e70ee2d904f655b0c31";
         // 该参数可选，当我们从Github获取到code码之后跳转到我们自己网站的URL
-        $redirect_uri = "http://139.224.239.21/frontend/open_auth/redirect_uri";
+        $redirect_uri = "http://www.tinywan.top/frontend/open_auth/redirect_uri";
         $url = $github_url . "?client_id=" . $client_id . "&redirect_uri=" . $redirect_uri;
         header('location:' . $url);
     }

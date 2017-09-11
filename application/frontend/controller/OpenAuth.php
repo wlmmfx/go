@@ -36,7 +36,7 @@ class OpenAuth extends BaseFrontend
         // 这个参数是必须的，这就是我们在第一步注册应用程序之后获取到的Client ID；
         $client_id = "5e70ee2d904f655b0c31";
         // 该参数可选，当我们从Github获取到code码之后跳转到我们自己网站的URL
-        $redirect_uri = "http://www.tinywan.top/frontend/open_auth/redirect_uri";
+        $redirect_uri = "http://www.tinywan.com/frontend/open_auth/redirect_uri";
         $url = $github_url . "?client_id=" . $client_id . "&redirect_uri=" . $redirect_uri;
         header('location:' . $url);
     }
@@ -92,13 +92,78 @@ class OpenAuth extends BaseFrontend
                 session('open_user_id', $userId);
                 session('open_user_username', $userJsonRes['login']);
                 $this->success("授权登录成功", '/');
-//                header($_SERVER['HTTP_REFERER']);
             } else {
                 $this->error("授权登录失败", "frontend/member/signin");
             }
         }
-
     }
+
+    /**
+     * Wechat 登录 https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+     */
+    public function wechat()
+    {
+        //$scope = "snsapi_base";
+        $scope = "snsapi_userinfo";
+        $appid = 'wx94c43716d8a91f3f';
+        /*基本授权 方法跳转地址*/
+        $redirect_uri = urlencode('http://www.tinywan.com/frontend/open_auth/wechatRedirectUri');
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
+        header('location:' . $url);
+    }
+
+    /**
+     * Wechat回调地址
+     */
+    public function wechatRedirectUri()
+    {
+        $appid = 'wx94c43716d8a91f3f';
+        $appsecret = 'd4624c36b6795d1d99dcf0547af5443d';
+        /*回调的时候自带的这个参数*/
+        $code = $this->request->get('code');
+        //第一步:取全局access_token
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
+        $token = getJson($url);
+        //第二步:取得openid
+        $oauth2Url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$appsecret&code=$code&grant_type=authorization_code";
+        $oauth2 = getJson($oauth2Url);
+        //第三步:根据全局access_token和openid查询用户信息
+        $access_token = $token["access_token"];
+        $openid = $oauth2['openid'];
+        $get_user_info_url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=$access_token&openid=$openid&lang=zh_CN";
+        $userJsonRes = getJson($get_user_info_url);
+        //打印用户信息
+        //第五步，检查用户是否已经注册过
+        $condition['open_id'] = $userJsonRes['openid'];
+        $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();
+        if ($checkUserInfo) {
+            // 记录session信息
+            session('open_user_id', $checkUserInfo['id']);
+            session('open_user_username', $checkUserInfo['account']);
+            $this->success("登录成功", '/');
+        } else {
+            // 第六步，添加用户信息到数据库
+            $insertData['account'] = $userJsonRes['nickname'];
+            $insertData['open_id'] = $userJsonRes['openid'];
+            $insertData['password'] = md5('123456');
+            $insertData['realname'] = $userJsonRes['nickname'];
+            $insertData['nickname'] = $userJsonRes['nickname'];
+            $insertData['avatar'] = $userJsonRes['headimgurl'];
+            $insertData['company'] = $userJsonRes['city'];
+            $insertData['address'] = $userJsonRes['city'];
+            $insertData['create_time'] = date("Y-m-d H:i:s");;
+            $userId = Db::table('resty_open_user')->insertGetId($insertData);
+            if ($userId) {
+                // 记录session信息
+                session('open_user_id', $userId);
+                session('open_user_username', $userJsonRes['nickname']);
+                $this->success("授权登录成功", '/');
+            } else {
+                $this->error("授权登录失败", "frontend/member/signin");
+            }
+        }
+    }
+
 
     /**
      * 退出登录

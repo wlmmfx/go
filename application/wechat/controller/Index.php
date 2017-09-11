@@ -23,7 +23,7 @@ class Index extends Controller
         $scope = "snsapi_userinfo";
         $appid = 'wx94c43716d8a91f3f';
         /*基本授权 方法跳转地址*/
-        $redirect_uri = urlencode('http://www.tinywan.top/wechat/Index/getUserInfo');
+        $redirect_uri = urlencode('http://www.tinywan.com/wechat/Index/getUserInfo');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
         header('location:' . $url);
     }

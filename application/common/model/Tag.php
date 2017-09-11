@@ -3,18 +3,14 @@
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
- * |  Author: Tinywan(SHaoBo Wan)
- * |  Date: 2017/1/20
- * |  Time: 16:25
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2017/9/10 16:43
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm.
+ * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
 namespace app\common\model;
 
-use houdunwang\arr\Arr;
-use think\Model;
-
-class Tag extends Model
+class Tag extends BaseModel
 {
     protected $pk = "id";
     protected $table = "resty_tag"; //完整的表名
@@ -35,7 +31,7 @@ class Tag extends Model
     }
 
     /**
-     * 编辑分类
+     * 编辑标签
      * @param $data
      * @return array
      */
@@ -50,32 +46,10 @@ class Tag extends Model
     }
 
     /**
-     * 获取分类编辑name
+     * 删除标签？？？
+     * @param $id
+     * @return array
      */
-    public function getEditCategory($id)
-    {
-        // 1 首先查找到 $id 的子集
-        $subIds = $this->getSubCategory(db('category')->select(), $id);
-        // 2 将当前的分类id追加进去
-        $subIds[] = $id;
-        // 3 找到除了自己和自己子集的所有数据,构成梳妆
-        $res = db('category')->whereNotIn('id', $subIds)->select();
-        return Arr::tree($res, 'name', $fieldPri = 'id', $fieldPid = 'pid');
-
-    }
-
-    public function getSubCategory($allData, $id)
-    {
-        static $tmp = [];
-        foreach ($allData as $k => $v) {
-            if ($id == $v['pid']) {
-                $tmp[] = $v['id'];
-                $this->getSubCategory($allData, $v['id']);
-            }
-        }
-        return $tmp;
-    }
-
     public function del($id)
     {
         //1 获取当前删除数据id 的pid的值

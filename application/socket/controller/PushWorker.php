@@ -18,7 +18,8 @@ use Workerman\Lib\Timer;
 
 class PushWorker extends Server
 {
-    protected $socket = 'websocket://0.0.0.0:12345';
+    // nginx 代理服务器8082
+    protected $socket = 'websocket://0.0.0.0:63801';
 
     /**
      * Workerman 启动的回调,这里传递的是Worker对象
@@ -57,9 +58,9 @@ class PushWorker extends Server
             }
             // 如果客户端user_name存在，mysql，这里使用动态给对象赋值属性user_name,标记该对象已经通过验证
             $connection->user_name = $clientData['user_name'];
-            $room_id = $clientData['room_id'];
+//            $room_id = $clientData['room_id'];
             //统计客户端的信息等业务,进入房间的人数增长，自增
-            MsgRedis::increaseTotalViewNum($room_id);
+//            MsgRedis::increaseTotalViewNum($room_id);
             // 广播给所有用户，该用户加入
             $sendData = json_encode(['type' => $clientData['type'],
                 'data' => $connection->user_name,

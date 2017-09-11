@@ -3,18 +3,15 @@
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
- * |  Author: Tinywan(SHaoBo Wan)
- * |  Date: 2017/1/20
- * |  Time: 16:25
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2017/9/10 16:43
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm.
+ * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
 
 namespace app\common\model;
 
-use think\Model;
-
-class Comment extends Model
+class Comment extends BaseModel
 {
     protected $pk = "comment_id";
     protected $table = "resty_comment";
@@ -29,6 +26,10 @@ class Comment extends Model
     protected $insert = [
         "create_time"
     ];
+
+    public static function  test($data){
+        halt($data);
+    }
 
     /**
      * 添加评论

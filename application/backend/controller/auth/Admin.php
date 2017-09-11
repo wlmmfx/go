@@ -10,6 +10,7 @@ use think\Request;
 class Admin extends BaseBackend
 {
     private $_db;
+
     public function _initialize()
     {
         $this->_db = new \app\common\model\Admin();
@@ -79,13 +80,12 @@ class Admin extends BaseBackend
             $uid = input('post.uid');
             $groupId = input('post.group_id');
             $res = db('auth_group_access')->where('uid', $uid)->setField('group_id', $groupId);
-            if ($res) {
-                $this->success('改变用户组成功', "backend/auth.admin/adminlist");
-                exit;
+            if ($res === false) {
+                $res = self::returnCode(5002);
             } else {
-                $this->error($res["改变用户组失败"]);
-                exit;
+                $res = self::returnCode(2002);
             }
+            return $res;
         }
         $userId = input('param.id');
         $userInfo = Db::table('resty_user')
@@ -106,7 +106,7 @@ class Admin extends BaseBackend
     public function delete($id)
     {
         if (request()->isGet()) {
-            $delAdmin = $this->_db->where(['id'=>$id])->setField('deleted',1);
+            $delAdmin = $this->_db->where(['id' => $id])->setField('deleted', 1);
             if ($delAdmin !== false) {
                 $this->success("删除成功");
                 exit;

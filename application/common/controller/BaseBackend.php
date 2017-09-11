@@ -12,9 +12,8 @@
 namespace app\common\controller;
 
 use app\common\library\Auth;
-use think\Controller;
 
-class BaseBackend extends Controller
+class BaseBackend extends Base
 {
     /**
      * 权限实例

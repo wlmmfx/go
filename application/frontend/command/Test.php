@@ -1,14 +1,14 @@
 <?php
-
 /** .-------------------------------------------------------------------
  * |  Github: https://github.com/Tinywan
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
- * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2017/9/9 14:42
+ * |  Author: Tinywan(SHaoBo Wan)
+ * |  DateTime: 2017/9/13 12:53
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm
+ * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
+
 namespace app\frontend\command;
 
 use think\console\Command;
@@ -19,7 +19,7 @@ class Test extends Command
 {
     protected function configure()
     {
-        $this->setName('test')->setDescription('Here is the remark ');
+        $this->setName('test')->setDescription('Here is the remark frontend THINKPHP5.11');
     }
 
     protected function execute(Input $input, Output $output)

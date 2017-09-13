@@ -186,6 +186,16 @@ function send_email($address, $subject, $content)
     return ["error" => 0];
 }
 
+/** 格式化时间
+ * @param $time
+ * @return false|string
+ * @static
+ */
+function getCurrentDate()
+{
+    return date('Y-m-d H:i:s', time());
+}
+
 //--------------------------------------------------auth2.0------------------------------------------------------------
 /**
  * 获取github信息

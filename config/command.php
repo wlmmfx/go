@@ -10,6 +10,5 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app\frontend\command\Test',
-    'app\frontend\command\LuaRedis',
+    'app\frontend\command\Test'
 ];

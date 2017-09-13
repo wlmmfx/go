@@ -8,13 +8,13 @@
 
 namespace app\frontend\controller;
 
+use app\common\controller\BaseFrontend;
 use app\common\model\OpenUser;
-use think\Controller;
 use think\Db;
 use think\Log;
 use think\Request;
 
-class Member extends Controller
+class Member extends BaseFrontend
 {
     protected $open_user_db;
 

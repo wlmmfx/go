@@ -9,12 +9,13 @@
 
 namespace app\frontend\controller;
 
+use app\common\controller\BaseFrontend;
+use file\CsvReader;
 use redis\BaseRedis;
-use think\Controller;
 use think\Db;
 use think\Log;
 
-class Excel extends Controller
+class Excel extends BaseFrontend
 {
     /**
      * Redis Instance
@@ -62,7 +63,6 @@ class Excel extends Controller
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }
-
 
     /**
      * [1] Excel 入门简单的测试
@@ -248,7 +248,6 @@ class Excel extends Controller
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }
-
 
     /**
      * [2] 功能：导出Mysql数据数据到Excel表格，根据活动好导出导出邀请码数据
@@ -466,7 +465,7 @@ class Excel extends Controller
                     $addr = $colIndex . $rowIndex;
                     $cell = $currentSheet->getCell($addr)->getValue();
                     //富文本转换字符串
-                    if ($cell instanceof PHPExcel_RichText) {
+                    if ($cell instanceof \PHPExcel_RichText) {
                         $cell = $cell->__toString();
                     }
                     $dataArr[$rowIndex][$colIndex] = $cell;
@@ -632,7 +631,6 @@ class Excel extends Controller
         return json(["code" => 200, "msg" => 'finish']);
     }
 
-
     /**
      * Excel 表格导出成功后执行的回调函数
      */
@@ -649,7 +647,7 @@ html;
         $fileName = $liveId . '.xlsx';
         $filePath = $basePath . 'uploads/' . $fileName;
         //传递一个数组，可以实现多邮件发送,有人注册的时候给管理员也同时发送一份邮件
-        $result = send_email_file($email, '邀请码的详细信息已经发动到你的邮箱', $str, $filePath, $fileName);
+        $result = send_email($email, '邀请码的详细信息已经发动到你的邮箱', $str, $filePath, $fileName);
         halt($result);
     }
 
@@ -730,7 +728,6 @@ html;
         halt($result);
     }
 
-
     /**
      * 单条短信测试Excel.php
      */
@@ -746,7 +743,12 @@ html;
      * @param $filename
      * @param $data
      */
-    public function export_csv($filename, $data)
+    /**
+     * Csv 导出数据
+     * @param $filename
+     * @param $data
+     */
+    protected function export_csv($filename, $data)
     {
         header("Content-type:text/csv");
         header("Content-Disposition:attachment;filename=" . $filename);
@@ -757,7 +759,7 @@ html;
     }
 
     /**
-     * 【2】csv 数据表格填充
+     * 【2】Csv 数据表格填充
      */
     public function exportCsv()
     {
@@ -773,10 +775,62 @@ html;
         foreach ($result as $key => $val) {
             $liveId = iconv('utf-8', 'gb2312', $val['liveId']);
             $userId = iconv('utf-8', 'gb2312', $val['userId']);
-            $str .= $liveId . "," . $userId . "," . $val['code'] . "," . $val['createTime'] . "," . $val['usedTime'] . "," .$val['send_time'] . "," . $val['tel'] . "\n"; //用引文逗号分开
+            $str .= $liveId . "," . $userId . "," . $val['code'] . "," . $val['createTime'] . "," . $val['usedTime'] . "," . $val['send_time'] . "," . $val['tel'] . "\n"; //用引文逗号分开
         }
         $filename = $liveId . '.csv'; //设置文件名
         $this->export_csv($filename, $str); //导出
     }
 
+    /**
+     * 【3】读取CVS数据到Mysql数据库
+     * @param $filePath
+     * @return bool|string
+     */
+    public function cvsInsertToMysql($filePath)
+    {
+        $reader = new CsvReader($filePath);
+        $data = $reader->get_data(1000, 0);
+        //取出表头信息
+        unset($data[0]);
+        // 拼接插入的数组
+        $tmpArr = [];
+        for ($i = 1; $i < count($data); $i++) {
+            for ($j = 0; $j <= 6; $j++) {
+                $tmpArr[$i - 1] = [
+                    'name' => $data[$i][0],
+                    'mobile' => $data[$i][6],
+                    'agent' => $data[$i][2]
+                ];
+            }
+        }
+        // 插入数据库
+        try {
+            foreach ($tmpArr as $insert) {
+                $hasMobile = Db::table('resty_address')->where('mobile', $insert['mobile'])->find();
+                if ($hasMobile == true) continue;
+                $insertRes = Db::table('resty_address')->insert($insert);
+                Log::info('[' . getCurrentDate() . ']: 号码=' . $insert['mobile'] . " CVS数据插入成功：" . $insertRes);
+            }
+            return true;
+        } catch (\Exception $e) {
+            Log::error('[' . getCurrentDate() . ']:' . $insert['mobile'] . " CVS数据插入失败：" . json_encode($e->getMessage()));
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * 【3】读取CVS数据到Mysql数据库
+     */
+    public function readCvsToMysql()
+    {
+        $basePath = ROOT_PATH . 'public' . DS;
+        $filePath = $basePath . 'uploads/L02359.csv';
+        $res = $this->cvsInsertToMysql($filePath);
+        halt($res);
+    }
+
+    public function readTestMysql()
+    {
+        var_dump(getCurrentDate());
+    }
 }

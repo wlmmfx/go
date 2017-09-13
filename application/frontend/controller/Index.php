@@ -55,6 +55,15 @@ class Index extends BaseFrontend
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
+        $comments = Db::table("resty_comment")
+            ->alias('c')
+            ->join('resty_open_user ou', 'c.user_id = ou.id')
+            ->join('resty_article a', 'a.id = c.post_id')
+            ->field('a.title,c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+            ->order('c.create_time desc')
+            ->limit(8)
+            ->select();
+        $this->assign('comments', $comments);
         $this->assign('tags', $tags);
         $this->assign('list', $article);
         return $this->fetch();
@@ -76,7 +85,7 @@ class Index extends BaseFrontend
     }
 
     /**
-     * 根据标签Id查询文章
+     * 根据标签Id查询文章 searchByTagId
      */
     public function searchByTagId()
     {
@@ -90,8 +99,25 @@ class Index extends BaseFrontend
             ->where('at.tag_id', $tagId)
             ->order("a.create_time desc , a.id desc")
             ->paginate(6);
-        $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
-        $this->assign('userInfo', $userInfo);
+        $this->assign("articles", $articles);
+        return $this->fetch("search");
+    }
+
+    /**
+     * 根据分类Id查询文章
+     */
+    public function searchByCategoryId()
+    {
+        $catId = input("param.id");
+        $articles = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_article_tag at', 'a.id = at.article_id')
+            ->join('resty_category c', 'c.id = a.cate_id')
+            ->join('resty_user u', 'u.id = a.author_id')
+            ->field("a.title,a.create_time,a.update_time,a.id,a.views,c.name as c_name,u.username")
+            ->where('c.id', $catId)
+            ->order("a.create_time desc , a.id desc")
+            ->paginate(6);
         $this->assign("articles", $articles);
         return $this->fetch("search");
     }

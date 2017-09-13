@@ -126,6 +126,7 @@ class BaseFrontend extends Base
         return true;
     }
 
+
     /**
      * 初始化用户信息
      */
@@ -133,6 +134,8 @@ class BaseFrontend extends Base
     {
         $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
         $this->assign('userInfo', $userInfo);
+        $category = Db::table('resty_category')->select();
+        $this->assign('categorys', $category);
     }
 
 }

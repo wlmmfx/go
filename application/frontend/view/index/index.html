@@ -3,7 +3,7 @@
     <!-- 简介 -->
     <div class="col-lg-9">
         <div id="myCarousel" class="carousel slide">
-            <div id="my-video">视频演示正在加载...</div>
+            <!--<div id="my-video">视频演示正在加载...</div>-->
         </div>
         <div class="panel">
             <div class="panel-title box-title">
@@ -14,19 +14,23 @@
                     <div class="row">
                         <div class="col-lg-4 label-img-size">
                             <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}" class="post-label">
-                                <img src="http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com{$vo['image_thumb']}" alt="{$vo['title']}" >
+                                <img src="http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com{$vo['image_thumb']}"
+                                     alt="{$vo['title']}">
                             </a>
                         </div>
                         <div class="col-lg-8 btn-group">
-                            <h4><a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">{$vo['title']}</a>&nbsp;<span class="cat">[{$vo['c_name']}]</span></h4>
+                            <h4>
+                                <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">{$vo['title']}</a>&nbsp;<span
+                                    class="cat">[{$vo['c_name']}]</span></h4>
                             <span class="post-tags">
-                        <span class="glyphicon glyphicon-user"></span><a href="/member/index/1.html">{$vo['username']}</a>&nbsp;
+                        <span class="glyphicon glyphicon-user"></span><a
+                                    href="/member/index/1.html">{$vo['username']}</a>&nbsp;
                         <span class="glyphicon glyphicon-time"></span>&nbsp;{$vo['create_time']|date="Y-m-d",###}&nbsp;
                         <span class="glyphicon glyphicon-eye-open"></span>&nbsp;{$vo['views']}
                         <span class="glyphicon glyphicon-comment"></span><a href="/post/detail/226.html">&nbsp;18</a>
                     </span>
                             <p class="post-content" style="text-indent: 24px;">
-                            {$vo["desc"]|mb_substr=0,76}...
+                                {$vo["desc"]|mb_substr=0,76}...
                             </p>
                             <a href="{:url('frontend/index/detail',['id'=>$vo['id']])}">
                                 <button class="btn btn-warning no-radius btn-sm pull-right">阅读全文</button>
@@ -48,7 +52,7 @@
             <div class="panel-body">
                 <div class="tag-cloud">
                     {volist name='tags' id='vo',mod="2"}
-                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}"  >
+                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}">
                         {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
                     {/volist}
                 </div>
@@ -56,30 +60,41 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 class="panel-title"> <i class="fa fa-commenting-o"></i> 说吧</h2>
+                <h2 class="panel-title"><i class="fa fa-commenting-o"></i> 说吧</h2>
             </div>
             <div class="panel-body">
                 <div class="tag-cloud">
                     {volist name='tags' id='vo',mod="2"}
-                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}"  >
+                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}">
                         {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
                     {/volist}
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title"><i class="fa fa-history"></i> 最新Bug</h2>
-            </div>
-            <div class="panel-body">
-                <div class="tag-cloud">
-                    {volist name='tags' id='vo',mod="2"}
-                    <a href="{:url('frontend/index/searchByTagId',['id'=>$vo['tag_id']])}"  >
-                        {$vo['name']} <span class="badge">{$vo["art_num"]}</span></a>
-                    {/volist}
-                </div>
-            </div>
-        </div>
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+                <!--<h2 class="panel-title"><i class="fa fa-history"></i> 最新评论</h2>-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <!--{volist name='comments' id='vo',mod="2"}-->
+                <!--<div class="media">-->
+                    <!--<div class="media-left">-->
+                        <!--<a href="/user/32840" rel="author">-->
+                            <!--<img class="media-object" src="{$vo.avatar}" alt="Tinyaiai" data-bd-imgshare-binded="1">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<div class="media-heading">-->
+                            <!--{$vo["account"]}-->
+                        <!--</div>-->
+                        <!--<div class="media-content"><p>{$vo["comment_content"]}</p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<hr>-->
+                <!--{/volist}-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
 
@@ -91,7 +106,7 @@
         image: "__PUBLIC__/Common/static/images/videodemo.png", //播放前的 LOGO 图片地址
         width: "100%", //宽度
         height: "370", //高度
-        hlshtml:true,
+        hlshtml: true,
         autostart: true //自动播放
     });
 </script>

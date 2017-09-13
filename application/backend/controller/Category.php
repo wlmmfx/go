@@ -4,8 +4,7 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  Date: 2017/1/20
- * |  Time: 16:25
+ * |  Date: 2017/1/20 16:25
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/

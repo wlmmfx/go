@@ -44,7 +44,8 @@
         "chrisboulton/php-resque": "1.2.x",
         "flc/alidayu": "^2.0",
         "aliyuncs/oss-sdk-php": "^2.2",
-        "topthink/think-image": "^1.0"
+        "topthink/think-image": "^1.0",
+        "php-amqplib/php-amqplib": "2.6.*"
     },
     "autoload": {
         "psr-4": {

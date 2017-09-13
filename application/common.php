@@ -411,8 +411,8 @@ function send_dayu_sms($tel, $type, $data)
     $signname = config("sms")['dayu'][$dayu_template]["sign_name"];
     $templatecode = config("sms")['dayu'][$dayu_template]["code"];
     $config = [
-        'app_key' => config("sms")['dayu']['app_key'],
-        'app_secret' => config("sms")['dayu']['app_secret']
+        'app_key' => config("sms")['dayu']['app_key'], //阿里大于APPKEY
+        'app_secret' => config("sms")['dayu']['app_secret'] //阿里大于secretKey
     ];
     $client = new \Flc\Alidayu\Client(new \Flc\Alidayu\App($config));
     $req = new \Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend();

@@ -10,5 +10,6 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app\frontend\command\Test'
+    'app\frontend\command\Test',
+    'app\frontend\command\Mail'
 ];

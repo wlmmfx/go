@@ -11,12 +11,14 @@
 
 namespace app\frontend\command;
 
+use think\Cache;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 
 class Test extends Command
 {
+    protected $sleep = 3;
     protected function configure()
     {
         $this->setName('test')->setDescription('Here is the remark frontend THINKPHP5.11');
@@ -24,6 +26,15 @@ class Test extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln("TestCommand:");
+        while(true){
+            $output->writeln(json_encode($this->checkDo()));
+            sleep($this->sleep);
+        }
+    }
+
+    protected function checkDo(){
+        $state = false;
+        $int = Cache::inc("Command",2);
+        return $int;
     }
 }

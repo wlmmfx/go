@@ -29,6 +29,7 @@ class Mail extends Command
     {
         while (true) {
             $output->writeln(json_encode($this->sendMail()));
+            $output->writeln(json_encode($this->sendSms()));
             sleep($this->sleep);
         }
     }
@@ -39,13 +40,13 @@ class Mail extends Command
      */
     protected function sendSms()
     {
-        $res = Db::table('resty_task_list')->where('status', 1)->select();
+        $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
             foreach ($res as $v) {
                 $sendRes = send_dayu_sms($v['user_mobile'], "register", ['code' => rand(100000, 999999)]);
                 // 短信发送成功直接删除该任务记录
                 if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
-                    Db::table('resty_task_list')->where('user_mobile', $v['user_mobile'])->delete();
+                    Db::table('resty_task_list')->where('user_mobile', $v['user_mobile'])->update(['status'=>1,'mobile_status'=>1]);
                 }
             }
         }
@@ -74,7 +75,7 @@ class Mail extends Command
 html;
                 $result = send_email_qq($data['user_email'], '新用户注册', $str);
                 if ($result['error'] == 0) {
-                    Db::table('resty_task_list')->where('user_email', $data['user_email'])->setField('status', 1);
+                    Db::table('resty_task_list')->where('user_email', $data['user_email'])->update(['status'=>1,'email_status'=>1]);
                 }
                 sleep(2);
             }

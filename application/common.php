@@ -186,6 +186,74 @@ function send_email($address, $subject, $content)
     return ["error" => 0];
 }
 
+/**
+ * 发送邮件
+ * @param  array $address 需要发送的邮箱地址 发送给多个地址需要写成数组形式
+ * @param  string $subject 标题
+ * @param  string $content 内容
+ * @return array  放回状态吗和提示信息
+ */
+function send_email_qq($address, $subject, $content)
+{
+    $email_smtp_host = config('email.EMAIL_SMTP_HOST');
+    $email_username = config('email.EMAIL_USERNAME');
+    $email_password = config('email.EMAIL_PASSWORD');
+    $email_from_name = config('email.EMAIL_FROM_NAME');
+    if (empty($email_smtp_host) || empty($email_username) || empty($email_password) || empty($email_from_name)) {
+        return ["error" => 1, "message" => '邮箱请求参数不全，请检测邮箱的合法性'];
+    }
+    $phpmailer = new \PHPMailer();
+    //是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
+    //$phpmailer->SMTPDebug = 1;
+    // 	设置PHPMailer使用SMTP服务器发送Email
+    $phpmailer->IsSMTP();
+    // 	设置为html格式
+    $phpmailer->IsHTML(true);
+    // 	设置邮件的字符编码'
+    $phpmailer->CharSet = 'UTF-8';
+    // 设置SMTP服务器。
+    $phpmailer->Host = $email_smtp_host;
+    //设置使用ssl加密方式登录鉴权
+    $phpmailer->SMTPSecure = 'ssl';
+    //设置ssl连接smtp服务器的远程服务器端口号，以前的默认是25，但是现在新的好像已经不可用了 可选465或587
+    $phpmailer->Port = 465;
+    // 设置为"需要验证"
+    $phpmailer->SMTPAuth = true;
+    // 设置用户名
+    $phpmailer->Username = $email_username;
+    // 设置密码
+    $phpmailer->Password = $email_password;
+    // 设置邮件头的From字段。
+    $phpmailer->From = $email_username;
+    // 设置发件人名字
+    $phpmailer->FromName = $email_from_name;
+    // 添加收件人地址，可以多次使用来添加多个收件人
+    if (is_array($address)) {
+        foreach ($address as $addressv) {
+            //验证邮件地址,非邮箱地址返回为false
+            if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
+                return ["error" => 1, "message" => '邮箱格式错误'];
+            }
+            $phpmailer->AddAddress($addressv);
+        }
+    } else {
+        //验证邮件地址,非邮箱地址返回为false
+        if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
+            return ["error" => 1, "message" => '邮箱格式错误'];
+        }
+        $phpmailer->AddAddress($address);
+    }
+    // 设置邮件标题
+    $phpmailer->Subject = $subject;
+    // 设置邮件正文,这里最好修改为这个，不是boby
+    $phpmailer->MsgHTML($content);
+    // 发送邮件。
+    if (!$phpmailer->Send()) {
+        return ["error" => 1, "message" => $phpmailer->ErrorInfo];
+    }
+    return ["error" => 0];
+}
+
 /** 格式化时间
  * @param $time
  * @return false|string

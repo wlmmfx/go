@@ -40,4 +40,16 @@ class Cli extends Controller
         }
         echo 'finished';
     }
+
+
+    public function sendMailQQ()
+    {
+        $address = '756684177@qq.com';
+        $subject = '弍萬QQ邮箱发送';
+        $content = '恭喜你成功加入TINYWAN实验室，开启你的学习之旅吧！';
+        $result = send_email_qq($address, $subject, $content);
+        if ($result['error'] == 1) return json(['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"]);
+        echo "Ok";
+        die;
+    }
 }

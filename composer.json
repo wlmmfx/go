@@ -45,12 +45,13 @@
         "flc/alidayu": "^2.0",
         "aliyuncs/oss-sdk-php": "^2.2",
         "topthink/think-image": "^1.0",
-        "php-amqplib/php-amqplib": "2.6.*"
+        "chrisboulton/php-resque": "1.2.x"
     },
     "autoload": {
         "psr-4": {
             "Openresty\\": "vendor/phplua",
-            "AliyunMNS\\": "vendor/aliyun/AliyunMNS"
+            "AliyunMNS\\": "vendor/aliyun/AliyunMNS",
+            "QUEUE\\": "vendor/queue"
         }
     },
     "extra": {

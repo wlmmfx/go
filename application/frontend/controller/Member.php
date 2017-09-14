@@ -9,6 +9,7 @@
 namespace app\frontend\controller;
 
 use app\common\controller\BaseFrontend;
+use app\common\model\Admin;
 use app\common\model\OpenUser;
 use think\Db;
 use think\Log;

@@ -8,6 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
+
 namespace app\common\model;
 
 use Faker\Factory;
@@ -139,8 +140,20 @@ class Admin extends BaseModel
         // 2 检测邮箱是否被注册
         $time = time();
         $passwordToken = md5($data['email'] . md5($data['password']) . $time); //创建用于激活识别码
-        $userInfo = $userInfo = $this->where('email', $data['email'])->find();
+        $userInfo = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 1, 'email' => $data['email']])->find();
         if ($userInfo) return ['valid' => 0, 'msg' => "该邮箱已经被注册"];
+        // 考虑URL地址失效问题，重新范松邮件
+        $userInfoEnable = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
+        if ($userInfoEnable) {
+            // 4 放入邮件队列
+            $taskData['task_type'] = 2;
+            $taskData['status'] = 0;
+            $taskData['email_type'] = 1;
+            $taskData['email_scene'] = 2;
+            $taskData['user_email'] = $data['email'];
+            Db::table('resty_task_list')->insert($taskData);
+            return ['valid' => 1, 'msg' => "邮件重新发送成功，请立即验证邮箱:" . $data['email']];
+        }
         // 3 插入数据库
         $res = $this->data([
             'username' => self::getRandUserName(),
@@ -179,7 +192,7 @@ class Admin extends BaseModel
         // 3、修改数据库表：auth_group表和user表
         // 启动事务
         Db::startTrans();
-        try{
+        try {
             $this->save([
                 'enable' => 1  # 表示已经激活
             ], [$this->pk => $userInfo['id']]);
@@ -188,15 +201,15 @@ class Admin extends BaseModel
             $groupData['group_id'] = 13;
             Db::table("resty_auth_group_access")->insert($groupData);
             Db::commit();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Db::rollback();
-            Log::error("auth_group表和user表修改异常：".$e->getMessage());
+            Log::error("auth_group表和user表修改异常：" . $e->getMessage());
             return ['valid' => 0, 'msg' => "邮件激活失败"];
         }
         // 4 记录session
         session('admin.admin_id', $userInfo['id']);
         session('admin.username', $userInfo['username']);
-        return ['valid' => 1, 'msg' => "邮箱激活成功，正在跳转到主页面..."];
+        return ['valid' => 1, 'msg' => "邮箱激活成功"];
     }
 
     /**
@@ -255,19 +268,17 @@ class Admin extends BaseModel
         // 2 该邮箱是否注册
         $userInfo = $this->where('email', $data['email'])->find();
         if (!$userInfo) return ['valid' => 0, 'msg' => "该邮箱尚未注册"];
-        // 邮箱配置文件
-        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
-        $checkstr = base64_encode($data['email']);
-        $auth_key = get_auth_key($data['email']);
-        $link = "http://{$emailSendDomain}/backend/login/checkEmailUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
-
-        $str = "您好!{$userInfo['username']}， 请点击下面的链接重置您的密码：<p></p>" . $link;
-        $sendResult = send_email($data['email'], "Tinywan世界重置密码", $str);
-        if ($sendResult['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
-        // 4 修改密码发送时间
+        // 3 修改密码发送时间
         $updateResult = $this->save([
             'password_time' => time()
         ], [$this->pk => $userInfo['id']]);
+        // 4 放入邮件队列
+        $taskData['task_type'] = 2; // 2：邮件
+        $taskData['status'] = 0;
+        $taskData['email_type'] = 2; // 2：修改密码
+        $taskData['email_scene'] = 2; // 2：后台
+        $taskData['user_email'] = $data['email'];
+        Db::table('resty_task_list')->insert($taskData);
         if (!$updateResult) return ['valid' => 0, 'msg' => "修改数据库密码发送时间失败"];
         return ['valid' => 1, 'msg' => $data['email'] . "系统已向您的邮箱发送了一封邮件<br/>请登录到您的邮箱及时重置您的密码"];
     }
@@ -297,7 +308,7 @@ class Admin extends BaseModel
      * @param $data
      * @return array
      */
-    public function reSetPassword($data,$scene)
+    public function reSetPassword($data)
     {
         // 1 验证数据
         $validate = new Validate([

@@ -221,7 +221,7 @@ class Auth
     {
         static $userinfo = [];
         if (!isset($userinfo[$uid])) {
-            $userinfo[$uid] = Db::name($this->config['auth_user'])->where(['uid' => $uid])->find();
+            $userinfo[$uid] = Db::name($this->config['auth_user'])->where(['id' => $uid])->find();
         }
         return $userinfo[$uid];
     }

@@ -9,7 +9,7 @@
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
 
-namespace app\frontend\command;
+namespace app\common\command;
 
 use think\console\Command;
 use think\console\Input;
@@ -44,7 +44,7 @@ class Mail extends Command
      */
     protected function sendAllByMsgType()
     {
-        session('user_mobile_code123','user_mobile_code:');
+        session('user_mobile_code123', 'user_mobile_code:');
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
             foreach ($res as $msg) {
@@ -57,7 +57,7 @@ class Mail extends Command
                         }
                         break;
                     case 2:
-                        $result = send_email_qq($msg['user_email'], self::getEmailType($msg['email_type']), self::getEmailTemplate($msg['email_scene'],$msg['email_type'],$msg['user_email']));
+                        $result = send_email_qq($msg['user_email'], self::getEmailType($msg['email_type']), self::getEmailTemplate($msg['email_scene'], $msg['email_type'], $msg['user_email']));
                         if ($result['error'] == 0) {
                             Db::table('resty_task_list')->where('user_email', $msg['user_email'])->delete();
                         }
@@ -69,8 +69,6 @@ class Mail extends Command
                     default:
                         echo '1';
                 }
-
-
             }
         }
         return json_encode($res);
@@ -81,7 +79,7 @@ class Mail extends Command
      * @param $email_type
      * @return mixed
      */
-    protected  static function getSmsType($mobile_type)
+    protected static function getSmsType($mobile_type)
     {
         $msg = [
             '1' => 'register',
@@ -96,7 +94,7 @@ class Mail extends Command
      * @param $email_type
      * @return mixed
      */
-    protected  static function getEmailType($email_type)
+    protected static function getEmailType($email_type)
     {
         $msg = [
             '1' => '新用户注册',
@@ -116,19 +114,21 @@ class Mail extends Command
      * @return string
      * @static
      */
-    protected  static function getEmailTemplate($email_scene,$email_type,$user_email)
+    protected static function getEmailTemplate($email_scene, $email_type, $user_email)
     {
         $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $emailUrlExpire = config('email.EMAIL_SEND_EXPIRE_TIME');
         $checkStr = base64_encode($user_email);
         $auth_key = get_auth_key($user_email);
-        if($email_scene == 1){ // frontend
-            switch ($email_type){
+        if ($email_scene == 1) { // frontend
+            switch ($email_type) {
                 case 1:
                     $link = "http://{$emailSendDomain}/frontend/login/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = <<<html
                 您好！<p></p>
                 感谢您在Tinywan世界注册帐户！<p></p>
                 帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
+                地址有效时间：$emailUrlExpire (分钟)<p></p>
                 点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
                 $link
 html;
@@ -143,14 +143,15 @@ html;
                 default:
                     echo '0';
             }
-        }elseif ($email_scene == 2){ // backend
-            switch ($email_type){
+        } elseif ($email_scene == 2) { // backend
+            switch ($email_type) {
                 case 1:
                     $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = <<<html
                 您好！<p></p>
                 感谢您在Tinywan世界注册帐户！<p></p>
                 帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
+                地址有效时间：$emailUrlExpire (分钟)<p></p>
                 点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
                 $link
 html;
@@ -159,13 +160,14 @@ html;
                     $link = "http://{$emailSendDomain}/backend/login/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = "请点击下面的链接重置您的密码：<p></p>" . $link;
                     break;
+                    // 通知
                 case 3:
-                    echo '1';
+                    $str = "管理员发送给你的信息,有效验证码：<p></p>".rand(00000,99999);
                     break;
                 default:
                     echo '0';
             }
-        }else{ // other
+        } else { // other
 
         }
 
@@ -176,7 +178,7 @@ html;
      * Test sendSms
      * @return string
      */
-    protected function sendSms()
+    protected function testSendSms()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
@@ -192,10 +194,10 @@ html;
     }
 
     /**
-     * 发送邮件队列
+     * Test 发送邮件队列
      * @return string
      */
-    protected function sendMail()
+    protected function testSendMail()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
@@ -218,16 +220,6 @@ html;
                 sleep(2);
             }
         }
-        return json_encode($res);
-    }
-
-
-    protected function sendMailQQ()
-    {
-        $address = '756684177@qq.com';
-        $subject = '弍萬QQ邮箱发送';
-        $content = '恭喜你成功加入LSGO实验室，开启你的学习之旅吧！';
-        $res = send_email_qq($address, $subject, $content);
         return json_encode($res);
     }
 

@@ -1,15 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 流年 <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-// 应用公共文件
+/**
+ * get url 获取json数据
+ * @param $url
+ * @return mixed
+ */
 function getJson($url)
 {
     $ch = curl_init();
@@ -41,7 +36,7 @@ function get_uri($url)
  * 参数3：提交的$cookies
  * 参数4：是否返回$cookies
  * @param $url  访问的URL
- * @param string $post  post数据(不填则为GET)
+ * @param string $post post数据(不填则为GET)
  * @param string $cookie
  * @param int $returnCookie
  * @return mixed|string
@@ -95,6 +90,7 @@ function get_auth_key($check_str)
     $send_email_expire_time = config('email.EMAIL_SEND_EXPIRE_TIME');
     // 2 私有密钥
     $send_email_private_key = config('email.EMAIL_SEND_PRIVATE_KEY');
+    // 3 分钟
     $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime("+" . $send_email_expire_time . "minute")));
     $uuid = 0;
     $uid = 0;
@@ -118,14 +114,13 @@ function check_auth_key($check_str, $auth_key)
     $uid = 0;
     $send_email_private_key = config('email.EMAIL_SEND_PRIVATE_KEY'); // 私有密钥
     $sequest_hash_value = substr($auth_key, -32);
-//    return $sequest_hash_value;
     $hash_value = md5($check_str . '-' . $send_email_expire_time . '-' . $uuid . '-' . $uid . '-' . $send_email_private_key);
     if ($hash_value != $sequest_hash_value) return ['valid' => 0, 'msg' => "URL地址签名错误"];
     return ['valid' => 1, 'msg' => "签名验证通过"];
 }
 
 /**
- * 发送邮件
+ * 163 发送邮件 本地OK，线上有问题，暂时不用
  * @param  array $address 需要发送的邮箱地址 发送给多个地址需要写成数组形式
  * @param  string $subject 标题
  * @param  string $content 内容
@@ -187,7 +182,7 @@ function send_email($address, $subject, $content)
 }
 
 /**
- * 发送邮件
+ * QQ服务器发送邮件
  * @param  array $address 需要发送的邮箱地址 发送给多个地址需要写成数组形式
  * @param  string $subject 标题
  * @param  string $content 内容

@@ -24,9 +24,7 @@ class Login extends Controller
      */
     public function testQueue()
     {
-        halt($_SERVER);
-        $res = (new Admin())->sendMailQueue();
-        halt($res);
+
     }
 
     /**
@@ -112,7 +110,6 @@ class Login extends Controller
         if ($request->isGet()) {
             $res = (new Admin())->checkEmailUrlValid(input("get."));
             if ($res["valid"]) {
-                //success 把目前的邮箱地址保存在session中
                 $this->view->engine->layout(false);
                 return $this->fetch("resetpassword", [
                     'email' => $res['email']

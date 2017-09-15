@@ -49,6 +49,11 @@
                                         <i class="icon-trash"></i>删除
                                     </button>
                                 </a>
+                                <a href="{:url('backend/auth.admin/sendMail',['id'=>$user['id']])}">
+                                <button class="btn btn-info btn-xs">
+                                    <i class="icon-trash"></i>发送邮件
+                                </button>
+                            </a>
                             </td>
                         </tr>
                         {/volist}

@@ -44,32 +44,22 @@ class Mail extends Command
      */
     protected function sendAllByMsgType()
     {
+        session('user_mobile_code123','user_mobile_code:');
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
             foreach ($res as $msg) {
-                switch ($msg['task_type']){
+                switch ($msg['task_type']) {
                     case 1:
-                        $sendRes = send_dayu_sms($msg['user_mobile'], "register", ['code' => rand(100000, 999999)]);
-                        // 短信发送成功直接删除该任务记录
+                        $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['code']]);
+                        // 短信发送成功更新记录
                         if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
-                            Db::table('resty_task_list')->where('user_mobile', $msg['user_mobile'])->update(['status'=>1,'mobile_status'=>1]);
+                            Db::table('resty_task_list')->where('user_mobile', $msg['user_mobile'])->delete();
                         }
                         break;
                     case 2:
-                        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
-                        $checkstr = base64_encode($msg['user_email']);
-                        $auth_key = get_auth_key($msg['user_email']);
-                        $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
-                        $str = <<<html
-                您好！<p></p>
-                感谢您在Tinywan世界注册帐户！<p></p>
-                帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
-                点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
-                $link
-html;
-                        $result = send_email_qq($msg['user_email'], '新用户注册', $str);
+                        $result = send_email_qq($msg['user_email'], self::getEmailType($msg['email_type']), self::getEmailTemplate($msg['email_scene'],$msg['email_type'],$msg['user_email']));
                         if ($result['error'] == 0) {
-                            Db::table('resty_task_list')->where('user_email', $msg['user_email'])->update(['status'=>1,'email_status'=>1]);
+                            Db::table('resty_task_list')->where('user_email', $msg['user_email'])->delete();
                         }
                         break;
                     case 3:
@@ -86,6 +76,106 @@ html;
         return json_encode($res);
     }
 
+    /**
+     * 获取短信标识符
+     * @param $email_type
+     * @return mixed
+     */
+    protected  static function getSmsType($mobile_type)
+    {
+        $msg = [
+            '1' => 'register',
+            '2' => 'live',
+            '3' => 'identity',
+        ];
+        return $msg[$mobile_type];
+    }
+
+    /**
+     * 获取邮件标识符
+     * @param $email_type
+     * @return mixed
+     */
+    protected  static function getEmailType($email_type)
+    {
+        $msg = [
+            '1' => '新用户注册',
+            '2' => '激活',
+            '3' => '找回密码',
+            '4' => '修改密码',
+            '5' => '订阅 ',
+        ];
+        return $msg[$email_type];
+    }
+
+    /**
+     * 获取邮件发送模板
+     * @param $email_scene
+     * @param $email_type
+     * @param $user_email
+     * @return string
+     * @static
+     */
+    protected  static function getEmailTemplate($email_scene,$email_type,$user_email)
+    {
+        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $checkStr = base64_encode($user_email);
+        $auth_key = get_auth_key($user_email);
+        if($email_scene == 1){ // frontend
+            switch ($email_type){
+                case 1:
+                    $link = "http://{$emailSendDomain}/frontend/login/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $str = <<<html
+                您好！<p></p>
+                感谢您在Tinywan世界注册帐户！<p></p>
+                帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
+                点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
+                $link
+html;
+                    break;
+                case 2:
+                    $link = "http://{$emailSendDomain}/frontend/login/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $str = "请点击下面的链接重置您的密码：<p></p>" . $link;
+                    break;
+                case 3:
+                    echo '1';
+                    break;
+                default:
+                    echo '0';
+            }
+        }elseif ($email_scene == 2){ // backend
+            switch ($email_type){
+                case 1:
+                    $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $str = <<<html
+                您好！<p></p>
+                感谢您在Tinywan世界注册帐户！<p></p>
+                帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
+                点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
+                $link
+html;
+                    break;
+                case 2:
+                    $link = "http://{$emailSendDomain}/backend/login/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $str = "请点击下面的链接重置您的密码：<p></p>" . $link;
+                    break;
+                case 3:
+                    echo '1';
+                    break;
+                default:
+                    echo '0';
+            }
+        }else{ // other
+
+        }
+
+        return $str;
+    }
+
+    /**
+     * Test sendSms
+     * @return string
+     */
     protected function sendSms()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->select();
@@ -94,7 +184,7 @@ html;
                 $sendRes = send_dayu_sms($v['user_mobile'], "register", ['code' => rand(100000, 999999)]);
                 // 短信发送成功直接删除该任务记录
                 if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
-                    Db::table('resty_task_list')->where('user_mobile', $v['user_mobile'])->update(['status'=>1,'mobile_status'=>1]);
+                    Db::table('resty_task_list')->where('user_mobile', $v['user_mobile'])->update(['status' => 1, 'mobile_status' => 1]);
                 }
             }
         }
@@ -123,7 +213,7 @@ html;
 html;
                 $result = send_email_qq($data['user_email'], '新用户注册', $str);
                 if ($result['error'] == 0) {
-                    Db::table('resty_task_list')->where('user_email', $data['user_email'])->update(['status'=>1,'email_status'=>1]);
+                    Db::table('resty_task_list')->where('user_email', $data['user_email'])->update(['status' => 1, 'email_status' => 1]);
                 }
                 sleep(2);
             }

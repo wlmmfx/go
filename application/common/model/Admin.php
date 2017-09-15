@@ -121,7 +121,7 @@ class Admin extends BaseModel
      * @param $data
      * @return array
      */
-    public function emailRegister($data, $scene)
+    public function emailRegister($data)
     {
         // 1 验证数据
         $validate = new Validate([
@@ -150,23 +150,13 @@ class Admin extends BaseModel
             'loginip' => "127.0.0.1",
         ])->save();
         if (!$res) return ['valid' => 0, 'msg' => "数据库添加数据失败"];
-        // 4 发送邮件
-        $emailSendDomain = $_SERVER["HTTP_HOST"];
-        $requestUri = $_SERVER["REQUEST_URI"];
-        $checkstr = base64_encode($data['email']);
-        $auth_key = get_auth_key($data['email']);
-        $link = "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
-        if ($scene == "frontend") $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkstr&auth_key={$auth_key}";
-        $str = <<<html
-            您好！<p></p>
-            感谢您在Tinywan世界注册帐户！<p></p>
-			帐户需要激活才能使用，赶紧激活成为Tinywan家园的正式一员吧:)<p></p>
-            点击下面的链接立即激活帐户(或将网址复制到浏览器中打开):<p></p>
-			$link
-html;
-        $data["str"] = $str;
-        $result = send_email($data["email"], '物联网智能数据 帐户激活邮件--', $str);
-        if ($result['error'] == 1) return ['valid' => 0, 'msg' => "邮件发送失败，请联系管理员"];
+        // 4 放入邮件队列
+        $taskData['task_type'] = 2;
+        $taskData['status'] = 0;
+        $taskData['email_type'] = 1;
+        $taskData['email_scene'] = 2;
+        $taskData['user_email'] = $data['email'];
+        Db::table('resty_task_list')->insert($taskData);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 
@@ -176,7 +166,7 @@ html;
      * @param $data
      * @return array
      */
-    public function emailRegisterUrlValid($data, $scene)
+    public function emailRegisterUrlValid($data)
     {
         $email = base64_decode($data['checkstr']);
         // 签名验证
@@ -287,7 +277,7 @@ html;
      * @param $data
      * @return array
      */
-    public function checkEmailUrlValid($data,$scene)
+    public function checkEmailUrlValid($data)
     {
         // 1 检查url地址有效性
         $email = base64_decode($data['checkstr']);

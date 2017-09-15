@@ -61,7 +61,7 @@ class Login extends Controller
      */
     public function emailRegister()
     {
-        $res = (new Admin())->emailRegister(input("post."),"backend");
+        $res = (new Admin())->emailRegister(input("post."));
         if (!$res["valid"]) {
             //密码验证、邮箱发送成功
             $this->success($res['msg'], "backend/login/login");

@@ -34,6 +34,7 @@ class Login extends Controller
      */
     public function login(Request $request)
     {
+
         //临时关闭当前模板的布局功能
         $this->view->engine->layout(false);
         //1 验证数据

@@ -499,3 +499,16 @@ function send_dayu_sms($tel, $type, $data)
     return $resp;
 }
 
+/**
+ * -------------------------------------------------方法注入------------------------------------------------------
+ */
+
+// 通过hook方法注入动态方法
+\think\Request::hook('user','getUserInfo');
+
+//根据$userId获取用户信息
+function getUserInfo(\think\Request $request, $userId)
+{
+    // 根据$userId获取用户信息
+    return \think\Db::table('resty_open_user')->where('id',$userId)->find();
+}

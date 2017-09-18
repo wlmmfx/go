@@ -40,6 +40,7 @@ class Base extends Controller
         '2004' => '用户账号被禁用'
     ];
 
+
     /**
      * 初始化操作
      * @return bool

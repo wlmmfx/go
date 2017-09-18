@@ -12,14 +12,28 @@
 namespace app\common\controller;
 
 use app\common\library\Auth;
+use think\Hook;
+use think\Request;
 
 class BaseBackend extends Base
 {
-    /**
-     * 权限实例
-     * @var
-     */
+    // 权限实例
     protected $auth;
+
+    // 钩子获取角色
+    protected $role;
+
+    //构造方法
+    public function __construct(Request $request = null)
+    {
+        // 添加钩子
+        $result = Hook::listen('controller_init',$this,$request,true);
+        if ($result) {
+            // 当前角色名
+            $this->role = $result;
+        }
+        parent::__construct($request);
+    }
 
     protected function _initialize()
     {

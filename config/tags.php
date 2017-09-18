@@ -44,5 +44,8 @@ return [
             return true;
         }
         */
-    ]
+    ],
+    'controller_init'	=>	[
+        '\app\common\behavior\Check',
+    ],
 ];

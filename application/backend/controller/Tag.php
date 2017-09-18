@@ -16,7 +16,7 @@ class Tag extends BaseBackend
 
     public function index()
     {
-        $this->assign('tags', db('tag')->select());
+        $this->assign('tags', db('tag')->where('deleted',0)->select());
         return $this->fetch();
     }
 
@@ -32,5 +32,22 @@ class Tag extends BaseBackend
                 exit;
             }
         }
+    }
+
+    /**
+     * 删除操作
+     * @return \think\response\Json
+     */
+    public function del()
+    {
+        if ($this->request->isAjax()) {
+            $id = input('post.id');
+            $res = $this->db->del($id);
+            if ($res['valid']) {
+                return json(['code' => 200, 'msg' => $res["msg"]]);
+            }
+            return json(['code' => 500, 'msg' => $res["msg"]]);
+        }
+        return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
 }

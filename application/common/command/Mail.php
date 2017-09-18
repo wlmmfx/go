@@ -44,7 +44,6 @@ class Mail extends Command
      */
     protected function sendAllByMsgType()
     {
-        session('user_mobile_code123', 'user_mobile_code:');
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
             foreach ($res as $msg) {

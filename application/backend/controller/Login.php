@@ -14,7 +14,9 @@ namespace app\backend\controller;
 
 use app\common\model\Admin;
 use Faker\Factory;
+use think\captcha\Captcha;
 use think\Controller;
+use think\Db;
 use think\Request;
 
 class Login extends Controller
@@ -25,6 +27,50 @@ class Login extends Controller
     public function testQueue()
     {
 
+    }
+
+    /*
+     * 异步验证账号
+    */
+    public function checkUser()
+    {
+        $email = input('post.email');
+        $result = Db::table('resty_user')->where('email', $email)->find();
+        //如果不存在，则可以创建，也就是返回的是true
+        if (!$result) {
+            echo 'false';
+        } else {
+            echo 'true';
+        }
+        exit();
+    }
+
+    /*
+     * 异步验证密码
+    */
+    public function checkPwd()
+    {
+        $email = input('post.email');
+        $password = input('post.password');
+        $result = Db::table('resty_user')->where('email', $email)->find();
+        if (md5($password) != $result['password']) {
+            echo 'false';
+        } else {
+            echo 'true';
+        }
+        exit();
+    }
+
+    // 检测输入的验证码是否正确，$code为用户输入的验证码字符串，$id多个验证码标识
+    public function checkVerify()
+    {
+        $code = input('post.code');
+        if (captcha_check($code)) {
+            echo 'true';
+        } else {
+            echo 'false';
+        }
+        exit();
     }
 
     /**
@@ -77,7 +123,7 @@ class Login extends Controller
     public function emailRegisterUrlValid(Request $request)
     {
         if ($request->isGet()) {
-            $res = (new Admin())->emailRegisterUrlValid(input("get."),"backend");
+            $res = (new Admin())->emailRegisterUrlValid(input("get."), "backend");
             if ($res["valid"]) {
                 //success 把目前的邮箱地址保存在session中
                 $this->success($res['msg'], "backend/entry/index");
@@ -93,7 +139,7 @@ class Login extends Controller
      */
     public function forgotPassword()
     {
-        $res = (new Admin())->checkSendEmail(input("post."),"backend");
+        $res = (new Admin())->checkSendEmail(input("post."), "backend");
         if (!$res["valid"]) {
             //密码验证、邮箱发送成功
             $this->success($res['msg'], "backend/login/login");
@@ -128,7 +174,7 @@ class Login extends Controller
     public function reSetPassword(Request $request)
     {
         if ($request->isPost()) {
-            $res = (new Admin())->reSetPassword(input("post."),"backend");
+            $res = (new Admin())->reSetPassword(input("post."), "backend");
             if ($res['valid']) {
                 //success
                 $this->success($res['msg'], "backend/entry/index");

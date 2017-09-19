@@ -31,11 +31,12 @@
     <link rel="stylesheet" href="__CSS__/ace-ie.min.css"/>
     <![endif]-->
     <style type="text/css">
-        .login-layout{
-            background-image:URL("__STATIC__/4.jpg");
+        .login-layout {
+            background-image: URL("__STATIC__/4.jpg");
         }
-        .login-layout .widget-box{
-            box-shadow:5px 5px 5px #151010;
+
+        .login-layout .widget-box {
+            box-shadow: 5px 5px 5px #151010;
         }
     </style>
     <!-- inline styles related to this page -->
@@ -76,24 +77,25 @@
 
                                     <div class="space-6"></div>
 
-                                    <form action="" method="post">
+                                    <form action="" method="post" id="loginform">
                                         <fieldset>
                                             <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="邮箱" name="email"/>
-															<i class="icon-user"></i>
-														</span>
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="text" class="form-control email" placeholder="邮箱"
+                                                           name="email"/>
+                                                    <i class="icon-user"></i>
+                                                </span>
                                             </label>
 
                                             <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="密码" name="password"/>
-															<i class="icon-lock"></i>
-														</span>
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password" class="form-control password"
+                                                           placeholder="密码" name="password"/>
+                                                    <i class="icon-lock"></i>
+                                                </span>
                                             </label>
                                             <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
+														<span class="block input-icon input-icon-right verifyCode">
                                                             <img src="{:captcha_src()}" alt="captcha" onclick="this.src=this.src+'?'+Math.random()"/>
 														</span>
                                             </label>
@@ -195,7 +197,8 @@
                                             </label>
 
                                             <div class="clearfix">
-                                                <button type="submit" class="width-100 pull-right btn btn-sm btn-danger">
+                                                <button type="submit"
+                                                        class="width-100 pull-right btn btn-sm btn-danger">
                                                     <i class="icon-lightbulb"></i>
                                                     提交
                                                 </button>
@@ -320,6 +323,93 @@
         jQuery('.widget-box.visible').removeClass('visible');
         jQuery('#' + id).addClass('visible');
     }
+</script>
+<script src="__JS__/jquery-1.10.2.min.js"></script>
+<script src="__COMMON__/js/jquery/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log('---------' + $(".code").val())
+        $("#loginform").validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                    //异步检测账号是否存在
+                    remote: {
+                        url: "{:url('backend/login/checkUser')}",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            email: function () {
+                                return $(".email").val();
+                            }
+                        }
+                    }
+                },
+                password: {
+                    required: true,
+                    remote: {
+                        url: "{:url('backend/login/checkPwd')}",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            password: function () {
+                                return $(".password").val();
+                            },
+                            email: function () {
+                                return $(".email").val();
+                            }
+                        }
+                    }
+                },
+//                code: {
+//                    required: true,
+//                    remote: {
+//                        url: "{:url('backend/login/checkVerify')}",
+//                        type: 'post',
+//                        dataType: 'json',
+//                        data: {
+//                            code: function () {
+//                                console.log('---------' + $(".email").val())
+//                                console.log('---------' + $(".password").val())
+//                                console.log('---------' + $(".verifyCode").html())
+//                                return true;
+//                            }
+//                        }
+//                    }
+//                }
+
+            },
+            messages: {
+                email: {
+                    required: '用户名或者邮箱不能为空',
+                    email: "请输入有效电子邮件",
+                    remote: '用户名不存在'
+                },
+                password: {
+                    required: '密码不能为空',
+                    remote: '密码不正确'
+                },
+                code: {
+                    required: '验证码不能为空',
+                    remote: '验证码不正确'
+                }
+            }
+        });
+        $.validator.addMethod("check_name", function (value, element, params) {
+            var str = /^[A-Za-z]+$/;
+            return this.optional(element) || (str.test(value));
+        }, "必须为英文字母组成");
+        $.validator.addMethod("check_num", function (value, element, params) {
+            var str = /^\d+(\.\d+)?(\.\d+)?(\.\d+)?$/;
+            return this.optional(element) || (str.test(value));
+        }, "版本号格式不正确");
+    });
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('#loginbox').show();
+        }, 1000)
+    })
 </script>
 </body>
 </html>

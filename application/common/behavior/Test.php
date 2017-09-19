@@ -4,32 +4,28 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  DateTime: 2017/9/18 17:23
+ * |  DateTime: 2017/9/19 9:37
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
 
-namespace app\backend\controller;
+namespace app\common\behavior;
 
 
-use app\common\controller\BaseBackend;
-use app\common\library\Auth;
-
-class Demo extends BaseBackend
+class Test
 {
-    public function index()
+    public function appInit()
     {
-        return '当前用户角色：' . $this->role;
+        echo 'app_init test 这里可以项目自动安装的处理<br/>';
     }
 
-    public function test()
+    public function appBegin()
     {
-        return 'run index 11<br/>';
+        echo 'app_begin test<br/>';
     }
 
-    public function getRole()
+    public function sayHello($request)
     {
-        $auth = new Auth();
-        halt($auth->getGroups('178'));
+        echo 'say hello ' . $request->module() . '!<br/>';
     }
 }

@@ -19,8 +19,8 @@ class LinuxShell extends BaseBackend
 {
     const SERVER_USER_NAME = "www";
     const SERVER_AUTH = "12312";
-    const SERVER_IP = "139.224.239.21";
-    const WS_SERVER_PORT = "8081";
+    const SERVER_IP = "websocket.tinywan.top";
+    const WS_SERVER_PORT = "62800";
 
     public function _initialize()
     {

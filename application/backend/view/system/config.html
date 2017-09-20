@@ -49,7 +49,7 @@
                 <!-- 基本配置 -->
                 <div id="basic-config" class="tab-pane in active">
                     <!-- PAGE CONTENT BEGINS -->
-                    <form action="{:url('backend/system/basicconfig')}" method="post" class="form-horizontal"
+                    <form action="" method="post" class="form-horizontal"
                           role="form">
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
@@ -59,21 +59,21 @@
                             <tr>
                                 <td width='10%' align='right'>网站域名：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='webdomain'
+                                    <input type="text" class="col-sm-6" name='webdomain' id="web-domain"
                                            value='{$Think.config.webinfo.WEBDOMAIN}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width='10%' align='right'>网站名称：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='webname'
+                                    <input type="text" class="col-sm-6" name='webname' id="web-name"
                                            value='{$Think.config.webinfo.WEBNAME}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>网站关键词：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='keywords'
+                                    <input type="text" class="col-sm-6" name='keywords' id="keywords"
                                            value='{$Think.config.webinfo.KEYWORDS}' class='len400'/>
                                 </td>
                             </tr>
@@ -127,7 +127,8 @@
 
                             <tr>
                                 <td colspan='2' align='center' height='60'>
-                                    <input type="submit" value='保存' class='btn btn-success'/>
+                                    <a type="button" class="btn btn-success basic-config-hander"
+                                       style="width: 75px">保存</a>
                                 </td>
                             </tr>
                         </table>
@@ -153,11 +154,13 @@
                                 <td>
                                     <label for="o1">
                                         <input type="radio" id='app_status1' name='app_status' value='production' {if
-                                               condition="$Think.config.app_status == 'production'" } checked='checked' {/if}/>&nbsp;生产
+                                               condition="$Think.config.app_status == 'production'" } checked='checked'
+                                               {/if}/>&nbsp;生产
                                     </label>&nbsp;&nbsp;
                                     <label for="o1">
                                         <input type="radio" id='app_status2' name='app_status' value='development' {if
-                                               condition="$Think.config.app_status == 'development'" }checked='checked' {/if}/>&nbsp;开发
+                                               condition="$Think.config.app_status == 'development'" }checked='checked'
+                                               {/if}/>&nbsp;开发
                                     </label>&nbsp;&nbsp;
                                     <label for="o1">
                                         <input type="radio" id='app_status3' name='app_status' value='office' {if
@@ -188,25 +191,29 @@
                             <tr>
                                 <td width='10%' align='right'>存储方式：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='type'  disabled="disabled" value='{$Think.config.session.type}'/>
+                                    <input type="text" class="col-sm-6" name='type' disabled="disabled"
+                                           value='{$Think.config.session.type}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>主机：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='host' value='{$Think.config.session.host}' class='len400'/>
+                                    <input type="text" class="col-sm-6" name='host' value='{$Think.config.session.host}'
+                                           class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>端口号：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='port' value='{$Think.config.session.port}' class='len400'/>
+                                    <input type="text" class="col-sm-6" name='port' value='{$Think.config.session.port}'
+                                           class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>密码：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='password' value='{$Think.config.session.password}' class='len400'/>
+                                    <input type="text" class="col-sm-6" name='password'
+                                           value='{$Think.config.session.password}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
@@ -250,50 +257,60 @@
                             <tr>
                                 <td align='right'>开关：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_on' value='{$Think.config.auth_config.auth_on}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_on'
+                                           value='{$Think.config.auth_config.auth_on}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width='10%' align='right'>表前缀：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='db_prefix' value='{$Think.config.auth_config.db_prefix}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='db_prefix'
+                                           value='{$Think.config.auth_config.db_prefix}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>auth_type：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_type' value='{$Think.config.auth_config.auth_type}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_type'
+                                           value='{$Think.config.auth_config.auth_type}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>auth_group：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_group' value='{$Think.config.auth_config.auth_group}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_group'
+                                           value='{$Think.config.auth_config.auth_group}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>auth_group_access：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_group_access' value='{$Think.config.auth_config.auth_group_access}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_group_access'
+                                           value='{$Think.config.auth_config.auth_group_access}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>auth_rule：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_rule' value='{$Think.config.auth_config.auth_rule}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_rule'
+                                           value='{$Think.config.auth_config.auth_rule}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>auth_user：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='auth_user' value='{$Think.config.auth_config.auth_user}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='auth_user'
+                                           value='{$Think.config.auth_config.auth_user}' class='len400'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td align='right'>open_auth：</td>
                                 <td>
-                                    <span class="label label-lg label-warning"><i class="icon-warning-sign bigger-120"></i> 多个权限之间用","分隔</span><p></p>
-                                    <textarea style="font-size: 16px;" name="open_auth" id="" class="col-sm-3" cols="30" rows="10">{$Think.config.auth_config.open_auth|implode=','}</textarea>
+                                    <span class="label label-lg label-warning"><i
+                                            class="icon-warning-sign bigger-120"></i> 多个权限之间用","分隔</span>
+                                    <p></p>
+                                    <textarea style="font-size: 16px;" name="open_auth" id="" class="col-sm-3" cols="30"
+                                              rows="10">{$Think.config.auth_config.open_auth|implode=','}</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -490,3 +507,57 @@
         </div>
     </div><!-- /span -->
 </div><!-- /row -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Success before include CommonJS
+        function successShow($msg) {
+            $("#auth-image").attr('src', '__COMMON__/images/success.svg');
+            $(".auth-msg").html($msg);
+            $("#authHanderModal").modal("show");
+        }
+
+        // Fail before include CommonJS
+        function failShow($msg) {
+            $(".modal-body").css("color", "red");
+            $("#auth-image").attr('src', '__COMMON__/images/error.svg');
+            $(".auth-msg").html($msg);
+            $("#authHanderModal").modal("show");
+        }
+
+        // 基本信息修改
+        $('body').delegate('.basic-config-hander', 'click', function () {
+            var $url = "{:url('backend/system/basicconfig')}";
+            var $_data = {
+                'webdomain': $("#web-domain").val(),
+                'webname': $("#web-name").val(),
+                'keywords': $("#keywords").val(),
+                'discription': $("#discription").val(),
+                'copy': $("#copy").val(),
+                'record': $("#record").val(),
+                'regis_on': $('input:radio[name=regis_on]:checked').val(),
+                'web_state': $("input:radio[name=web_state]:checked").val(),
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    if ($response.code == 200) {
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+        // 有时间继续修改
+    });
+</script>

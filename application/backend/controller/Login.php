@@ -30,9 +30,25 @@ class Login extends Controller
     }
 
     /*
-     * 异步验证账号
+     * 异步注册验证账号
     */
-    public function checkUser()
+    public function registerCheckUser()
+    {
+        $email = input('post.email');
+        $result = Db::table('resty_user')->where('email', $email)->find();
+        //如果该邮箱已经被注册，则返回true
+        if ($result) {
+            echo 'false';
+        } else {
+            return 'true';
+        }
+        exit();
+    }
+
+    /*
+     * 异步登陆验证账号
+    */
+    public function loginCheckUser()
     {
         $email = input('post.email');
         $result = Db::table('resty_user')->where('email', $email)->find();
@@ -40,7 +56,7 @@ class Login extends Controller
         if (!$result) {
             echo 'false';
         } else {
-            echo 'true';
+            return 'true';
         }
         exit();
     }
@@ -48,7 +64,7 @@ class Login extends Controller
     /*
      * 异步验证密码
     */
-    public function checkPwd()
+    public function loginCheckPwd()
     {
         $email = input('post.email');
         $password = input('post.password');
@@ -62,7 +78,7 @@ class Login extends Controller
     }
 
     // 检测输入的验证码是否正确，$code为用户输入的验证码字符串，$id多个验证码标识
-    public function checkVerify()
+    public function loginCheckVerify()
     {
         $code = input('post.code');
         if (captcha_check($code)) {

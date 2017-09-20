@@ -21,6 +21,7 @@
     <!-- fonts -->
 
     <link rel="stylesheet" href="__CSS__/ace-fonts.css"/>
+    <!--<link rel="stylesheet" href="__COMMON__/css/validation.css"/>-->
 
     <!-- ace styles -->
 
@@ -37,6 +38,12 @@
 
         .login-layout .widget-box {
             box-shadow: 5px 5px 5px #151010;
+        }
+
+        label.error {
+            color: #EA5200;
+            padding-top: 5px;
+            margin-bottom: -5px;
         }
     </style>
     <!-- inline styles related to this page -->
@@ -90,13 +97,13 @@
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
                                                     <input type="password" class="form-control password"
-                                                           placeholder="密码" name="password"/>
+                                                           placeholder="密码" name="password" minlength="6" maxlength="32"/>
                                                     <i class="icon-lock"></i>
                                                 </span>
                                             </label>
                                             <label class="block clearfix">
-														<span class="block input-icon input-icon-right verifyCode">
-                                                            <img src="{:captcha_src()}" alt="captcha" onclick="this.src=this.src+'?'+Math.random()"/>
+														<span class="block input-icon input-icon-right">
+                                                            <img src="{:captcha_src()}" alt="captcha" class="verifyCode" onclick="this.src=this.src+'?'+Math.random()"/>
 														</span>
                                             </label>
 
@@ -127,28 +134,28 @@
                                         </fieldset>
                                     </form>
 
-                                    <div class="social-or-login center">
-                                        <span class="bigger-110">第三方登录</span>
-                                    </div>
+                                    <!--<div class="social-or-login center">-->
+                                        <!--<span class="bigger-110">第三方登录</span>-->
+                                    <!--</div>-->
 
-                                    <div class="social-login center">
-                                        <a class="btn btn-danger">
-                                            <i class="icon-weibo"></i>
-                                        </a>
+                                    <!--<div class="social-login center">-->
+                                        <!--<a class="btn btn-danger">-->
+                                            <!--<i class="icon-weibo"></i>-->
+                                        <!--</a>-->
 
-                                        <a class="btn btn-info">
-                                            <i class="icon-apple"></i>
-                                        </a>
+                                        <!--<a class="btn btn-info">-->
+                                            <!--<i class="icon-apple"></i>-->
+                                        <!--</a>-->
 
-                                        <a class="btn btn-primary">
-                                            <i class="icon-windows"></i>
-                                        </a>
+                                        <!--<a class="btn btn-primary">-->
+                                            <!--<i class="icon-windows"></i>-->
+                                        <!--</a>-->
 
-                                        <a class="btn btn-success">
-                                            <i class="icon-comments"></i>
-                                        </a>
+                                        <!--<a class="btn btn-success">-->
+                                            <!--<i class="icon-comments"></i>-->
+                                        <!--</a>-->
 
-                                    </div>
+                                    <!--</div>-->
                                 </div><!-- /widget-main -->
 
                                 <div class="toolbar clearfix">
@@ -228,12 +235,12 @@
                                     <div class="space-6"></div>
                                     <p>输入您的详细信息以开始: </p>
 
-                                    <form action="/backend/login/emailRegister" method="post" class="form-horizontal">
+                                    <form action="/backend/login/emailRegister" method="post" class="form-horizontal" id="registerform">
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"
-                                                                   placeholder="请输入邮箱" name="email"/>
+															<input type="text" class="form-control register-email"
+                                                                   placeholder="请输入邮箱" name="email" id="email"/>
 															<i class="icon-envelope"></i>
 														</span>
                                             </label>
@@ -241,7 +248,7 @@
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" class="form-control"
-                                                                   placeholder="密码" name="password"/>
+                                                                   placeholder="密码" name="password" id="password"/>
 															<i class="icon-lock"></i>
 														</span>
                                             </label>
@@ -249,13 +256,13 @@
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" class="form-control"
-                                                                   placeholder="再次输入密码" name="repassword"/>
+                                                                   placeholder="再次输入密码" name="repassword" id="repassword"/>
 															<i class="icon-retweet"></i>
 														</span>
                                             </label>
 
                                             <label class="block">
-                                                <input type="checkbox" class="ace"/>
+                                                <input type="checkbox" class="ace checkbox" id="agree" name="agree"/>
                                                 <span class="lbl">
 															我同意
 															<a href="#">该网站用户注册协议</a>
@@ -326,9 +333,11 @@
 </script>
 <script src="__JS__/jquery-1.10.2.min.js"></script>
 <script src="__COMMON__/js/jquery/jquery.validate.min.js"></script>
+<script src="__COMMON__/js/jquery/messages_zh.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        console.log('---------' + $(".code").val())
+        console.log('-----registerform----' + $(".code").val())
+        // registerform
         $("#loginform").validate({
             rules: {
                 email: {
@@ -336,7 +345,7 @@
                     email: true,
                     //异步检测账号是否存在
                     remote: {
-                        url: "{:url('backend/login/checkUser')}",
+                        url: "{:url('backend/login/loginCheckUser')}",
                         type: 'post',
                         dataType: 'json',
                         data: {
@@ -349,7 +358,7 @@
                 password: {
                     required: true,
                     remote: {
-                        url: "{:url('backend/login/checkPwd')}",
+                        url: "{:url('backend/login/loginCheckPwd')}",
                         type: 'post',
                         dataType: 'json',
                         data: {
@@ -365,15 +374,15 @@
 //                code: {
 //                    required: true,
 //                    remote: {
-//                        url: "{:url('backend/login/checkVerify')}",
+//                        url: "{:url('backend/login/loginCheckVerify')}",
 //                        type: 'post',
 //                        dataType: 'json',
 //                        data: {
 //                            code: function () {
 //                                console.log('---------' + $(".email").val())
 //                                console.log('---------' + $(".password").val())
-//                                console.log('---------' + $(".verifyCode").html())
-//                                return true;
+//                                console.log('---------' + $(".verifyCode").attr('src'))
+//                                return $(".verifyCode").attr('src');
 //                            }
 //                        }
 //                    }
@@ -384,7 +393,7 @@
                 email: {
                     required: '用户名或者邮箱不能为空',
                     email: "请输入有效电子邮件",
-                    remote: '用户名不存在'
+                    remote: '用户名或者邮箱不存在'
                 },
                 password: {
                     required: '密码不能为空',
@@ -396,6 +405,56 @@
                 }
             }
         });
+
+        $("#registerform").validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                    //异步检测账号是否存在
+                    remote: {
+                        url: "{:url('backend/login/registerCheckUser')}",
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            email: function () {
+                                return $(".register-email").val();
+                            }
+                        }
+                    }
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 20
+                },
+                repassword: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#password"
+                },
+                agree: "required"
+
+            },
+            messages: {
+                email: {
+                    required: '邮箱不能为空',
+                    email: "请输入有效电子邮件",
+                    remote: '该邮箱已经被注册'
+                },
+                password: {
+                    required: '密码不能为空',
+                    minlength: "密码长度不能小于 6 个字母",
+                    maxlength: "密码长度不能大于 20 个字母"
+                },
+                repassword: {
+                    required: "请输入密码",
+                    minlength: "密码长度不能小于 6 个字母",
+                    equalTo: "两次密码输入不一致"
+                },
+            },
+            agree: "请接受我们的声明",
+        });
         $.validator.addMethod("check_name", function (value, element, params) {
             var str = /^[A-Za-z]+$/;
             return this.optional(element) || (str.test(value));
@@ -405,11 +464,6 @@
             return this.optional(element) || (str.test(value));
         }, "版本号格式不正确");
     });
-    $(document).ready(function () {
-        setTimeout(function () {
-            $('#loginbox').show();
-        }, 1000)
-    })
 </script>
 </body>
 </html>

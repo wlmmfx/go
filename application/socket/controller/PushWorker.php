@@ -165,6 +165,4 @@ class PushWorker extends Server
     {
         echo "error $code $msg\n";
     }
-
-
 }

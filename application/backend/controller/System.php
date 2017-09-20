@@ -31,9 +31,9 @@ class System extends BaseBackend
         // 以下将一个数组转换成一个字符串
         $str = "<?php\r\n return " . var_export($config, true) . ";\r\n?>";
         if (file_put_contents($file, $str)) {
-            return $this->success('系统信息修改成功');
+            return json(['code' => 200, 'msg' => '系统信息修改成功']);
         }
-        return $this->success('系统信息修改失败');
+        return json(['code' => 500, 'msg' => '系统信息修改失败']);
     }
 
     /**

@@ -32,5 +32,29 @@
 <script src="__JS__/ace-elements.min.js"></script>
 <script src="__JS__/ace.min.js"></script>
 
+<!-- 权限警告模态框（Modal） -->
+<div class="modal fade" id="authHanderModal" tabindex="-1" role="dialog" aria-labelledby="authHanderModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title"><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h3>
+                    <img id="auth-image" src="__COMMON__/images/info.svg" alt="" width="60"/>
+                    <span class="auth-msg"></span>
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-success" data-dismiss="modal" style="width: 75px">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

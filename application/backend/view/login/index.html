@@ -102,8 +102,8 @@
                                                 </span>
                                             </label>
                                             <label class="block clearfix">
-														<span class="block input-icon input-icon-right verifyCode">
-                                                            <img src="{:captcha_src()}" alt="captcha" onclick="this.src=this.src+'?'+Math.random()"/>
+														<span class="block input-icon input-icon-right">
+                                                            <img src="{:captcha_src()}" alt="captcha" class="verifyCode" onclick="this.src=this.src+'?'+Math.random()"/>
 														</span>
                                             </label>
 
@@ -381,8 +381,8 @@
 //                            code: function () {
 //                                console.log('---------' + $(".email").val())
 //                                console.log('---------' + $(".password").val())
-//                                console.log('---------' + $(".verifyCode").html())
-//                                return true;
+//                                console.log('---------' + $(".verifyCode").attr('src'))
+//                                return $(".verifyCode").attr('src');
 //                            }
 //                        }
 //                    }

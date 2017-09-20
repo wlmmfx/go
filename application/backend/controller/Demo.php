@@ -12,10 +12,12 @@
 namespace app\backend\controller;
 
 
+use app\common\controller\Base;
 use app\common\controller\BaseBackend;
 use app\common\library\Auth;
+use think\Route;
 
-class Demo extends BaseBackend
+class Demo extends Base
 {
     public function index()
     {
@@ -24,7 +26,19 @@ class Demo extends BaseBackend
 
     public function test()
     {
+        $method = $this->request->method();
+// 获取当前请求类型的路由规则
         return 'run index 11<br/>';
+    }
+
+    public function hello($name)
+    {
+        return 'Hello,' . $name . '!';
+    }
+
+    public function insert($id)
+    {
+        return 'insert,' . $id . '!!!';
     }
 
     public function getRole()

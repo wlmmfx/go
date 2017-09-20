@@ -21,7 +21,7 @@ class Index extends Controller
 {
     public function index()
     {
-        return "this is api module";
+        return "This is api module";
     }
 
     public function test()

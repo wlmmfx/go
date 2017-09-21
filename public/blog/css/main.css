@@ -1290,6 +1290,7 @@ body {
     text-align: justify;
   }
 }
+
 .posts-expand .post-body h2,
 .posts-expand .post-body h3,
 .posts-expand .post-body h4,
@@ -2021,7 +2022,7 @@ ul li {
   display: block;
   overflow: hidden;
   margin: 0 auto;
-  width: 75%;
+  width: 100%;
 }
 @media (max-width: 767px) {
   .logo-line-before,
@@ -2134,7 +2135,7 @@ ul li {
   display: none;
 }
 .posts-expand .post {
-  margin-top: 120px;
+  margin-top: 60px;
 }
 .posts-expand .post:first-child {
   margin-top: 0;

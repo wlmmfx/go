@@ -13,6 +13,11 @@ return [
         "__CSS__" => "/blog/css",
         "__IMAGES__" => "/blog/images",
         "__COMMON__" => "/common"
+    ],
+    'template'               => [
+        //全局配置方式开启
+        'layout_on'     =>  true,
+        'layout_name'   =>  'layout',
     ]
 
 ];

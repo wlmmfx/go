@@ -1,89 +1,3 @@
-<!doctype html>
-<html class="theme-next use-motion theme-next-mist">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <meta http-equiv="Cache-Control" content="no-transform"/>
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="__CSS__/main.css"/>
-    <link rel="stylesheet" type="text/css" href="__CSS__/df5ba3e7faab43c5baaa6a95207b42a1.css"/>
-    <link rel="stylesheet" type="text/css" href="__CSS__/jquery.fancybox.css"/>
-    <link rel="stylesheet" type="text/css" href="__CSS__/font-awesome.min.css"/>
-    <script type="text/javascript" id="hexo.configuration">
-        var CONFIG = {
-            scheme: 'Mist',
-            motion: true,
-            sidebar: 'always'
-        };
-    </script>
-    <title>{$Think.config.webinfo.WEBNAME}</title>
-    <!-- APlayer Start -->
-    <link rel="stylesheet" type="text/css" href="__CSS__/aplayer.min.css"/>
-    <meta name="description" content="{$Think.config.webinfo.WEBNAME}"/>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-<div class="container one-column page-home">
-    <!--page home-->
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-        <div class="header-inner"><h1 class="site-meta">
-            <span class="logo-line-before"><i></i></span>
-            <a href="https://www.tinywan.top/blogs" class="brand" rel="start">
-              <span class="logo">
-                <i class="icon-next-logo"></i>
-            </span>
-                <span class="site-title">{$Think.config.webinfo.WEBNAME}</span>
-            </a>
-            <span class="logo-line-after"><i></i></span>
-        </h1>
-
-            <div class="site-nav-toggle">
-                <button>
-                    <span class="btn-bar"></span>
-                    <span class="btn-bar"></span>
-                    <span class="btn-bar"></span>
-                </button>
-            </div>
-
-            <nav class="site-nav">
-                <ul id="menu" class="menu menu-left">
-                    <li class="menu-item menu-item-home">
-                        <a href="/blogs" rel="section">
-                            <i class="menu-item-icon"></i> <br/>
-                            首页
-                        </a>
-                    </li>
-                    <li class="menu-item menu-item-home">
-                        <a href="https://www.tinywan.top/blogs" rel="section">留言</a>
-                    </li>
-                    <li class="menu-item menu-item-home">
-                        <a href="https://www.tinywan.top/blogs" rel="section">邻居</a>
-                    </li>
-                    <li class="menu-item menu-item-home">
-                        <a href="https://www.tinywan.top/blogs" rel="section">归档</a>
-                    </li>
-                    <li class="menu-item menu-item-home">
-                        <a href="https://www.tinywan.top/blogs" rel="section">关于</a>
-                    </li>
-                </ul>
-
-                <div class="site-search">
-
-                    <form class="site-search-form">
-                        <input type="text" id="st-search-input" name="s" class="st-search-input st-default-search-input"
-                               autocomplete="off" autocorrect="off" autocapitalize="off" value=""/>
-                    </form>
-
-                </div>
-            </nav>
-        </div>
-    </header>
-
     <main id="main" class="main">
         <div class="main-inner">
             <div id="content" class="content">
@@ -93,13 +7,15 @@
                     <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
                         <header class="post-header">
                             <h1 class="post-title" itemprop="name headline">
-                                <a class="post-title-link" href="{:url('blog/index/detail',['id'=>$vo['id']])}" itemprop="url">
+                                <a class="post-title-link" href="{:url('blog/index/detail',['id'=>$vo['id']])}"
+                                   itemprop="url">
                                     {$vo.title}
                                 </a>
                             </h1>
                             <div class="post-meta">
                                 <span class="post-time">发表于
-                                    <time itemprop="dateCreated" datetime="2017-08-11T10:45:00+00:00" content="1717-08-11">
+                                    <time itemprop="dateCreated" datetime="2017-08-11T10:45:00+00:00"
+                                          content="1717-08-11">
                                         {$vo['create_time']|date="Y-m-d",###} &nbsp; | &nbsp; 浏览量: &nbsp;{$vo['views']}
                                     </time>
                                 </span>
@@ -118,7 +34,7 @@
 
                         <div class="post-body">
                             <p>
-                                {$vo["desc"]|mb_substr=0,128}...
+                                {$vo["desc"]|mb_substr=0,160}...
                             </p>
                             <p class="more">
                                 <a href="{:url('blog/index/detail',['id'=>$vo['id']])}" title="{$vo.title}">
@@ -151,146 +67,3 @@
             </div>
         </div>
 
-        <aside id="sidebar" class="sidebar">
-            <div class="sidebar-inner">
-                <section class="site-overview sidebar-panel sidebar-panel-active">
-                    <div class="site-author motion-element" itemprop="author" itemscope
-                         itemtype="http://schema.org/Person">
-                        <img class="site-author-image" src="__COMMON__/images/tinywan_image.png" height="107"
-                             width="100" alt="{$Think.config.webinfo.WEBNAME}"
-                             itemprop="image"/>
-                        <p class="site-author-name" itemprop="name">{$Think.config.webinfo.WEBNAME}</p>
-                    </div>
-                    <p class="site-description motion-element" itemprop="description">相信自己，贵在坚持</p>
-                    <nav class="site-state motion-element">
-                        <div class="site-state-item site-state-posts">
-                            <a href="#">
-                                <span class="site-state-item-count">{$articleCounts}</span>
-                                <span class="site-state-item-name">日志</span>
-                            </a>
-                        </div>
-
-                        <div class="site-state-item site-state-categories">
-                            <a href="#">
-                                <span class="site-state-item-count">{$categoryCounts}</span>
-                                <span class="site-state-item-name">分类</span>
-                            </a>
-                        </div>
-
-                        <div class="site-state-item site-state-tags">
-                            <a href="#">
-                                <span class="site-state-item-count">{$tagCounts}</span>
-                                <span class="site-state-item-name">标签</span>
-                            </a>
-                        </div>
-                    </nav>
-                    <div class="feed-link motion-element">
-                        <a href="#" rel="alternate">
-                            <i class="menu-item-icon icon-next-feed"></i>
-                            RSS
-                        </a>
-                    </div>
-                    <div class="links-of-author motion-element">
-                    </div>
-
-                    <div class="links-of-author motion-element">
-                        <span class="links-of-author-item">
-                            <a href="https://www.tinywan.top" title="Github" target="_blank">Home</a>
-                        </span>
-                        <span class="links-of-author-item">
-                            <a href="https://www.tinywan.top/blogs" title="Github" target="_blank">Blog</a>
-                        </span>
-                        <span class="links-of-author-item">
-                            <a href="https://github.com/Tinywan" title="Github" target="_blank">Github</a>
-                        </span>
-                    </div>
-                </section>
-
-            </div>
-        </aside>
-
-    </main>
-
-    <footer id="footer" class="footer">
-        <div class="footer-inner">
-            <div class="copyright">
-                <span itemprop="copyrightYear"><a href="{$Think.config.webinfo.WEBDOMAIN}"
-                                                  title="{$Think.config.webinfo.COPY}">{$Think.config.webinfo.COPY}</a></span>
-            </div>
-            <span><a rel="nofollow" href="{$Think.config.webinfo.RECORD}">{$Think.config.webinfo.RECORD}</a></span>
-        </div>
-    </footer>
-    <div class="back-to-top"></div>
-</div>
-<script type="text/javascript" src="__JS__/index.js"></script>
-<script type="text/javascript" src="__JS__/jquery.fancybox.pack.js"></script>
-<script type="text/javascript" src="__JS__/fancy-box.js"></script>
-
-
-<script type="text/javascript" src="__JS__/helpers.js"></script>
-
-<script type="text/javascript" src="__JS__/velocity.min.js"></script>
-<script type="text/javascript" src="__JS__/velocity.ui.min.js"></script>
-
-<script type="text/javascript" src="__JS__/motion.js" id="motion.global"></script>
-
-<script type="text/javascript" src="__JS__/fastclick.min.js"></script>
-
-
-<script type="text/javascript" src="__JS__/lazyload.js"></script>
-
-<script type="text/javascript" src="__JS__/bootstrap.js"></script>
-<!-- 百度分享JS代码 start -->
-<script>window._bd_share_config = {
-    "common": {
-        "bdSnsKey": {},
-        "bdText": "",
-        "bdMini": "2",
-        "bdPic": "",
-        "bdStyle": "0",
-        "bdSize": "16"
-    }, "share": {}
-};
-with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = '/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
-<!-- 百度分享JS代码 end -->
-<!--百度自动推送js-->
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        }
-        else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
-</script>
-<!--站长统计-->
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1260977054'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1260977054' type='text/javascript'%3E%3C/script%3E"));</script>
-
-<!-- APlayer Start -->
-<script type="text/javascript" src="__JS__/aplayer.min.js"></script>
-<script>
-    var len = APlayerOptions.length;
-    for (var i = 0; i < len; i++) {
-        APlayers[i] = new APlayer({
-            element: document.getElementById('player' + APlayerOptions[i]['id']),
-            narrow: false,
-            preload: APlayerOptions[i]['preload'],
-            mutex: APlayerOptions[i]['mutex'],
-            autoplay: APlayerOptions[i]['autoplay'],
-            showlrc: APlayerOptions[i]['showlrc'],
-            music: APlayerOptions[i]['music'],
-            theme: APlayerOptions[i]['theme']
-        });
-        APlayers[i].init();
-    }
-</script>
-<!-- APlayer End -->
-
-</body>
-</html>

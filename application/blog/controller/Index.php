@@ -69,6 +69,7 @@ class Index extends BaseFrontend
      */
     public function prism()
     {
+        $this->view->engine->layout(false);
         return $this->fetch();
     }
 

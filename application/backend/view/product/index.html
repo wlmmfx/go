@@ -1,0 +1,175 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#category-list">
+                        <i class="green icon-home bigger-110"></i>
+                        文章列表
+                    </a>
+                </li>
+
+                <li>
+                    <a data-toggle="tab" href="#category-add">
+                        <i class="green icon-home bigger-110"></i>
+                        文章添加
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div id="category-list" class="tab-pane in active">
+                    <table class="table table-border table-bordered table-bg">
+                        <thead>
+                        <tr class="text-c">
+                            <th>ID</th>
+                            <th>标题</th>
+                            <th>创建时间</th>
+                            <th>所属分类</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name='articles' key='key' item='vo'}
+                            <tr class="text-c">
+                                <td>{$vo["id"]}</td>
+                                <td>{$vo["title"]}</td>
+                                <td>{$vo["create_time"]|date="Y/m/d",###}</td>
+                                <td>{$vo["c_name"]}</td>
+                                <td>
+                                <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
+                                    <button class="btn btn-primary btn-xs">
+                                        <i class="icon-edit"></i>编辑
+                                    </button>
+                                </a>
+                                <a href="{:url('backend/category/del',['id'=>$vo['id']])}">
+                                    <button class="btn btn-danger btn-xs">
+                                        <i class="icon-trash"></i>删除
+                                    </button>
+                                </a>
+
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="category-add" class="tab-pane left">
+                    <form action="{:url('/backend/article/store')}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章标题</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="title" placeholder="文章标题" name="title" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 关键字</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="keyword" placeholder="关键字" name="keyword" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 描述</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="desc" placeholder="描述" name="desc" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 缩略图</label>
+
+                            <div class="col-sm-9">
+                                <input type="file" id="thumb" name="thumb" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 所属栏目</label>
+
+                            <div class="col-sm-9">
+                                <select name="cate_id" id="cate_id">
+                                    {volist name="categorys" id="vo"}
+                                    <option value="{$vo['id']}">{$vo['_name']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 标签</label>
+
+                            <div class="col-sm-9">
+                                <label class="middle">
+                                    {volist name="tags" id="vo"}
+                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
+                                    <span class="lbl"> {$vo['name']}</span>
+                                    {/volist}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-7"> 文章内容 </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="content" id="editor" style="width:1024px;height:500px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->
+
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" charset="utf-8">
+window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+var ue = UE.getEditor('editor',{
+    initialFrameWidth: 1100,   //初始化宽度
+    initialFrameHeight: 500,   //初始化高度
+    serverUrl:"{:url('/backend/article/saveinfo')}"
+});
+
+//$(document).ready(function(){
+//    $("form").submit(function(e){
+//        var tag = $("#tag").val();
+//        console.log("----------------"+tag);
+//        var data = ue.getContent();
+//        console.log(data);
+//        $.ajax({
+//            cache:true,
+//            type:"post",
+//            url:url,
+//            data:{
+//                "title":$("#title").val(),
+//                "cate_id":$("#cate_id").val(),
+//                "tag":$("#tag").val(),
+//                "content":data,
+//            },
+//            async:false,
+//            error:function (request) {
+//                alert("Connection error");
+//            },
+//            success:function (response) {
+//                console.log("success = "+response.code);
+//                console.log("success = "+response.msg);
+//            }
+//        });
+//    });
+//});
+
+</script>

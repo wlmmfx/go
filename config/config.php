@@ -11,13 +11,13 @@ return [
     // 是否开启路由
     'url_route_on'           => true,
     // 设置路由配置文件列表
-    'route_config_file'	=>	['frontend','backend'],
+    'route_config_file'	=>	['frontend','backend','blog'],
     // 域名根，如thinkphp.cn
     'url_domain_root'        => 'tinywan.top',
     // 是否强制使用路由
     // 'url_route_must'         => false
     // 默认模块名
-    'default_module'         => 'frontend',
+    'default_module'         => 'blog',
     // 是否自动转换URL中的控制器和操作名
     'url_convert'            => false,
     'captcha'  => [

@@ -101,23 +101,19 @@ class Admin extends BaseBackend
 
     /**
      * 删除指定资源
-     *
      * @param  int $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete()
     {
-        if (request()->isGet()) {
-            $delAdmin = $this->_db->where(['id' => $id])->setField('deleted', 1);
-            if ($delAdmin !== false) {
-                $this->success("删除成功");
-                exit;
-            } else {
-                $this->error("删除失败");
-                exit;
+        if (request()->isAjax()) {
+            $res = $this->_db->del(input('post.id'));
+            if ($res['valid']) {
+                return json(['code' => 200, 'msg' => $res["msg"]]);
             }
+            return json(['code' => 500, 'msg' => $res["msg"]]);
         }
-        return json(['status' => 403, 'msg' => 'forbidden']);
+        return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
 
     /**

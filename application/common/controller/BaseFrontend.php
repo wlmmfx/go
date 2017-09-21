@@ -20,6 +20,7 @@ class BaseFrontend extends Base
 {
     protected $uuid;
     protected $member_info;
+
     /**
      * 检测是否登录
      * Power by Mikkle
@@ -67,7 +68,7 @@ class BaseFrontend extends Base
      */
     public function setLoginGlobal($member_info = [], $login_code = 0)
     {
-        $set_success = false ;
+        $set_success = false;
         if ($member_info) {
             switch ($this->loginType) {
                 case 1:
@@ -89,13 +90,14 @@ class BaseFrontend extends Base
                         $set_success = true;
                     }
                     break;
-                case 3:case "redis":
-                break;
+                case 3:
+                case "redis":
+                    break;
             }
         }
         if (!$set_success) return false;
         //保存登录记录
-        $this->saveLoginInfo($member_info['uuid'],$login_code);
+        $this->saveLoginInfo($member_info['uuid'], $login_code);
         return true;
     }
 
@@ -103,7 +105,8 @@ class BaseFrontend extends Base
      * 全局退出
      * @return bool
      */
-    protected function logoutGlobal(){
+    protected function logoutGlobal()
+    {
         switch ($this->loginType) {
             case 1:
             case "session":
@@ -132,10 +135,26 @@ class BaseFrontend extends Base
      */
     public function _initialize()
     {
+        // 用户信息统计
         $userInfo = Db::table('resty_open_user')->where('id', session('open_user_id'))->find();
         $this->assign('userInfo', $userInfo);
-        $category = Db::table('resty_category')->select();
-        $this->assign('categorys', $category);
+        // 标签统计
+        $tags = Db::table('resty_tag')
+            ->alias('t')
+            ->join('resty_article_tag at', "t.id = at.tag_id")
+            ->field('t.name,count(at.article_id) as art_num,at.tag_id')
+            ->group('t.id')
+            ->select();
+        $this->assign('tags', $tags);
+        $this->assign('tagCounts', Db::table('resty_tag')->count());
+        // 分类信息
+        $categorys = Db::table('resty_category')->select();
+        $this->assign('categorys', $categorys);
+        $this->assign('categoryCounts', count($categorys));
+        // 文章统计
+        $article = Db::table('resty_article')->select();
+        $this->assign('articles', $article);
+        $this->assign('articleCounts', count($article));
     }
 
 }

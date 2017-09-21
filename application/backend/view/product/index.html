@@ -5,14 +5,14 @@
                 <li class="active">
                     <a data-toggle="tab" href="#category-list">
                         <i class="green icon-home bigger-110"></i>
-                        文章列表
+                        商品列表
                     </a>
                 </li>
 
                 <li>
                     <a data-toggle="tab" href="#category-add">
                         <i class="green icon-home bigger-110"></i>
-                        文章添加
+                        商品添加
                     </a>
                 </li>
 
@@ -24,77 +24,78 @@
                         <thead>
                         <tr class="text-c">
                             <th>ID</th>
-                            <th>标题</th>
-                            <th>创建时间</th>
+                            <th>名称</th>
                             <th>所属分类</th>
+                            <th>编号</th>
+                            <th>价格</th>
+                            <th>时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach name='articles' key='key' item='vo'}
-                            <tr class="text-c">
-                                <td>{$vo["id"]}</td>
-                                <td>{$vo["title"]}</td>
-                                <td>{$vo["create_time"]|date="Y/m/d",###}</td>
-                                <td>{$vo["c_name"]}</td>
-                                <td>
-                                <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
-                                    <button class="btn btn-primary btn-xs">
-                                        <i class="icon-edit"></i>编辑
-                                    </button>
-                                </a>
-                                <a href="{:url('backend/category/del',['id'=>$vo['id']])}">
-                                    <button class="btn btn-danger btn-xs">
-                                        <i class="icon-trash"></i>删除
-                                    </button>
-                                </a>
-
-                                </td>
-                            </tr>
-                        {/foreach}
+                        {volist name='products' id='vo'}
+                        <tr class="text-c">
+                            <td>{$vo.id}</td>
+                            <td>{$vo.pName}</td>
+                            <td>{$vo.cId}</td>
+                            <td><span class="label label-lg label-pink arrowed-right">{$vo.pSn}</span></td>
+                            <td>{$vo.mPrice}</td>
+                            <td>{$vo.pubTime}</td>
+                            <td>
+                            </td>
+                        </tr>
+                        {/volist}
                         </tbody>
                     </table>
                 </div>
 
                 <div id="category-add" class="tab-pane left">
-                    <form action="{:url('/backend/article/store')}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <form class="form-horizontal" role="form" action="{:url('backend/Product/store')}"
+                          enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章标题</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品名称 </label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="title" placeholder="文章标题" name="title" class="col-xs-10 col-sm-5"/>
+                                <input type="text" id="pName" placeholder="商品名称" value="商品名称1"
+                                       class="col-xs-10 col-sm-5" name="pName"/>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 关键字</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品货号 </label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="keyword" placeholder="关键字" name="keyword" class="col-xs-10 col-sm-5"/>
+                                <input type="text" name="pSn" id="pSn" placeholder="商品货号" class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 描述</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品数量 </label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="desc" placeholder="描述" name="desc" class="col-xs-10 col-sm-5"/>
+                                <input type="text" name="pNum" placeholder="商品数量" value="10000"
+                                       class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> 缩略图</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1">商品价格 </label>
 
                             <div class="col-sm-9">
-                                <input type="file" id="thumb" name="thumb" class="col-xs-10 col-sm-5"/>
+                                <input type="text" name="mPrice" placeholder="商品价格" value="100"
+                                       class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-5"> 所属栏目</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品分类 </label>
 
                             <div class="col-sm-9">
-                                <select name="cate_id" id="cate_id">
+                                <select name="cId" id="cId">
                                     {volist name="categorys" id="vo"}
                                     <option value="{$vo['id']}">{$vo['_name']}</option>
                                     {/volist}
@@ -102,27 +103,31 @@
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 标签</label>
+                            <label class="col-sm-3 control-label no-padding-right"> 预览区域 </label>
 
-                            <div class="col-sm-9">
-                                <label class="middle">
-                                    {volist name="tags" id="vo"}
-                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
-                                    <span class="lbl"> {$vo['name']}</span>
-                                    {/volist}
-                                </label>
+                            <div class="col-sm-9" id="js-image">
+
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-7"> 文章内容 </label>
 
+                        <div class="space-4"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> 上传图片 </label>
                             <div class="col-sm-9">
-                                <textarea name="content" id="editor" style="width:1024px;height:500px;"></textarea>
+                                <input type="file" name="photo_upload" id="photo_upload" multiple="true"/>
+                                <input type="hidden" name="file_id" id="file_id">
                             </div>
                         </div>
-                        <div class="form-actions center">
-                            <button type="submit" class="btn btn-success">提交</button>
+
+                        <div class="space-4"></div>
+                        <div class="clearfix form-actions">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    提交
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -132,44 +137,53 @@
     </div><!-- /span -->
 
 </div><!-- /row -->
-
+<script src="__COMMON__/js/uploadify/jquery.uploadify-3.1.min.js"></script>
 <script type="text/javascript">
-    SyntaxHighlighter.all();
-</script>
-<script type="text/javascript" charset="utf-8">
-window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
-var ue = UE.getEditor('editor',{
-    initialFrameWidth: 1100,   //初始化宽度
-    initialFrameHeight: 500,   //初始化高度
-    serverUrl:"{:url('/backend/article/saveinfo')}"
-});
+    $(function ($) {
+        var $cid = $('#cId').val();
+        console.log('cid = '+$cid);
+        var sessionId = "{:session_id()}";
+        var uploaderUrl = "{:url('backend/product/productUploadImage')}";
+        var swfUrl = "__COMMON__/js/uploadify/uploadify.swf";
+        $('#photo_upload').uploadify({
+            'auto': true,//关闭自动上传
+            'removeTimeout': 1,//文件队列上传完成1秒后删除
+            'swf': swfUrl,
+            'uploader': uploaderUrl,
+            'width': 320,//上传按钮样式
+            'height': 100,
+            'buttonImage': "__COMMON__/images/uploadfile.png",  //上传按钮背景图地址
+            //'buttonText': '点击上传商品图片',//设置按钮文本
+            'method': 'post',//方法，服务端可以用$_POST数组获取数据
+            'multi': true,//允许同时上传多张图片
+            'uploadLimit': 6,//一次最多只允许上传10张图片
+            'fileTypeDesc': 'Image Files',//只允许上传图像,选择文件提示文字
+            'fileObjName': 'file',
+            'fileTypeExts': '*.gif; *.jpg; *.png',//限制允许上传的图片后缀
+            'fileSizeLimit': '10048576KB',//限制上传的图片不得超过200KB
+            'formData': {'session_id': sessionId},
+            'onUploadSuccess': function (file, data, response)  //每次成功上传后执行的回调函数，从服务端返回数据到前端
+            {
+                console.log('---------1-------------'+data);
+                var data = JSON.parse(data); //由JSON字符串转换为JSON对象，json转成object
+                console.log('--------2---------------'+data.code);
+                if (data.code == 200) {
+                    var img = "<img src='/uploads/products/" + data.path + "' width='100' style='border: 1px solid #F25D03;' height='100' class='img-rounded'/>";
+                    img = $(img);
+                    img.appendTo($('#js-image'));
+                    $('input[name=file_id]').val(data.fileId);
 
-//$(document).ready(function(){
-//    $("form").submit(function(e){
-//        var tag = $("#tag").val();
-//        console.log("----------------"+tag);
-//        var data = ue.getContent();
-//        console.log(data);
-//        $.ajax({
-//            cache:true,
-//            type:"post",
-//            url:url,
-//            data:{
-//                "title":$("#title").val(),
-//                "cate_id":$("#cate_id").val(),
-//                "tag":$("#tag").val(),
-//                "content":data,
-//            },
-//            async:false,
-//            error:function (request) {
-//                alert("Connection error");
-//            },
-//            success:function (response) {
-//                console.log("success = "+response.code);
-//                console.log("success = "+response.msg);
-//            }
-//        });
-//    });
-//});
-
+                } else {
+                    alert(data.msg);
+                    return false;
+                }
+            },
+            'onQueueComplete': function (queueData) {
+                //上传队列全部完成后执行的回调函数
+                // if(img_id_upload.length>0)
+//                 alert('成功上传的文件有：'+encodeURIComponent(img_id_upload));
+            }
+            // Put your options here
+        });
+    });
 </script>

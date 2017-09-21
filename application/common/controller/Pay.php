@@ -12,7 +12,7 @@
 namespace app\common\controller;
 
 
-class Pay
+class Pay extends Base
 {
 
 }

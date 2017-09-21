@@ -46,4 +46,16 @@ class Demo extends Base
         $auth = new Auth();
         halt($auth->getGroups('178'));
     }
+
+    /**
+     * AJAX请求伪装
+     * https://www.tinywan.top/backend/demo/testAjax?_ajax=1
+     */
+    public function testAjax(){
+        if(request()->isAjax()){
+            halt('11111111');
+        }else{
+            halt('0000000000000');
+        }
+    }
 }

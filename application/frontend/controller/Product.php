@@ -12,7 +12,10 @@
 namespace app\frontend\controller;
 
 
-class Product
+use app\common\controller\BaseFrontend;
+
+class Product extends BaseFrontend
 {
+
 
 }

@@ -12,7 +12,11 @@
 namespace app\backend\controller;
 
 
-class Shop
-{
+use app\common\controller\BaseBackend;
 
+class Shop extends BaseBackend
+{
+    public function index(){
+        return 'shop';
+    }
 }

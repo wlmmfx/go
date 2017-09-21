@@ -41,13 +41,6 @@ class Index extends BaseFrontend
      */
     public function index()
     {
-        $tags = Db::table('resty_tag')
-            ->alias('t')
-            ->join('resty_article_tag at', "t.id = at.tag_id")
-            ->field('t.name,count(at.article_id) as art_num,at.tag_id')
-            ->group('t.id')
-            ->cache('resty_tag', 10)
-            ->select();
         $article = Db::table("resty_article")
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
@@ -64,7 +57,6 @@ class Index extends BaseFrontend
             ->limit(8)
             ->select();
         $this->assign('comments', $comments);
-        $this->assign('tags', $tags);
         $this->assign('list', $article);
         return $this->fetch();
     }

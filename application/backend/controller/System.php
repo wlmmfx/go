@@ -58,7 +58,7 @@ class System extends BaseBackend
     public function developmentConfig()
     {
         $file = CONF_PATH . 'config.php';
-        $develop_config = array_merge(include $file, array_change_key_case($_POST,CASE_LOWER));
+        $develop_config = array_merge(include $file, array_change_key_case($_POST, CASE_LOWER));
         // 以下将一个数组转换成一个字符串
         $str = "<?php\r\n return " . var_export($develop_config, true) . ";\r\n?>";
         if (file_put_contents($file, $str)) {
@@ -73,14 +73,16 @@ class System extends BaseBackend
      */
     public function emailConfig()
     {
-        $file = CONF_PATH . 'extra/email.php';
-        $config = array_merge(include $file, array_change_key_case($_POST, CASE_UPPER));
-        // 以下将一个数组转换成一个字符串
-        $str = "<?php\r\n return " . var_export($config, true) . ";\r\n?>";
-        if (file_put_contents($file, $str)) {
-            return $this->success('系统信息修改成功');
+        if (request()->isPost()) {
+            $file = CONF_PATH . 'extra/email.php';
+            $config = array_merge(include $file, array_change_key_case($_POST, CASE_UPPER));
+            // 以下将一个数组转换成一个字符串
+            $str = "<?php\r\n return " . var_export($config, true) . ";\r\n?>";
+            if (file_put_contents($file, $str)) {
+                return $this->success('修改成功');
+            }
+            return $this->success('修改失败');
         }
-        return $this->success('系统信息修改失败');
     }
 
     /**

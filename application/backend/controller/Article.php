@@ -59,7 +59,7 @@ class Article extends BaseBackend
         $categorys = Arr::tree(db('category')->order('id desc')->select(), 'name', $fieldPri = 'id', $fieldPid = 'pid');
         $this->assign('articles', $articles);
         $this->assign('categorys', $categorys);
-        $this->assign('tags', db('tag')->select());
+        $this->assign('tags', db('tag')->where('deleted',0)->select());
         return $this->fetch();
     }
 

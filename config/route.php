@@ -70,7 +70,7 @@ return [
     "t/:id" => "frontend/index/searchByTagId", // 标签页面：http://test.thinkphp5-line.com/t/3.html
     "c/:id" => "frontend/index/searchByCategoryId", // 根据分类Id查询文章：http://test.thinkphp5-line.com/c/3.html
     // 后台路由配置
-    "tinywan" => "backend/login/login",
+//    "tinywan" => "backend/login/login",
     // 路由别名
     '__alias__' => [
         'user' => 'index/User',

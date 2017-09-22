@@ -11,7 +11,7 @@
 use think\Route;
 
 //注册首页的路由
-Route::get('/','frontend/Index/index');
+Route::get('frontend','frontend/Index/index');
 
 // 注册MISS路由,表示当其他的非法GET请求访问的时候，系统会自动路由重定向到博客首页。
 //Route::miss('/','GET');

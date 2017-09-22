@@ -11,6 +11,7 @@
 
 namespace app\common\model;
 
+use Faker\Factory;
 use think\Model;
 use think\Request;
 
@@ -54,4 +55,16 @@ class BaseModel extends Model
             $model->table('resty_logs')->insert($data);
         });
     }
+
+    /**
+     * 获取随机姓名
+     * @return string
+     * @static
+     */
+    public static function getRandUserName()
+    {
+        $faker = Factory::create($locale = 'zh_CN');
+        return $faker->name;
+    }
+
 }

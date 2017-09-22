@@ -104,10 +104,12 @@
 //            Log("准备连接到聊天服务器 ...");
             try {
                 if ("WebSocket" in window) {
-                    ws = new WebSocket("ws://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
+//                    ws = new WebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
+                    ws = new WebSocket("wss://workerman.tinywan.top:8081/chat/");
                 }
                 else if ("MozWebSocket" in window) {
-                    ws = new MozWebSocket("ws://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
+//                    ws = new MozWebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
+                    ws = new MozWebSocket("wss://workerman.tinywan.top:8081/chat/");
                 }
                 SocketCreated = true;
                 isUserloggedout = false;
@@ -219,10 +221,10 @@
     $(document).ready(function () {
         var WebSocketsExist = true;
         try {
-            var dummy = new WebSocket("ws://139.224.239.21:8082/chatroom/");
+            var dummy = new WebSocket("wss://workerman.tinywan.top:8081/chat/");
         } catch (ex) {
             try {
-                webSocket = new MozWebSocket("ws://139.224.239.21:8082/chatroom/");
+                webSocket = new MozWebSocket("wss://workerman.tinywan.top:8081/chat/");
             }
             catch (ex) {
                 WebSocketsExist = false;

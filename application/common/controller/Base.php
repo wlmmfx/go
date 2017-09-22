@@ -16,11 +16,9 @@ use think\Controller;
 
 class Base extends Controller
 {
-    /**
-     * 任务实例
-     * @var
-     */
+    // 任务实例
     public $task_db;
+
     // 自定义状态码
     static $return_code = [
         '200' => '操作成功',

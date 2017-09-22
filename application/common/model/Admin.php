@@ -11,7 +11,6 @@
 
 namespace app\common\model;
 
-use Faker\Factory;
 use think\Db;
 use think\Loader;
 use think\Log;
@@ -32,55 +31,6 @@ class Admin extends BaseModel
      */
     protected $table = "resty_user";
 
-    /**
-     * 获取随机姓名
-     * @return string
-     * @static
-     */
-    public static function getRandUserName()
-    {
-        $faker = Factory::create($locale = 'zh_CN');
-        return $faker->name;
-    }
-
-    /**
-     * 发送邮件队列
-     */
-    public function sendMailQueue($data = [])
-    {
-        /**
-         * 1、当前任务将由哪个类来负责处理（job目录的Mail类）
-         *    当轮到该任务时，系统将生成一个该类的实例，并调用其 fire 方法
-         */
-        $jobHandlerClassName = 'application\backend\job\Mail';
-        /**
-         * 2.当前任务归属的队列名称，如果为新队列，会自动创建
-         */
-        $jobQueueName = "helloJobQueue";
-        /**
-         * 3、当前任务所需的业务数据 . 不能为 resource 类型，其他类型最终将转化为json形式的字符串
-         *   jobData 为对象时，需要在先在此处手动序列化，否则只存储其public属性的键值对
-         */
-        //$jobData = ['ts' => time(), 'bizId' => uniqid(), 'a' => 1];
-        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
-        $jobData = ["mail" => "1722318623@qq.com", "str" => "http://{$emailSendDomain}/backend/login/emailRegisterUrlValid"];
-        Log::error("[1]开始发布邮件队列 " . json_encode($jobData));
-        /**
-         *  4、将该任务推送到消息队列，等待对应的消费者去执行
-         */
-        $isPushed = Queue::push($jobHandlerClassName, $jobData, $jobQueueName);
-        /**
-         * 5、返回值
-         *  [1]database 驱动时，返回值为 1|false
-         *  [2]redis 驱动时，返回值为 随机字符串|false
-         */
-        if ($isPushed !== false) {
-            Log::error("[2]邮件队列发布结果：" . $isPushed);
-            return date('Y-m-d H:i:s') . "11 a new Hello Job is Pushed to the Mail" . "<br>";
-        } else {
-            return 'Oops, something went wrong.';
-        }
-    }
 
     /**
      * 登录验证
@@ -142,7 +92,7 @@ class Admin extends BaseModel
         $passwordToken = md5($data['email'] . md5($data['password']) . $time); //创建用于激活识别码
         $userInfo = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 1, 'email' => $data['email']])->find();
         if ($userInfo) return ['valid' => 0, 'msg' => "该邮箱已经被注册"];
-        // 考虑URL地址失效问题，重新范松邮件
+        // 考虑URL地址失效问题，重新发送邮件
         $userInfoEnable = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
         if ($userInfoEnable) {
             // 4 放入邮件队列

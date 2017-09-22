@@ -47,7 +47,7 @@ class Index extends BaseFrontend
             ->join('resty_user u', 'u.id = a.author_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
-            ->paginate(4);
+            ->paginate(2);
         $comments = Db::table("resty_comment")
             ->alias('c')
             ->join('resty_open_user ou', 'c.user_id = ou.id')

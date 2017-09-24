@@ -6,10 +6,10 @@
  * Time: 22:01
  */
 namespace app\frontend\controller;
+use app\common\controller\BaseFrontend;
 use redis\BaseRedis;
-use think\Controller;
 
-class Web extends Controller
+class Web extends BaseFrontend
 {
     public function index()
     {

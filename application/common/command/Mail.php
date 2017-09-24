@@ -51,7 +51,7 @@ class Mail extends Command
                     case 1:
                         $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['code']]);
                         // 短信发送成功更新记录
-                        if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
+                        if (($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
                             Db::table('resty_task_list')->where('user_mobile', $msg['user_mobile'])->delete();
                         }
                         break;

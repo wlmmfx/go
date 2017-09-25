@@ -128,10 +128,10 @@ function check_auth_key($check_str, $auth_key)
  */
 function send_email($address, $subject, $content)
 {
-    $email_smtp = config('email.EMAIL_SMTP');
-    $email_username = config('email.EMAIL_USERNAME');
-    $email_password = config('email.EMAIL_PASSWORD');
-    $email_from_name = config('email.EMAIL_FROM_NAME');
+    $email_smtp = config('email163.EMAIL_SMTP');
+    $email_username = config('email163.EMAIL_USERNAME');
+    $email_password = config('email163.EMAIL_PASSWORD');
+    $email_from_name = config('email163.EMAIL_FROM_NAME');
     if (empty($email_smtp) || empty($email_username) || empty($email_password) || empty($email_from_name)) {
         return ["error" => 1, "message" => '邮箱请求参数不全，请检测邮箱的合法性'];
     }
@@ -199,7 +199,7 @@ function send_email_qq($address, $subject, $content)
     }
     $phpmailer = new \PHPMailer();
     //是否启用smtp的debug进行调试 开发环境建议开启 生产环境注释掉即可 默认关闭debug调试模式
-    //$phpmailer->SMTPDebug = 1;
+    $phpmailer->SMTPDebug = 1;
     // 	设置PHPMailer使用SMTP服务器发送Email
     $phpmailer->IsSMTP();
     // 	设置为html格式
@@ -211,7 +211,7 @@ function send_email_qq($address, $subject, $content)
     //设置使用ssl加密方式登录鉴权
     $phpmailer->SMTPSecure = 'ssl';
     //设置ssl连接smtp服务器的远程服务器端口号，以前的默认是25，但是现在新的好像已经不可用了 可选465或587
-    $phpmailer->Port = 465;
+    $phpmailer->Port = 587;
     // 设置为"需要验证"
     $phpmailer->SMTPAuth = true;
     // 设置用户名

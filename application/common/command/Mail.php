@@ -15,6 +15,7 @@ use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\Db;
+use think\Log;
 
 class Mail extends Command
 {
@@ -28,7 +29,7 @@ class Mail extends Command
     protected function execute(Input $input, Output $output)
     {
         while (true) {
-            $output->writeln(json_encode($this->sendAllByMsgType()));
+            $output->writeln(json_encode($this->testSendMail()));
             sleep($this->sleep);
         }
     }
@@ -45,13 +46,15 @@ class Mail extends Command
     protected function sendAllByMsgType()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->select();
+        Log::error('---------------------11111111-------'.json_encode($res));
         if (!empty($res)) {
             foreach ($res as $msg) {
                 switch ($msg['task_type']) {
                     case 1:
-                        $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['code']]);
+                        $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
+                        Log::error('---------------------222222222-------'.json_encode($sendRes));
                         // 短信发送成功更新记录
-                        if (($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
+                        if (isset($sendRes->result) && ($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
                             Db::table('resty_task_list')->where('user_mobile', $msg['user_mobile'])->delete();
                         }
                         break;

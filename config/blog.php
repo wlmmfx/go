@@ -14,4 +14,4 @@ use think\Route;
 Route::get('/','blog/Index/index');
 //Route::rule('/','blog/Index/index');
 // 文章详情路由
-Route::rule('d/:id','blog/Index/detail');
+Route::rule('bd/:id','blog/Index/detail');

@@ -52,116 +52,116 @@
                     with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
                 </div>
 
-                <!--<div class="page-comment">-->
-                    <!--<div id="comments" style="margin-top: 10px;">-->
-                        <!--<div class="page-header comment-num">-->
-                            <!--<h2>共 {$commentCounts} 条评论</h2>-->
-                        <!--</div>-->
-                        <!--<ul id="reply" class="media-list J_mediaList comment-ul">-->
-                            <!--{volist name="comments" id="vo"}-->
-                            <!--<li class="media" data-key="13091">-->
-                                <!--<div class="media-left">-->
-                                    <!--<a href="/member/index/{$vo.user_id}" rel="author" data-original-title="" title="">-->
-                                        <!--<img class="media-object" src="{$vo.avatar}" alt="{$vo.account}"-->
-                                             <!--data-bd-imgshare-binded="1">-->
-                                    <!--</a>-->
-                                <!--</div>-->
-                                <!--<div class="media-body">-->
-                                    <!--<div class="media-heading">-->
-                                        <!--<a href="/member/index/{$vo.user_id}" rel="author" data-original-title=""-->
-                                           <!--title="">{$vo.account}</a>-->
-                                        <!--评论于 {$vo.create_time|date="Y-m-d H:i:s",###}-->
-                                    <!--</div>-->
+                <div class="page-comment">
+                    <div id="comments" style="margin-top: 10px;">
+                        <div class="page-header comment-num">
+                            <h2>共 {$commentCounts} 条评论</h2>
+                        </div>
+                        <ul id="reply" class="media-list J_mediaList comment-ul">
+                            {volist name="comments" id="vo"}
+                            <li class="media" data-key="13091">
+                                <div class="media-left">
+                                    <a href="/member/index/{$vo.user_id}" rel="author" data-original-title="" title="">
+                                        <img class="media-object" src="{$vo.avatar}" alt="{$vo.account}"
+                                             data-bd-imgshare-binded="1">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        <a href="/member/index/{$vo.user_id}" rel="author" data-original-title=""
+                                           title="">{$vo.account}</a>
+                                        评论于 {$vo.create_time|date="Y-m-d H:i:s",###}
+                                    </div>
 
-                                    <!--<div class="media-content" id="replay-content" comment_id="{$vo.comment_id}">-->
-                                        <!--<p>{$vo['comment_content']}</p>-->
-                                        <!--&lt;!&ndash;<div class="hint">共 <em>{$vo.children|count}</em> 条回复</div>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;二级-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-                                        <!--{volist name="vo.children" id="sub"}-->
-                                        <!--<div class="media">-->
-                                            <!--<div class="media-left">-->
-                                                <!--<a href="/user/32840" rel="author">-->
-                                                    <!--<img class="media-object" src="{$sub.avatar}"-->
-                                                         <!--alt="{$sub.account}">-->
-                                                <!--</a>-->
-                                            <!--</div>-->
-                                            <!--<div class="media-body">-->
-                                                <!--<div class="media-heading">-->
-                                                    <!--<a href="/user/32840" rel="author">-->
-                                                        <!--{$sub.account}-->
-                                                    <!--</a>-->
-                                                    <!--回答于 {$sub.create_time|date="Y-m-d H:i:s",###} <span-->
-                                                        <!--class="pull-right">-->
-                                                    <!--<a class="comment-reply" post_id="{$sub['post_id']}"-->
-                                                       <!--comment_id="{$sub['comment_id']}"-->
-                                                       <!--replay_user_name="{$sub['account']}"-->
-                                                       <!--sub_parent_id="{$sub['parent_id']}" href="javascript:void(0);">-->
-                                                        <!--<i class="fa fa-reply"></i> @回复-->
-                                                    <!--</a>-->
-                                                    <!--&lt;!&ndash;<span class="dot">•</span>&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;<a href="/answer/update?id=13124">&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;<i class="fa fa-pencil"></i>&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;修改&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;</a>                                                                   &ndash;&gt;-->
-                                                <!--</span>-->
-                                                <!--</div>-->
-                                                <!--<div class="media-content"><p> {$sub['comment_content']}</p>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--{/volist}-->
-                                    <!--</div>-->
+                                    <div class="media-content" id="replay-content" comment_id="{$vo.comment_id}">
+                                        <p>{$vo['comment_content']}</p>
+                                        <!--<div class="hint">共 <em>{$vo.children|count}</em> 条回复</div>-->
+                                        <!----------------二级--------------->
+                                        {volist name="vo.children" id="sub"}
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="/user/32840" rel="author">
+                                                    <img class="media-object" src="{$sub.avatar}"
+                                                         alt="{$sub.account}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="media-heading">
+                                                    <a href="/user/32840" rel="author">
+                                                        {$sub.account}
+                                                    </a>
+                                                    回答于 {$sub.create_time|date="Y-m-d H:i:s",###} <span
+                                                        class="pull-right">
+                                                    <a class="comment-reply" post_id="{$sub['post_id']}"
+                                                       comment_id="{$sub['comment_id']}"
+                                                       replay_user_name="{$sub['account']}"
+                                                       sub_parent_id="{$sub['parent_id']}" href="javascript:void(0);">
+                                                        <i class="fa fa-reply"></i> @回复
+                                                    </a>
+                                                    <!--<span class="dot">•</span>-->
+                                                    <!--<a href="/answer/update?id=13124">-->
+                                                    <!--<i class="fa fa-pencil"></i>-->
+                                                    <!--修改-->
+                                                    <!--</a>                                                                   -->
+                                                </span>
+                                                </div>
+                                                <div class="media-content"><p> {$sub['comment_content']}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/volist}
+                                    </div>
 
-                                    <!--<div class="media-action" >-->
-                                        <!--<a class="comment-reply" href="javascript:void(0);" replyswitch="off"-->
-                                           <!--post_id="{$vo.post_id}" comment_id="{$vo.comment_id}"-->
-                                           <!--replay_user_name="{$vo.account}">-->
-                                            <!--<i class="fa fa-reply"></i> 回复评论-->
-                                        <!--</a>-->
-                                        <!--<span class="pull-right">-->
-                                            <!--<a class="vote up" href="javascript:void(0);" title="" data-type="answer"-->
-                                               <!--data-id="13110"-->
-                                               <!--data-toggle="tooltip" data-original-title="顶"><i-->
-                                                    <!--class="fa fa-thumbs-o-up"></i> 0-->
-                                            <!--</a>-->
-                                            <!--<a class="vote down" href="javascript:void(0);" title="" data-type="answer"-->
-                                               <!--data-id="13110"-->
-                                               <!--data-toggle="tooltip" data-original-title="踩"><i-->
-                                                    <!--class="fa fa-thumbs-o-down"></i> 0-->
-                                            <!--</a>-->
-                                        <!--</span>-->
-                                    <!--</div>-->
+                                    <div class="media-action" >
+                                        <a class="comment-reply" href="javascript:void(0);" replyswitch="off"
+                                           post_id="{$vo.post_id}" comment_id="{$vo.comment_id}"
+                                           replay_user_name="{$vo.account}">
+                                            <i class="fa fa-reply"></i> 回复评论
+                                        </a>
+                                        <span class="pull-right">
+                                            <a class="vote up" href="javascript:void(0);" title="" data-type="answer"
+                                               data-id="13110"
+                                               data-toggle="tooltip" data-original-title="顶"><i
+                                                    class="fa fa-thumbs-o-up"></i> 0
+                                            </a>
+                                            <a class="vote down" href="javascript:void(0);" title="" data-type="answer"
+                                               data-id="13110"
+                                               data-toggle="tooltip" data-original-title="踩"><i
+                                                    class="fa fa-thumbs-o-down"></i> 0
+                                            </a>
+                                        </span>
+                                    </div>
 
-                                <!--</div>-->
-                            <!--</li>-->
-                            <!--{/volist}-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
 
-                <!--<div class="page-comment">-->
-                    <!--<div class="panel">-->
+                <div class="page-comment">
+                    <div class="panel">
 
-                        <!--{if condition="$Think.session.open_user_username"}-->
-                        <!--<div class="panel-content">-->
-                            <!--<input type="hidden" id="commentform-post_id" class="form-control" name="post_id"-->
-                                   <!--value="{$article.id}">-->
-                            <!--<input type="hidden" id="commentform-user_id" class="form-control" name="user_id"-->
-                                   <!--value="{$userInfo.id}">-->
-                            <!--<textarea name="comment_content" id="comment_content"-->
-                                      <!--style="width:600px;height:200px;"></textarea>-->
-                            <!--<div class="form-actions center">-->
-                                <!--<P></P>-->
-                                <!--<a class="comment-submit btn btn-sm btn-primary" replyswitch="off" parent_id="0"-->
-                                   <!--style="" href="javascript:void(0);"><span style=''>发表评论</span></a>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--{else /}-->
-                        <!--<div class="well danger">您需要登录后才可以评论哦! <a href="{:url('frontend/member/signin')}">登录</a> | <a-->
-                                <!--href="{:url('frontend/member/signup')}">立即注册</a></div>-->
-                        <!--{/if}-->
-                    <!--</div>-->
-                <!--</div>-->
+                        {if condition="$Think.session.open_user_username"}
+                        <div class="panel-content">
+                            <input type="hidden" id="commentform-post_id" class="form-control" name="post_id"
+                                   value="{$article.id}">
+                            <input type="hidden" id="commentform-user_id" class="form-control" name="user_id"
+                                   value="{$userInfo.id}">
+                            <textarea name="comment_content" id="comment_content"
+                                      style="width:600px;height:200px;"></textarea>
+                            <div class="form-actions center">
+                                <P></P>
+                                <a class="comment-submit btn btn-sm btn-primary" replyswitch="off" parent_id="0"
+                                   style="" href="javascript:void(0);"><span style=''>发表评论</span></a>
+                            </div>
+                        </div>
+                        {else /}
+                        <div class="well danger">您需要登录后才可以评论哦! <a href="{:url('frontend/member/signin')}">登录</a> | <a
+                                href="{:url('frontend/member/signup')}">立即注册</a></div>
+                        {/if}
+                    </div>
+                </div>
             </div>
         </div>
 

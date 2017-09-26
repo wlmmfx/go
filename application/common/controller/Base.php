@@ -81,4 +81,25 @@ class Base extends Controller
         }
         return json($return_data);
     }
+
+    public function rmdirs($dir)
+    {
+        $dh = opendir($dir);
+        while ($file = readdir($dh)) {
+            if ($file != "." && $file != "..") {
+                $fullpath = $dir . "/" . $file;
+                if (!is_dir($fullpath)) {
+                    unlink($fullpath);
+                } else {
+                    $this->rmdirs($fullpath);
+                }
+            }
+        }
+        closedir($dh);
+        if (rmdir($dir)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

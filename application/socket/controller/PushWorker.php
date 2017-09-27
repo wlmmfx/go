@@ -19,7 +19,7 @@ use Workerman\Lib\Timer;
 class PushWorker extends Server
 {
     // nginx 代理服务器8082
-    protected $socket = 'websocket://0.0.0.0:63803';
+    protected $socket = 'websocket://0.0.0.0:63801';
 
     /**
      * Workerman 启动的回调,这里传递的是Worker对象

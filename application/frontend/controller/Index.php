@@ -216,7 +216,7 @@ class Index extends BaseFrontend
             $data['parent_id'] = input('post.parent_id');
             $data['user_id'] = input('post.user_id');
             $data['comment_content'] = input('post.comment_content');
-            if(empty($data['comment_content'])){
+            if (empty($data['comment_content'])) {
                 $res = ["code" => 500, "msg" => 'param is error'];
                 return json($res);
             }
@@ -342,8 +342,17 @@ class Index extends BaseFrontend
         $data['post_id'] = 99;
         $data['parent_id'] = 0;
         $data['user_id'] = 12;
-        $data['comment_content'] = "Comment content".rand(00000,9999);
+        $data['comment_content'] = "Comment content" . rand(00000, 9999);
         $res = $this->comment_db->store($data);
         halt($res);
+    }
+
+    /**
+     * AutoInstall
+     */
+    public function autoInstall()
+    {
+//        $this->view->engine->layout(false);
+        return $this->fetch();
     }
 }

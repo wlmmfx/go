@@ -62,7 +62,9 @@ class OpenAuth extends BaseFrontend
         $access_token = $jsonRes["access_token"];
         $userUrl = "https://api.github.com/user?access_token=" . $access_token;
         $userInfo = curl_request($userUrl);
+        halt($userInfo);
         $userJsonRes = json_decode($userInfo, true);
+
         //第五步，检查用户是否已经注册过
         $condition['open_id'] = $userJsonRes['id'];
         $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();

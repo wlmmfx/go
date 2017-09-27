@@ -12,10 +12,12 @@
 namespace app\backend\controller;
 
 
+use aliyun\oss\OssInstance;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
+use OSS\Core\OssException;
 use think\Db;
-use think\File;
+use think\Image;
 use think\Log;
 
 class Product extends BaseBackend
@@ -45,7 +47,11 @@ class Product extends BaseBackend
                 exit;
             }
         }
-        $products = Db::table('resty_product')->select();
+        $products = Db::table("resty_product")
+            ->alias('p')
+            ->join('resty_file f', 'p.file_id = f.id')
+            ->field("p.*,f.min_path,f.path")
+            ->select();
         $categorys = Arr::tree(db('category')->order('id desc')->select(), 'name', $fieldPri = 'id', $fieldPid = 'pid');
         $this->assign('categorys', $categorys);
         $this->assign('products', $products);
@@ -63,17 +69,42 @@ class Product extends BaseBackend
         if (request()->isPost()) {
             $file = request()->file("file");
             if ($file) {
-                $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/products');
+                $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/products');
                 if ($info) {
+                    // oss upload
+                    $oss = OssInstance::Instance();
+                    $bucket = config('aliyun_oss.bucket');
+                    $thumbName = 'thumb_' . $info->getFilename();
+                    Log::error('-------------111111111---------'.$thumbName);
+                    //获取文件名
+                    $ossbObject = 'uploads/products';
+                    //  定义缩略图保存路径
+                    $thumbObjectPath = ROOT_PATH . 'public' . DS . 'uploads/products' . DS . $thumbName;
+                    Log::error('------------22222----------'.$thumbObjectPath);
+                    // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+//                    $image = Image::open($file);
+//                    $image->thumb(240, 150)->save($thumbObjectPath);
+                    $localDirectory = $ossbObject . DS;
+                    Log::error('------------3333333333----------'.$localDirectory);
+                    try {
+                        $oss->uploadDir($bucket, $ossbObject, $localDirectory);
+                        $data['oss_upload_status'] = 1;
+                        $data['min_path'] = '/'.$ossbObject.DS.$thumbName;
+                        $data['path'] = '/'.$ossbObject.DS.$info->getFilename();
+                        // 遍历删除原图和缩略图
+                        $this->rmdirs(ROOT_PATH . 'public' . DS . 'uploads/products');
+                        Log::error('------------4444444444----------'.$localDirectory);
+                    } catch (OssException $e) {
+                        Log::error('------------5555555555555----------'.$localDirectory);
+                        $data['oss_upload_status'] = json_encode($e->getMessage());
+                    }
                     $data['pid'] = 120;
-                    $data['min_path'] = $info->getFilename();
-                    $data['path'] = $info->getSaveName();
                     $insertId = Db::table('resty_file')->insertGetId($data);
                     $res = [
                         'code' => 200,
                         'msg' => 'success',
                         'fileId' => $insertId,
-                        'path' => $info->getSaveName()
+                        'path' => 'http://images.tinywan.com/'.$ossbObject.DS.$info->getFilename()
                     ];
                 } else {
                     $res = [

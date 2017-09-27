@@ -45,8 +45,7 @@
         "flc/alidayu": "^2.0",
         "aliyuncs/oss-sdk-php": "^2.2",
         "topthink/think-image": "^1.0",
-        "chrisboulton/php-resque": "1.2.x",
-        "topthink/think-swoole": "^1.0"
+        "chrisboulton/php-resque": "1.2.x"
     },
     "autoload": {
         "psr-4": {

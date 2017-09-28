@@ -50,7 +50,13 @@ class Mail extends Command
             foreach ($res as $msg) {
                 switch ($msg['task_type']) {
                     case 1:
-                        $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
+                        if ($msg['mobile_type'] == 1) {
+                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
+                        } elseif ($msg['mobile_type'] == 2) {
+                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg'],'number'=>$msg['live_id']]);
+                        } else {
+                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
+                        }
                         // 短信发送成功更新记录
                         if (isset($sendRes->result) && ($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
                             Db::table('resty_task_list')->where('user_mobile', $msg['user_mobile'])->delete();
@@ -160,9 +166,9 @@ html;
                     $link = "http://{$emailSendDomain}/backend/login/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = "请点击下面的链接重置您的密码：<p></p>" . $link;
                     break;
-                    // 通知
+                // 通知
                 case 3:
-                    $str = "管理员发送给你的信息,有效验证码：<p></p>".rand(00000,99999);
+                    $str = "管理员发送给你的信息,有效验证码：<p></p>" . rand(00000, 99999);
                     break;
                 default:
                     echo '0';

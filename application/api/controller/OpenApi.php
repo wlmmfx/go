@@ -47,9 +47,10 @@ class OpenApi extends Base
             // 加入消息队列
             $taskData['task_type'] = 1;
             $taskData['status'] = 0;
-            $taskData['mobile_type'] = 1;
-            $taskData['user_mobile'] = 13669361192;
+            $taskData['mobile_type'] = 2;
+            $taskData['user_mobile'] = 18170603953;
             $taskData['msg'] = "909090";
+            $taskData['live_id'] = $streamName;
             // 加入邮件队列
             $this->addTaskList($taskData);
             exit('200:success');

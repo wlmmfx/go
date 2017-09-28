@@ -11,8 +11,7 @@
 
 namespace app\backend\controller;
 
-
-use aliyun\oss\OssInstance;
+use \aliyun\oss\OssInstance;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
 use OSS\Core\OssException;
@@ -28,6 +27,7 @@ class Product extends BaseBackend
      */
     public function index()
     {
+        var_dump(OssInstance::Instance());
         return __FUNCTION__;
     }
 

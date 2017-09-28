@@ -21,7 +21,7 @@ Route::get('home','frontend/Index/index');
  * ------------------------------------------------------路由配置定义----------------------------------------------------
  */
 return [
-    "d/:id" => "frontend/index/detail", // 文章详细页面：http://test.thinkphp5-line.com/d/23.html
-    "t/:id" => "frontend/index/searchByTagId", // 标签页面：http://test.thinkphp5-line.com/t/3.html
-    "c/:id" => "frontend/index/searchByCategoryId", // 根据分类Id查询文章：http://test.thinkphp5-line.com/c/3.html
+    "fd/:id" => "frontend/index/detail", // 文章详细页面：http://test.thinkphp5-line.com/d/23.html
+    "ft/:id" => "frontend/index/searchByTagId", // 标签页面：http://test.thinkphp5-line.com/t/3.html
+    "fc/:id" => "frontend/index/searchByCategoryId", // 根据分类Id查询文章：http://test.thinkphp5-line.com/c/3.html
 ];

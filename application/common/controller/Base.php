@@ -102,4 +102,14 @@ class Base extends Controller
             return false;
         }
     }
+
+    /** 格式化时间
+     * @param $time
+     * @return false|string
+     * @static
+     */
+    public static function formatDate($time)
+    {
+        return date('Y-m-d H:i:s', $time);
+    }
 }

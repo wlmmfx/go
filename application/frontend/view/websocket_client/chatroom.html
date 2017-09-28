@@ -31,8 +31,8 @@
 </style>
 <script type="text/javascript">
     var ws;
-    var wsServerIP = "139.224.239.21";
-    var wsServerPort = "8082";
+    var wsServerIP = "{$wsServerIP}";
+    var wsServerPort = "{$wsServerPort}";
     var SocketCreated = false;
     var isUserloggedout = false;
 
@@ -105,11 +105,11 @@
             try {
                 if ("WebSocket" in window) {
 //                    ws = new WebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
-                    ws = new WebSocket("wss://workerman.tinywan.top:8081/chat/");
+                    ws = new WebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
                 }
                 else if ("MozWebSocket" in window) {
 //                    ws = new MozWebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
-                    ws = new MozWebSocket("wss://workerman.tinywan.top:8081/chat/");
+                    ws = new MozWebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
                 }
                 SocketCreated = true;
                 isUserloggedout = false;
@@ -221,10 +221,10 @@
     $(document).ready(function () {
         var WebSocketsExist = true;
         try {
-            var dummy = new WebSocket("wss://workerman.tinywan.top:8081/chat/");
+            var dummy = new WebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
         } catch (ex) {
             try {
-                webSocket = new MozWebSocket("wss://workerman.tinywan.top:8081/chat/");
+                webSocket = new MozWebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
             }
             catch (ex) {
                 WebSocketsExist = false;

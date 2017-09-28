@@ -1,0 +1,168 @@
+<style type="text/css">
+    .chat-room-container {
+        font-family: "Courier New";
+        width: 980px;
+        height: 600px;
+        overflow: auto;
+        border: 1px solid black;
+        padding: 10px 0px 20px 10px;
+        color: #3a9425;
+        background-color: #333333;
+    }
+
+    .LockOff {
+        display: none;
+        visibility: hidden;
+    }
+
+    .LockOn {
+        display: block;
+        visibility: visible;
+        position: absolute;
+        z-index: 999;
+        top: 0px;
+        left: 0px;
+        width: 1024%;
+        height: 768%;
+        background-color: #ccc;
+        text-align: center;
+        padding-top: 20%;
+        filter: alpha(opacity=75);
+        opacity: 0.75;
+    }
+</style>
+<script type="text/javascript">
+    var ws;
+    var wsServerIP = "{$wsServerIP}";
+    var wsServerPort = "{$wsServerPort}";
+    var SocketCreated = false;
+    var isUserloggedout = false;
+
+
+    function ToggleConnectionClicked() {
+        if (SocketCreated && (ws.readyState == 0 || ws.readyState == 1)) {
+            SocketCreated = false;
+            isUserloggedout = true;
+            ws.close();
+        } else {
+            try {
+                if ("WebSocket" in window) {
+                    ws = new WebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
+                }
+                else if ("MozWebSocket" in window) {
+                    ws = new MozWebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
+                }
+                SocketCreated = true;
+                isUserloggedout = false;
+            } catch (ex) {
+                Log(ex, "ERROR");
+                return;
+            }
+            ws.onopen = WSonOpen;
+            ws.onmessage = WSonMessage;
+            ws.onclose = WSonClose;
+            ws.onerror = WSonError;
+        }
+    };
+
+    /**
+     * 连接成功
+     * @constructor
+     */
+    function WSonOpen() {
+        $("#SendDataContainer").show();
+        var $txtName = document.getElementById("txtName").value;
+        var wsSend = {
+            "type": 'join',
+            "user_id": '13669631192',
+            "user_name": $txtName,
+            "user_image": $txtName,
+            "room_id": "L00012",
+            "create_time": getFormatDate(),
+            "password": "1123213"
+        };
+        ws.send(JSON.stringify(wsSend));
+    };
+
+    /**
+     * 发送消息
+     * @param event
+     * @returns {boolean}
+     * @constructor
+     */
+    function WSonMessage(event) {
+        console.log(event.data);
+        Log(event.data, "MSG");
+    };
+
+    /**
+     * 关闭回调
+     * @constructor
+     */
+    function WSonClose() {
+        lockOff();
+        if (isUserloggedout) Log("【" + document.getElementById("txtName").value + "】离开了聊天室！");
+        document.getElementById("ToggleConnection").innerHTML = "连接";
+        $("#SendDataContainer").hide();
+    };
+
+    /**
+     * 错误捕捉
+     * @constructor
+     */
+    function WSonError() {
+        lockOff();
+        Log("远程连接中断。", "ERROR");
+    };
+
+    /**
+     * 发送消息
+     * @constructor
+     */
+    function SendDataClicked() {
+        if (document.getElementById("DataToSend").value.trim() != "") {
+            var wsSend = {"type": 'say', "content": document.getElementById("DataToSend").value};
+            ws.send(JSON.stringify(wsSend));
+            document.getElementById("DataToSend").value = "";
+        }
+    };
+
+    /**
+     * 打印消息
+     * @param Text
+     * @param MessageType
+     * @constructor
+     */
+    function Log(Text, MessageType) {
+        if (MessageType == "OK") Text = "<span style='color: green;'>" + Text + "</span>";
+        if (MessageType == "ERROR") Text = "<span style='color: red;'>" + Text + "</span>";
+        if (MessageType == "MSG") {
+            Text = Text;
+        }
+        document.getElementById("LogContainer").innerHTML = document.getElementById("LogContainer").innerHTML + Text + "<br />";
+        var LogContainer = document.getElementById("LogContainer");
+        LogContainer.scrollTop = LogContainer.scrollHeight;
+    };
+
+    $(document).ready(function () {
+        ToggleConnectionClicked();
+    });
+
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
+<div class="container">
+    <!-- 简介 -->
+    <div class="row">
+        <form id="form1" runat="server">
+            <h1>流媒体系统自动安装</h1>
+            <br/>
+            <div id='LogContainer' class='chat-room-container'></div>
+            <br/>
+            <div id='SendDataContainer'>
+                <input type="text" id="DataToSend" size="88"/>
+                <button id='SendData' type="button" onclick='SendDataClicked();'>发送</button>
+            </div>
+            <br/>
+        </form>
+    </div>
+</div>

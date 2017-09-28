@@ -76,4 +76,15 @@ class WebsocketClient extends BaseFrontend
         }
         return "正在执行中....";
     }
+
+    /**
+     * 动态显示安装信息
+     * @return string
+     */
+    public function showInstallInfo()
+    {
+        $this->assign('wsServerIP',self::SERVER_IP);
+        $this->assign('wsServerPort',63804);
+        return $this->fetch();
+    }
 }

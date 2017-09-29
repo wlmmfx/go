@@ -168,7 +168,9 @@ html;
                     break;
                 // 通知
                 case 3:
-                    $str = "管理员发送给你的信息,有效验证码：<p></p>" . rand(00000, 99999);
+                    $str = <<<html
+                    "管理员发送给你的信息,有效验证码：<p></p>" . rand(00000, 99999)
+html;
                     break;
                 default:
                     echo '0';

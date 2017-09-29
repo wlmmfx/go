@@ -21,6 +21,7 @@ class WebsocketClient extends BaseFrontend
     const SERVER_IP = "www.tinywan.com";
     const WS_SERVER_PORT = "8081";
     const SHELL_SCRIPT_PATH = "/home/www/web/go-study-line/shell/auto-install/";
+
     /**
      * 获取基本信息
      */
@@ -51,8 +52,8 @@ class WebsocketClient extends BaseFrontend
      */
     public function chatRoom()
     {
-        $this->assign('wsServerIP',self::SERVER_IP);
-        $this->assign('wsServerPort',self::WS_SERVER_PORT);
+        $this->assign('wsServerIP', self::SERVER_IP);
+        $this->assign('wsServerPort', self::WS_SERVER_PORT);
         return $this->fetch();
     }
 
@@ -70,8 +71,8 @@ class WebsocketClient extends BaseFrontend
         $shell_script = self::SHELL_SCRIPT_PATH . "init.sh";
         $cmdStr = "{$shell_script} {$servers} {$pwds}";
         Log::error('[' . self::formatDate(time()) . ']:' . "Shell 脚本参数 ： " . $cmdStr);
-        exec("{$cmdStr} >> /home/www/web/go-study-line/shell/auto-install/shell.log 2>&1 ", $results, $status );
-        if($status !== 0){
+        exec("{$cmdStr} >> /home/www/web/go-study-line/shell/auto-install/shell.log 2>&1 ", $results, $status);
+        if ($status !== 0) {
             return "脚本执行错误";
         }
         return "正在执行中....";
@@ -83,8 +84,19 @@ class WebsocketClient extends BaseFrontend
      */
     public function showInstallInfo()
     {
-        $this->assign('wsServerIP',self::SERVER_IP);
-        $this->assign('wsServerPort',63804);
+        $this->assign('wsServerIP', self::SERVER_IP);
+        $this->assign('wsServerPort', 63804);
+        if (request()->isAjax()) {
+            // 这里启动php-cli 进程了
+            $shell_script = self::SHELL_SCRIPT_PATH . "run.php";
+            $cmdStr = "{$shell_script}";
+            exec("/usr/local/bin/php {$cmdStr} >/dev/null 2>&1 &", $results, $status);
+            if ($status == 0) {
+                // 启动一个WebSocketd 服务
+                return json(['code' => 200, 'msg' => '系统进程启动成功','data'=>[]]);
+            }
+            return json(['code' => 500, 'msg' => '系统进程未成功启动']);
+        }
         return $this->fetch();
     }
 }

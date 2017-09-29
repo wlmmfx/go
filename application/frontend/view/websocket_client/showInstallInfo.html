@@ -17,7 +17,6 @@
     var SocketCreated = false;
     var isUserloggedout = false;
 
-
     function ToggleConnectionClicked() {
         if (SocketCreated && (ws.readyState == 0 || ws.readyState == 1)) {
             SocketCreated = false;
@@ -44,49 +43,26 @@
         }
     };
 
-    /**
-     * 连接成功
-     * @constructor
-     */
-    function WSonOpen() {
 
+    function WSonOpen() {
+        Log("安装环境连接已经建立。", "OK");
     };
 
-    /**
-     * 发送消息
-     * @param event
-     * @returns {boolean}
-     * @constructor
-     */
     function WSonMessage(event) {
 //        console.log(event.data);
         Log(event.data, "MSG");
     };
 
-    /**
-     * 关闭回调
-     * @constructor
-     */
     function WSonClose() {
         if (isUserloggedout) Log("【" + document.getElementById("txtName").value + "】离开了聊天室！");
         document.getElementById("ToggleConnection").innerHTML = "连接";
         $("#SendDataContainer").hide();
     };
 
-    /**
-     * 错误捕捉
-     * @constructor
-     */
     function WSonError() {
         Log("远程连接中断。", "ERROR");
     };
 
-    /**
-     * 打印消息
-     * @param Text
-     * @param MessageType
-     * @constructor
-     */
     function Log(Text, MessageType) {
         var LogContainer = $("#LogContainer");
         if (MessageType == "OK") Text = "<span style='color: green;'>" + Text + "</span>";
@@ -110,17 +86,35 @@
     };
 
     $(document).ready(function () {
-        ToggleConnectionClicked();
+        $('body').delegate('.start-build-hander', 'click', function () {
+            var $url = "{:url('frontend/websocket_client/showInstallInfo')}";
+            var $_data = {
+                'webdomain': "1111111"
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    ToggleConnectionClicked();
+                    console.log($response);
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
     });
-
 </script>
 <div class="container">
     <!-- 简介 -->
     <div class="row">
-        <form id="form1" runat="server">
-            <h1>流媒体系统自动安装</h1>
-            <hr/>
-            <div id='LogContainer' class='chat-room-container'></div>
-        </form>
+        <h1>流媒体系统自动编译安装 <a type="button" class="btn btn-success start-build-hander" style="width: 75px">开始编译</a></h1>
+        <hr/>
+        <div id='LogContainer' class='chat-room-container'></div>
     </div>
 </div>

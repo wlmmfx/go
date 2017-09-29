@@ -114,6 +114,7 @@ class Mail extends Command
 
     /**
      * 获取邮件发送模板
+     * 问题：发现这里修改后，如果php think send_mail 已经启动则修改内容不会生效
      * @param $email_scene
      * @param $email_type
      * @param $user_email
@@ -168,8 +169,9 @@ html;
                     break;
                 // 通知
                 case 3:
+                    $rand = rand(00000, 99999);
                     $str = <<<html
-                    "管理员发送给你的信息,有效验证码：<p></p>" . rand(00000, 99999)
+                    "管理员发送给你的信息,有效验证码：<p></p>" $rand
 html;
                     break;
                 default:

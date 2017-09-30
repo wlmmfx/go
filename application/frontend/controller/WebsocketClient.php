@@ -87,16 +87,56 @@ class WebsocketClient extends BaseFrontend
         $this->assign('wsServerIP', self::SERVER_IP);
         $this->assign('wsServerPort', 63804);
         if (request()->isAjax()) {
+            // 接受参数
+            $buildLicense = input('post.build-license');
+            $pushServer = input('post.push-server');
+            $pushServerPwd = input('post.push-server-pwd');
+            $node1Server = input('post.node1-server');
+            $node1ServerPwd = input('post.node1-server-pwd');
+            $node2Server = input('post.node2-server');
+            $node2ServerPwd = input('post.node2-server-pwd');
+            $proxyServer = input('post.proxy-server');
+            $proxyServerPwd = input('post.proxy-server-pwd');
             // 这里启动php-cli 进程了
-            $shell_script = self::SHELL_SCRIPT_PATH . "run.php";
-            $cmdStr = "{$shell_script}";
+            $servers = "121.41.88.209,115.29.8.55";
+            $pwds = "ss,ss";
+            $shell_script = self::SHELL_SCRIPT_PATH . "cli.php";
+            $cmdStr = "{$shell_script} {$servers} {$pwds}";
             exec("/usr/local/bin/php {$cmdStr} >/dev/null 2>&1 &", $results, $status);
             if ($status == 0) {
                 // 启动一个WebSocketd 服务
-                return json(['code' => 200, 'msg' => '系统进程启动成功','data'=>[]]);
+                return json(['code' => 200, 'msg' => '系统进程启动成功', 'data' => []]);
             }
             return json(['code' => 500, 'msg' => '系统进程未成功启动']);
+//            return json(['code' => $buildLicense, 'msg' => '系统进程未成功启动']);
         }
         return $this->fetch();
     }
+
+    public function api()
+    {
+        //请求参数
+        $appId = 13669361192;
+        $domainName = 'tinywan.amai8.com';
+        $appName = 'live';
+        //签名密钥
+        $appSecret = 'eb9a365a9d37a1354e13ddd7973d5e02409ef451';
+        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
+        //签名串，由签名算法sha1生成
+        $sign = strtoupper(sha1($str));
+        //请求资源访问路径以及请求参数，参数名必须为大写
+        $url = "http://ssconsole.amaitech.com/openapi/createPushFlowAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
+        //CURL方式请求
+        $ch = curl_init() or die (curl_error());
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 360);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        //返回数据为JSON格式，进行转换为数组打印输出
+        var_dump(json_decode($response, true));
+    }
 }
+

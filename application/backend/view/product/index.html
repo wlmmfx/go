@@ -23,7 +23,6 @@
                     <table class="table table-border table-bordered table-bg">
                         <thead>
                         <tr class="text-c">
-                            <th>ID</th>
                             <th>图片</th>
                             <th>名称</th>
                             <th>所属分类</th>
@@ -36,12 +35,11 @@
                         <tbody>
                         {volist name='products' id='vo'}
                         <tr class="text-c">
-                            <td>{$vo.id}</td>
                             <td>
-                                <img height="100" width="120" src="http://images.tinywan.com{$vo['path']}" alt="{$vo['pName']}">
+                                <img height="100" width="140" src="{$Think.config.aliyun_oss.DOMAIN}{$vo['path']}" alt="{$vo['pName']}">
                             </td>
                             <td>{$vo.pName}</td>
-                            <td>{$vo.cId}</td>
+                            <td>{$vo.cName}</td>
                             <td><span class="label label-lg label-pink arrowed-right">{$vo.pSn}</span></td>
                             <td>{$vo.mPrice}</td>
                             <td>{$vo.pubTime}</td>
@@ -172,7 +170,7 @@
                 var data = JSON.parse(data); //由JSON字符串转换为JSON对象，json转成object
                 console.log('--------2---------------'+data.code);
                 if (data.code == 200) {
-                    var img = "<img src=" + data.path + " width='100' style='border: 1px solid #F25D03;' height='100' class='img-rounded'/>";
+                    var img = "<img src=" + data.path + " width='140' style='border: 1px solid #F25D03;' height='100' class='img-rounded'/>";
                     img = $(img);
                     img.appendTo($('#js-image'));
                     $('input[name=file_id]').val(data.fileId);

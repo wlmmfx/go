@@ -29,16 +29,6 @@ class Excel extends BaseFrontend
         return $redis;
     }
 
-    /** 格式化时间
-     * @param $time
-     * @return false|string
-     * @static
-     */
-    private static function formatDate($time)
-    {
-        return date('Y-m-d H:i:s', $time);
-    }
-
     /**
      * [0] init
      * URL：http://test.thinkphp5-line.com/frontend/excel/multipleSheet

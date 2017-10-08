@@ -138,5 +138,9 @@ class WebsocketClient extends BaseFrontend
         //返回数据为JSON格式，进行转换为数组打印输出
         var_dump(json_decode($response, true));
     }
+
+    public function jquery(){
+        return $this->fetch();
+    }
 }
 

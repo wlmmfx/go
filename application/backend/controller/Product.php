@@ -50,7 +50,9 @@ class Product extends BaseBackend
         $products = Db::table("resty_product")
             ->alias('p')
             ->join('resty_file f', 'p.file_id = f.id')
-            ->field("p.*,f.min_path,f.path")
+            ->join('resty_category c','c.id = p.cid')
+            ->field("p.*,f.min_path,f.path,c.name as cName")
+            ->order('p.id desc')
             ->select();
         $categorys = Arr::tree(db('category')->order('id desc')->select(), 'name', $fieldPri = 'id', $fieldPid = 'pid');
         $this->assign('categorys', $categorys);
@@ -73,7 +75,7 @@ class Product extends BaseBackend
                 if ($info) {
                     // oss upload
                     $oss = OssInstance::Instance();
-                    $bucket = config('aliyun_oss.bucket');
+                    $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     Log::error('-------------111111111---------'.$thumbName);
                     //获取文件名
@@ -104,7 +106,7 @@ class Product extends BaseBackend
                         'code' => 200,
                         'msg' => 'success',
                         'fileId' => $insertId,
-                        'path' => 'http://images.tinywan.com/'.$ossbObject.DS.$info->getFilename()
+                        'path' => config('aliyun_oss.DOMAIN').$ossbObject.DS.$info->getFilename()
                     ];
                 } else {
                     $res = [

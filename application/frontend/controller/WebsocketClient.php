@@ -97,17 +97,17 @@ class WebsocketClient extends BaseFrontend
             $node2ServerPwd = input('post.node2-server-pwd');
             $proxyServer = input('post.proxy-server');
             $proxyServerPwd = input('post.proxy-server-pwd');
-            // 这里启动php-cli 进程了
-            $servers = "121.41.88.209,115.29.8.55";
-            $pwds = "ss,ss";
-            $shell_script = self::SHELL_SCRIPT_PATH . "cli.php";
-            $cmdStr = "{$shell_script} {$servers} {$pwds}";
-            exec("/usr/local/bin/php {$cmdStr} >/dev/null 2>&1 &", $results, $status);
-            if ($status == 0) {
-                // 启动一个WebSocketd 服务
-                return json(['code' => 200, 'msg' => '系统进程启动成功', 'data' => []]);
-            }
-            return json(['code' => 500, 'msg' => '系统进程未成功启动']);
+//            // 这里启动php-cli 进程了
+//            $servers = "121.41.88.209,115.29.8.55";
+//            $pwds = "ss,ss";
+//            $shell_script = self::SHELL_SCRIPT_PATH . "cli.php";
+//            $cmdStr = "{$shell_script} {$servers} {$pwds}";
+//            exec("/usr/local/bin/php {$cmdStr} >/dev/null 2>&1 &", $results, $status);
+//            if ($status == 0) {
+//                // 启动一个WebSocketd 服务
+//                return json(['code' => 200, 'msg' => '系统进程启动成功', 'data' => []]);
+//            }
+//            return json(['code' => 500, 'msg' => '系统进程未成功启动']);
 //            return json(['code' => $buildLicense, 'msg' => '系统进程未成功启动']);
         }
         return $this->fetch();

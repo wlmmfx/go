@@ -190,8 +190,8 @@
             <ul class="navbar-nav navbar-left nav">
                 <li class="active"><a href="/">首页</a></li>
                 <li><a href="/frontend/websocket_client/chatroom">Websocket</a></li>
-                {volist name='categorys' id='vo'}
-                <li><a href="{:url('frontend/index/searchByCategoryId',['id'=>$vo['id']])}">{$vo['name']}</a></li>
+                {volist name='navbar' id='vo'}
+                <li><a href="{$vo['url']}">{$vo['title']}</a></li>
                 {/volist}
                 <li>
                     <form class="navbar-form navbar-left" role="search">

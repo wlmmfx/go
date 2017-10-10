@@ -155,6 +155,8 @@ class BaseFrontend extends Base
         $article = Db::table('resty_article')->select();
         $this->assign('articles', $article);
         $this->assign('articleCounts', count($article));
+        //  导航栏信息
+        $this->assign('navbar',Db::table('resty_navbar')->where('is_display',1)->order('sort desc')->select());
     }
 
 }

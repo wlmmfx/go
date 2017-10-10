@@ -121,4 +121,8 @@ class AuthRule extends BaseBackend
             exit;
         }
     }
+
+    public function jquery(){
+        return $this->fetch();
+    }
 }

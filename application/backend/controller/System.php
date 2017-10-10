@@ -131,6 +131,21 @@ class System extends BaseBackend
     }
 
     /**
+     * 存储配置
+     * @return mixed
+     */
+    public function storageConfig()
+    {
+        $file = CONF_PATH . 'extra/aliyun_oss.php';
+        $config = array_merge(include $file, array_change_key_case($_POST, CASE_UPPER));
+        $str = "<?php\r\n return " . var_export($config, true) . ";\r\n?>";
+        if (file_put_contents($file, $str)) {
+            return $this->success('OSS信息修改成功');
+        }
+        return $this->success('OSS信息修改失败');
+    }
+
+    /**
      * 系统Log
      * @return mixed
      */

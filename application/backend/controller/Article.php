@@ -44,7 +44,7 @@ class Article extends BaseBackend
 
     public function oss()
     {
-        $bucket = config('aliyun_oss.bucket');
+        $bucket = config('aliyun_oss.BUCKET');
         $object = 'uploads/20170904/29fb780a66238b5fe04e397b1c7dccce.png';
         $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
         $res = unlink($object);
@@ -78,7 +78,7 @@ class Article extends BaseBackend
                 if ($info) {
                     // oss upload
                     $oss = OssInstance::Instance();
-                    $bucket = config('aliyun_oss.bucket');
+                    $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     //获取文件名
                     $data['thumb'] = $thumbName;
@@ -150,7 +150,7 @@ class Article extends BaseBackend
                     //获取文件名
                     $data['thumb'] = "/uploads/" . $info->getSaveName();
                     // oss upload
-                    $bucket = config('aliyun_oss.bucket');
+                    $bucket = config('aliyun_oss.BUCKET');
                     $object = 'uploads/' . $info->getSaveName();
                     $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
                     $oss = OssInstance::Instance();
@@ -158,7 +158,7 @@ class Article extends BaseBackend
                         $res = $oss->uploadFile($bucket, $object, $file);
                         if ($res['info']['http_code'] == 200) {
                             // 返回数据
-                            $url = "http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com" . DS . $object;
+                            $url = config('aliyun_oss.DOMAIN'). $object;
                             Log::info("url == " . $url);
                             $result = json_encode(array(
                                 'url' => $url,
@@ -232,7 +232,7 @@ class Article extends BaseBackend
                     //获取文件名
                     $data['thumb'] = "/uploads/" . $info->getSaveName();
                     // oss upload
-                    $bucket = config('aliyun_oss.bucket');
+                    $bucket = config('aliyun_oss.BUCKET');
                     $object = 'uploads/' . $info->getSaveName();
                     $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
                     $oss = OssInstance::Instance();
@@ -240,7 +240,7 @@ class Article extends BaseBackend
                         $res = $oss->uploadFile($bucket, $object, $file);
                         if ($res['info']['http_code'] == 200) {
                             // 返回数据
-                            $url = "http://tinywan-develop.oss-cn-hangzhou.aliyuncs.com" . DS . $object;
+                            $url = config('aliyun_oss.DOMAIN') . $object;
                             Log::info("url == " . $url);
                             $result = json_encode(array(
                                 'url' => $url,

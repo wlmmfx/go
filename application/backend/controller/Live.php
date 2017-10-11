@@ -62,6 +62,17 @@ class Live extends BaseBackend
     }
 
     /**
+     * 活动详细信息
+     */
+    public function liveDetail()
+    {
+        $liveId = input('param.id');
+        $videos = Db::table('resty_stream_video')->where('streamName',$liveId)->order('createTime desc')->paginate(12);
+        $this->assign('videos', $videos);
+        return $this->fetch();
+    }
+
+    /**
      * 预览观看
      */
     public function liveView()
@@ -81,7 +92,8 @@ class Live extends BaseBackend
             $liveStartTime = input('post.liveStartTime');
             halt($liveStartTime);
         }
-        $videos = Db::table('resty_stream_video')->order('createTime desc')->paginate(12);
+        $liveId = input('param.id');
+        $videos = Db::table('resty_stream_video')->where('streamName',$liveId)->order('createTime desc')->paginate(12);
         $this->assign('videos', $videos);
         return $this->fetch();
     }

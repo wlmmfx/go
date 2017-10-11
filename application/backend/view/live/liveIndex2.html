@@ -62,7 +62,7 @@
                         {volist name='categorys' id='vo'}
                         <tr class="text-c">
                             <td>{$vo["id"]}</td>
-                            <td style="vertical-align: middle;"><a href="{:url('backend/live/liveDetail',['id'=>$vo['id']])}">{$vo["name"]}</a></td>
+                            <td style="vertical-align: middle;"><a href="{:url('backend/live/indexRecord',['id'=>$vo['id']])}">{$vo["name"]}</a></td>
                             <td>
                             <span >开始时间：{$vo["liveStartTime"]}</span><br>
                             <span >结束时间：{$vo["liveEndTime"]}</span>

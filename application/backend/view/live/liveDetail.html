@@ -3,13 +3,6 @@
         <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab">
                 <li class="active">
-                    <a data-toggle="tab" href="#live-config">
-                        <i class="blue  icon-cogs bigger-110"></i>
-                        基本信息
-                    </a>
-                </li>
-
-                <li>
                     <a data-toggle="tab" href="#live-record">
                         <i class="blue   icon-laptop bigger-110"></i>
                         回顾列表
@@ -29,68 +22,11 @@
                         观看控制
                     </a>
                 </li>
-
-                <li>
-                    <a data-toggle="tab" href="#wechat-config">
-                        <i class="blue icon-comments-alt bigger-110"></i>
-                        微信配置
-                    </a>
-                </li>
             </ul>
 
             <div class="tab-content">
-                <!-- 基本信息 -->
-                <div id="live-config" class="tab-pane in active">
-                    <!-- PAGE CONTENT BEGINS -->
-                    <form action="" method="post" class="form-horizontal"
-                          role="form">
-                        <table class="table table-border table-bordered table-bg mt-20">
-                            <tr>
-                                <th colspan='2'><span
-                                        class="label label-xlg arrowed-right arrowed-in-right">网站基本信息配置</span></th>
-                            </tr>
-                            <tr>
-                                <td width='10%' align='right'>网站域名：</td>
-                                <td>
-                                    <input type="text" class="col-sm-6" name='webdomain' id="web-domain"
-                                           value='{$Think.config.webinfo.WEBDOMAIN}'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width='10%' align='right'>网站名称：</td>
-                                <td>
-                                    <input type="text" class="col-sm-6" name='webname' id="web-name"
-                                           value='{$Think.config.webinfo.WEBNAME}'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'>网站关键词：</td>
-                                <td>
-                                    <input type="text" class="col-sm-6" name='keywords' id="keywords"
-                                           value='{$Think.config.webinfo.KEYWORDS}' class='len400'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='right'>网站描述：</td>
-                                <td>
-                                    <input type="text" class="col-sm-6" name='discription' id="discription"
-                                           value='{$Think.config.webinfo.DISCRIPTION}' class='len400'/>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan='2' align='center' height='60'>
-                                    <a type="button" class="btn btn-success basic-config-hander"
-                                       style="width: 75px">保存</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                    <!-- PAGE CONTENT ENDS -->
-                </div>
-
                 <!-- 回顾 -->
-                <div id="live-record" class="tab-pane">
+                <div id="live-record" class="tab-pane in active">
                     <p>
                         <button class="btn btn-xs">
                             <i class="icon-exchange align-top bigger-125"></i>
@@ -151,9 +87,9 @@
                                 </li>
                                 {/volist}
                             </ul>
-                            <p></p>
-                            <div>{$videos->render()}</div>
                         </div><!-- /.col -->
+                        <p></p>
+                        <div>{$videos->render()}</div>
                     </div><!-- /.row -->
                 </div>
 

@@ -142,5 +142,61 @@ class WebsocketClient extends BaseFrontend
     public function jquery(){
         return $this->fetch();
     }
+
+    /**
+     * 自动安装配置文件
+     * @return mixed
+     */
+    public function autoInstallConf()
+    {
+        $sign = 'd25341478381063d1c76e81b3a52e0592a7c997f';
+        $data = [
+            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
+            'osscmd'=>[
+                'host'=>'oss-cn-shanghai.aliyuncs.com',
+                'access_key'=>'LTAIV09s4vFZyYmd',
+                'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
+            ],
+            'redis_config'=>[
+                'name'=>'Stephen Dolan',
+                'email'=>'mu@netsoc.tcd.ie',
+                'data_time'=>'2013-06-22T16:30:59Z'
+            ],
+            'redis_config'=>[
+                'name'=>'Stephen Dolan',
+                'email'=>'mu@netsoc.tcd.ie',
+                'data_time'=>'2013-06-22T16:30:59Z'
+            ],
+            'push-config'=>[
+                'ip'=>'192.168.10.100',
+                'user'=>'www',
+                'pwd'=>'www123456'
+            ],
+            'live-node-proxy-config'=>[
+                'ip'=>'192.168.10.100',
+                'user'=>'www',
+                'pwd'=>'www123456'
+            ],
+            'live_node_config'=>[
+                'node1'=>[
+                    'ip'=>'192.168.10.10',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ],
+                'node2'=>[
+                    'ip'=>'192.168.10.12',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ],
+                'node3'=>[
+                    'ip'=>'192.168.10.13',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ]
+            ],
+        ];
+        file_put_contents('/home/www/script/auto-install/auto-install-package/'.$sign.'.json',json_encode($data));
+        return json($data);
+    }
 }
 

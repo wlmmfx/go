@@ -94,7 +94,7 @@ class Article extends BaseModel
     }
 
     /**
-     * 编辑分类
+     * 编辑文章
      * @param $data
      * @return array
      */

@@ -3,67 +3,96 @@
         <div class="tabbable">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active">
-                    <a data-toggle="tab" href="#sub-add">
-                        <i class="green icon-home bigger-110"></i>
-                        编辑栏目
-                    </a>
-                </li>
-                <li >
                     <a data-toggle="tab" href="#category-list">
-                        <i class="green icon-home bigger-110"></i>
-                        栏目列表
+                        <i class="blue icon-home bigger-110"></i>
+                        文章编辑
                     </a>
                 </li>
             </ul>
 
             <div class="tab-content">
-                <div id="sub-add" class="tab-pane  in active">
-                    <form action="{:url('/backend/category/edit')}" method="post" class="form-horizontal" role="form">
-
+                <div id="category-list" class="tab-pane in active">
+                    <form action="{:url('/backend/article/edit')}" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分类名称</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 文章标题</label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="form-field-1" placeholder="分类名称" name="name" value="{$old_data['name']}" class="col-xs-10 col-sm-5"/>
+                                <input type="text" id="title" placeholder="文章标题" name="title" value="{$article.title}" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 关键字</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="keyword" placeholder="关键字"  value="{$article.keyword}" name="keyword" class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 描述</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="desc" placeholder="描述" name="desc"  value="{$article.desc}" class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-7"> 文章内容 </label>
 
                             <div class="col-sm-9">
-                                <select name="pid" id="select">
-                                    <option value="0">顶级栏目</option>
-                                    {volist name="last_data" id="vo"}
-                                    <option {if condition="$old_data['pid']==$vo['id']"}selected{/if} value="{$vo['id']}">{$vo['_name']}</option>
-                                    {/volist}
-                                </select>
+                                <textarea name="content" id="editor" style="width:1024px;height:500px;"> {$article.content}</textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 排序 </label>
-
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-2" placeholder="排序" name="level" value="{$old_data['level']}"
-                                       class="col-xs-10 col-sm-5"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 详细描述 </label>
-
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-3" placeholder="详细描述" name="remark" value="{$old_data['remark']}" class="col-xs-10 col-sm-5"/>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <input type="hidden" name="id" value="{:input('param.id')}">
-                            <button type="submit" class="btn btn-success">确认</button>
+                        <div class="form-actions center">
+                            <input type="hidden" name="id" value="{$article.id}">
+                            <button type="submit" class="btn btn-success">提交</button>
                         </div>
                     </form>
                 </div>
-
 
             </div>
         </div>
     </div><!-- /span -->
 
 </div><!-- /row -->
+
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+    var ue = UE.getEditor('editor',{
+        initialFrameWidth: 1100,   //初始化宽度
+        initialFrameHeight: 500,   //初始化高度
+        serverUrl:"{:url('/backend/article/saveinfo')}"
+    });
+
+    //$(document).ready(function(){
+    //    $("form").submit(function(e){
+    //        var tag = $("#tag").val();
+    //        console.log("----------------"+tag);
+    //        var data = ue.getContent();
+    //        console.log(data);
+    //        $.ajax({
+    //            cache:true,
+    //            type:"post",
+    //            url:url,
+    //            data:{
+    //                "title":$("#title").val(),
+    //                "cate_id":$("#cate_id").val(),
+    //                "tag":$("#tag").val(),
+    //                "content":data,
+    //            },
+    //            async:false,
+    //            error:function (request) {
+    //                alert("Connection error");
+    //            },
+    //            success:function (response) {
+    //                console.log("success = "+response.code);
+    //                console.log("success = "+response.msg);
+    //            }
+    //        });
+    //    });
+    //});
+
+</script>

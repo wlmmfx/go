@@ -38,12 +38,12 @@
                                 <td>{$vo["create_time"]|date="Y/m/d",###}</td>
                                 <td>{$vo["c_name"]}</td>
                                 <td>
-                                <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
+                                <a href="{:url('backend/article/edit',['id'=>$vo['id']])}">
                                     <button class="btn btn-primary btn-xs">
                                         <i class="icon-edit"></i>编辑
                                     </button>
                                 </a>
-                                <a href="{:url('backend/category/del',['id'=>$vo['id']])}">
+                                <a href="{:url('backend/article/del',['id'=>$vo['id']])}">
                                     <button class="btn btn-danger btn-xs">
                                         <i class="icon-trash"></i>删除
                                     </button>

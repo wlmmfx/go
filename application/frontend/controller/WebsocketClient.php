@@ -12,6 +12,7 @@ namespace app\frontend\controller;
 
 use app\common\controller\BaseFrontend;
 use redis\MsgRedis;
+use think\Db;
 use think\Log;
 
 class WebsocketClient extends BaseFrontend
@@ -147,36 +148,31 @@ class WebsocketClient extends BaseFrontend
      * 自动安装配置文件
      * @return mixed
      */
-    public function autoInstallConf()
+    public function autoInstallConf1()
     {
         $data = [
             'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
-            'osscmd-config'=>[
+            'oss_config'=>[
                 'host'=>'oss-cn-shanghai.aliyuncs.com',
                 'access_key'=>'LTAIV09s4vFZyYmd',
                 'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
             ],
-            'redis-config'=>[
-                'name'=>'Stephen Dolan',
-                'email'=>'mu@netsoc.tcd.ie',
-                'data_time'=>'2013-06-22T16:30:59Z'
+            'redis_config'=>[
+                'host'=>'192.168.10.12',
+                'post'=> 69320,
+                'auth'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
             ],
-            'redis-config'=>[
-                'name'=>'Stephen Dolan',
-                'email'=>'mu@netsoc.tcd.ie',
-                'data_time'=>'2013-06-22T16:30:59Z'
+            'push_config'=>[
+                'ip'=>'192.168.10.2',
+                'user'=>'www',
+                'pwd'=>'www123456'
             ],
-            'push-config'=>[
+            'live_node_proxy_config'=>[
                 'ip'=>'192.168.10.100',
                 'user'=>'www',
                 'pwd'=>'www123456'
             ],
-            'live-node-proxy-config'=>[
-                'ip'=>'192.168.10.100',
-                'user'=>'www',
-                'pwd'=>'www123456'
-            ],
-            'live-node-config'=>[
+            'live_node_config'=>[
                 'node1'=>[
                     'ip'=>'192.168.10.10',
                     'user'=>'www',
@@ -194,8 +190,139 @@ class WebsocketClient extends BaseFrontend
                 ]
             ],
         ];
+        $jsonData = [
+            'email'=>'756684177@qq.com',
+            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
+            'install_config'=>json_encode($data)
+        ];
 
-        return json($data);
+//      $res = Db::table('resty_auto_install')->insertGetId($jsonData);
+//      halt($res);
+        $findRes = Db::table('resty_auto_install')->where('id',8)->find();
+        halt($findRes);
+//        $data = [
+//            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
+//            'oss_config'=>[
+//                'host'=>'oss-cn-shanghai.aliyuncs.com',
+//                'access_key'=>'LTAIV09s4vFZyYmd',
+//                'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
+//            ],
+//            'redis_config'=>[
+//                'name'=>'Stephen Dolan',
+//                'email'=>'mu@netsoc.tcd.ie',
+//                'data_time'=>'2013-06-22T16:30:59Z'
+//            ],
+//            'push_config'=>[
+//                'ip'=>'192.168.10.100',
+//                'user'=>'www',
+//                'pwd'=>'www123456'
+//            ],
+//            'live_node_proxy_config'=>[
+//                'ip'=>'192.168.10.100',
+//                'user'=>'www',
+//                'pwd'=>'www123456'
+//            ],
+//            'live_node_config'=>[
+//                'node1'=>[
+//                    'ip'=>'192.168.10.10',
+//                    'user'=>'www',
+//                    'pwd'=>'www123456'
+//                ],
+//                'node2'=>[
+//                    'ip'=>'192.168.10.12',
+//                    'user'=>'www',
+//                    'pwd'=>'www123456'
+//                ],
+//                'node3'=>[
+//                    'ip'=>'192.168.10.13',
+//                    'user'=>'www',
+//                    'pwd'=>'www123456'
+//                ]
+//            ],
+//        ];
+//        //file_put_contents('/home/www/script/auto-install/auto-install-package/'.$sign.'.json',json_encode($data));
+//        return json($data);
+    }
+
+    /**
+ * 自动安装配置文件
+ * @return mixed
+ */
+    public function autoInstallConfInsert()
+    {
+        $data = [
+            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
+            'oss_config'=>[
+                'host'=>'oss-cn-shanghai.aliyuncs.com',
+                'access_key'=>'LTAIV09s4vFZyYmd',
+                'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww',
+                'upload_path'=>'oss://tinywan-oss/data/'
+            ],
+            'record_config'=>[
+                'callback_url'=>'https://www.tinywan.com/api/open_api/createStreamVideo',
+                'screenshot_time'=>'10',
+                'cut_mp4'=>'1',
+                'cut_jpg'=>'1',
+                'cut_ts'=>'0',
+                'clear_file_time'=>'10080' //分钟
+            ],
+            'redis_config'=>[
+                'host'=>'139.224.239.21',
+                'port'=> '61227',
+                'auth'=>'stream-system-auto-install-redis-password',
+                'db'=>'1'
+            ],
+            'push_config'=>[
+                'ip'=>'192.168.10.2',
+                'user'=>'www',
+                'pwd'=>'www123456'
+            ],
+            'live_node_proxy_config'=>[
+                'ip'=>'192.168.10.100',
+                'user'=>'www',
+                'pwd'=>'www123456'
+            ],
+            'live_node_config'=>[
+                'node1'=>[
+                    'ip'=>'192.168.10.10',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ],
+                'node2'=>[
+                    'ip'=>'192.168.10.12',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ],
+                'node3'=>[
+                    'ip'=>'192.168.10.13',
+                    'user'=>'www',
+                    'pwd'=>'www123456'
+                ]
+            ],
+        ];
+        $jsonData = [
+            'email'=>'756684177@qq.com',
+            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
+            'install_config'=>json_encode($data)
+        ];
+
+      $res = Db::table('resty_auto_install')->insertGetId($jsonData);
+      halt($res);
+    }
+
+    /**
+     * 自动安装配置文件
+     * @return mixed
+     */
+    public function autoInstallConf()
+    {
+        $findRes = Db::table('resty_auto_install')->where('id',14)->find();
+        $resJson =  [
+            'code'=>200,
+            'msg'=>'success',
+            'data'=>json_decode($findRes['install_config'])
+        ];
+        return json($resJson);
     }
 }
 

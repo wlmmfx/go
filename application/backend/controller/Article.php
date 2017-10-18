@@ -15,6 +15,7 @@ use aliyun\oss\OssInstance;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
 use OSS\Core\OssException;
+use think\Db;
 use think\Image;
 use think\Log;
 
@@ -122,6 +123,29 @@ class Article extends BaseBackend
             return json(['code' => 500, 'msg' => "Not Forbidden"]);
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
+    }
+
+    /**
+     * 编辑文章
+     * @return mixed
+     */
+    public function edit()
+    {
+        if(request()->isPost()){
+            $data = input('post.');
+            $res = Db::table('resty_article')->update($data);
+            if ($res) {
+                $this->success('success', "backend/article/index");
+                exit;
+            } else {
+                $this->error('fail');
+                exit;
+            }
+        }
+        $id = input('param.id');
+        $result = Db::table('resty_article')->where('id',$id)->find();
+        $this->assign('article',$result);
+        return $this->fetch();
     }
 
     /**

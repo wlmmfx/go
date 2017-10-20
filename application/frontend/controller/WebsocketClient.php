@@ -111,6 +111,9 @@ class WebsocketClient extends BaseFrontend
 //            return json(['code' => 500, 'msg' => '系统进程未成功启动']);
 //            return json(['code' => $buildLicense, 'msg' => '系统进程未成功启动']);
         }
+        $findRes = Db::table('resty_auto_install')->where('id', 22)->find();
+//        halt(json_decode($findRes['install_config'],true));
+        $this->assign('result',json_decode($findRes['install_config'],true));
         return $this->fetch();
     }
 
@@ -140,7 +143,8 @@ class WebsocketClient extends BaseFrontend
         var_dump(json_decode($response, true));
     }
 
-    public function jquery(){
+    public function jquery()
+    {
         return $this->fetch();
     }
 
@@ -151,54 +155,54 @@ class WebsocketClient extends BaseFrontend
     public function autoInstallConf1()
     {
         $data = [
-            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
-            'oss_config'=>[
-                'host'=>'oss-cn-shanghai.aliyuncs.com',
-                'access_key'=>'LTAIV09s4vFZyYmd',
-                'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'oss_config' => [
+                'host' => 'oss-cn-shanghai.aliyuncs.com',
+                'access_key' => 'LTAIV09s4vFZyYmd',
+                'key_secret' => 'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
             ],
-            'redis_config'=>[
-                'host'=>'192.168.10.12',
-                'post'=> 69320,
-                'auth'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
+            'redis_config' => [
+                'host' => '192.168.10.12',
+                'post' => 69320,
+                'auth' => 'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww'
             ],
-            'push_config'=>[
-                'ip'=>'192.168.10.2',
-                'user'=>'www',
-                'pwd'=>'www123456'
+            'push_config' => [
+                'ip' => '192.168.10.2',
+                'user' => 'www',
+                'pwd' => 'www123456'
             ],
-            'live_node_proxy_config'=>[
-                'ip'=>'192.168.10.100',
-                'user'=>'www',
-                'pwd'=>'www123456'
+            'live_node_proxy_config' => [
+                'ip' => '192.168.10.100',
+                'user' => 'www',
+                'pwd' => 'www123456'
             ],
-            'live_node_config'=>[
-                'node1'=>[
-                    'ip'=>'192.168.10.10',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+            'live_node_config' => [
+                'node1' => [
+                    'ip' => '192.168.10.10',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ],
-                'node2'=>[
-                    'ip'=>'192.168.10.12',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+                'node2' => [
+                    'ip' => '192.168.10.12',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ],
-                'node3'=>[
-                    'ip'=>'192.168.10.13',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+                'node3' => [
+                    'ip' => '192.168.10.13',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ]
             ],
         ];
         $jsonData = [
-            'email'=>'756684177@qq.com',
-            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
-            'install_config'=>json_encode($data)
+            'email' => '756684177@qq.com',
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'install_config' => json_encode($data)
         ];
 
 //      $res = Db::table('resty_auto_install')->insertGetId($jsonData);
 //      halt($res);
-        $findRes = Db::table('resty_auto_install')->where('id',8)->find();
+        $findRes = Db::table('resty_auto_install')->where('id', 8)->find();
         halt($findRes);
 //        $data = [
 //            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
@@ -245,69 +249,177 @@ class WebsocketClient extends BaseFrontend
     }
 
     /**
- * 自动安装配置文件
- * @return mixed
- */
+     * 自动安装配置文件
+     * @return mixed
+     */
     public function autoInstallConfInsert()
     {
         $data = [
-            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
-            'oss_config'=>[
-                'host'=>'oss-cn-shanghai.aliyuncs.com',
-                'access_key'=>'LTAIV09s4vFZyYmd',
-                'key_secret'=>'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww',
-                'upload_path'=>'oss://tinywan-oss/data/'
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'server_config' => [
+                'ip_group' => '120.26.78.239,118.178.56.70,120.55.184.175',
+                'pwd_group' => 'RootOracle11w,RootOracle11w,RootOracle11w'
             ],
-            'record_config'=>[
-                'callback_url'=>'https://www.tinywan.com/api/open_api/createStreamVideo',
-                'screenshot_time'=>'10',
-                'cut_mp4'=>'1',
-                'cut_jpg'=>'1',
-                'cut_ts'=>'0',
-                'clear_file_time'=>'10080' //分钟
+            'path_config' => [
+                'script_path' => '/home/www/script/auto-install',         // 脚本路径，安装包路径
+                'remote_script_path' => '/root',  // 远程脚本路径远程脚本路径
+                'remote_install_package_path' => '/root', // 远程安装包路径
+                'id_rsa_path' => 'RootOracle11w123,RootOracle11w456,RootOracle11w789', // 免登陆证书路径
+                'logs_path' => '/home/www/bin/logs', // 脚本输出日志路径
             ],
-            'redis_config'=>[
-                'host'=>'139.224.239.21',
-                'port'=> '61227',
-                'auth'=>'stream-system-auto-install-redis-password',
-                'db'=>'1'
+            'version_config' => [
+                'openresty_version' => '1.11.2.5',
+                'rtmp_version' => '1.2.0',
+                'php_version' => '5.5.9'
             ],
-            'push_config'=>[
-                'ip'=>'192.168.10.2',
-                'user'=>'www',
-                'pwd'=>'www123456'
+            'package_config' => [
+                'common' => 'libreadline-dev,libncurses5-dev,libpcre3-dev,libssl-dev,perl,make,build-essential,libxml2,libxml2-dev,libxslt-dev,unzip,jq',
+                'php5' => 'php5-fpm,php5-gd,php5-cli,php5-curl,php5-mcrypt,php5-mysql,php5-readline,php5-redis'
             ],
-            'live_node_proxy_config'=>[
-                'ip'=>'192.168.10.100',
-                'user'=>'www',
-                'pwd'=>'www123456'
+            'oss_config' => [
+                'host' => 'oss-cn-shanghai.aliyuncs.com',
+                'access_key' => 'LTAIV09s4vFZyYmd',
+                'key_secret' => 'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww',
+                'upload_path' => 'oss://tinywan-oss/data/',
+                'download_url' => 'https://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/internal/oss/0.0.4/assets/sdk/OSS_Python_API_20160419.zip'
             ],
-            'live_node_config'=>[
-                'node1'=>[
-                    'ip'=>'192.168.10.10',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+            'record_config' => [
+                'callback_url' => 'https://www.tinywan.com/api/open_api/createStreamVideo',
+                'screenshot_time' => '10',
+                'cut_mp4' => '1',
+                'cut_jpg' => '1',
+                'cut_ts' => '0',
+                'clear_file_time' => '10080' //分钟
+            ],
+            'redis_config' => [
+                'host' => '139.224.239.21',
+                'port' => '61227',
+                'auth' => 'stream-system-auto-install-redis-password',
+                'db' => '1'
+            ],
+            'push_config' => [
+                'ip' => '192.168.10.2',
+                'user' => 'www',
+                'pwd' => 'www123456'
+            ],
+            'live_node_proxy_config' => [
+                'ip' => '192.168.10.100',
+                'user' => 'www',
+                'pwd' => 'www123456'
+            ],
+            'live_node_config' => [
+                'node1' => [
+                    'ip' => '192.168.10.10',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ],
-                'node2'=>[
-                    'ip'=>'192.168.10.12',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+                'node2' => [
+                    'ip' => '192.168.10.12',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ],
-                'node3'=>[
-                    'ip'=>'192.168.10.13',
-                    'user'=>'www',
-                    'pwd'=>'www123456'
+                'node3' => [
+                    'ip' => '192.168.10.13',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
                 ]
             ],
         ];
         $jsonData = [
-            'email'=>'756684177@qq.com',
-            'sign'=>'d25341478381063d1c76e81b3a52e0592a7c997f',
-            'install_config'=>json_encode($data)
+            'email' => '756684177@qq.com',
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'install_config' => json_encode($data)
         ];
 
-      $res = Db::table('resty_auto_install')->insertGetId($jsonData);
-      halt($res);
+        $res = Db::table('resty_auto_install')->insertGetId($jsonData);
+        halt($res);
+    }
+
+    /**
+     * 表单提交数据自动插入
+     * @return mixed
+     */
+    public function fromAutoInstallConfInsert()
+    {
+        $data = [
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'server_config' => [
+                'ip_group' => '120.26.78.239,118.178.56.70,120.55.184.175',
+                'pwd_group' => 'RootOracle11w,RootOracle11w,RootOracle11w'
+            ],
+            'path_config' => [
+                'script_path' => '/home/www/script/auto-install',         // 脚本路径，安装包路径
+                'remote_script_path' => '/root',  // 远程脚本路径远程脚本路径
+                'remote_install_package_path' => '/root', // 远程安装包路径
+                'id_rsa_path' => 'RootOracle11w123,RootOracle11w456,RootOracle11w789', // 免登陆证书路径
+                'logs_path' => '/home/www/bin/logs', // 脚本输出日志路径
+            ],
+            'version_config' => [
+                'openresty_version' => '1.11.2.5',
+                'rtmp_version' => '1.2.0',
+                'php_version' => '5.5.9'
+            ],
+            'package_config' => [
+                'common' => 'libreadline-dev,libncurses5-dev,libpcre3-dev,libssl-dev,perl,make,build-essential,libxml2,libxml2-dev,libxslt-dev,unzip,jq',
+                'php5' => 'php5-fpm,php5-gd,php5-cli,php5-curl,php5-mcrypt,php5-mysql,php5-readline,php5-redis'
+            ],
+            'oss_config' => [
+                'host' => 'oss-cn-shanghai.aliyuncs.com',
+                'access_key' => 'LTAIV09s4vFZyYmd',
+                'key_secret' => 'qcIEmOR3X0rZcwymRqPu7WfFJGB1Ww',
+                'upload_path' => 'oss://tinywan-oss/data/',
+                'download_url' => 'https://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/internal/oss/0.0.4/assets/sdk/OSS_Python_API_20160419.zip'
+            ],
+            'record_config' => [
+                'callback_url' => 'https://www.tinywan.com/api/open_api/createStreamVideo',
+                'screenshot_time' => '10',
+                'cut_mp4' => '1',
+                'cut_jpg' => '1',
+                'cut_ts' => '0',
+                'clear_file_time' => '10080' //分钟
+            ],
+            'redis_config' => [
+                'host' => '139.224.239.21',
+                'port' => '61227',
+                'auth' => 'stream-system-auto-install-redis-password',
+                'db' => '1'
+            ],
+            'push_config' => [
+                'ip' => '192.168.10.2',
+                'user' => 'www',
+                'pwd' => 'www123456'
+            ],
+            'live_node_proxy_config' => [
+                'ip' => '192.168.10.100',
+                'user' => 'www',
+                'pwd' => 'www123456'
+            ],
+            'live_node_config' => [
+                'node1' => [
+                    'ip' => '192.168.10.10',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
+                ],
+                'node2' => [
+                    'ip' => '192.168.10.12',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
+                ],
+                'node3' => [
+                    'ip' => '192.168.10.13',
+                    'user' => 'www',
+                    'pwd' => 'www123456'
+                ]
+            ],
+        ];
+        $jsonData = [
+            'email' => '756684177@qq.com',
+            'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
+            'install_config' => json_encode($data)
+        ];
+
+        $res = Db::table('resty_auto_install')->insertGetId($jsonData);
+        halt($res);
     }
 
     /**
@@ -316,12 +428,22 @@ class WebsocketClient extends BaseFrontend
      */
     public function autoInstallConf()
     {
-        $findRes = Db::table('resty_auto_install')->where('id',14)->find();
-        $resJson =  [
-            'code'=>200,
-            'msg'=>'success',
-            'data'=>json_decode($findRes['install_config'])
-        ];
+        $sign = input('param.sign');
+
+        if (empty($sign) || ($sign != 'd25341478381063d1c76e81b3a52e0592a7c997f')) {
+            $resJson = [
+                'code' => 500,
+                'msg' => 'fail',
+                'data' => null
+            ];
+        } else {
+            $findRes = Db::table('resty_auto_install')->where('id', 22)->find();
+            $resJson = [
+                'code' => 200,
+                'msg' => 'success',
+                'data' => json_decode($findRes['install_config'])
+            ];
+        }
         return json($resJson);
     }
 }

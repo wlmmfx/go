@@ -132,11 +132,54 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-language"></i> 基础配置信息</h3></div>
                 <div class="panel-body">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="name1">许可认证字符串</label>
                         <div>
-                            <input class="form-control" type="text" name="build-license" id="build-license" placeholder=".col-lg-4"
-                                   value="00205268c4e6db6bf25a04cbc0cb23e6efc7f929">
+                            <input class="form-control" type="text" name="build-license" id="build-license"
+                                   placeholder=".col-lg-4" value="{$result['sign']}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-language"></i> 基础配置信息</h3></div>
+                <div class="panel-body">
+                    <div class="col-md-6">
+                        <label for="name2">编译环境</label>
+                        <div>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked" value="libncurses5-dev"> libncurses5-dev
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="libpcre3-dev"> libpcre3-dev
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox"name="package_common[]" checked="checked"  value="libssl-dev"> libssl-dev
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="perl"> perl
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="make"> make
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="build-essential"> build-essential
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="libxml2"> libxml2
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="libxml2-dev"> libxml2-dev
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="make"> make
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="unzip"> unzip
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="package_common[]" checked="checked"  value="jq"> jq
+                            </label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -162,7 +205,37 @@
                             </label>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-desktop"></i> OSS配置</h3></div>
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">host：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="host" id="host" type="text"
+                                       value="192.168.1.181">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">access_key：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" name="access_key" value="root" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">密码：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="push-server-pwd" id="push-server-pwd" type="password"
+                                       value="www123456">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -172,7 +245,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">IP地址：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" name="push-server" id="push-server" type="text" value="192.168.1.181">
+                                <input class="form-control" name="push-server" id="push-server" type="text"
+                                       value="192.168.1.181">
                             </div>
                         </div>
                     </div>
@@ -188,7 +262,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">密码：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" name="push-server-pwd" id="push-server-pwd" type="password" value="www123456">
+                                <input class="form-control" name="push-server-pwd" id="push-server-pwd" type="password"
+                                       value="www123456">
                             </div>
                         </div>
                     </div>
@@ -196,13 +271,16 @@
             </div>
             <!--节点服务器1-->
             <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-desktop"></i> 节点服务器1</h3><button type="button" class="add-btn pull-right">+</button></div>
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-desktop"></i> 节点服务器1</h3>
+                    <button type="button" class="add-btn pull-right">+</button>
+                </div>
                 <div class="panel-body">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">IP地址：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="text" name="node1-server" id="node1-server" value="192.168.1.182">
+                                <input class="form-control" type="text" name="node1-server" id="node1-server"
+                                       value="192.168.1.182">
                             </div>
                         </div>
                     </div>
@@ -218,7 +296,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">密码：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="password" name="node1-server-pwd" id="node1-server-pwd" value="www123456">
+                                <input class="form-control" type="password" name="node1-server-pwd"
+                                       id="node1-server-pwd" value="www123456">
                             </div>
                         </div>
                     </div>
@@ -232,7 +311,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">IP地址：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="text" value="192.168.1.183" name="proxy-server" id="proxy-server">
+                                <input class="form-control" type="text" value="192.168.1.183" name="proxy-server"
+                                       id="proxy-server">
                             </div>
                         </div>
                     </div>
@@ -248,7 +328,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">密码：</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="password" name="proxy-server-pwd" id="proxy-server-pwd" value="www123456">
+                                <input class="form-control" type="password" name="proxy-server-pwd"
+                                       id="proxy-server-pwd" value="www123456">
                             </div>
                         </div>
                     </div>
@@ -257,47 +338,52 @@
         </form>
     </div>
     <div class="row">
+        <pre>
+            {$result['sign']}
+        </pre>
+    </div>
+    <div class="row">
         <a type="button" class=" btn btn-primary btn-lg btn-block start-build-hander">开始编译</a>
         <div id='LogContainer' class='chat-room-container'></div>
     </div>
 </div>
 
 <script>
-//    $item = '<div class="panel panel-default">'+
-//        '<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-desktop"></i> 节点服务器1</h3><button type="button" class="add-btn pull-right">+</button></div>'+
-//        '<div class="panel-body">'+
-//        '<div class="col-md-4">'+
-//        '<div class="form-group">'+
-//        '<label class="col-sm-4 control-label">IP地址：</label>'+
-//        '<div class="col-sm-8">'+
-//        '<input class="form-control" type="text" name="node1-server" id="node1-server" value="192.168.1.182">'+
-//        '</div>'+
-//        '</div>'+
-//        '</div>'+
-//        '<div class="col-md-4">'+
-//        '<div class="form-group">'+
-//        '<label class="col-sm-4 control-label">账号：</label>'+
-//        '<div class="col-sm-8">'+
-//        '<input class="form-control" type="text" value="root" disabled="disabled">'+
-//        '</div>'+
-//        '</div>'+
-//        '</div>'+
-//        '<div class="col-md-4">'+
-//        '<div class="form-group">'+
-//        '<label class="col-sm-4 control-label">密码：</label>'+
-//        '<div class="col-sm-8">'+
-//        '<input class="form-control" type="password" name="node1-server-pwd" id="node1-server-pwd" value="www123456">'+
-//        '</div>'+
-//        '</div>'+
-//        '</div>'+
-//        '</div>'+
-//        '</div>';
+    //    $item = '<div class="panel panel-default">'+
+    //        '<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-desktop"></i> 节点服务器1</h3><button type="button" class="add-btn pull-right">+</button></div>'+
+    //        '<div class="panel-body">'+
+    //        '<div class="col-md-4">'+
+    //        '<div class="form-group">'+
+    //        '<label class="col-sm-4 control-label">IP地址：</label>'+
+    //        '<div class="col-sm-8">'+
+    //        '<input class="form-control" type="text" name="node1-server" id="node1-server" value="192.168.1.182">'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '<div class="col-md-4">'+
+    //        '<div class="form-group">'+
+    //        '<label class="col-sm-4 control-label">账号：</label>'+
+    //        '<div class="col-sm-8">'+
+    //        '<input class="form-control" type="text" value="root" disabled="disabled">'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '<div class="col-md-4">'+
+    //        '<div class="form-group">'+
+    //        '<label class="col-sm-4 control-label">密码：</label>'+
+    //        '<div class="col-sm-8">'+
+    //        '<input class="form-control" type="password" name="node1-server-pwd" id="node1-server-pwd" value="www123456">'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '</div>'+
+    //        '</div>';
 
-        $(document).on('click','.add-btn',function () {
-            $node = $(this).parent().parent().clone();
-            $node.find('#node1-server').val('789')
-            $(this).parent().parent().after($node);
-        })
+    $(document).on('click', '.add-btn', function () {
+        $node = $(this).parent().parent().clone();
+        $node.find('#node1-server').val('789')
+        $(this).parent().parent().after($node);
+    })
 </script>
 
 

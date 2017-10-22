@@ -1579,7 +1579,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         },
 
         /*
-         Initializes parent element for live editables 
+         Initializes parent element for live editables
         */
         initLive: function() {
            //store selector 

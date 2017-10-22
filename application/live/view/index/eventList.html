@@ -1,0 +1,574 @@
+<!-- 页面内容 -->
+<div class="page_content_box">
+    <div class="activity_list">
+        <div class="container">
+
+            <!--检索-->
+            <div class="con_box">
+                <div class="findlist_tj">
+                    <div class="li">
+                        <div class="label">时间</div>
+                        <div class="items" id="filterByDate">
+                            <a href="/liveevent?category=&amp;day=&amp;orderBy=latest"  class="item  active " data-value="" class="item active">全部</a>
+                            <a href="/liveevent?category=&amp;day=0&amp;city=&amp;orderBy=latest"  class="item">今天</a>
+                            <a href="/liveevent?category=&amp;day=1&amp;orderBy=latest"  class="item " data-value="d1" class="item">明天</a>
+                            <a href="/liveevent?category=&amp;day=7&amp;orderBy=latest"  class="item " data-value="d2" class="item">本周</a>
+                            <a href="/liveevent?category=&amp;day=6_7&amp;orderBy=latest"  class="item " data-value="d3" class="item">下周</a>
+                            <a href="/liveevent?category=&amp;day=30&amp;orderBy=latest"  class="item " data-value="d4" class="item">本月</a>
+                        </div>
+                    </div>
+
+                    <div class="li">
+                        <div class="label">技术类别</div>
+                        <div class="items" id="filterByDate">
+                            <a href="/liveevent?category=&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="" class="item  active">全部</a>
+                            <a href="/liveevent?category=209&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">人工智能</a>
+                            <a href="/liveevent?category=200&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">大数据</a>
+                            <a href="/liveevent?category=201&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">云计算</a>
+                            <a href="/liveevent?category=202&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">容器</a>
+                            <a href="/liveevent?category=203&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">DevOps</a>
+                            <a href="/liveevent?category=207&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">数据库</a>
+                            <a href="/liveevent?category=254&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">Kubernetes</a>
+                            <a href="/liveevent?category=205&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">Web开发</a>
+                            <a href="/liveevent?category=204&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">移动开发</a>
+                            <a href="/liveevent?category=362&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">游戏开发</a>
+                            <a href="/liveevent?category=206&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">高可用架构</a>
+                            <a href="/liveevent?category=216&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">区块链</a>
+                            <a href="/liveevent?category=208&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">IT运维</a>
+                            <a href="/liveevent?category=213&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">编程语言</a>
+                            <a href="/liveevent?category=212&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">开发工具</a>
+                            <a href="/liveevent?category=215&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">AR/VR</a>
+                            <a href="/liveevent?category=210&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">信息安全</a>
+                            <a href="/liveevent?category=221&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">软件测试</a>
+                            <a href="/liveevent?category=349&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">软件研发</a>
+                            <a href="/liveevent?category=353&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">智能硬件</a>
+                            <a href="/liveevent?category=220&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">存储</a>
+                            <a href="/liveevent?category=222&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">中间件</a>
+                            <a href="/liveevent?category=217&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">管理</a>
+                            <a href="/liveevent?category=335&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">数字经济</a>
+                            <a href="/liveevent?category=211&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">物联网</a>
+                            <a href="/liveevent?category=339&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">互联网</a>
+                            <a href="/liveevent?category=367&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">开源治理</a>
+                            <a href="/liveevent?category=218&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">行业研究</a>
+                            <a href="/liveevent?category=219&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">名企案例</a>
+                            <a href="/liveevent?category=224&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">名家分享</a>
+                            <a href="/liveevent?category=223&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">职业发展</a>
+                            <a href="/liveevent?category=334&amp;day=&amp;fliter%5Btype%5D=&amp;fliter%5Bprice%5D=all&amp;fliter%5BcurrentLevelId%5D=&amp;orderBy=" data-value="d1" class="item ">解决方案</a>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="gj_js">
+                    <div class="top clearfix">
+                        <div class="px f_l" id="filterByOrder">
+                            <a href="/liveevent?category=&amp;orderBy=" class="li active "  data-value="orderByNormal">全部</a>
+                            <a href="/liveevent?category=&amp;orderBy=view" class="li"  data-value="orderByNew">热门直播</a>
+                            <a href="/liveevent?category=&amp;orderBy=start" class="li"  data-value="orderByView">即将开始</a>
+                            <a href="/liveevent?category=&amp;orderBy=new" class="li"  data-value="orderByAttend">最新发布</a>
+                            <a href="/liveevent?category=&amp;orderBy=replay" class="li"  data-value="orderByAttend">直播回放</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--检索 end-->
+
+            <!--活动列表-->
+
+            <div class="event_list clearfix">
+                <div class="col-lg-3">
+                    <a href="/ld/6523" title="博学网在线直播课第一期 | 通过虚拟私有数据库实现数据库在行层次上的安全控制" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/10-19/008ac7603de4ad0e7d30d7f75af393a4_large.jpeg?6.17.4" /><span class="img_span"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >博学网在线直播课第一期 | 通过虚拟私有数据库实现数据库在行层次上的安全控制</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>10月26日 19:30 - 20:30</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/24624">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/100045de269a556130.jpg" style="width:24px;height:26px;" />
+                                            <em>刘庚</em> 博学网技术部高级讲师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/ld/3894" title="IBM存储简介" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/course/2017/07-18/1132320b2891958422.png?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >IBM存储简介</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>07月18日 20:30 - 22:30</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/2530249">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/1106317a0ada191087.jpg" style="width:24px;height:26px;" />
+                                            <em>P哥</em> IBM CATE认证及认证讲师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/ld/1178" title="NO.2 项目成本控制的有效方法" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/04-14/150252cc25b6396360.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >NO.2 项目成本控制的有效方法</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月27日 20:00 - 22:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/25251">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/091732c36665645348.jpg" style="width:24px;height:26px;" />
+                                            <em>陈迎秋</em> 著名项目管理专家
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/ld/1012" title="进阶“首席”架构师的自我修养" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/04-07/12202045896f000261.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >进阶“首席”架构师的自我修养</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月20日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/21337">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/121855f8021f337154.jpg" style="width:24px;height:26px;" />
+                                            <em>李道兵</em> 七牛云高级副总裁
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/ld/1177" title="NO.1 项目经理如何做好项目进度规划" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/04-14/150236ccdf33521416.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >NO.1 项目经理如何做好项目进度规划</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月20日 20:00 - 22:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/25251">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/091732c36665645348.jpg" style="width:24px;height:26px;" />
+                                            <em>陈迎秋</em> 著名项目管理专家
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/867" title="十九期：MongoDB 10步构建单一视图" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/03-30/094947be05ac001991.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >十九期：MongoDB 10步构建单一视图</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月19日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/20543">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/153558eb3eea844257.png" style="width:24px;height:26px;" />
+                                            <em>林涛</em> MongoDB官方咨询经理
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/1011" title="突破单一语言桎梏，进击全栈" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/04-07/121632084ed7864604.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >突破单一语言桎梏，进击全栈</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月13日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/21336">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/120540426d6c827768.jpg" style="width:24px;height:26px;" />
+                                            <em>张虎</em> 云巴创始人、CEO
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/1006" title="⎡Hello DevOps ⎦——精英研发团队 DevOps 落地实践分享" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/04-06/174930a896dd299009.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >⎡Hello DevOps ⎦——精英研发团队 DevOps 落地实践分享</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月11日 19:00 - 20:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/21175">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/170933dd4d0a548131.png" style="width:24px;height:26px;" />
+                                            <em>李亚昕（Yaxin）</em> DaoCloud运营团团长
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/985" title="工程师面试，要准备的不只是技术" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/03-31/1810444d3797329344.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >工程师面试，要准备的不只是技术</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>04月06日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/20678">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/1758593d5ad0713605.jpg" style="width:24px;height:26px;" />
+                                            <em>袁晓沛</em> 七牛信息技术总监
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/677" title="十八期：Ops Manager在企业环境中的应用" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/03-13/15575757b832048499.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >十八期：Ops Manager在企业环境中的应用</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>03月22日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/12451">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/154431f61029259966.jpg" style="width:24px;height:26px;" />
+                                            <em>张耀星</em> MongoDB大中华区高级咨询顾问
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/725" title="探索oracle 12c的sharding" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/03-16/1824160d8437297775.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >探索oracle 12c的sharding</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>03月22日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/15750">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/0928055b4bb6178949.jpeg" style="width:24px;height:26px;" />
+                                            <em>刘金龙</em> 沃趣科技高级数据库工程师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/491" title="十七期：60分钟，360度-使用MongoDB BI套接件和Tableau搭建客户全景视图原型" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/01-10/143538a95b45282785.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >十七期：60分钟，360度-使用MongoDB BI套接件和Tableau搭建客户全景视图原型</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>01月18日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/12454">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/1412419bca64977092.jpg" style="width:24px;height:26px;" />
+                                            <em>唐建法（TJ Tang)</em> MongoDB官方大中华区首席架构师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/490" title="特邀讲座：向赎金说不 – MongoDB安全最佳实践" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/01-10/143557de8da6550846.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >特邀讲座：向赎金说不 – MongoDB安全最佳实践</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>01月16日 20:00 - 21:00</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/12451">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/154431f61029259966.jpg" style="width:24px;height:26px;" />
+                                            <em>张耀星</em> MongoDB大中华区高级咨询顾问
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/493" title="浅谈MySQL事务之MVCC、Undo、Redo" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/01-10/134948c79ea7922586.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >浅谈MySQL事务之MVCC、Undo、Redo</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>01月12日 20:30 - 21:30</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/10008">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/133241986d5a097225.png" style="width:24px;height:26px;" />
+                                            <em>董红禹</em> MySQL数据库工程师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/489" title="大数据之Spark性能调优实战分享" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/01-09/11104661c272939383.jpg?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >大数据之Spark性能调优实战分享</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>01月10日 20:30 - 21:30</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/12428">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/091559f284d6426603.jpg" style="width:24px;height:26px;" />
+                                            <em>Damon</em> 盛大网络大数据工程师
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <a href="/liveevent/detail/476" title="MySQL Group Replication思想" target="_blank">
+                        <div class="li">
+                            <div class="event_cover" style="border:0px;position:relative;border: 1px solid rgba(0,0,0,0.12);height:165px">
+                                <img class="img_lazy" data-original="http://static.itdks.com/files/default/2017/01-04/134710eb2477288732.png?6.17.4" /><span class="img_span"></span>
+                                <span class="play"></span>
+                                <div class="info" style="background:rgba(0,0,0,0.8);border: 1px solid rgba(0,0,0,0.12);padding:8px;position:absolute;top：0px;z-index: 100;color: #ffffff;bottom: 0px;height: 20px;line-height:24px;opacity: 0.8;width:100%;overflow:none;">
+                                    <div class="name" style="font-size:14px;" >MySQL Group Replication思想</div>
+                                </div>
+                            </div>
+                            <div class="info" style="border: 1px solid rgba(0,0,0,0.12);padding: 12px 8px 12px 8px;">
+                                <div class="t_l" style="padding-left:6px;">
+                                    <span class="time"><i class="icon">&#xe61f;</i>01月05日 20:30 - 21:30</span>
+                                </div>
+
+                                <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);margin-top:12px;padding-top:6px;padding-left:6px;overflow: hidden;">
+
+                                    <a target="_blank" href="/member/people/12081">
+                                        <span class="location ellipsis" style="width:200px;overflow:hidden;float:left">
+								        <img src="Picture/211143fdf3f2634072.jpeg" style="width:24px;height:26px;" />
+                                            <em>古雷</em> CNTV资深MySQL专家
+                                        </span>
+                                    </a>
+
+                                    <span class="price" style="float:right">免费</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="clear"></div>
+                <div class="text_center">
+
+                </div>
+            </div>
+
+            <div class="clear"></div>
+            <!--活动列表 end-->
+
+
+        </div>
+    </div>
+</div>
+<!--页面内容 end-->
+<!--footer-->
+

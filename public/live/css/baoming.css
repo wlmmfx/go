@@ -1,0 +1,73 @@
+﻿@charset "UTF-8";
+/**
+* 引入配置和工具
+*/
+/**========================================================================
+*  业务无关工具
+*/
+/**========================================================================
+*  业务相关
+*/
+/**
+  定义按钮的交互颜色--------------------------------------
+**/
+/**  定义按钮的交互颜色------------END-------------------------- **/
+/* .content { margin: 40px auto 80px; width: 1180px; overflow: hidden; } */
+
+.page-login .panel-body { padding: 60px 0 72px; }
+
+.page-login form { overflow: hidden; margin: 0 auto; width: 360px; }
+
+.page-login .input-wrapper { margin-bottom: 20px; }
+
+.page-login .input-wrapper input { padding: 10px; width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #DEDEDE; color: #333; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+.page-login .validation-code input { width: 120px; margin-right: 10px; vertical-align: middle; }
+
+.page-login .validation-code img { vertical-align: middle; }
+
+.page-login .validation-code .validationPic { margin-right: 10px; max-width: 180px; height: 40px; }
+
+.page-login .btn-submit { margin-bottom: 20px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; height: 40px; line-height: 40px; font-size: 16px; color: #fff; text-align: center; background-color: #0397E0; width: 100%; }
+
+.page-login .btn-submit:hover { background-color: #0397E0; }
+
+.page-login .btn-submit:active { background-color: #0397E0; }
+
+.page-login .auto-login { color: #666; font-size: 12px; line-height: 14px; }
+
+.page-login .auto-login input { vertical-align: middle; margin-right: 10px; }
+
+.page-login .other-operation { margin-right: -1px; float: right; font-size: 12px; line-height: 14px; color: #DEDEDE; }
+
+.page-login .other-operation a { margin: 0 10px; color: #28b28b; vertical-align: middle; }
+
+.page-login .other-account { margin-top: 20px; *zoom: 1; }
+
+.page-login .other-account:before, .page-login .other-account:after { content: ""; display: table; }
+
+.page-login .other-account:after { clear: both; }
+
+.page-login .other-account a { text-indent: -9999em; }
+
+.page-login .other-account .account-qq { float: left; overflow: hidden; display: inline-block; vertical-align: middle; *vertical-align: auto; zoom: 1; *display: inline; background-image: url(../Images/sprite-social.png); background-repeat: no-repeat; background-position: 0px -24px; width: 120px; height: 24px; }
+
+.page-login .other-account .account-weibo { float: right; overflow: hidden; display: inline-block; vertical-align: middle; *vertical-align: auto; zoom: 1; *display: inline; background-image: url(../Images/sprite-social.png); background-repeat: no-repeat; background-position: 0px 0px; width: 126px; height: 24px; }
+
+#popLogin { position: fixed; width: 360px; top: 50%; left: 0; right: 0; z-index: 11; margin: 0 auto; margin-top: -250px; }
+
+#popLogin .panel-body { padding: 40px;padding-top:20px; }
+
+#popLogin form { width: 280px; }
+
+#popLogin .validation-code .validationPic { max-width: 110px; height: 38px; }
+
+#popRegister { position: fixed; width: 360px; top: 50%; left: 0; right: 0; z-index: 11; margin: 0 auto; margin-top: -250px; }
+
+#popRegister .panel-body { padding: 40px;padding-top:20px; }
+
+#popRegister form { width: 280px; }
+
+#popRegister .validation-code .validationPic { max-width: 110px; height: 38px; }
+
+#close_btn { position: absolute; top: 25px; right: 20px; overflow: hidden; display: inline-block; vertical-align: middle; *vertical-align: auto; zoom: 1; *display: inline;  background-repeat: no-repeat;  width: 11px; height: 11px; background-image: url(../Images/close_ico.png); cursor: pointer;opacity: 0.9; }

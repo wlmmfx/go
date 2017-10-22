@@ -11,7 +11,7 @@ return [
     // 是否开启路由
     'url_route_on'           => true,
     // 设置路由配置文件列表
-    'route_config_file'	=>	['frontend','backend','blog'],
+    'route_config_file'	=>	['frontend','backend','blog','live'],
     // 域名根，如thinkphp.cn
     'url_domain_root'        => 'tinywan.top',
     // 是否强制使用路由

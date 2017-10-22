@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="__CSS__/bootstrap.min.css">
+    <title>物联网直播</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <link rel="stylesheet" href="__CSS__/slick.css" type="text/css"/>
+
+    <link rel="stylesheet" href="__CSS__/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="__COMMON__/font/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="__CSS__/app.css" type="text/css"/>
+    <link href="__CSS__/quake.slider.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="__CSS__/style.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="__CSS__/icons.css">
+    <script src="__JS__/jquery.min.js"></script>
+    <script src="__JS__/jquery-migrate.min.js"></script>
+    <script src="__JS__/bootstrap.js"></script>
+    <script src="__JS__/validform_v5.3.2.js"></script>
+
+    <script src="__JS__/slick.js"></script>
+    <script src="__JS__/tools.js"></script>
+    <script src="__JS__/animate.js"></script>
+
+    <script src="__JS__/jquery.lazyload.min.js" type="text/javascript"></script>
+
+    <script src="__JS__/quake.slider.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var _SYS_CONFIG =  {mainDomain : "http://www.itdks.com"}
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?cff2c864566087d7a44b5ef2ddd1877c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script type="text/javascript" src="__JS__/bootstrap.js"></script>
+    <script src="__JS__/bootstrap-datetimepicker.min.js"></script>
+    <script src="__JS__/bootstrap-datetimepicker.fr.js"></script>
+    <link rel="stylesheet" type="text/css" href="__CSS__/icons.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/bootstrap-datetimepicker.min.css">
+    <style type="text/css">
+        .bddown_set {
+        }
+        .bgcolor1 {
+            background-color: #fff;
+        }
+        .activities {
+            max-width: 1248px;
+        }
+        .container-fluid {
+            padding-right: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-top:32px;
+        }
+        .section_title {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .section_title h2 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: normal;
+        }
+        .section_title p {
+            margin-bottom: 10px;
+            color: #9a9a9a;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .link_blue {
+            color: #11b0f1;
+            font-size: 13px;
+            line-height: 1.3;
+        }
+        .activities .row {
+            margin-left: -6px;
+            margin-right: -6px;
+        }
+        .paddown20 {
+            padding-bottom: 20px;
+        }
+        .row {
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .activities .row .col-sm-4 {
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-bottom: 20px;
+        }
+        .col-sm-4 {
+            width: 25%;
+            float: left;
+        }
+        .Look_course .video_bg {
+            max-height: none;
+        }
+        .video_box{padding:0px 15px;}
+        .video_bg {
+            position: relative;
+            overflow: hidden;
+        }
+        .video_bg img, .video_bigbox img, .video_bg_normal img, .act_bg img, .pic_box img {
+            width: 100%;
+            transition: all .3s ease;
+            -webkit-transition: all .3s ease;
+            -moz-transition: all .3s ease;
+            -o-transition: all .3s ease;
+            -webkit-backface-visibility: hidden;
+        }
+        img {
+            border: 0;
+        }
+        .video_note {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            pointer-events: none;
+        }
+        .play_medium_right {
+            float: right;
+            margin: 5px 20px 0 0;
+        }
+        .icon_play_medium {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: url(__IMAGES__/iconx11.png) -60px 0;
+            pointer-events: auto;
+        }
+        .Look_course .video_txt {
+            padding: 15px 20px;
+        }
+        .video_txt {
+            min-height: 107px;
+            padding: 10px 13px;
+            border: 1px solid #eee;
+            border-top-width: 1px;
+            border-top-width: 0;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .Look_course .video_txt h5 {
+            height: auto;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        .Look_course .video_txt h5 a {
+            display: block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            color: #333;
+            text-decoration: none;
+        }
+        .video_txt h5 {
+            height: 40px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            overflow: hidden;
+        }
+
+        .video_info {
+            overflow: hidden;
+            font-size: 12px;
+        }
+        .Look_course .video_info p {
+            float: left;
+            margin-right: 8px;
+        }
+        .video_info p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 1.6;
+        }
+        .Look_course .video_info p {
+            float: left;
+            margin-right: 8px;
+        }
+        .video_info p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: 1.6;
+        }
+        .video_jobs {
+            color: #aaa;
+        }
+        .video_cost_msg {
+            margin-top: 9px;
+        }
+        .cost_price {
+            color: #e91d00;
+        }
+        .cost {
+            font-size: 14px;
+        }
+        .Look_course .lived {
+            color: #aaa;
+            padding-left: 0;
+        }
+        .Look_course .live_state {
+            color: #46bd01;
+            margin-left: 20px;
+            padding-top: 2px;
+            padding-left: 21px;
+            font-size: 12px;
+            vertical-align: bottom;
+        }
+        .view_count {
+            float: right;
+            padding-top: 4px;
+            color: #9a9a9a;
+            font-size: 12px;
+        }
+        .event_list .li .name {
+            height: 40px;
+            color: #000;
+            font-size: 14px;
+        }
+        .event_list ul{height:32px;width: 1214px;margin-left: 12px;margin-bottom:12px;background:#efefef;}
+        .event_list ul li{float:left;width:80px;height:32px;line-height:32px;text-align:center;color:#333333;}
+        .event_list ul li:hover{background:#009ccd;color:#FFFFFF;border-radius:5px;height:24px;margin-top:4px;line-height:24px;cursor:pointer}
+        .event_list ul li.hov{background:#009ccd;color:#FFFFFF;border-radius:5px;height:24px;margin-top:4px;line-height:24px;cursor:pointer}
+        .teams_fluid {
+            max-width: 1230px;
+            margin-left: auto;
+            margin-right: auto;
+
+            padding-right: 15px;
+            overflow: hidden;
+        }
+        .section_title {
+            margin-top: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .team_box {
+            margin: 0 -17px;
+            font-size: 0;
+            text-align: left;
+        }
+        .team {
+            display: inline-block;
+            margin: 0 21px 17px 17px;
+            width: 120px;
+            font-size: 14px;
+            text-align: center;
+            vertical-align: top;
+        }
+        .team .brand {
+            position: relative;
+            display: block;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .team img{width:45px;height:45px;margin-top:12px;}
+        .team span{
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 18px;
+            color: #333;
+            text-align: left;
+            line-height: 18px;
+            text-align:center;
+
+        }
+        .team span.catename {
+            top: 70px;
+            font-size:13px;
+        }
+        .team span.video {
+            top: 90px;
+            font-size:12px;
+            color:#11b0f1;
+        }
+        .play,.play:hover{position: absolute;top: 120px;left: 240px;z-index: 888;width: 36px;height: 36px;min-height:0px;}
+        .play{background:url(__IMAGES__/play2_ico.png) no-repeat;background-size:36px 36px;}
+        .play:hover{background:url(__IMAGES__/play2_hover_ico.png) no-repeat;background-size:36px 36px;}
+    </style>
+</head>
+<body>
+
+<!--公共浮窗-->
+<div class="float_window">
+    <div class="span" style="margin-bottom: 2px"><i class="fa fa-link"></i>
+
+        <!--  <div class="text">客服咨询</div> -->
+        <!--移动显示-->
+        <div class="wei_kf" style="display:none">
+            <img src="__PICTURE__/contact_us_2.png"/>
+            <span class="wei_close"></span>
+        </div>
+        <!--移动显示 end-->
+    </div>
+    <div class="scrolltop" style="display: none;">
+        <img src="__PICTURE__/smallarrow.png">
+    </div>
+    <!-- <div class="span to-top" style="display: none;"><i class="icon">&#xe6b7;</i> -->
+
+    <!-- <div class="text">返回顶部</div> -->
+    <!-- </div> -->
+</div>
+<!-- <script src="Scripts/jquery.totop.min.js"></script> -->
+<!--公共浮窗-->
+<!-- <script type="text/javascript"> -->
+<!-- jQuery(function ($) {$('.to-top').toTop({autohide: true,offset: 420,speed: 600,position: false});}); -->
+<!-- </script> -->
+<!--content-->
+<div class="content home_page">
+    <!-- header start-->
+    <!--header-->
+    <style type="text/css">
+        .hovv{color:#29a7e1}
+        a.hov{font-size:16px}
+        a.hov:hover{color:#29a7e1}
+        .ml24{margin-left:24px;}
+        #SearchTypeChange {z-index:101;}
+        #SearchTypeChange li{cursor: default;line-height: 24px;text-indent: 1px;padding:4px 6px;font-size:13px;}
+        .SearchTypeChangeCur{background: #F1F1F1;}
+        .blue{color:#0089d2;}
+        .popup,.popup2 {
+            width: 26%;
+            height: auto;
+            background: #ffffff;
+            position: fixed;
+            z-index: 11;
+            left:37%;
+            top: 30%;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+        .popup2{top:20%}
+        .hide {
+            display: none;
+        }
+        .mask-layer, .mask-layer-strong { display: none; width: 100%; height: 100%; background-color: #000000; opacity: 0.5; filter: alpha(opacity=50); position: fixed; z-index: 10; top: 0; left: 0; }
+        .page-login .btn-submit{background-color: #0397E0;}
+        .page-login .btn-submit:hover{background-color:#0397E0}
+        @font-face {font-family: "iconfont";
+            src: url('/assets/dakashuo/member/fontsome/iconfont.eot?t=1503630834477'); /* IE9*/
+            src: url('/assets/dakashuo/member/fontsome/iconfont.eot?t=1503630834477#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('/assets/dakashuo/member/fontsome/iconfont.woff?t=1503630834477') format('woff'), /* chrome, firefox */
+            url('/assets/dakashuo/member/fontsome/iconfont.ttf?t=1503630834477') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+            url('/assets/dakashuo/member/fontsome/iconfont.svg?t=1503630834477#iconfont') format('svg'); /* iOS 4.1- */
+        }
+    </style>
+    <div class="header">
+
+        <div class="container">
+
+            <div class="con_box clearfix">
+                <div class="major f_l">
+                    <div class="logo"> <a href="/live/Index/index"><img src="__PICTURE__/logo_index.png" /></a></div>
+                    <div class="search">
+                        <div class="search_map hover f_l" style="border: 0px;padding-left: 0px;display: block;">
+                            <a href="/eventlist" class="hov">
+                                <span  >技术峰会</span>
+                            </a>
+                            <a href="/liveList" class="hov ml24">
+                                <span  >直播分享</span>
+                            </a>
+                            <a href="/dakalive" class="hov ml24" style="">
+                                <span  >大咖视频</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="minor f_r">
+                    <div>
+                        <a class="h_l nocreate" style="height:36px;line-height:36px;" href="javascript:void(0)">
+                            <span class="button m_color" style="height:24px;line-height:24px;"> <i class="fa fa-play-circle"></i>&nbsp;我要直播</span></a>
+                        <div class="h_l profile hover">
+                            <a href="/login">登录</a> /
+                            <a href="/dakashuo/member/register">注册</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="s_box Search f_r" style="position:relative">
+                    <form class="form-search" id="q-form" method="get" action="/dakashuo/search">
+                        <!--<input type="hidden" name="_csrf_token" value="6ce1430b8efb153802138fd27114df996d5706da">-->
+                        <input name="m" value="meeting" id="_SearchType" type="hidden">
+                        <input id="q" name="q" type="text" value="" class="input f_l" placeholder="找大会、找大咖、找视频" autocomplete="off"  onkeydown="return search()"/>
+                        <span class="icon search_icon" onclick="seacher_submit()" style="cursor: pointer;"><i class="fa fa-search"></i></span>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script >
+        $(function(){
+            $(".nocreate").click(function(){
+                $('#speaksdetail').show();
+                $('.mask-layer').show();
+            })
+            $(".mask-layer,.close").click(function(){
+                $(".mask-layer").hide();
+                $("#speaksdetail").hide();
+                $('.share_content').remove()
+            })
+            $(".btn-enroll").click(function(){
+                location.href="/member/lecturer/approval";
+            })
+
+            $(".btn-organizer").click(function(){
+                location.href="/login?type=organizer";
+
+            })
+            $(".btn-speak").click(function(){
+                location.href="/login?type=teacher";
+            })
+        })
+    </script>
+    <link rel="stylesheet" type="text/css" href="__CSS__/baoming.css">
+    <div class="page-login popup hide" style="z-index:1000010" id="speaksdetail">
+        <div class="panel">
+            <div class="popup-tit" style="padding:10px 20px;background:#0397E0;color:#FFFFFF;font-size:14px;">我要直播<span class="close" id="close_btn" style="top: 15px;"></span></div>
+            <div class="panel-body" style="font-size:13px;padding:10px 20px;line-height:28px;">
+                <p style="margin:18px 0px;font-size:14px;">
+                    请选择用户类型：</p>
+                <p>
+                    <input type="button" class="btn-submit btn-organizer" style="width:45%;float:left;line-height:36px;" value="我是主办方">
+                    <input type="button" class="btn-submit btn-speak" style="width:45%;float:right;line-height:36px;" value="我是大咖">
+
+                </p>
+                <div  style="clear:both"></div>
+            </div>
+        </div>
+    </div>
+    <div class="mask-layer"></div>
+    <div class="mask-layer-strong"></div>
+

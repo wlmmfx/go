@@ -13,6 +13,7 @@ namespace app\backend\controller;
 
 
 use app\common\controller\BaseBackend;
+use houdunwang\arr\Arr;
 use think\Db;
 
 class Live extends BaseBackend
@@ -65,8 +66,15 @@ class Live extends BaseBackend
      */
     public function liveIndex()
     {
-        $lives = Db::table('resty_live')->select();
-        $this->assign('categorys', $lives);
+        $lives = Db::table("resty_live")
+            ->alias('l')
+            ->join('resty_category c', 'c.id = l.cate_id')
+            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,l.recordStatus,c.name as c_name")
+            ->order("l.createTime desc,l.liveStartTime desc")
+            ->paginate(4);
+        $categorys = db('category')->where('pid',116)->order('id desc')->select();
+        $this->assign('lives', $lives);
+        $this->assign('categorys', $categorys);
         return $this->fetch();
     }
 

@@ -17,9 +17,9 @@
     ],
      "repositories": {
     	"packagist": {
-        	"type": "composer",
-        	"url": "https://packagist.phpcomposer.com"
-    	}
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
 	},
     "require": {
         "php": ">=5.4.0",

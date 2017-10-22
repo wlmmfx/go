@@ -10,6 +10,8 @@
  * '-------------------------------------------------------------------*/
 namespace app\common\model;
 
+use think\Log;
+
 class Banner extends BaseModel
 {
     protected $pk = "id";
@@ -45,7 +47,6 @@ class Banner extends BaseModel
         return ['valid' => 1, 'msg' => "更新成功"];
     }
 
-
     /**
      * @param $id
      * @return array
@@ -55,5 +56,24 @@ class Banner extends BaseModel
         $res = $this->where('id', $id)->update(['deleted' => 1]);
         if (false === $res) return ['valid' => 0, 'msg' => "删除失败"];
         return ['valid' => 1, 'msg' => "删除成功"];
+    }
+
+    /**
+     * 发布操作
+     * @param $id
+     * @return array
+     */
+    public function publish($id,$publishStatus)
+    {
+        if($publishStatus == 1){
+            $status = 0;
+        }else{
+            $status = 1;
+        }
+        Log::error('--------------------$publishStatus----------------'.$publishStatus);
+        Log::error('--------------------$status----------------'.$status);
+        $res = $this->where('id', $id)->update(['publish_status' => $status]);
+        if (false === $res) return ['valid' => 0, 'msg' => "发布失败"];
+        return ['valid' => 1, 'msg' => "发布成功"];
     }
 }

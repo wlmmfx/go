@@ -179,4 +179,22 @@ class Banner extends BaseBackend
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
+
+    /**
+     * 发布操作
+     * @return \think\response\Json
+     */
+    public function publish()
+    {
+        if ($this->request->isAjax()) {
+            $id = input('post.id');
+            $publishStatus = input('post.publish_status');
+            $res = $this->db->publish($id,$publishStatus);
+            if ($res['valid']) {
+                return json(['code' => 200, 'msg' => $res["msg"]]);
+            }
+            return json(['code' => 500, 'msg' => $res["msg"]]);
+        }
+        return json(['code' => 401, 'msg' => "Not Forbidden"]);
+    }
 }

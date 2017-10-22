@@ -50,6 +50,16 @@
                                         <i class="icon-edit"></i>编辑
                                     </button>
                                 </a>
+
+                                {if condition="$vo.publish_status == 1 "}
+                                <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});" class="btn btn-warning btn-xs" >
+                                    <i class="icon-location-arrow"></i>取消发布
+                                </a>
+                                {else /}
+                                <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});" class="btn btn-info btn-xs" >
+                                    <i class="icon-location-arrow"></i>发布
+                                </a>
+                                {/if}
                                 <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs" >
                                     <i class="icon-trash"></i>删除
                                 </a>
@@ -147,12 +157,36 @@
     </div>
 </div>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    确定要发布吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger publish-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     // Success before include CommonJS
     function successShow($msg) {
         $("#auth-image").attr('src', '__COMMON__/images/success.svg');
         $(".auth-msg").html($msg);
         $("#authHanderModal").modal("show");
+        window.location.reload();
     }
 
     // Fail before include CommonJS
@@ -164,9 +198,20 @@
     }
 
     var $tag_id;
+    var $publish_status;
     function delHanderModal(id) {
         $tag_id = id;
         $("#delHanderModal").modal("show");
+    }
+
+    /**
+     * 发布
+     * @param id
+     */
+    function publishHanderModal(id,publish_status) {
+        $tag_id = id;
+        $publish_status = publish_status;
+        $("#publishHanderModal").modal("show");
     }
     $(document).ready(function(){
         $('body').delegate('.del-hander', 'click', function () {
@@ -185,6 +230,35 @@
                     console.log($response)
                     if ($response.code == 200) {
                         $('#tag-' + $tag_id).remove();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+        $('body').delegate('.publish-hander', 'click', function () {
+            $("#publishHanderModal").modal("hide");
+            var $url = "{:url('backend/banner/publish')}";
+            var $_data = {
+                'id': $tag_id,
+                'publish_status': $publish_status
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+                        $('#tag-' + $tag_id).css('background-color','#fff5d4');
                         successShow($response.msg);
                     } else {
                         failShow($response.msg);

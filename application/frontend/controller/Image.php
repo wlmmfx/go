@@ -50,7 +50,7 @@ class Image extends Controller
     public function imageWater()
     {
         $imagePath = ROOT_PATH . 'public' . DS . 'uploads/20170807/92603aa925a01dd7c86c70874d1782c6.png';
-        $logoPath = ROOT_PATH . 'public' . DS . 'uploads/logo.png';
+        $logoPath = ROOT_PATH . 'public' . DS . 'uploads/logo_index.png';
         $image =  \think\Image::open($imagePath);
         // 给原图左上角添加水印并保存water_image.png
         $res = $image->water($logoPath,\think\Image::WATER_SOUTHWEST,50)->save(ROOT_PATH . 'public' . DS . 'uploads/water_image.png');

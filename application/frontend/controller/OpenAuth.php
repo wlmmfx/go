@@ -164,7 +164,6 @@ class OpenAuth extends BaseFrontend
         }
     }
 
-
     /**
      * 退出登录
      */

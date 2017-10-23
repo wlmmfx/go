@@ -344,8 +344,9 @@ class WebsocketClient extends BaseFrontend
         $data = [
             'sign' => 'd25341478381063d1c76e81b3a52e0592a7c997f',
             'server_config' => [
-                'ip_group' => '120.26.78.239,118.178.56.70,120.55.184.175',
-                'pwd_group' => 'RootOracle11w,RootOracle11w,RootOracle11w'
+                'ip_group' => '120.26.78.239,118.178.56.70,120.26.93.84,118.178.123.62',//服务器IP地址
+                'user_group' => 'root,root,root,root',//服务器账号
+                'pwd_group' => 'RootOracle11w,RootOracle11w,RootOracle11w,RootOracle11w'//账号账号密码
             ],
             'path_config' => [
                 'script_path' => '/home/www/script/auto-install',         // 脚本路径，安装包路径
@@ -437,7 +438,7 @@ class WebsocketClient extends BaseFrontend
                 'data' => null
             ];
         } else {
-            $findRes = Db::table('resty_auto_install')->where('id', 22)->find();
+            $findRes = Db::table('resty_auto_install')->where('id', 23)->find();
             $resJson = [
                 'code' => 200,
                 'msg' => 'success',

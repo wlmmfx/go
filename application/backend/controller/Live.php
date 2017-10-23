@@ -149,4 +149,66 @@ class Live extends BaseBackend
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
+
+    /**
+     * 视频上传管理
+     */
+    public function videoUploadFrom()
+    {
+        if(request()->isPost()){
+            $file = request()->file("myfile");
+            if ($file) {
+                $data = input('post.*');
+                $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/videos');
+                if ($info) {
+                    // 成功上传后 获取上传信息
+                    $res = [
+                        'code' => 200,
+                        'msg' => 'success',
+                        'fileId' => $info->getSaveName()
+                    ];
+                } else {
+                    $res = [
+                        'code' => 500,
+                        'msg' => $file->getError()
+                    ];
+                }
+                return json($res);
+            }
+            return json(['code' => 500, 'msg' => "upload file name error"]);
+        }
+        //临时关闭当前模板的布局功能
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    public function liveVideoUploadFrom()
+    {
+        if(request()->isPost()){
+            $file = request()->file("myfile");
+            if ($file) {
+                $id = input('post.id');
+                $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/videos');
+                if ($info) {
+                    // 成功上传后 获取上传信息
+                    $res = [
+                        'code' => 200,
+                        'msg' => 'success',
+                        'id' => $id,
+                        'fileId' => $info->getSaveName()
+                    ];
+                } else {
+                    $res = [
+                        'code' => 500,
+                        'msg' => $file->getError()
+                    ];
+                }
+                return json($res);
+            }
+            return json(['code' => 500, 'msg' => "upload file name error"]);
+        }
+        $id = input('param.id');
+        $this->assign('live', Db::table('resty_live')->where('id', $id)->find());
+        return $this->fetch();
+    }
 }

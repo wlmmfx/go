@@ -250,11 +250,11 @@
                                          alt="{$vo['desc']}">
                                 </a>
                             </td>
-                            <td style="vertical-align: middle;">26e7cd742cda4cd8b1d6e4af9c92b18a</td>
-                            <td style="vertical-align: middle;">00:04</td>
-                            <td style="vertical-align: middle;">00:04</td>
+                            <td style="vertical-align: middle;">{$vo['streamName']}</td>
+                            <td style="vertical-align: middle;">{$vo['fileSize']|trans_byte}</td>
+                            <td style="vertical-align: middle;">{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
                             <td style="vertical-align: middle;">上传</td>
-                            <td style="vertical-align: middle;">2017-10-24 12:49:07</td>
+                            <td style="vertical-align: middle;">{$vo['createTime']}</td>
                             <td style="vertical-align: middle;">
                                 <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs">
                                     <i class="icon-trash"></i>删除
@@ -264,6 +264,8 @@
                         {/foreach}
                         </tbody>
                     </table>
+                    <hr>
+                    <div>{$videos->render()}</div>
                 </div>
                 <!-- 素材上传-->
                 <div id="tag-add" class="tab-pane">
@@ -423,8 +425,11 @@
                 percent.html(percentVal);
                 successShow(data.msg);
             },
-            error: function (err) {
-                failShow("表单提交异常！" + err.msg)
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+                failShow("表单提交异常！");
             },
             complete: function (xhr) {
                 console.log('------' + xhr.responseText);

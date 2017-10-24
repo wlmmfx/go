@@ -127,7 +127,7 @@ class Live extends BaseBackend
      */
     public function uploadVideoManage()
     {
-        $videos = db('stream_video')->where('type',2)->order('id desc')->select();
+        $videos = db('stream_video')->where('type',2)->order('id desc')->paginate(6);
         $this->assign('videos', $videos);
         return $this->fetch();
     }
@@ -232,9 +232,12 @@ class Live extends BaseBackend
                 $cutImageTime = input('post.cut_image_time');
                 $startPath = ROOT_PATH . 'public' . DS . 'uploads/videos/'. $id ;
                 // 根据唯一标识目录创建，这里应该判断是否具有权限创建
-                if (!is_dir($startPath)) mkdir($startPath);
-                if (!is_dir($startPath. "/video")) mkdir($startPath. "/video");
+                if (!is_dir($startPath)) mkdir($startPath,0755, true);
+                if (!is_dir($startPath. "/video")) mkdir($startPath. "/video",0755, true);
                 $savePath = $startPath. "/video";
+                // 检查目录是否可写
+                //检测上传文件
+
                 $info = $file->rule("uniqid")->move($savePath);
                 if ($info) {
                     // 成功上传后 获取上传信息
@@ -242,7 +245,7 @@ class Live extends BaseBackend
                     $baseName = $info->getFilename();
                     $ext = $info->getExtension();
                     $fileSize = self::getVideoSize($fileTmpPath);
-                    $duration = gmstrftime('%H:%M:%S', self::getVideoDuration($fileTmpPath));
+                    $duration = self::getVideoDuration($fileTmpPath);
                     $cutImageName = pathinfo($fileTmpPath)['filename'] . '.jpg';
                     $screenshotName = self::cutImageHandle($fileTmpPath, $cutImageName, $savePath,$cutImageTime);
 
@@ -281,15 +284,18 @@ class Live extends BaseBackend
                                 'Id' => $id,
                                 'Extension' => $ext,
                                 'Filename' => $baseName,
-                                'Size' => $fileSize,
-                                'Duration' => $duration,
+                                'format_name' => self::ffprobe()->format($fileTmpPath)->get("format_name"),
+                                'format_long_name' => self::ffprobe()->format($fileTmpPath)->get("format_long_name"),
+                                'bit_rate' => self::ffprobe()->format($fileTmpPath)->get("bit_rate"),
+                                'Size' => trans_byte($fileSize),
+                                'Duration' => gmstrftime('%H:%M:%S', $duration),
                                 'width' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('width'),
                                 'height' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('height'),
                                 'codec_type' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_type'),
                                 'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
                             ]
                         ];
-                        $this->rmdirs($savePath);
+//                        $this->rmdirs($savePath);
                     } else {
                         $res = [
                             'code' => 500,
@@ -310,5 +316,16 @@ class Live extends BaseBackend
         $id = input('param.id');
         $this->assign('live', Db::table('resty_live')->where('id', $id)->find());
         return $this->fetch();
+    }
+
+    /**
+     * 通过FFmpeg 获取视频信息
+     */
+    public function getVideoInfoByFFmpeg(){
+        $MP4Path = '/home/www/web/go-study-line/public/uploads/videos/201710002/video/59ef43871b3ee.mp4';
+        $videoInfo = self::ffprobe()->format($MP4Path);
+        $streamInfo = self::ffprobe()->streams($MP4Path);
+        halt($videoInfo);
+        halt($streamInfo);
     }
 }

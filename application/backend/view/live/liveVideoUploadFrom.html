@@ -19,27 +19,48 @@
     .percent {
         position: absolute;
         display: inline-block;
-        top: 3px;
+        top: 6px;
         left: 48%;
         margin-bottom: 3px;
     }
 </style>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div class="widget-box">
-            <div class="widget-header widget-header-flat">
-                <h4 class="smaller">
-                    <i class="icon-upload"></i>
-                    视频上传模块
-                </h4>
+            <div class="widget-header">
+                <h4>视频上传模块</h4>
+                <span class="widget-toolbar">
+                    <a href="#" data-action="collapse">
+                        <i class="icon-chevron-up"></i>
+                    </a>
+                    <a href="#" data-action="close">
+                        <i class="icon-remove"></i>
+                    </a>
+                </span>
             </div>
 
             <div class="widget-body">
                 <div class="widget-main">
-                    <h1>{$live.id}</h1>
                     <form action="{:url('backend/live/liveVideoUploadFrom')}" method="post" enctype="multipart/form-data">
-                        <input type="file" name="myfile" /><br>
-                        <input type="hidden" name="id" value="{$live.id}">
+
+                        <div>
+                            <label for="form-field-1">
+                                唯一标识符
+                            </label>
+                            <div>
+                                <input class="input-medium " type="text" name="id" value="{$live.id}">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="form-field-2">上传描述信息</label>
+                            <textarea class="form-control" id="upload_desc" name="desc" placeholder="请输入上传描述信息"></textarea>
+                        </div>
+                        <div class="space-4"></div>
+                        <div class="ace-file-input ace-file-multiple">
+                            <div class="ace-file-input ace-file-multiple">
+                                <input multiple="" type="file" id="id-input-file-3" class="video_file" name="video_file">
+                            </div>
+                        </div>
                         <button class="btn btn-info btn-block" type="submit">Upload File to Server</button>
                     </form>
                     <p></p>
@@ -47,43 +68,64 @@
                         <div class="bar"></div>
                         <div class="percent">0%</div>
                     </div>
-                    <div id="status"></div>
-                </div>
+                    <hr>
+                    <div id="status">
 
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
+    // Success before include CommonJS
+    function successShow($msg) {
+        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
 
-    $(function(){
+    // Fail before include CommonJS
+    function failShow($msg) {
+        $(".modal-body").css("color", "red");
+        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    $(function () {
         var bar = $('.bar');
         var percent = $('.percent');
         var status = $('#status');
         $('form').ajaxForm({
-            beforeSerialize:function(){
+            beforeSerialize: function () {
                 //alert("表单数据序列化前执行的操作！");
                 //$("#txt2").val("java");//如：改变元素的值
             },
-            beforeSubmit:function(){
-                //alert("表单提交前的操作");
-                var filesize = $("input[type='file']")[0].files[0].size/1024/1024;
-                if(filesize > 500){
-                    alert("文件大小超过限制，最多50M");
+            beforeSubmit: function () {
+                //如：验证表单数据是否为空
+                if($("#upload_desc").val()=="" || $('.video_file').val() == ""){
+                    failShow("上传描述信息,表单数据不能为空")
                     return false;
                 }
-                //if($("#txt1").val()==""){return false;}//如：验证表单数据是否为空
+                //alert("表单提交前的操作");
+                var limitFileSize = 800;
+                var filesize = $("input[type='file']")[0].files[0].size / 1024 / 1024;
+                if (filesize > limitFileSize) {
+                    failShow("文件大小超过限制，最大限制为："+limitFileSize+'M')
+                    return false;
+                }
+
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 status.empty();
                 var percentVal = '0%';
                 bar.width(percentVal);
                 percent.html(percentVal);
             },
-            uploadProgress: function(event, position, total, percentComplete) {
+            uploadProgress: function (event, position, total, percentComplete) {
                 //position 已上传了多少
                 //total 总大小
                 //已上传的百分数
@@ -92,21 +134,42 @@
                 percent.html(percentVal);
                 console.log(percentVal, position, total);
             },
-            success: function(data) {
-                console.log('success ---- '+data);
+            success: function (data) {
+                console.log('success ---- ' + data);
                 var percentVal = '100%';
                 bar.width(percentVal);
                 percent.html(percentVal);
-                alert(data);
+                successShow(data.msg);
             },
-            error:function(err){
-                alert("表单提交异常！"+err.msg);
+            error: function (err) {
+                failShow("表单提交异常！" + err.msg)
             },
-            complete: function(xhr) {
-                status.html(xhr.responseText);
+            complete: function (xhr) {
+                console.log('------' + xhr.responseText);
+                var $data = JSON.parse(xhr.responseText); //由JSON字符串转换为JSON对象，json转成object
+                var item = '<ul class="list-unstyled spaced">' +
+                    '<li>' +
+                    '<i class="icon-file bigger-110 purple"></i> 文件名：' + $data.data.Filename +
+                    '</li>' +
+                    '<li>' +
+                    '<i class="icon-crop bigger-110 purple"></i> 扩展名：' + $data.data.Extension +
+                    '</li>' +
+                    '<li>' +
+                    '<i class="icon-resize-vertical bigger-110 purple"></i> 大小：' + $data.data.Size +
+                    '</li>' +
+                    '<li>' +
+                    '<i class="icon-time bigger-110 purple"></i> 时长：' + $data.data.Duration +
+                    '</li>' +
+                    '<li>' +
+                    '<i class="icon-crop bigger-110 purple"></i> 宽度x高度：' + $data.data.width + 'x'+$data.data.height+
+                    '</li>' +
+                    '<li>' +
+                    '<i class="icon-smile bigger-110 purple"></i> 编码格式：' + $data.data.codec_long_name +
+                    '</li>' +
+                    '</ul>';
+                status.html(item);
             }
         });
-
     });
 
 </script>

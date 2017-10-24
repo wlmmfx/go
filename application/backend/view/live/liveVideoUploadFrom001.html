@@ -19,26 +19,37 @@
     .percent {
         position: absolute;
         display: inline-block;
-        top: 3px;
+        top: 6px;
         left: 48%;
         margin-bottom: 3px;
     }
 </style>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div class="widget-box">
-            <div class="widget-header widget-header-flat">
-                <h4 class="smaller">
-                    <i class="icon-upload"></i>
-                    视频上传模块
-                </h4>
+            <div class="widget-header">
+                <h4>视频上传模块</h4>
+                <span class="widget-toolbar">
+                    <a href="#" data-action="collapse">
+                        <i class="icon-chevron-up"></i>
+                    </a>
+
+                    <a href="#" data-action="close">
+                        <i class="icon-remove"></i>
+                    </a>
+                </span>
             </div>
 
             <div class="widget-body">
                 <div class="widget-main">
-
-                    <form action="{:url('backend/live/videoUploadFrom')}" method="post" enctype="multipart/form-data">
-                        <input type="file" name="myfile" /><br>
+                    <form action="{:url('backend/live/liveVideoUploadFrom')}" method="post" enctype="multipart/form-data">
+                        <input type="text" name="id" value="{$live.id}">
+                        <div class="space-4"></div>
+                        <div class="ace-file-input ace-file-multiple">
+                            <div class="ace-file-input ace-file-multiple">
+                                <input multiple="" type="file" id="id-input-file-3" name="myfile">
+                            </div>
+                        </div>
                         <button class="btn btn-info btn-block" type="submit">Upload File to Server</button>
                     </form>
                     <p></p>
@@ -48,15 +59,10 @@
                     </div>
                     <div id="status"></div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
 
@@ -72,7 +78,7 @@
             beforeSubmit:function(){
                 //alert("表单提交前的操作");
                 var filesize = $("input[type='file']")[0].files[0].size/1024/1024;
-                if(filesize > 500){
+                if(filesize > 1000){
                     alert("文件大小超过限制，最多50M");
                     return false;
                 }

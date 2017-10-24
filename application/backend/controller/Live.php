@@ -185,17 +185,27 @@ class Live extends BaseBackend
     public function liveVideoUploadFrom()
     {
         if(request()->isPost()){
-            $file = request()->file("myfile");
+            $file = request()->file("video_file");
             if ($file) {
                 $id = input('post.id');
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/videos');
                 if ($info) {
                     // 成功上传后 获取上传信息
+                    $fileTmpPath = ROOT_PATH . 'public' . DS . 'uploads/videos' . DS . $info->getSaveName();
                     $res = [
                         'code' => 200,
-                        'msg' => 'success',
-                        'id' => $id,
-                        'fileId' => $info->getSaveName()
+                        'msg' => '恭喜你，上传成功',
+                        'data' => [
+                            'Id' => $id,
+                            'Extension' => $info->getExtension(),
+                            'Filename' => $info->getFilename(),
+                            'Size' => trans_byte(self::getVideoSize($fileTmpPath)),
+                            'Duration' => gmstrftime('%H:%M:%S',self::getVideoDuration($fileTmpPath)),
+                            'width' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('width'),
+                            'height' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('height'),
+                            'codec_type' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_type'),
+                            'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
+                        ]
                     ];
                 } else {
                     $res = [

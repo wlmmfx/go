@@ -12,6 +12,8 @@
 namespace app\common\controller;
 
 use app\common\model\TaskList;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 use think\Controller;
 
 class Base extends Controller
@@ -111,5 +113,54 @@ class Base extends Controller
     public static function formatDate($time)
     {
         return date('Y-m-d H:i:s', $time);
+    }
+
+    /**
+     * FFmpeg  static Instance
+     * @return FFMpeg
+     * @static
+     */
+    protected static function ffmpeg()
+    {
+        $ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries' => config("ffmpeg")["FFMPEG_BINARIES_PATH"],
+            'ffprobe.binaries' => config("ffmpeg")["FFPROBE_BINARIES_PATH"]
+        ]);
+        return $ffmpeg;
+    }
+
+    /**
+     * FFProbe static Instance
+     * @return FFProbe
+     * @static
+     */
+    protected static function ffprobe()
+    {
+        $ffprobe = FFProbe::create([
+            'ffmpeg.binaries' => config("ffmpeg")["FFMPEG_BINARIES_PATH"],
+            'ffprobe.binaries' => config("ffmpeg")["FFPROBE_BINARIES_PATH"]
+        ]);
+        return $ffprobe;
+    }
+
+    /**
+     * 获取视频时长
+     * @param $file_path
+     * @return mixed
+     */
+    protected static function getVideoDuration($file_path)
+    {
+        return self::ffprobe()->format($file_path)->get("duration");
+    }
+
+    /**
+     * 获取视频大小
+     * @param $file_path
+     * @return mixed
+     * @static
+     */
+    protected static function getVideoSize($file_path)
+    {
+        return self::ffprobe()->format($file_path)->get("size");
     }
 }

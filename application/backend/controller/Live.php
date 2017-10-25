@@ -295,7 +295,7 @@ class Live extends BaseBackend
                                 'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
                             ]
                         ];
-//                        $this->rmdirs($savePath);
+                        $this->rmdirs($savePath);
                     } else {
                         $res = [
                             'code' => 500,

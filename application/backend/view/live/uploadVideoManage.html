@@ -1,4 +1,5 @@
 <style type="text/css">
+
     .table th, .table td {
         vertical-align: middle !important;
     }
@@ -27,186 +28,15 @@
         left: 48%;
         margin-bottom: 3px;
     }
-</style>
-<style type="text/css">
 
-    .videos {
-        position: relative;
-        text-align: center;
-    }
-
-    .video {
-        width: 100%;
-        position: relative;
-        text-align: left;
-        display: inline-block;
-
-        font-size: 12px;
-        color: #FFF;
-        background-color: #000;
-        border-radius: 6px;
-        box-shadow: 0 0 3px #666;
-        overflow: hidden;
-    }
-
-    @media screen and (min-width: 500px) {
-        .video {
-            width: 240px;
-            margin: 0 10px 10px 0;
-        }
-    }
-
-    .video-title {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        padding: 4px;
-    }
-
-    .video-state-0 .video-title {
-        background-color: #FFDD00;
-    }
-
-    .video-state-1 .video-title {
-        background-color: #009900;
-    }
-
-    .video-state-2 .video-title {
-        background-color: #FF0000;
-    }
-
-    .video-state-1 .btn-show,
-    .video-state-2 .btn-hide {
-        display: none;
-    }
-
-    .video-filetime {
-        margin-right: 4px;
-    }
-
-    .video-name {
-
-    }
-
-    .video-image {
-        position: relative;
-        min-height: 120px;
-    }
-
-    .video-image img {
-        width: 100%;
-    }
-
-    .video-device {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        padding: 4px;
-        background: #000;
-        background: rgba(0,0,0,0.6);
-        border-radius: 4px;
-        color: #fff;
-    }
-
-    .video-filename {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-        padding: 4px;
-        background: #000;
-        background: rgba(0,0,0,0.2);
-        border-radius: 4px;
-        color: #555;
-    }
-
-    .video-play {
-        position: absolute;
-        font-size: 64px;
-        left: 50%;
-        top: 50%;
-        margin-left: -27px;
-        margin-top: -46px;
-        color: #f50;
-    }
-
-    .video-info {
-        padding: 4px;
-    }
-
-    .video-duration {
-        float: left;
-    }
-
-    .video-stats {
-        float: right;
-    }
-
-
-
-    .video-actions {
-        text-align: center;
-        border-top: 1px solid #004179;
-    }
-
-    .video-actions a.btn {
-        padding: 6px;
-    }
-
-    .video-actions a.btn:hover,
-    .video-actions a.btn:focus {
-        color: #6BEAFF;
-    }
-    .video-sort{
-        color: #0f0f0f;
-        width:65px;
-    }
-
-
-    .video-container {
-        visibility: visible;
-    }
     .wrapper {
         position: relative;
-        width: 100%;
         height: 100%;
         background: #000;
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 100%;
-    }
-    .hidebg {
-        background-image: none;
-    }
-    .video-container {
-        display: block;
-        visibility: hidden;
-        width: 100%;
-        min-height: 180px;
-        height: 100%;
-        background-color: #000;
-    }
-    .video-container video {
-        width: 100%;
-        height: 100%;
-    }
-    .video-button {
-        display: block;
-        width: 96px;
-        height: 96px;
-        -ms-transform: translate(-50%,-50%);
-        -webkit-transform: translate(-50%,-50%);
-        -moz-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        background-image: url(__COMMON__/images/play3.png);
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 96px 96px;
-    }
-    .video-button span {
-        visibility: hidden;
+        margin: -20px;
     }
 </style>
 <div class="row">
@@ -245,8 +75,9 @@
                         {foreach name='videos' key='key' item='vo'}
                         <tr class="text-c" id="tag-{$vo['id']}">
                             <td style="vertical-align: middle;">
-                                <a href="javascript:playModal('{$vo.streamName}','{$vo.screenshot}','0');">
-                                    <img height="100" width="240" border="10" src="{$Think.config.aliyun_oss.DOMAIN}/data/{$vo['streamName']}/video/{$vo['screenshot']}"
+                                <a href="javascript:playModal('{$vo.streamName}','{$vo.name}','0');">
+                                    <img height="100" width="200" border="10"
+                                         src="{$Think.config.aliyun_oss.DOMAIN}/data/{$vo['streamName']}/video/{$vo['screenshot']}"
                                          alt="{$vo['desc']}">
                                 </a>
                             </td>
@@ -284,9 +115,26 @@
 
                         <div class="widget-body">
                             <div class="widget-main">
+                                <div class="alert alert-warning">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="icon-remove"></i>
+                                    </button>
+                                    <strong>上传说明</strong>
+                                    <ul>
+                                        <li>Nginx配置文件：client_max_body_size 800m;</li>
+                                        <li>php.ini配置文件：
+                                            max_execution_time = 3600;
+                                            max_input_time = 3600;
+                                            post_max_size = 800M;
+                                            file_uploads = On;
+                                            upload_max_filesize = 800M;
+                                            max_file_uploads = 20;
+                                        </li>
+                                    </ul>
+                                    <br>
+                                </div>
                                 <form action="{:url('backend/live/liveVideoUploadFrom')}" method="post"
                                       enctype="multipart/form-data">
-
                                     <div>
                                         <label for="form-field-1">
                                             唯一标识符
@@ -295,6 +143,7 @@
                                             <input class="input-medium " type="text" name="id" value="201710002">
                                         </div>
                                     </div>
+                                    <div class="space-4"></div>
                                     <div>
                                         <label for="form-field-1">
                                             视频截图时间(秒)
@@ -303,6 +152,7 @@
                                             <input class="input-medium " type="text" name="cut_image_time" value="10">
                                         </div>
                                     </div>
+                                    <div class="space-4"></div>
                                     <div>
                                         <label for="form-field-2">上传描述信息</label>
                                         <textarea class="form-control" id="upload_desc" name="upload_desc"
@@ -339,24 +189,18 @@
 
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="playModal" tabindex="-1" role="dialog" aria-labelledby="playModal" aria-hidden="true">
-    <div class="modal-dialog " >
+    <div class="modal-dialog ">
         <div class="modal-content ">
-            <div class="modal-header ">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title " >视频播放</h4>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">预览播放</h4>
             </div>
-            <div class="modal-body" style="height: 40rem;padding: 0px;">
+            <div class="modal-body">
                 <div class="wrapper">
-                    <div class="video-container" id="video-container">
-                        <video id="video-player" webkit-playsinline controls></video>
-                    </div>
-                    <a class="video-button" id="video-button" href="javascript:;"><span>Play</span></a>
+                    <video width="100%" id="video-container" height="100%" controls autoplay>
+
+                    </video>
                 </div>
-            </div>
-            <div class="modal-footer " style="text-align: center">
-                <button type="button" class="btn btn-default" data-dismiss="modal" style="">关闭</button>
             </div>
         </div>
     </div>
@@ -379,6 +223,9 @@
         $("#authHanderModal").modal("show");
     }
 
+    /**
+     * 视频异步上传
+     */
     $(function () {
         var bar = $('.bar');
         var percent = $('.percent');
@@ -463,16 +310,16 @@
     var playId = null;
     var playName = null;
     var videoVersion = 0;
-    function playModal(id,name,version){
+    function playModal(id, name, version) {
+        $("#video-container").children().remove();
         playId = id;
         playName = name;
         videoVersion = version;
-        console.log("{$Think.config.aliyun_oss.DOMAIN}data/"+playId+"/video/"+playName);
-        $(".wrapper").css("background-image","url({$Think.config.aliyun_oss.DOMAIN}data/"+playId+"/video/"+playName+")");
-        if(videoVersion == 1){
-            $(".wrapper").css("background-image","url({{ config.oss.imagePath1 }}/"+playName+".jpg");
-        }
         $("#playModal").modal("show");
+        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + playId + "/video/" + playName);
+        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + playId + '/video/' + playName + '" type="video/mp4">');
+        //你在动态赋值src后要加载这个视频文件即:
+        $("#video-container").load();
     }
 
 </script>

@@ -246,13 +246,14 @@ class Live extends BaseBackend
                     $ext = $info->getExtension();
                     $fileSize = self::getVideoSize($fileTmpPath);
                     $duration = self::getVideoDuration($fileTmpPath);
-                    $cutImageName = pathinfo($fileTmpPath)['filename'] . '.jpg';
+                    $fileName = pathinfo($fileTmpPath)['filename'];
+                    $cutImageName = $fileName . '.jpg';
                     $screenshotName = self::cutImageHandle($fileTmpPath, $cutImageName, $savePath,$cutImageTime);
 
                     $videoData = [
                         'streamName' => $id,
                         'channelId' => $id,
-                        'name' => $baseName,
+                        'name' => $fileName,
                         'type' => 2, // 1.录像 2.上传 3.编辑
                         'fileName' => $baseName,
                         'fileTime' => date("Y-m-d H:i:s"),

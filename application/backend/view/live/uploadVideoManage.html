@@ -14,7 +14,7 @@
     }
 
     .bar {
-        background-color: #2c7659;
+        background-color: #2ca02c;
         width: 0%;
         height: 36px;
         border-radius: 3px;
@@ -38,6 +38,41 @@
         background-size: 100%;
         margin: -20px;
     }
+
+    .wrapper_player {
+        height: 100px;
+        width: 180px;
+        padding-top: 20px;
+        padding-left: 60px;
+        border: 1px solid #000;
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+
+    }
+
+    #video_player {
+        display: block;
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        background-image: url(__COMMON__/images/play3.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 60px 60px;
+    }
+
+    .wrapper_player:hover {
+        -webkit-filter: grayscale(70%);
+    }
+
+    #video_player:hover {
+        background-image: url(__COMMON__/images/play1.png);
+    }
+
+
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -72,13 +107,16 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <!---->
                         {foreach name='videos' key='key' item='vo'}
                         <tr class="text-c" id="tag-{$vo['id']}">
-                            <td style="vertical-align: middle;">
-                                <a href="javascript:playModal('{$vo.streamName}','{$vo.name}','0');">
-                                    <img height="100" width="200" border="10"
-                                         src="{$Think.config.aliyun_oss.DOMAIN}/data/{$vo['streamName']}/video/{$vo['screenshot']}"
-                                         alt="{$vo['desc']}">
+                            <td>
+                                <a href="javascript:playModal('{$vo.streamName}','{$vo.fileName}','0');">
+                                    <div class="wrapper_player"
+                                         style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.streamName}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                        <div id="video_player">
+                                        </div>
+                                    </div>
                                 </a>
                             </td>
                             <td style="vertical-align: middle;">{$vo['streamName']}</td>
@@ -307,17 +345,17 @@
     });
 
     //视频播放 {$Think.config.aliyun_oss.DOMAIN}/data/{$vo['streamName']}/video/{$vo['screenshot']}
-    var playId = null;
-    var playName = null;
-    var videoVersion = 0;
-    function playModal(id, name, version) {
+    var $streamName = null;
+    var $videoName = null;
+    var $videoVersion = 0;
+    function playModal(streamName, videoName, version) {
         $("#video-container").children().remove();
-        playId = id;
-        playName = name;
-        videoVersion = version;
+        $streamName = streamName;
+        $videoName = videoName;
+        $videoVersion = version;
         $("#playModal").modal("show");
-        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + playId + "/video/" + playName);
-        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + playId + '/video/' + playName + '" type="video/mp4">');
+        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + $streamName + "/video/" + $videoName);
+        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $streamName + '/video/' + $videoName + '" type="video/mp4">');
         //你在动态赋值src后要加载这个视频文件即:
         $("#video-container").load();
     }

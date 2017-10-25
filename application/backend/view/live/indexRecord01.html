@@ -1,25 +1,22 @@
-<style type="text/css">
-    .material-video-add {
-        text-align: center;
-        line-height: 80px;
-        border: 1px dashed #c3c5c6;
-        border-radius: 1px;
-        color: #00c1de;
-        cursor: pointer;
-        box-sizing: border-box;
-        width: 120px;
-    }
-</style>
-<div class="page-content">
-    <div class="page-header">
-        <h1>
-            视频编辑
-        </h1>
+<div class="page-content" >
+    <div class="btn-group" >
+        <form action="{:url('/backend/live/indexRecord')}" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <div class="col-sm-6" style="width: 250px;">
+                    <div class="input-group date form_date col-md" data-date="" data-date-format="yyyy-mm-dd hh:ii:ss"
+                         data-link-field="dtp_input1" data-link-format="yyyy-mm-dd hh:ii:ss">
+                        <input class="form-control" name="liveStartTime" id="liveStartTime" value="" size="20"
+                               type="text" placeholder="按照时间查询视频回顾">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+            </div>
+        </form>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="row"
-                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+            <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
                 <div class="col-sm-4">
                     <video controls id="live-stream" class="video-js vjs-default-skin" onvolumechange="myFunction()"
                            onpause="myFunction2()">
@@ -32,50 +29,29 @@
                     <div class="row">
                         <h5><i class="icon-facetime-video"></i> 视频素材</h5>
                         <hr>
-                        <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
+                        <a href="#" class="btn btn-app btn-primary no-radius">
+                            <i class="icon-plus bigger-230"></i>
+                            添加视频
+                        </a>
                     </div>
                 </div><!-- /span -->
             </div>
         </div>
     </div>
-    <p></p>
-    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+    <div class="row"  style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
         <div class="col-sm-12">
-            <form action="jwphp/amai_my.php" class="form-horizontal" method="post">
-                <div class="form-group start">
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" id="starttime" name="end_time" placeholder="开始位置(秒)">
-                    </div>
-                    <button id="btn_starttime" onclick="getStarttime()" type="button" class="btn btn-sm btn-purple">获取当前播放位置作为开始位置</button>
-                </div>
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" id="endtime" name="old_name" placeholder="截止位置(秒)">
-                    </div>
-                    <button id="btn_endtime" onclick="getEndtime()" type="button" class="btn btn-sm  btn-purple">获取当前播放位置作为截至位置</button>
-                </div>
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        新视频名称:&nbsp;&nbsp;
-                        <input type="text" class="form-control" id="videodesc" name="videodesc" placeholder="请输入新视频名称">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-lg-4">
-                        <button class="btn btn-sm btn-warning " type="submit"><i class="icon-refresh bigger-120"></i>&nbsp;重置</button>
-                        <button class="btn btn-sm btn-primary" type="submit"><i class="icon-save bigger-120"></i>&nbsp;保存
-                        </button>
-                        <button class="btn btn-sm btn-info" type="submit"><i class="icon-cut bigger-120"></i>&nbsp;剪切
-                        </button>
-                    </div>
-
-                </div>
-            </form>
+            <video width="320" height="240" controls>
+                <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4" type="video/mp4">
+                <source src="forrest_gump.ogg" type="video/ogg">
+                <track src="subtitles_en.vtt" kind="subtitles" srclang="en"
+                       label="English">
+                <track src="subtitles_no.vtt" kind="subtitles" srclang="no"
+                       label="Norwegian">
+            </video>
         </div>
     </div>
+</div><!-- /.row -->
 </div>
-
 <script type="text/javascript" charset="utf-8"
         src="__COMMON__/bootstrap-3.3.7/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">

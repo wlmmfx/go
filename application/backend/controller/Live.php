@@ -15,10 +15,9 @@ namespace app\backend\controller;
 use aliyun\oss\OssInstance;
 use app\common\controller\BaseBackend;
 use \FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
 use think\Db;
-use think\Log;
 
 class Live extends BaseBackend
 {
@@ -296,7 +295,7 @@ class Live extends BaseBackend
                                 'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
                             ]
                         ];
-                        $this->rmdirs($savePath);
+//                        $this->rmdirs($savePath);
                     } else {
                         $res = [
                             'code' => 500,
@@ -320,6 +319,95 @@ class Live extends BaseBackend
     }
 
     /**
+     * 素材编辑
+     * @return mixed
+     */
+    public function videoEdit()
+    {
+        $liveId = input('param.id');
+        $videos = Db::table('resty_stream_video')->where('streamName', $liveId)->order('createTime desc')->paginate(12);
+        $this->assign('videos', $videos);
+        return $this->fetch();
+    }
+
+    /**
+     * 素材剪切编辑
+     * @return mixed
+     */
+    public function videoCutOperate()
+    {
+        if(!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
+        $starttime = request()->post("start_time");
+        $endtime = request()->post("end_time");
+        $new_video_name = request()->post("new_video_name");
+        $origin_video_id= request()->post("origin_video_id");
+        $origin_video_name = request()->post("origin_video_name");
+        if (empty($starttime) && empty($endtime) && empty($new_video_name) && empty($origin_video_id) && empty($origin_video_name)){
+            return json(['status' => 403, 'msg' => "参数不能为空"]);
+        }
+    }
+
+    /**
+     *  Ajax 异步 (随后的ajax请求)
+     *  视频剪切成功后获取视频编辑列表
+     * @param Request $request
+     * @return \think\response\Json
+     */
+    public function videoCutResult()
+    {
+        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非POST请求"]);
+        $editid = request()->post('new_name');
+        $video_cut_source = request()->post('video_cut_source');
+        $videoInfo = $this->videoInfoByEditId($editid);
+        if ($videoInfo == null) {
+            $resultData = ['status' => -1];
+        } elseif ($videoInfo["editresult"] != 1) {
+            $resultData = ['status' => $videoInfo["editresult"], 'msg' => $videoInfo["editmsg"]];
+        } else {
+            $videoid = $videoInfo["id"];
+            $pid = $videoInfo["pid"];
+            $desc = $videoInfo["name"];
+            if ($videoInfo["version"] == 1) {
+                if ($video_cut_source == "oss") {
+                    $playpath = config("videoedit")["oss"]["VIDEO_PLAY_PATH"] . explode("-", $videoInfo["fileName"])[0] . '/video/' . $videoInfo["fileName"] . '.mp4';
+                    $image = config("videoedit")["oss"]["VIDEO_THUMBNAIL_PATH"] . explode("-", $videoInfo["fileName"])[0] . '/video/' . $videoInfo["fileName"] . '.jpg';
+                } else {
+                    $playpath = config("videoedit")["location"]["VIDEO_PLAY_PATH"] . $videoInfo["fileName"] . '.mp4';
+                    $image = config("videoedit")["location"]["VIDEO_THUMBNAIL_PATH"] . $videoInfo["fileName"] . '.jpg';
+                }
+            } else {
+                if ($video_cut_source == "oss") {
+                    $playpath = config("videoedit")["oss"]["VIDEO_PLAY_PATH"] . $videoInfo["liveId"] . '/video/' . $videoInfo["fileName"] . '.mp4';
+                    $image = config("videoedit")["oss"]["VIDEO_THUMBNAIL_PATH"] . $videoInfo["liveId"] . '/video/' . $videoInfo["fileName"] . '.jpg';
+                } else {
+                    $playpath = config("videoedit")["location"]["VIDEO_PLAY_PATH"] . $videoInfo["fileName"] . '.mp4';
+                    $image = config("videoedit")["location"]["VIDEO_THUMBNAIL_PATH"] . $videoInfo["fileName"] . '.jpg';
+                }
+            }
+            $resultData = [
+                'status' => 1,
+                'playpath' => $playpath,
+                'id' => $videoid,
+                'pid' => $pid,
+                'desc' => $desc,
+                'image' => $image
+            ];
+        }
+        return json($resultData);
+    }
+
+    /**
+     * 根据 $editid 查询该视频的信息
+     * @param $editid
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
+    private function videoInfoByEditId($editid)
+    {
+        $videoInfo = Db::table('livevideo_copy')->where('editid', $editid)->find();
+        return $videoInfo;
+    }
+
+    /**
      * 通过FFmpeg 获取视频信息
      */
     public function getVideoInfoByFFmpeg(){
@@ -328,5 +416,39 @@ class Live extends BaseBackend
         $streamInfo = self::ffprobe()->streams($MP4Path);
         halt($videoInfo);
         halt($streamInfo);
+    }
+
+    /**
+     * 通过FFmpeg 获取视频信息
+     */
+    public function cutVideoByFFmpeg(){
+        $MP4Path = '/home/www/web/go-study-line/public/uploads/videos/Tinywan123.mp4';
+        $video = self::ffmpeg()->open($MP4Path);
+        //开始截取
+        $video->filters()->clip(TimeCode::fromSeconds(3), TimeCode::fromSeconds(10));
+        $video->save(new X264(), 'tinywan-30-40.mp4');
+        var_dump($video);
+    }
+
+    /**
+     * OSS 上传测试
+     * @param $ossClient
+     * @param $bucket
+     */
+    public function uploadDir() {
+        $ossClient = self::oss();
+        halt($ossClient);
+        $bucket = config('aliyun_oss.BUCKET');
+        $localDirectory = "/home/www/web/go-study-line/public/uploads/videos/201710002/video/";
+        $ossbObject = 'data/201710002/video';
+        $prefix = "data/201710002/video";
+        try {
+            $ossClient->uploadDir($bucket, $prefix, $localDirectory);
+        }  catch(OssException $e) {
+            printf(__FUNCTION__ . ": FAILED\n");
+            printf($e->getMessage() . "\n");
+            return;
+        }
+        printf(__FUNCTION__ . ": completeMultipartUpload OK\n");
     }
 }

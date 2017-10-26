@@ -11,10 +11,12 @@
 
 namespace app\common\controller;
 
+use aliyun\oss\OssInstance;
 use app\common\model\TaskList;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use think\Controller;
+use think\Log;
 
 class Base extends Controller
 {
@@ -162,5 +164,18 @@ class Base extends Controller
     protected static function getVideoSize($file_path)
     {
         return self::ffprobe()->format($file_path)->get("size");
+    }
+
+    /**
+     * OSS 实例
+     */
+    protected static function oss()
+    {
+        $instance = OssInstance::Instance();
+        if(false == $instance){
+            Log::error(getCurrentDate().'-------------OSS配置文件错误');
+            return false;
+        }
+        return $instance;
     }
 }

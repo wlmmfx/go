@@ -40,18 +40,18 @@
     <p></p>
     <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
         <div class="col-sm-12">
-            <form action="{:url('backend/live/liveVideoUploadFrom')}" class="form-horizontal" method="post">
+            <form action="" class="form-horizontal" method="post">
                 <div class="form-group start">
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" id="start-time" name="end_time" placeholder="开始位置(秒)">
+                        <input type="text" class="form-control" id="start-time" name="start_time" placeholder="开始位置(秒)">
                     </div>
-                    <button id="btn-start-time" onclick="getStartTime()" type="button" class="btn btn-sm btn-purple">
+                    <button id="btn-start-time" onclick="getStartTime()" type="button" class="btn btn-sm btn-pink">
                         获取当前播放位置作为开始位置
                     </button>
                 </div>
                 <div class="form-group end">
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" id="end-time" name="old_name" placeholder="截止位置(秒)">
+                        <input type="text" class="form-control" id="end-time" name="end_name" placeholder="截止位置(秒)">
                     </div>
                     <button id="btn-end-time" onclick="getEndTime()" type="button" class="btn btn-sm  btn-purple">
                         获取当前播放位置作为截至位置
@@ -59,18 +59,31 @@
                 </div>
                 <div class="form-group end">
                     <div class="col-lg-4">
-                        新视频名称:&nbsp;&nbsp;
-                        <input type="text" class="form-control" id="video-desc" name="video_desc" placeholder="请输入新视频名称">
+                        源视频ID（隐藏域）:
+                        <input type="text" class="form-control" disabled="disabled" id="origin-video-id" name="origin_video_id" value="235388">
+                    </div>
+                </div>
+
+                <div class="form-group end">
+                    <div class="col-lg-4">
+                        源视频名称（隐藏域）:&nbsp;&nbsp;
+                        <input type="text" class="form-control" disabled="disabled" id="origin-video-name" name="origin_video_name" value="CY000235388-150893483820171025203358">
+                    </div>
+                </div>
+
+                <div class="form-group end">
+                    <div class="col-lg-4">
+                        <span>新视频名称:</span>&nbsp;&nbsp;
+                        <input type="text" class="form-control" id="new-video-name" name="new_video_name" placeholder="请输入新视频名称">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-lg-4">
+                    <div class="col-lg-8">
+                        <button class="btn btn-sm btn-info" id="cut-button" type="button"><i class="icon-cut bigger-120"></i>&nbsp;剪切</button>
                         <button class="btn btn-sm btn-warning " type="submit"><i class="icon-refresh bigger-120"></i>&nbsp;重置
                         </button>
                         <button class="btn btn-sm btn-primary" type="submit"><i class="icon-save bigger-120"></i>&nbsp;保存
-                        </button>
-                        <button class="btn btn-sm btn-info" type="submit"><i class="icon-cut bigger-120"></i>&nbsp;剪切
                         </button>
                     </div>
 
@@ -83,6 +96,8 @@
     var $videoId = document.getElementById("live-stream");
     var $startTimeId = document.getElementById("start-time");
     var $endTimeId = document.getElementById("end-time");
+    var $newVideoNameId = document.getElementById("new-video-name");
+
     /**
      * 获取开始时间
      */
@@ -94,7 +109,94 @@
      * 获取结束时间
      */
     function getEndTime() {
+        var $currentTimestamp = Date.parse(new Date());
         $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
+        $newVideoNameId.value = '剪切新视频'+$currentTimestamp;
+    }
+
+    /**
+     * 表单提交操作
+     */
+    $(document).ready(function () {
+        $("#cut-button").click(function () {
+            var $startTime = $("#start-time").val();
+            var $endTime = $("#end-time").val();
+            var $newVideoName = $("#new-video-name").val();
+            var $originVideoId = $("#origin-video-id").val();
+            var $originVideoName = $("#origin-video-name").val();
+            console.log('$startTime'+$startTime+'$newVideoName'+$newVideoName);
+            if ($startTime && $endTime && $newVideoName) {
+                alert('即将开始剪切，完成后通知你，请稍后...');
+                first_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName);
+            } else {
+                alert('参数不全');
+            }
+            event.preventDefault();
+        });
+    });
+
+    /**
+     * first_ajax_request
+     */
+    function first_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName) {
+        console.log("first_ajax_request-------------------111111");
+        var url = "{:url('backend/live/videoCutOperate')}";
+        var data = {
+            "start_time": $startTime,
+            "end_time": $endTime,
+            "new_video_name": $newVideoName,
+            "origin_video_id": $originVideoId,
+            "origin_video_name": $originVideoName
+        };
+        var success = function (cc) {
+            console.log("-------------------first_ajax_request");
+            console.log(cc);
+            if (cc.status == 1) {
+                //第一次ajax请求成功  访问视频状态
+                alert('请求succcess');
+                next_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName);
+            } else {
+                alert('请求错误');
+            }
+        };
+        $.post(url, data, success, 'json');
+    }
+
+    /**
+     * 视频剪切成功后重新加载视频列表
+     */
+    function next_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName) {
+        console.log('222222222222222');
+        var url = "{:url('ffmpeg/Index/videoCutResult')}";
+        var data = {
+            "new_name": new_name,
+            "video_cut_source": video_cut_source
+        };
+        var success = function (data) {
+            console.log("next_ajax_request == "+data);
+            if (data) {
+                //视频没有处理完成好
+                if (data.status == -1) {
+                    // alert(cc.filename);
+                    if (max_request_length < 100) {
+                        setTimeout('next_ajax_request(new_name,video_cut_source)', 5000);
+                    } else {
+                        alert('请求超时');
+                    }
+                    max_request_length++;
+                } else if (data.status != 1) {
+                    alert('操作失败,请重试');
+                } else {
+                    //视频已经检测到
+                    alert(data.desc + " 已经剪好,请在左侧列表中点击播放。");
+                    $("#" + data.pid).append("<div class=\"leveltwo\" margin-left:10px id=\"" + data.id + "\"><ul><li><a target=\"_self\" href=\"javascript:openVideo('" + data.playpath + "','" + data.id + "');\">" + data.desc + "</a></li></ul></div>");
+                    window.location.reload();
+                }
+            } else {
+                alert('请求错误');
+            }
+        };
+        $.post(url, data, success, 'json');
     }
 </script>
 <script type="text/javascript" charset="utf-8"

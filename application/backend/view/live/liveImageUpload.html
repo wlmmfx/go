@@ -1,0 +1,143 @@
+<style>
+    .progress {
+        position: relative;
+        width: 100%;
+        height: 42px;
+        border: 1px solid #ddd;
+        padding: 2px;
+        font-size: 18px;
+    }
+
+    .bar {
+        background-color: #2c7659;
+        width: 0%;
+        height: 36px;
+        border-radius: 3px;
+        font-size: 18px;
+    }
+
+    .percent {
+        position: absolute;
+        display: inline-block;
+        top: 6px;
+        left: 48%;
+        margin-bottom: 3px;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>图片上传</h4>
+                <span class="widget-toolbar">
+                    <a href="#" data-action="collapse">
+                        <i class="icon-chevron-up"></i>
+                    </a>
+                    <a href="#" data-action="close">
+                        <i class="icon-remove"></i>
+                    </a>
+                </span>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form action="{:url('backend/live/liveImageUpload')}" method="post"  enctype="multipart/form-data">
+                        <div>
+                            <label for="form-field-2">
+                                #ID
+                            </label>
+                            <div>
+                                <input class="input-medium " type="text" name="id" value="{$live.id}">
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+                        <div class="ace-file-input ace-file-multiple">
+                            <div class="ace-file-input ace-file-multiple">
+                                <input multiple="" type="file" id="id-input-file-3" class="video_file" name="video_file">
+                            </div>
+                        </div>
+                        <button class="btn btn-info btn-block" type="submit">Upload Image to Server</button>
+                    </form>
+                    <p></p>
+                    <div class="progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
+                    </div>
+                    <hr>
+                    <div id="status">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
+<script>
+    // Success before include CommonJS
+    function successShow($msg) {
+        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    // Fail before include CommonJS
+    function failShow($msg) {
+        $(".modal-body").css("color", "red");
+        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    $(function () {
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        $('form').ajaxForm({
+            beforeSerialize: function () {
+                //alert("表单数据序列化前执行的操作！");
+                //$("#txt2").val("java");//如：改变元素的值
+            },
+            beforeSubmit: function () {
+                //alert("表单提交前的操作");
+                var limitFileSize = 800;
+                var filesize = $("input[type='file']")[0].files[0].size / 1024 / 1024;
+                if (filesize > limitFileSize) {
+                    failShow("文件大小超过限制，最大限制为："+limitFileSize+'M')
+                    return false;
+                }
+            },
+            beforeSend: function () {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                //position 已上传了多少
+                //total 总大小
+                //已上传的百分数
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                console.log(percentVal, position, total);
+            },
+            success: function (data) {
+                console.log('success ---- ' + data);
+                var percentVal = '100%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                successShow(data.msg);
+            },
+            error: function (err) {
+                failShow("表单提交异常！" + err.msg)
+            },
+            complete: function (xhr) {
+                var $data = JSON.parse(xhr.responseText); //由JSON字符串转换为JSON对象，json转成object
+                status.html($data);
+            }
+        });
+    });
+
+</script>

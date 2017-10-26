@@ -1,8 +1,49 @@
+<style>
+    .progress {
+        position: relative;
+        width: 100%;
+        height: 42px;
+        border: 1px solid #ddd;
+        padding: 2px;
+        font-size: 18px;
+    }
+
+    .bar {
+        background-color: #2c7659;
+        width: 0%;
+        height: 36px;
+        border-radius: 3px;
+        font-size: 18px;
+    }
+
+    .percent {
+        position: absolute;
+        display: inline-block;
+        top: 6px;
+        left: 48%;
+        margin-bottom: 3px;
+    }
+
+    #live_images img {
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab">
                 <li class="active">
+                    <a data-toggle="tab" href="#live-image">
+                        <i class="red  icon-cogs bigger-110"></i>
+                        图片管理
+                    </a>
+                </li>
+
+                <li>
                     <a data-toggle="tab" href="#live-record">
                         <i class="blue   icon-laptop bigger-110"></i>
                         回顾列表
@@ -25,35 +66,41 @@
             </ul>
 
             <div class="tab-content">
-                <!-- 回顾 -->
-                <div id="live-record" class="tab-pane in active">
-                    <p>
-                        <button class="btn btn-xs">
+                <!-- 图片管理 -->
+                <div id="live-image" class="tab-pane in active">
+                        <button class="btn btn-info btn-sm">
                             <i class="icon-exchange align-top bigger-125"></i>
                             排序
                         </button>
-                        <button class="btn btn-xs btn-Inverse">
+                        <button class="btn btn-primary btn-sm">
                             <i class="icon-bookmark align-top bigger-125"></i>
                             价格
                         </button>
-                        <button class="btn btn-xs btn-info">
-                            <i class="icon-eye-open align-top bigger-125"></i>
-                            显示
-                        </button>
-                        <button class="btn btn-xs btn-success">
-                            <i class="icon-food align-top bigger-125"></i>
-                            剪切
-                        </button>
-                        <button class="btn btn-xs btn-success">
-                            <i class="icon-fire align-top bigger-125"></i>
-                            合并
-                        </button>
-                        <button class="btn btn-xs btn-success">
-                            <i class="icon-pencil align-top bigger-125"></i>
-                            编辑
+                        <button class="btn btn-purple btn-sm" data-toggle="modal" data-target="#imageUploadModal">
+                            <i class="icon-bookmark align-top bigger-125"></i>
+                            上传图片
                         </button>
                     </p>
                     <hr>
+                    <!-- PAGE CONTENT BEGINS -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            <ul class="ace-thumbnails" id="live_images">
+                                {volist name="lives" id="vo"}
+                                <li>
+                                    <img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.id}/video/{$vo.path}" width="263" height="220">
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div><!-- /.col -->
+                        <p></p>
+                        <div>{$lives->render()}</div>
+                    </div><!-- /.row -->
+                </div>
+
+                <!-- 回顾 -->
+                <div id="live-record" class="tab-pane">
                     <!-- PAGE CONTENT BEGINS -->
                     <div class="row">
                         <div class="col-xs-12">
@@ -65,7 +112,7 @@
                                        target="_blank" title="Photo Title" data-rel="colorbox" class="cboxElement">
                                         <img alt="50x50"
                                              src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg"
-                                             width="263" height="220">
+                                             width="260" height="220">
                                         <div class="tags">
                                 <span class="label-holder">
                                     <span class="label label-info">编号:{$vo['streamName']}</span>
@@ -93,7 +140,7 @@
                     </div><!-- /.row -->
                 </div>
 
-                <!-- 权限配置 -->
+                <!-- 评论管理 -->
                 <div id="live-comment" class="tab-pane">
                     <!-- PAGE CONTENT BEGINS -->
                     <div class="widget-box ">
@@ -360,56 +407,121 @@
     </div><!-- /span -->
 </div><!-- /row -->
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Success before include CommonJS
-        function successShow($msg) {
-            $("#auth-image").attr('src', '__COMMON__/images/success.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="imageUploadModal" tabindex="-1" role="dialog" aria-labelledby="imageUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="imageUploadModalLabel">
+                    异步上传
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form action="{:url('backend/live/liveImageUpload')}" method="post"  enctype="multipart/form-data">
+                    <div class="ace-file-input ace-file-multiple">
+                        <div class="ace-file-input ace-file-multiple">
+                            <input multiple="" type="file" id="id-input-file-3" class="video_file" name="video_file">
+                        </div>
+                    </div>
+                    <input class="input-medium" type="hidden" name="id" value="201710007">
+                    <button class="btn btn-info btn-block" type="submit">Upload Image to Server</button>
+                </form>
+                <p></p>
+                <div class="progress">
+                    <div class="bar"></div>
+                    <div class="percent">0%</div>
+                </div>
+                <hr>
+                <div id="status">
 
-        // Fail before include CommonJS
-        function failShow($msg) {
-            $(".modal-body").css("color", "red");
-            $("#auth-image").attr('src', '__COMMON__/images/error.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
-        // 基本信息修改
-        $('body').delegate('.basic-config-hander', 'click', function () {
-            var $url = "{:url('backend/system/basicconfig')}";
-            var $_data = {
-                'webdomain': $("#web-domain").val(),
-                'webname': $("#web-name").val(),
-                'keywords': $("#keywords").val(),
-                'discription': $("#discription").val(),
-                'copy': $("#copy").val(),
-                'record': $("#record").val(),
-                'regis_on': $('input:radio[name=regis_on]:checked').val(),
-                'web_state': $("input:radio[name=web_state]:checked").val(),
-            };
-            console.log($_data);
-            $.ajax({
-                url: $url,
-                type: 'post',
-                data: $_data,
-                dataType: "json",
-                //服务器成功响应处理函数
-                success: function ($response) {
-                    if ($response.code == 200) {
-                        successShow($response.msg);
-                    } else {
-                        failShow($response.msg);
-                    }
-                },
-                //服务器响应失败处理函数
-                error: function (data, status, e) {
-                    alert(e);
+<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
+<script>
+    // Success before include CommonJS
+    function successShow($msg) {
+        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    // Fail before include CommonJS
+    function failShow($msg) {
+        $(".modal-body").css("color", "red");
+        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    $(function () {
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        $('form').ajaxForm({
+            beforeSerialize: function () {
+                //alert("表单数据序列化前执行的操作！");
+                //$("#txt2").val("java");//如：改变元素的值
+            },
+            beforeSubmit: function () {
+                //alert("表单提交前的操作");
+                var limitFileSize = 800;
+                var filesize = $("input[type='file']")[0].files[0].size / 1024 / 1024;
+                if (filesize > limitFileSize) {
+                    failShow("文件大小超过限制，最大限制为："+limitFileSize+'M')
+                    return false;
                 }
-            })
+            },
+            beforeSend: function () {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                //position 已上传了多少
+                //total 总大小
+                //已上传的百分数
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+                console.log(percentVal, position, total);
+            },
+            success: function (data) {
+                console.log('success ---- ' + data);
+                var percentVal = '100%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                $("#imageUploadModal").modal("hide");
+                successShow('上传成功');
+            },
+            error: function (err) {
+                $("#imageUploadModal").modal("hide");
+                failShow('上传失败');
+            },
+            complete: function (xhr) {
+                var $data = JSON.parse(xhr.responseText); //由JSON字符串转换为JSON对象，json转成object
+                console.log("------xhr.responseText------"+xhr.responseText);
+                console.log("-------dasdasdsa-----"+$data);
+                var $li = '<li>'+
+                    '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/201710007/video/'+$data.data.image_path+'" width="263" height="220">'+
+                    '</li>';
+                $("#live_images").append($li);
+            }
         });
-        // 有时间继续修改
+        $('#imageUploadModal').on('hide.bs.modal', function () {
+            window.location.reload();
+        });
     });
+
 </script>

@@ -106,8 +106,84 @@ class Live extends BaseBackend
     public function liveDetail()
     {
         $liveId = input('param.id');
+        $lives = Db::table("resty_live")
+            ->alias('l')
+            ->join('resty_file f', 'f.live_id = l.id')
+            ->where('l.id',$liveId)
+            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,l.recordStatus,f.path")
+            ->order("l.createTime desc,l.liveStartTime desc")
+            ->paginate(12);
         $videos = Db::table('resty_stream_video')->order('createTime desc')->paginate(12);
         $this->assign('videos', $videos);
+        $this->assign('lives', $lives);
+        $this->assign('liveId', $liveId);
+        return $this->fetch();
+    }
+
+    /**
+     * 直播图片上传
+     * @return mixed|\think\response\Json
+     */
+    public function liveImageUpload()
+    {
+        if (request()->isPost()) {
+            $file = request()->file("video_file");
+            if ($file) {
+                $liveId = input('param.id');
+                $startPath = ROOT_PATH . 'public' . DS . 'uploads/videos/'. $liveId ;
+                // 根据唯一标识目录创建，这里应该判断是否具有权限创建
+                if (!is_dir($startPath)) mkdir($startPath,0755, true);
+                if (!is_dir($startPath. "/video")) mkdir($startPath. "/video",0755, true);
+                $savePath = $startPath. "/video";
+
+                $info = $file->rule("uniqid")->move($savePath);
+                if ($info) {
+                    // 成功上传后 获取上传信息
+                    $videoData = [
+                        'pid' => 0,
+                        'live_id' => $liveId,
+                        'path' => $info->getSaveName(),
+                        'min_path' => $info->getSaveName()
+                    ];
+                    //oss upload
+                    $oss = Oss::Instance();
+                    $bucket = config('aliyun_oss.BUCKET');
+                    $ossbObject = 'data/' . $liveId.'/video';
+                    try {
+                        $oss->uploadDir($bucket, $ossbObject, $savePath.DS);
+                        $videoData['oss_upload_status'] = 1;
+                    } catch (OssException $e) {
+                        $videoData['oss_upload_status'] = json_encode($e->getMessage());
+                    }
+                    //插入数据库
+                    $insertRes = Db::table('resty_file')->insertGetId($videoData);
+                    if ($insertRes) {
+                        // 遍历删除原图和缩略图
+                        $res = [
+                            'code' => 200,
+                            'msg' => '恭喜你，上传成功',
+                            'data' => ['live_id'=>$liveId,'image_path'=>$info->getSaveName()]
+                        ];
+                        $this->rmdirs($savePath);
+                    } else {
+                        $res = [
+                            'code' => 500,
+                            'msg' => '上传成功，插入数据库失败',
+                            'data' => null
+                        ];
+                    }
+                } else {
+                    $res = [
+                        'code' => 500,
+                        'msg' => $file->getError()
+                    ];
+                }
+                return json($res);
+            }
+            return json(['code' => 500, 'msg' => "upload file name error"]);
+        }
+        $id = input('param.id');
+        $this->assign('live', Db::table('resty_live')->where('id', $id)->find());
         return $this->fetch();
     }
 

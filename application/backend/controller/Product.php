@@ -11,7 +11,7 @@
 
 namespace app\backend\controller;
 
-use \aliyun\oss\OssInstance;
+use \aliyun\oss\Oss;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
 use OSS\Core\OssException;
@@ -27,7 +27,7 @@ class Product extends BaseBackend
      */
     public function index()
     {
-        var_dump(OssInstance::Instance());
+        var_dump(Oss::Instance());
         return __FUNCTION__;
     }
 
@@ -74,7 +74,7 @@ class Product extends BaseBackend
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/products');
                 if ($info) {
                     // oss upload
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     Log::error('-------------111111111---------'.$thumbName);

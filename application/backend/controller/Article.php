@@ -11,7 +11,7 @@
 
 namespace app\backend\controller;
 
-use aliyun\oss\OssInstance;
+use aliyun\oss\Oss;
 use app\common\controller\BaseBackend;
 use houdunwang\arr\Arr;
 use OSS\Core\OssException;
@@ -50,7 +50,7 @@ class Article extends BaseBackend
         $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
         $res = unlink($object);
         halt($res);
-        $oss = OssInstance::Instance();
+        $oss = Oss::Instance();
         try {
             $res = $oss->uploadFile($bucket, $object, $file);
             if ($res['info']['http_code'] == 200) {
@@ -78,7 +78,7 @@ class Article extends BaseBackend
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/article');
                 if ($info) {
                     // oss upload
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     //获取文件名
@@ -177,7 +177,7 @@ class Article extends BaseBackend
                     $bucket = config('aliyun_oss.BUCKET');
                     $object = 'uploads/' . $info->getSaveName();
                     $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     try {
                         $res = $oss->uploadFile($bucket, $object, $file);
                         if ($res['info']['http_code'] == 200) {
@@ -259,7 +259,7 @@ class Article extends BaseBackend
                     $bucket = config('aliyun_oss.BUCKET');
                     $object = 'uploads/' . $info->getSaveName();
                     $file = './' . $object;  //这个才是文件在本地的真实路径，也是就是你要上传的文件信息
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     try {
                         $res = $oss->uploadFile($bucket, $object, $file);
                         if ($res['info']['http_code'] == 200) {

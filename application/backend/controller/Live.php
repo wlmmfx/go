@@ -12,7 +12,7 @@
 namespace app\backend\controller;
 
 
-use aliyun\oss\OssInstance;
+use aliyun\oss\Oss;
 use app\common\controller\BaseBackend;
 use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
@@ -264,7 +264,7 @@ class Live extends BaseBackend
                     ];
 
                     //oss upload
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     $bucket = config('aliyun_oss.BUCKET');
                     $ossbObject = 'data/' . $id.'/video';
                     try {
@@ -295,7 +295,7 @@ class Live extends BaseBackend
                                 'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
                             ]
                         ];
-//                        $this->rmdirs($savePath);
+                        $this->rmdirs($savePath);
                     } else {
                         $res = [
                             'code' => 500,
@@ -436,19 +436,13 @@ class Live extends BaseBackend
      * @param $bucket
      */
     public function uploadDir() {
-        $ossClient = self::oss();
-        halt($ossClient);
+        $bucket = 'tinywan-create';
+        Oss::createBucket($bucket);
+        halt(Oss::createBucket($bucket));
         $bucket = config('aliyun_oss.BUCKET');
         $localDirectory = "/home/www/web/go-study-line/public/uploads/videos/201710002/video/";
         $ossbObject = 'data/201710002/video';
         $prefix = "data/201710002/video";
-        try {
-            $ossClient->uploadDir($bucket, $prefix, $localDirectory);
-        }  catch(OssException $e) {
-            printf(__FUNCTION__ . ": FAILED\n");
-            printf($e->getMessage() . "\n");
-            return;
-        }
         printf(__FUNCTION__ . ": completeMultipartUpload OK\n");
     }
 }

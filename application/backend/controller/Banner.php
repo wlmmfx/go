@@ -12,7 +12,7 @@
 namespace app\backend\controller;
 
 
-use aliyun\oss\OssInstance;
+use aliyun\oss\Oss;
 use app\common\controller\BaseBackend;
 use OSS\Core\OssException;
 use think\Image;
@@ -56,7 +56,7 @@ class Banner extends BaseBackend
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/banner');
                 if ($info) {
                     // oss upload
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     //获取文件名
@@ -121,7 +121,7 @@ class Banner extends BaseBackend
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/banner');
                 if ($info) {
                     // oss upload
-                    $oss = OssInstance::Instance();
+                    $oss = Oss::Instance();
                     $bucket = config('aliyun_oss.BUCKET');
                     $thumbName = 'thumb_' . $info->getFilename();
                     //获取文件名

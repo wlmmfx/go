@@ -343,16 +343,16 @@
     });
 
     var $streamName = null;
-    var $videoName = null;
+    var $fileName = null;
     var $videoVersion = 0;
-    function playModal(streamName, videoName, version) {
+    function playModal(streamName, fileName, version) {
         $("#video-container").children().remove();
         $streamName = streamName;
-        $videoName = videoName;
+        $fileName = fileName;
         $videoVersion = version;
         $("#playModal").modal("show");
-        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + $streamName + "/video/" + $videoName);
-        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $streamName + '/video/' + $videoName + '" type="video/mp4">');
+        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + $streamName + "/video/" + $fileName);
+        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $streamName + '/video/' + $fileName + '.mp4" type="video/mp4">');
         //你在动态赋值src后要加载这个视频文件即:
         $("#video-container").load();
     }

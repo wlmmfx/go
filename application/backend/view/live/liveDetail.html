@@ -93,9 +93,10 @@
                                 </li>
                                 {/volist}
                             </ul>
+                            <p></p>
+                            <div>{$lives->render()}</div>
                         </div><!-- /.col -->
-                        <p></p>
-                        <div>{$lives->render()}</div>
+
                     </div><!-- /.row -->
                 </div>
 
@@ -427,7 +428,7 @@
                         </div>
                     </div>
                     <input class="input-medium" type="hidden" name="id" value="201710007">
-                    <button class="btn btn-info btn-block" type="submit">Upload Image to Server</button>
+                    <button class="btn btn-info btn-block" type="submit">开始上传</button>
                 </form>
                 <p></p>
                 <div class="progress">
@@ -516,12 +517,12 @@
                 var $li = '<li>'+
                     '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/201710007/video/'+$data.data.image_path+'" width="263" height="220">'+
                     '</li>';
-                $("#live_images").append($li);
+                $("#live_images").prepend($li);
             }
         });
-        $('#imageUploadModal').on('hide.bs.modal', function () {
-            window.location.reload();
-        });
+//        $('#imageUploadModal').on('hide.bs.modal', function () {
+//            window.location.reload();
+//        });
     });
 
 </script>

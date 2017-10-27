@@ -34,29 +34,30 @@ class OpenApi extends Base
 
         $videoData = [
             'streamName' => $streamName,
-            'channelId' => $channelId,
+            'liveId' => $channelId,
             'name' => $baseName,
             'fileName' => $baseName,
             'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
             'fileSize' => $fileSize,
             'duration' => $duration,
+            'version' => $version,
             'createTime' => date("Y-m-d H:i:s"),
         ];
         $res = Db::table('resty_stream_video')->insertGetId($videoData);
-        if($res){
-            // 加入消息队列
-            $taskData['task_type'] = 1;
-            $taskData['status'] = 0;
-            $taskData['mobile_type'] = 2;
-            $taskData['user_mobile'] = 18170603953;
-            $taskData['msg'] = "909090";
-            $taskData['live_id'] = $streamName;
-            // 加入邮件队列
-            $this->addTaskList($taskData);
-            exit('200:success');
-        }else{
-            exit('500:error');
-        }
+//        if($res){
+//            // 加入消息队列
+//            $taskData['task_type'] = 1;
+//            $taskData['status'] = 0;
+//            $taskData['mobile_type'] = 2;
+//            $taskData['user_mobile'] = 18170603953;
+//            $taskData['msg'] = "909090";
+//            $taskData['live_id'] = $streamName;
+//            // 加入邮件队列
+//            $this->addTaskList($taskData);
+//            exit('200:success');
+//        }else{
+//            exit('500:error');
+//        }
     }
 
     public function testSendMail()

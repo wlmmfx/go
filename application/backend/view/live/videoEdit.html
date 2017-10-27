@@ -1,13 +1,57 @@
 <style type="text/css">
     .material-video-add {
         text-align: center;
-        line-height: 80px;
+        line-height: 98px;
         border: 1px dashed #c3c5c6;
         border-radius: 1px;
         color: #00c1de;
         cursor: pointer;
         box-sizing: border-box;
-        width: 120px;
+        width: 140px;
+    }
+
+    #video-line-edit img {
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+
+    .wrapper_player {
+        height: 100px;
+        width: 140px;
+        padding-top: 30px;
+        padding-left: 50px;
+        border: 1px solid #892E65;
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+
+    .video_player {
+        display: block;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        background-image: url(__COMMON__/images/play3.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 40px 40px;
+    }
+
+    .wrapper_player:hover {
+        -webkit-filter: grayscale(70%);
+    }
+
+    .video_player:hover {
+        background-image: url(__COMMON__/images/play1.png);
+    }
+
+    .ace-thumbnails>li {
+        border: none;
     }
 </style>
 <div class="page-content">
@@ -21,86 +65,165 @@
             <div class="row"
                  style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
                 <div class="col-sm-4">
-                    <video controls="controls" id="live-stream" class="video-js vjs-default-skin">
-                        <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
-                                type="video/mp4"></source>
+                    <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
+                        <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4" type="video/mp4">
                     </video>
                 </div><!-- /span -->
 
                 <div class="col-sm-8 ">
-                    <div class="row">
+                    <div class="row" style="margin-left: 10px;">
                         <h5><i class="icon-facetime-video"></i> 视频素材</h5>
                         <hr>
-                        <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
+                        <ul class="ace-thumbnails" id="upload-video">
+                            <li>
+                                <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
+                            </li>
+                            {volist name="videos" id="vo"}
+                            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
+                                <div class="wrapper_player"
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                    <div class="video_player">
+                                    </div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
                     </div>
                 </div><!-- /span -->
             </div>
         </div>
     </div>
     <p></p>
-    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+    <div class="row">
         <div class="col-sm-12">
-            <form action="" class="form-horizontal" method="post">
-                <div class="form-group start">
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" id="start-time" name="start_time" placeholder="开始位置(秒)">
-                    </div>
-                    <button id="btn-start-time" onclick="getStartTime()" type="button" class="btn btn-sm btn-pink">
-                        获取当前播放位置作为开始位置
-                    </button>
-                </div>
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        <input type="text" class="form-control" id="end-time" name="end_name" placeholder="截止位置(秒)">
-                    </div>
-                    <button id="btn-end-time" onclick="getEndTime()" type="button" class="btn btn-sm  btn-purple">
-                        获取当前播放位置作为截至位置
-                    </button>
-                </div>
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        源视频ID（隐藏域）:
-                        <input type="text" class="form-control" disabled="disabled" id="origin-video-id" name="origin_video_id" value="235388">
-                    </div>
-                </div>
+            <div class="row"
+                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                <div class="col-sm-4">
+                    <form action="" class="form-horizontal" method="post">
+                        <div class="form-group start">
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="start-time" name="start_time"
+                                       placeholder="开始位置(秒)">
+                            </div>
+                            <button id="btn-start-time" onclick="getStartTime()" type="button"
+                                    class="btn btn-sm btn-pink">
+                                截取片段开始时间
+                            </button>
+                        </div>
+                        <div class="form-group end">
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="end-time" name="end_name"
+                                       placeholder="截止位置(秒)">
+                            </div>
+                            <button id="btn-end-time" onclick="getEndTime()" type="button"
+                                    class="btn btn-sm  btn-purple">
+                                截取片段结束时间
+                            </button>
+                        </div>
+                        <div class="form-group end">
+                            <div class="col-lg-12">
+                                源视频ID（隐藏域）:
+                                <input type="text" class="form-control" disabled="disabled" id="origin-video-id"
+                                       name="origin_video_id" value="469">
+                            </div>
+                        </div>
 
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        源视频名称（隐藏域）:&nbsp;&nbsp;
-                        <input type="text" class="form-control" disabled="disabled" id="origin-video-name" name="origin_video_name" value="CY000235388-150893483820171025203358">
-                    </div>
-                </div>
+                        <div class="form-group end">
+                            <div class="col-lg-12">
+                                源视频名称（隐藏域）:&nbsp;&nbsp;
+                                <input type="text" class="form-control" disabled="disabled" id="origin-video-name"
+                                       name="origin_video_name" value="469">
+                            </div>
+                        </div>
 
-                <div class="form-group end">
-                    <div class="col-lg-4">
-                        <span>新视频名称:</span>&nbsp;&nbsp;
-                        <input type="text" class="form-control" id="new-video-name" name="new_video_name" placeholder="请输入新视频名称">
-                    </div>
-                </div>
+                        <div class="form-group end">
+                            <div class="col-lg-12">
+                                <span>新视频名称:</span>&nbsp;&nbsp;
+                                <input type="text" class="form-control" id="new-video-name" name="new_video_name"
+                                       placeholder="请输入新视频名称">
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <div class="col-lg-8">
-                        <button class="btn btn-sm btn-info" id="cut-button" type="button"><i class="icon-cut bigger-120"></i>&nbsp;剪切</button>
-                        <button class="btn btn-sm btn-warning " type="submit"><i class="icon-refresh bigger-120"></i>&nbsp;重置
-                        </button>
-                        <button class="btn btn-sm btn-primary" type="submit"><i class="icon-save bigger-120"></i>&nbsp;保存
-                        </button>
-                    </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <button class="btn btn-sm btn-info" id="cut-button" type="button"><i
+                                        class="icon-cut bigger-120"></i>&nbsp;剪切
+                                </button>
+                                <button class="btn btn-sm btn-warning " type="submit"><i
+                                        class="icon-refresh bigger-120"></i>&nbsp;重置
+                                </button>
+                                <button class="btn btn-sm btn-primary" type="submit"><i
+                                        class="icon-save bigger-120"></i>&nbsp;保存
+                                </button>
+                            </div>
 
-                </div>
-            </form>
+                        </div>
+                    </form>
+                </div><!-- /span -->
+
+                <div class="col-sm-8 ">
+                    <div class="row" style="margin-left: 10px;">
+                        <h5><i class="icon-edit"></i> 编辑列表</h5>
+                        <hr>
+                        <ul class="ace-thumbnails" id="video-line-edit">
+                            {volist name="editVideos" id="vo"}
+                            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
+                                <div class="wrapper_player"
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                    <div class="video_player">
+                                    </div>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div><!-- /span -->
+            </div>
+
         </div>
     </div>
 </div>
 <script type="text/javascript">
+    // Success before include CommonJS
+    function successShow($msg) {
+        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
+    // Fail before include CommonJS
+    function failShow($msg) {
+        $(".modal-body").css("color", "red");
+        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
+        $(".auth-msg").html($msg);
+        $("#authHanderModal").modal("show");
+    }
+
     var $videoId = document.getElementById("live-stream");
     var $startTimeId = document.getElementById("start-time");
     var $endTimeId = document.getElementById("end-time");
     var $newVideoNameId = document.getElementById("new-video-name");
 
-    /**
-     * 获取开始时间
-     */
+    // 获取当前时间
+    function getCurrentDateTime() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return "[" + currentdate + "] : ";
+    }
+
+    // 获取开始时间
     function getStartTime() {
         $startTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
     }
@@ -111,7 +234,7 @@
     function getEndTime() {
         var $currentTimestamp = Date.parse(new Date());
         $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-        $newVideoNameId.value = '剪切新视频'+$currentTimestamp;
+        $newVideoNameId.value = '剪切新视频' + $currentTimestamp;
     }
 
     /**
@@ -124,39 +247,55 @@
             var $newVideoName = $("#new-video-name").val();
             var $originVideoId = $("#origin-video-id").val();
             var $originVideoName = $("#origin-video-name").val();
-            console.log('$startTime'+$startTime+'$newVideoName'+$newVideoName);
+            //生成的视频ID
+            var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
+            console.log('$startTime' + $startTime + '$newVideoName' + $newVideoName);
             if ($startTime && $endTime && $newVideoName) {
-                alert('即将开始剪切，完成后通知你，请稍后...');
-                first_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName);
+                successShow("即将开始剪切，完成后通知你，请稍后...");
+                first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $originVideoName);
             } else {
-                alert('参数不全');
+                failShow("参数不全")
             }
             event.preventDefault();
+        });
+
+        // 视频预览
+        $("#video-line-edit li").click(function () {
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").load();
+        });
+
+        // 素材预览
+        $("#upload-video li").click(function () {
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").load();
+            $("#origin-video-id").val($(this).data("id"))
         });
     });
 
     /**
      * first_ajax_request
      */
-    function first_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName) {
-        console.log("first_ajax_request-------------------111111");
+    function first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $originVideoName) {
+        console.log(getCurrentDateTime() + "first_ajax_request");
+        console.log(getCurrentDateTime() + "All Param : " + $startTime + "&&" + $endTime + "&&" + $newVideoId + "&&" + $newVideoName + "&&" + $originVideoId + "&&" + $originVideoName);
         var url = "{:url('backend/live/videoCutOperate')}";
         var data = {
             "start_time": $startTime,
             "end_time": $endTime,
+            "new_video_id": $newVideoId,
             "new_video_name": $newVideoName,
             "origin_video_id": $originVideoId,
             "origin_video_name": $originVideoName
         };
         var success = function (cc) {
-            console.log("-------------------first_ajax_request");
-            console.log(cc);
+            console.log(getCurrentDateTime() + cc);
             if (cc.status == 1) {
                 //第一次ajax请求成功  访问视频状态
-                alert('请求succcess');
-                next_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName);
+                successShow("恭喜你,视频截切成功");
+                next_ajax_request($newVideoId, $newVideoName);
             } else {
-                alert('请求错误');
+                failShow("请求错误11111");
             }
         };
         $.post(url, data, success, 'json');
@@ -165,138 +304,51 @@
     /**
      * 视频剪切成功后重新加载视频列表
      */
-    function next_ajax_request($startTime, $endTime, $newVideoName,$originVideoId,$originVideoName) {
-        console.log('222222222222222');
-        var url = "{:url('ffmpeg/Index/videoCutResult')}";
+    function next_ajax_request($newVideoId, $newVideoName) {
+        var url = "{:url('backend/live/videoCutResult')}";
         var data = {
-            "new_name": new_name,
-            "video_cut_source": video_cut_source
+            "new_video_id": $newVideoId,
+            "new_video_name": $newVideoName
         };
         var success = function (data) {
-            console.log("next_ajax_request == "+data);
+            console.log("next_ajax_request == " + data);
             if (data) {
                 //视频没有处理完成好
                 if (data.status == -1) {
-                    // alert(cc.filename);
                     if (max_request_length < 100) {
-                        setTimeout('next_ajax_request(new_name,video_cut_source)', 5000);
+                        setTimeout('next_ajax_request($newVideoId,$newVideoName)', 5000);
                     } else {
-                        alert('请求超时');
+                        failShow("请求超时...")
                     }
                     max_request_length++;
                 } else if (data.status != 1) {
-                    alert('操作失败,请重试');
+                    failShow('操作失败,请重试');
                 } else {
                     //视频已经检测到
-                    alert(data.desc + " 已经剪好,请在左侧列表中点击播放。");
-                    $("#" + data.pid).append("<div class=\"leveltwo\" margin-left:10px id=\"" + data.id + "\"><ul><li><a target=\"_self\" href=\"javascript:openVideo('" + data.playpath + "','" + data.id + "');\">" + data.desc + "</a></li></ul></div>");
-                    window.location.reload();
+                    successShow(data.desc + " 已经剪好,请在编辑列表点击播放");
+                    var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image+"?x-oss-process=image/resize,m_fixed,h_100,w_180);";
+                    var $li = '<li data-file-name="'+data.fileName+'" data-id="'+data.id+'" data-live-id="'+data.liveId+'">'+
+                        '<div class="wrapper_player" style="background-image:'+$url+'">'+
+                        '<div class="video_player">'+
+                        '</div>'+
+                        '</div>'+
+                        '</li>';
+                    $("#video-line-edit").prepend($li);
+                    $("#video-line-edit").load();
                 }
             } else {
-                alert('请求错误');
+                failShow('请求错误');
             }
         };
         $.post(url, data, success, 'json');
     }
 </script>
-<script type="text/javascript" charset="utf-8"
-        src="__COMMON__/bootstrap-3.3.7/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
 
-
-    var firstDayOfMonth = function () {
-        // your special logic...
-        return 0;
-    };
-    var d = new Date();
-    var currMonth = d.getMonth() - 1;
-    var currYear = d.getFullYear() - 1;
-    var startDate = new Date(currYear, currMonth, firstDayOfMonth());
-    $('.form_date').datetimepicker({
-        language: 'zh-CN',
-        format: "yyyy-mm-dd",
-        weekStart: true,
-        todayBtn: true,
-        autoclose: true,
-        todayHighlight: true,
-        startView: 2,
-        startDate: startDate,
-        forceParse: 0,
-        showMeridian: false,
-        minuteStep: 1,
-        minView: "month",
-        pickerPosition: "bottom-left"
-    });
-
-
-    //删除
-    var promptId = null;
-    function promptDelete(liveId) {
-        promptId = liveId;
-        $("#promptModal").modal("show");
-    }
-
-    function deleteChannel() {
-        $("#promptModal").modal("hide");
-        if (promptId != null) {
-            $.post("/lives/" + promptId + "/delete", function (data) {
-                if (data.errcode == 500) {
-                    alert(data.errmsg)
-                } else {
-                    $("#liveId_" + promptId).remove();
-                }
-            }).fail(function (e) {
-                alert("删除失败: " + e);
-            });
-        }
-    }
-
-    //放入婚庆首页轮播区
-    var spreadId = null;
-    function promptSpread(liveId, spread) {
-        promptId = liveId;
-        spreadId = spread;
-        $("#spread_modalLabel").text(liveId);
-        $("#spread").val(spreadId);
-        $("#spreadModal").modal("show");
-    }
-
-    function SpreadChannel() {
-        var i = $("#spread").val();
-        if (!isNaN(i) && i != "") {
-            $("#spreadModal").modal("hide");
-            $("#spread_error").text("");
-            if (promptId != null) {
-                $.post("/lives/" + promptId + "/spread", {spread: i}, function (data) {
-                    if (data.errcode == 500) {
-                        alert(data.errmsg)
-                    } else {
-                        window.location.reload();
-                    }
-                }).fail(function (e) {
-                    alert("错误: " + e);
-                });
-            }
-        } else {
-            $("#spread_error").text("必须为数字！");
-        }
-    }
-
-    $("#search_submit").click(function () {
-        if ($("#search_value").val() == "") {
-            location.href = "/lives";
-            return false;
-        }
-    })
-</script>
 <script src="__COMMON__/videojs/videojs/video.js"></script>
 <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
     var options = {
-        width: 520,
+        width: 540,
         height: 280
     }
     var player = videojs('live-stream', options);
@@ -318,3 +370,5 @@
     });
 
 </script>
+
+

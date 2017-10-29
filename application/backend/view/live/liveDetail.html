@@ -68,18 +68,18 @@
             <div class="tab-content">
                 <!-- 图片管理 -->
                 <div id="live-image" class="tab-pane in active">
-                        <button class="btn btn-info btn-sm">
-                            <i class="icon-exchange align-top bigger-125"></i>
-                            排序
-                        </button>
-                        <button class="btn btn-primary btn-sm">
-                            <i class="icon-bookmark align-top bigger-125"></i>
-                            价格
-                        </button>
-                        <button class="btn btn-purple btn-sm" data-toggle="modal" data-target="#imageUploadModal">
-                            <i class="icon-bookmark align-top bigger-125"></i>
-                            上传图片
-                        </button>
+                    <button class="btn btn-info btn-sm">
+                        <i class="icon-exchange align-top bigger-125"></i>
+                        排序
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="icon-bookmark align-top bigger-125"></i>
+                        价格
+                    </button>
+                    <button class="btn btn-purple btn-sm" data-toggle="modal" data-target="#imageUploadModal">
+                        <i class="icon-bookmark align-top bigger-125"></i>
+                        上传图片
+                    </button>
                     </p>
                     <hr>
                     <!-- PAGE CONTENT BEGINS -->
@@ -89,7 +89,9 @@
                             <ul class="ace-thumbnails" id="live_images">
                                 {volist name="lives" id="vo"}
                                 <li>
-                                    <img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.id}/video/{$vo.path}" width="263" height="220">
+                                    <img alt="50x50"
+                                         src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.id}/video/{$vo.path}"
+                                         width="263" height="220">
                                 </li>
                                 {/volist}
                             </ul>
@@ -409,7 +411,8 @@
 </div><!-- /row -->
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="imageUploadModal" tabindex="-1" role="dialog" aria-labelledby="imageUploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="imageUploadModal" tabindex="-1" role="dialog" aria-labelledby="imageUploadModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -421,7 +424,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form action="{:url('backend/live/liveImageUpload')}" method="post"  enctype="multipart/form-data">
+                <form action="{:url('backend/live/liveImageUpload')}" method="post" enctype="multipart/form-data">
                     <div class="ace-file-input ace-file-multiple">
                         <div class="ace-file-input ace-file-multiple">
                             <input multiple="" type="file" id="id-input-file-3" class="video_file" name="video_file">
@@ -479,7 +482,7 @@
                 var limitFileSize = 800;
                 var filesize = $("input[type='file']")[0].files[0].size / 1024 / 1024;
                 if (filesize > limitFileSize) {
-                    failShow("文件大小超过限制，最大限制为："+limitFileSize+'M')
+                    failShow("文件大小超过限制，最大限制为：" + limitFileSize + 'M')
                     return false;
                 }
             },
@@ -512,10 +515,10 @@
             },
             complete: function (xhr) {
                 var $data = JSON.parse(xhr.responseText); //由JSON字符串转换为JSON对象，json转成object
-                console.log("------xhr.responseText------"+xhr.responseText);
-                console.log("-------dasdasdsa-----"+$data);
-                var $li = '<li>'+
-                    '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/201710007/video/'+$data.data.image_path+'" width="263" height="220">'+
+                console.log("------xhr.responseText------" + xhr.responseText);
+                console.log("-------dasdasdsa-----" + $data);
+                var $li = '<li>' +
+                    '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/201710007/video/' + $data.data.image_path + '" width="263" height="220">' +
                     '</li>';
                 $("#live_images").prepend($li);
             }

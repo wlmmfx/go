@@ -1,0 +1,216 @@
+<style type="text/css">
+
+    .table th, .table td {
+        vertical-align: middle !important;
+    }
+
+    .wrapper {
+        margin-left: -20px;
+        margin-right: -19px;
+        margin-bottom: -24px;
+        margin-top: -17px;
+    }
+
+    .wrapper_player {
+        height: 100px;
+        width: 180px;
+        padding-top: 20px;
+        padding-left: 60px;
+        border: 1px solid #000;
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+
+    #video_player {
+        display: block;
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        background-image: url(__COMMON__/images/play3.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 60px 60px;
+    }
+
+    .wrapper_player:hover {
+        -webkit-filter: grayscale(70%);
+    }
+
+    #video_player:hover {
+        background-image: url(__COMMON__/images/play1.png);
+    }
+</style>
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">编辑列表</h3>
+        <div class="table-responsive">
+            <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
+                <div class="row" >
+                    <div class="col-sm-6">
+                        访问人物
+                    </div>
+                    <div class="col-sm-6">
+                        水电费水电费
+                    </div>
+                </div>
+                <table class="table  table-bg" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                    <thead>
+                    <tr class="text-c">
+                        <th class="center">
+                            <label>
+                                <input type="checkbox" class="ace" id="SelectAll" onclick="swapCheck()">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>视频资源信息</th>
+                        <th>名称</th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>时长</th>
+                        <th>状态(全部)</th>
+                        <th>编辑时间(降序)</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name='editVideos' id='vo'}
+                    <tr class="text-c" id="data-{$vo.id}">
+                        <td class="center">
+                            <label>
+                                <input type="checkbox" class="ace" id="subCheck" value="{$vo.id}" name="subcheck[]">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <a href="javascript:playModal('{$vo.liveId}','{$vo.fileName}','0');">
+                                <div class="wrapper_player"
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                    <div id="video_player">
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.fileName}</td>
+                        <td>{$vo.fileSize|trans_byte}</td>
+                        <td>{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
+                        <td>
+                            {switch name="vo.editresult"}
+                            {case value="1"}
+                            <span class="badge label-success "><i class="icon-save"></i>&nbsp;已完成</span>
+                            {/case}
+                            {case value="2"}
+                            <span class="badge badge-yellow"><i class="icon-refresh icon-spin primary"></i>&nbsp;生成中</span>
+                            {/case}
+                            {default /}
+                            <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
+                            {/switch}
+                        </td>
+                        <td>{$vo.createTime}</td>
+                        <td>
+                            <a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">
+                                <button class="btn btn-primary btn-xs">
+                                    <i class="icon-eye-open"></i> 预览
+                                </button>
+                            </a>
+                            <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs" >
+                                <i class="icon-trash bigger-130"></i>删除
+                            </a>
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button class="btn btn-danger btn-xs">
+                            <i class="icon-trash bigger-130"></i>&nbsp;批量删除
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_bootstrap">
+                            {$editVideos->render()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="playModal" tabindex="-1" role="dialog" aria-labelledby="playModal" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title">预览播放</h5>
+            </div>
+            <div class="modal-body">
+                <div class="wrapper">
+                    <video width="100%" id="video-container" height="100%" controls autoplay>
+
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var $liveId = null;
+    var $fileName = null;
+    var $videoVersion = 0;
+    function playModal(liveId, fileName, version) {
+        $("#video-container").children().remove();
+        $liveId = liveId;
+        $fileName = fileName;
+        $videoVersion = version;
+        $("#playModal").modal("show");
+        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + $liveId + "/video/" + $fileName);
+        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $liveId + '/video/' + $fileName + '.mp4" type="video/mp4">');
+        //你在动态赋值src后要加载这个视频文件即:
+        $("#video-container").load();
+    }
+
+    var $id;
+    // 删除操作
+    function delHanderModal(id) {
+        $id = id;
+        $("#delHanderModal").modal("show");
+    }
+    $(document).ready(function(){
+        $('body').delegate('.del-hander', 'click', function () {
+            $("#delHanderModal").modal("hide");
+            var $url = "{:url('backend/live/editVideoDel')}";
+            var $_data = {
+                'id': $id
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response);
+                    if ($response.code == 200) {
+                        $('#data-' + $id).remove();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+    });
+</script>

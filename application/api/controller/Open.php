@@ -14,7 +14,7 @@ namespace app\api\controller;
 use app\common\controller\Base;
 use think\Db;
 
-class OpenApi extends Base
+class Open extends Base
 {
     public function index(){
         return '11'.__FUNCTION__;
@@ -44,7 +44,7 @@ class OpenApi extends Base
             'createTime' => date("Y-m-d H:i:s"),
         ];
         $res = Db::table('resty_stream_video')->insertGetId($videoData);
-//        if($res){
+        if($res){
 //            // 加入消息队列
 //            $taskData['task_type'] = 1;
 //            $taskData['status'] = 0;
@@ -54,10 +54,38 @@ class OpenApi extends Base
 //            $taskData['live_id'] = $streamName;
 //            // 加入邮件队列
 //            $this->addTaskList($taskData);
-//            exit('200:success');
-//        }else{
-//            exit('500:error');
-//        }
+            exit('200:success');
+        }else{
+            exit('500:error');
+        }
+    }
+
+    /**
+     * 自动安装配置文件
+     * @return mixed
+     */
+    public function videoEditConf()
+    {
+        $sign = input('param.sign');
+        if (empty($sign)) {
+            $resJson = [
+                'code' => 500,
+                'msg' => 'fail',
+                'data' => null
+            ];
+        } else {
+            $findRes = Db::table('resty_stream_video_edit')->where('task_id', $sign)->find();
+            if(empty($findRes) || ($findRes == false)){
+                $resJson = ['code' => 500, 'msg' => 'success', 'data' => null];
+                return json($resJson);
+            }
+            $resJson = [
+                'code' => 200,
+                'msg' => 'success',
+                'data' => json_decode($findRes['edit_config'])
+            ];
+        }
+        return json($resJson);
     }
 
     public function testSendMail()

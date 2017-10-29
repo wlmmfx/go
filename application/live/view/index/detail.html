@@ -144,72 +144,12 @@
         <div class="clear"></div>
     </div>
     <div class="detail_part1">
-
-        <div class="left" style="position:relative;height:420px">
-
-            <img class="videoimg" src="__PICTURE__/icon-pre-sale.png" style="position:absolute;top:20px;left:20px;height:42px;width:42px;min-height: 0px;z-index:9">
-            <div id="video_div_id" style=""></div>
-            <div id="needLogin">
-                <img style="height:420px;" src="__PICTURE__/142639fb5644726515.jpeg"/>
-            </div>
-        </div>
-        <div class="right" style="height: 420px;position:relative">
-            <div class="right_mian">
-                <ul class="contain_content">
-
-                    <a href="javascript:void(0)" class="livehref" status="published" meet="draft" liveid="6754334" courseid="6411" lessonid="4266" rid="6754334" pmoney="0.00" membercourse="0">
-
-
-                        <li teachername="Alberto Brandolini" imgurl="http://static.itdks.com/files/course/2017/10-16/18234511fbe2637537.png?6.17.4" header="全球软件巨匠，Event Storming创始人" viedo_time="2017年12月09日 09:00 - 10:30">
-                            <p class="title">2017领域驱动设计中国峰会</p>
-                            <p class="tiemr"> <span>2017年12月09日 09:00 - 10:30</span></p>
-                            <div>
-                                <span class="video_status1 video_status signed">预约报名</span>
-                                <div class="meetingVideourl" style="display:none">/order/show?targetId=6411&amp;targetType=course</div>
-                                <div class="clear"></div>
-
-                            </div>
-                        </li>
-                        <input type="hidden" name="status" value="1">
-                    </a>
-                </ul>
-
-            </div>
-            <div class="bottom" >
-                <span style="height:27px;float:left;line-height:39px;margin-right:15px;color:#777"> 188 人观看 </span>
-                <span style="display:block;float:left;margin-right:15px;color:#777;">
-                					<span class="m_favorite meetting_unfavorite" meetingid="1431" useid="0">收藏</span>
-				            </span>
-                <div class="share_wx" >
-                    有料分享
-                </div>
-                <!-- <div style="float:left;height:27px;line-height:27px;margin-right:7px;font-size:13px;background:url(Images/share_ico.png) no-repeat center right;background-size:13px 13px;width:43px;color:#777;margin-top:6px;">分享</div> -->
-
-                <!-- <div class="jiathis_style_24x24" style="float:left;margin-top:6px">
-                    <a class="jiathis_button_weixin"></a>
-                    <a class="jiathis_button_tsina"></a>
-                    <a class="jiathis_button_cqq"></a>
-                    <a class="jiathis_button_qzone"></a>
-                </div> -->
-
-                <span class="video_code" style="cursor: progress;display:block;float:left;margin-left:12px;color:#777;line-height:37px;background:url(Images/small_weichat_code.png) no-repeat left center;background-size:17px;padding-left:20px;">大会交流群
-					<span class="es-qrcode top" data-url="/livecourse/1431/qrcode" >
-					</span></span>
-                <script type="text/javascript">
-                    /*var jiathis_config = {};
-                     $(document).ready(function() {
-                     jiathis_config.url = "http://www.itdks.com/dakashuo/playback/1431";
-                     jiathis_config.title = '2017 CBEC AI 中国人工智能发展应用峰会';
-                     jiathis_config.summary = "2017 CBEC AI 中国人工智能发展应用峰会";
-                     jiathis_config.pic = "http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4";
-                     });*/
-
-                </script>
-
-                <!--<script type="text/javascript" src="Scripts/jia.js" charset="utf-8">
-                </script>-->
-
-                <div style="clear:both;"></div>
+        <div id="video_div_id" style=""></div>
+        <div id="needLogin">
+            <div class="row">
+                <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
+                    <source src="https://live.tinywan.com/hls/{$live.id}.m3u8" type="application/x-mpegURL">
+                </video>
             </div>
         </div>
     </div>

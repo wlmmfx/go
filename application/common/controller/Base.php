@@ -166,4 +166,12 @@ class Base extends Controller
         return self::ffprobe()->format($file_path)->get("size");
     }
 
+    /**
+     * 根据视频$videoId获取唯一的任务执行ID签名序号
+     * @param $videoId
+     */
+    public static function getVideoEditTaskId($videoId){
+        return md5(time().$videoId);
+    }
+
 }

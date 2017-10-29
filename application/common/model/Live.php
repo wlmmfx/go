@@ -45,4 +45,15 @@ class Live extends BaseModel
         }
         return ['valid' => 1, 'msg' => "添加成功"];
     }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function del($id)
+    {
+        $res = $this->where('id', $id)->update(['deleted' => 1]);
+        if (false === $res) return ['valid' => 0, 'msg' => "删除失败"];
+        return ['valid' => 1, 'msg' => "删除成功"];
+    }
 }

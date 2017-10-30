@@ -215,7 +215,7 @@
         <li>
             <a href="#" class="dropdown-toggle">
                 <i class="icon-facetime-video"></i>
-                <span class="menu-text"> 视频控制台</span>
+                <span class="menu-text"> 多媒体控制台</span>
                 <b class="arrow icon-angle-down"></b>
             </a>
 
@@ -272,11 +272,45 @@
 
                                 <li>
                                     <a href="{:url('backend/live/videoEditList')}">
-                                        <i class="icon-linux"></i>
+                                        <i class="icon-list"></i>
                                         编辑列表
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{:url('backend/live/settingsAll')}" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        全局设置
+                    </a>
+                </li>
+                <li>
+                    <a href="{:url('backend/live/settingsAll')}" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        安全管理
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        媒体转码
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="{:url('backend/live/urlAuth')}">
+                                <i class="icon-lock"></i>
+                                媒体库
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('backend/live/playAuthentication')}">
+                                <i class="icon-play-circle"></i>
+                                全局设置
+                            </a>
                         </li>
                     </ul>
                 </li>

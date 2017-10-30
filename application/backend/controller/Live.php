@@ -1003,6 +1003,49 @@ class Live extends BaseBackend
     }
 
     /**
+     * 【全局设置】
+     */
+    public function settingsAll(){
+        return $this->fetch();
+    }
+
+
+    /**
+     * 【全局设置】回调设置
+     */
+    public function settingsCallBack(){
+        return $this->fetch();
+    }
+
+    /**
+     * 【全局设置】水印管理
+     */
+    public function waterMark(){
+        return $this->fetch();
+    }
+
+    /**
+     * 【安全管理】
+     */
+    public function safetyManage(){
+        return $this->fetch();
+    }
+
+    /**
+     * 【安全管理】URL鉴权
+     */
+    public function urlAuth(){
+        return $this->fetch();
+    }
+
+    /**
+     * 【安全管理】播放鉴权
+     */
+    public function playAuthentication(){
+        return $this->fetch();
+    }
+
+    /**
      * 通过FFmpeg 获取视频信息
      */
     public function getVideoInfoByFFmpeg()

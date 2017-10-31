@@ -66,8 +66,8 @@
                             </label>
                         </th>
                         <th>视频资源信息</th>
+                        <th>任务ID</th>
                         <th>名称</th>
-                        <th>文件名</th>
                         <th>大小</th>
                         <th>时长</th>
                         <th>状态(全部)</th>
@@ -93,8 +93,8 @@
                                 </div>
                             </a>
                         </td>
+                        <td>{$vo.task_id}</td>
                         <td>{$vo.name}</td>
-                        <td>{$vo.fileName}</td>
                         <td>{$vo.fileSize|trans_byte}</td>
                         <td>{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
                         <td>

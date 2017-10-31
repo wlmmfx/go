@@ -19,7 +19,7 @@
     }
 
     .wrapper_player {
-        height: 100px;
+        height: 75px;
         width: 140px;
         padding-top: 30px;
         padding-left: 50px;
@@ -94,6 +94,7 @@
                                     </div>
                                     <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
                                 </div>
+                                <button class="btn btn-info btn-xs btn-block">添加</button>
                             </li>
                             {/volist}
                         </ul>
@@ -103,133 +104,68 @@
         </div>
     </div>
     <p></p>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row"
-                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
-                <div class="col-sm-4">
-                    <form action="" class="form-horizontal" method="post">
-                        <div class="form-group start">
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" id="start-time" name="start_time"
-                                       placeholder="开始位置(秒)">
-                            </div>
-                            <button id="btn-start-time" onclick="getStartTime()" type="button"
-                                    class="btn btn-sm btn-pink">
-                                截取片段开始时间
-                            </button>
-                        </div>
-                        <div class="form-group end">
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" id="end-time" name="end_name"
-                                       placeholder="截止位置(秒)">
-                            </div>
-                            <button id="btn-end-time" onclick="getEndTime()" type="button"
-                                    class="btn btn-sm  btn-purple">
-                                截取片段结束时间
-                            </button>
-                        </div>
-                        <div class="form-group end">
-                            <div class="col-lg-12">
-                                视频截图时间(秒):
-                                <input type="text" class="form-control" id="cut-image-time" name="origin_video_id"
-                                       value="10">
-                            </div>
-                        </div>
+    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12"
+                         style="border: 1px solid #cccccc; height: 160px; margin-bottom: 10px; margin-right: 10px;">
+                        <ul class="ace-thumbnails" id="concat-video-add">
 
-                        <div class="form-group end">
-                            <div class="col-lg-12">
-                                <span>新视频名称:</span>&nbsp;&nbsp;
-                                <input type="hidden" class="form-control" disabled="disabled" id="origin-video-id"
-                                       name="origin_video_id" value="">
-                                <input type="text" class="form-control" id="new-video-name" name="new_video_name"
-                                       placeholder="请输入新视频名称">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <button class="btn btn-sm btn-info" id="cut-button" type="button"><i
-                                        class="icon-cut bigger-120"></i>&nbsp;剪切
-                                </button>
-                                <button class="btn btn-sm btn-warning " type="submit"><i
-                                        class="icon-refresh bigger-120"></i>&nbsp;重置
-                                </button>
-                                <button class="btn btn-sm btn-primary" type="submit"><i
-                                        class="icon-save bigger-120"></i>&nbsp;保存
-                                </button>
-                            </div>
-
-                        </div>
-                    </form>
-                </div><!-- /span -->
-
-                <div class="col-sm-8 ">
-                    <div class="row" style="margin-left: 10px;">
-                        <h5><i class="icon-edit"></i> 编辑列表</h5>
-                        <hr>
-                        <ul class="ace-thumbnails" id="video-line-edit">
-                            {volist name="editVideos" id="vo"}
-                            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
-                                <div class="wrapper_player"
-                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
-                                    <div class="video_player">
-                                    </div>
-                                    <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
-                                </div>
-                            </li>
-                            {/volist}
                         </ul>
                     </div>
-                </div><!-- /span -->
-            </div>
-
-        </div>
+                    <div class="col-lg-12">
+                        <label>
+                            <input type="checkbox" class="ace btn btn-primary" id="SelectAll" onclick="swapCheck()">
+                            <span class="lbl">全选</span>
+                        </label>
+                        <button class="btn btn-primary btn-minier concat-video-submit" type="submit">提交合并</button>
+                    </div>
+                </div>
+            </div><!-- /span -->
+    </div>
+    <p></p>
+    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+        <h5><i class="icon-edit"></i> 编辑列表</h5>
+        <hr>
+        <ul class="ace-thumbnails" id="video-line-edit">
+            {volist name="editVideos" id="vo"}
+            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
+                <div class="wrapper_player"
+                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                    <div class="video_player">
+                    </div>
+                    <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
+                </div>
+            </li>
+            {/volist}
+        </ul>
     </div>
 </div>
 <script type="text/javascript">
-    var $videoId = document.getElementById("live-stream");
-    var $startTimeId = document.getElementById("start-time");
-    var $endTimeId = document.getElementById("end-time");
-    var $newVideoNameId = document.getElementById("new-video-name");
-
-    // 获取开始时间
-    function getStartTime() {
-        $startTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-    }
-
-    /**
-     * 获取结束时间
-     */
-    function getEndTime() {
-        var $currentTimestamp = Date.parse(new Date());
-        $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-        $newVideoNameId.value = '剪切新视频' + $currentTimestamp;
-    }
-
     /**
      * 表单提交操作
      */
     $(document).ready(function () {
-        $("#cut-button").click(function () {
-            var $startTime = $("#start-time").val();
-            var $endTime = $("#end-time").val();
-            var $cutImageTime = $("#cut-image-time").val();
-            var $newVideoName = $("#new-video-name").val();
-            var $originVideoId = $("#origin-video-id").val();
-            //生成的视频ID
-            var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
-            console.log(getCurrentDateTime() + '$startTime' + $startTime + '$newVideoName' + $newVideoName + '----$originVideoId' + $originVideoId);
-            if ($originVideoId == '' || $originVideoId == undefined || $originVideoId == null) {
-                failShow("请选择一个视频进行编辑");
+        $(".concat-video-submit").click(function () {
+            var $videoList = [];
+            $('input[name="concat-checkbox"]:checked').each(function () {
+                $videoList.push($(this).val());
+            });
+            if ($videoList.length < 2) {
+                failShow("至少选择两个视频才能拼接");
                 return false;
             }
-
-            if ($startTime && $endTime && $newVideoName && $originVideoId && $cutImageTime && $newVideoId) {
-                successShow("即将开始剪切，完成后通知你，请稍后...");
-                first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime);
+            if ($videoList == '' || $videoList == undefined || $videoList == null) {
+                failShow("视频参数获取错误");
+                return false;
+            }
+            //生成的视频名
+            var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
+            if ($videoList && $newVideoId) {
+                successShow("拼接即将开始，完成后通知你，请稍后...");
+                first_ajax_request4concat($videoList.join(','), $newVideoId,'视频合并名称'+$newVideoId);
             } else {
-                failShow("请求参数参数错误，请检查后提交。")
+                failShow("请求参数参数错误，请检查后提交。");
                 return false
             }
             event.preventDefault();
@@ -240,6 +176,7 @@
             $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
             $("#live-stream_html5_api").load();
             $("#origin-video-id").val($(this).data("id"));
+
         });
 
         // 素材预览
@@ -247,42 +184,71 @@
             $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
             $("#live-stream_html5_api").load();
             $("#origin-video-id").val($(this).data("id"));
+            console.log('-------视频预览---------' + $(this).data("id"));
+            var $li = '<li id="data-' + $(this).data("id") + '">' +
+                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.jpg" width="140" height="120">' +
+                '<span class="lbl" data-id=' + $(this).data("id") + ' id="remove-video-li"><i class="icon-trash bigger"></i></span>&nbsp;' +
+                '<label>'+
+                '<input name="concat-checkbox" type="checkbox" class="ace" value=' + $(this).data("id") + '>' +
+                '<span class="lbl">' + $(this).data("id") + '</span>' +
+                '</label>' +
+                '</li>';
+            $("#concat-video-add").prepend($li);
+        });
+        // 移除元素
+        $(document).on('click',"#remove-video-li",function () {
+            var $id = $(this).data("id");
+            console.log('--------------'+$id);
+            $('#data-' + $id).remove();
         });
     });
 
+
+    //checkbox 全选/取消全选
+    var $isCheckAll = false;
+    function swapCheck() {
+        if ($isCheckAll) {
+            $("input[type='checkbox']").each(function () {
+                this.checked = false;
+            });
+            $isCheckAll = false;
+        } else {
+            $("input[type='checkbox']").each(function () {
+                this.checked = true;
+            });
+            $isCheckAll = true;
+        }
+    }
     /**
-     * first_ajax_request
+     * 第一次ajax请求  first_ajax_request4concat
+     * @param video_list
+     * @param new_name
+     * @param video_desc
      */
-    function first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime) {
-        console.log(getCurrentDateTime() + "first_ajax_request");
-        console.log(getCurrentDateTime() + "All Param : " + $startTime + "&&" + $endTime + "&&" + $newVideoId + "&&" + $newVideoName + "&&" + $originVideoId + "&&" + $cutImageTime);
-        var url = "{:url('backend/live/videoCutOperateByTaskId')}";
+    function first_ajax_request4concat(video_list, new_video_id,new_video_name) {
+        var url = "{:url('backend/live/videoConcatOperateByTaskId')}";
         var data = {
-            "start_time": $startTime,
-            "end_time": $endTime,
-            "cut_image_time": $cutImageTime,
-            "new_video_id": $newVideoId,
-            "new_video_name": $newVideoName,
-            "origin_video_id": $originVideoId,
-        };
+            "video_list": video_list,
+            "new_video_id": new_video_id,
+            "new_video_name": new_video_name
+        }
         var success = function (data) {
-            console.log(getCurrentDateTime() + '-=-' + data.status);
-            console.log(getCurrentDateTime() + '-=-' + data.msg);
+            console.log("next_ajax_request == " + data);
             if (data.status == 200) {
                 //第一次ajax请求成功  访问视频状态
                 successShow("恭喜你,视频截切成功");
-                next_ajax_request($newVideoId, $newVideoName);
+                next_ajax_request4result($newVideoId, $newVideoName);
             } else {
-                failShow("视频剪切异常，错误信息：" + data.msg);
+                failShow("视频合并异常，错误信息：" + data.msg);
             }
         };
         $.post(url, data, success, 'json');
     }
 
     /**
-     * 视频剪切成功后重新加载视频列表
+     * 视频合并列表
      */
-    function next_ajax_request($newVideoId, $newVideoName) {
+    function next_ajax_request4result($newVideoId, $newVideoName) {
         var url = "{:url('backend/live/videoCutResult')}";
         var data = {
             "new_video_id": $newVideoId,
@@ -294,7 +260,7 @@
                 //视频没有处理完成好
                 if (data.status == -1) {
                     if (max_request_length < 100) {
-                        setTimeout('next_ajax_request($newVideoId,$newVideoName)', 5000);
+                        setTimeout('next_ajax_request4result($newVideoId,$newVideoName)', 5000);
                     } else {
                         failShow("请求超时...")
                         return false;
@@ -305,7 +271,7 @@
                     return false;
                 } else {
                     //视频已经检测到
-                    successShow(data.desc + " 已经剪好,请在编辑列表点击播放预览");
+                    successShow(data.desc + "视频合并已完成,请在编辑列表点击播放预览");
                     var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
                     var $li = '<li data-file-name="' + data.fileName + '" data-id="' + data.id + '" data-live-id="' + data.liveId + '">' +
                         '<div class="wrapper_player" style="background-image:' + $url + '">' +

@@ -963,6 +963,74 @@ class Live extends BaseBackend
     }
 
     /**
+     * -----------------------------------------------------------------重新编辑----------------------------------------
+     * 视频编辑失败，重新编辑
+     * @return mixed
+     */
+    public function videoReOperateByTaskId()
+    {
+        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
+        $task_id = request()->post("task_id");
+        Log::info(getCurrentDate() . '----------$task_id----------' . json_encode($task_id));
+        if(empty($task_id)){
+            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
+        }
+        $findRes = Db::table('resty_stream_video_edit')->where('task_id', $task_id)->find();
+        if(empty($findRes) || ($findRes == false)){
+            return json(['code' => 403, 'msg' => '没有对应的任务 task_id ']);
+        }
+        $taskId = $task_id;
+        $insertId = $findRes['id'];
+        $editId = $findRes['editid'];
+        $editType = $findRes['eidittype'];
+        // [3] 执行系统函数，运行shell 脚本
+        if($editType == 1){
+            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_cut_task_id.sh";
+        }elseif ($editType == 2){
+            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
+        }else{
+            return json(['code' => 403, 'msg' => '视频是剪切或者合并未知']);
+        }
+        $cmdStr = "{$shell_script} {$taskId}";
+        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频重新编辑操作Shell 脚本参数 ： " . $cmdStr);
+        // [3] 执行系统函数，运行shell 脚本
+        exec("{$cmdStr}", $results, $sysStatus);
+        $shellResult = -1;
+        if (count($results) == 1) $shellResult = $results[0];
+        #  [4] 系统函数执行失败
+        if ($sysStatus != 0) {
+            Log::error('[' . getCurrentDate() . ']:' . ' [04]视频重新编辑操作参数 system function exec() run shell failed  ,return code : ' . $sysStatus);
+            $updateData = [
+                'id' => $insertId,
+                'pid' => -1,
+                'editresult' => $shellResult,
+                'editmsg' => $this->editResultMsg($shellResult),
+            ];
+            $this->updateEditDataById($updateData);
+            return json(['status' => 500, 'msg' => "shell error"]);
+        }
+        Log::info('[' . getCurrentDate() . ']:' . ' [04]视频重新编辑操作参数 system function exec() run shell success ,return code ：' . $sysStatus);
+        $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
+        $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
+        #   [5] 根据返回的状态码提示消息
+        if (file_exists($resultVideoPathFile) && file_exists($resultImagePathFile)) {
+            if ($shellResult == '0') $editresultcode = '1';
+            $editMsg = $this->editResultMsg($shellResult);
+            $updateData = [
+                'id' => $insertId,
+                'fileName' => $editId,
+                'duration' => self::getVideoDuration($resultVideoPathFile),
+                'fileSize' => filesize($resultVideoPathFile),
+                'editresult' => $editresultcode,
+                'editmsg' => $editMsg,
+            ];
+            $this->updateEditDataById($updateData);
+            return json(['status' => 200, 'msg' => $editMsg]);
+        }
+        return json(['status' => 200, 'msg' => null]);
+    }
+
+    /**
      * 【全局设置】
      */
     public function settingsAll()

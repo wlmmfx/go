@@ -107,6 +107,9 @@
                             {/case}
                             {default /}
                             <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
+                            <a href="javascript:reEditVideo('{$vo['task_id']}');" class="btn btn-warning btn-xs" >
+                                <i class="icon-refresh"></i> 重新生成
+                            </a>
                             {/switch}
                         </td>
                         <td>{$vo.createTime}</td>
@@ -183,6 +186,24 @@
         $id = id;
         $("#delHanderModal").modal("show");
     }
+    // 重新操作
+    function reEditVideo(task_id) {
+        var url = "{:url('backend/live/videoReOperateByTaskId')}";
+        var data = {
+            "task_id": task_id
+        }
+        var success = function (data) {
+            console.log("reEditVideo == " + data);
+            if (data.status == 200) {
+                //第一次ajax请求成功  访问视频状态
+                successShow("恭喜你,重新合并视频成功");
+                $("#sample-table-2_wrapper").load();
+            } else {
+                failShow("重新合并视频异常，错误信息：" + data.msg);
+            }
+        };
+        $.post(url, data, success, 'json');
+    }
     $(document).ready(function(){
         $('body').delegate('.del-hander', 'click', function () {
             $("#delHanderModal").modal("hide");
@@ -212,5 +233,6 @@
                 }
             })
         });
+
     });
 </script>

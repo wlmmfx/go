@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Resque' => array($vendorDir . '/chrisboulton/php-resque/lib'),
+    'Requests' => array($vendorDir . '/rmccue/requests/library'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Phpml' => array($vendorDir . '/php-ai/php-ml/src'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),

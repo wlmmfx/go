@@ -842,7 +842,7 @@ class Live extends BaseBackend
         if (count($results) == 1) $shellResult = $results[0];
         #   ffmpeg 脚本是否执行成功
         if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '[04]视频剪切操作参数 system function exec() run shell failed  ,return code : ' . $sysStatus);
+            Log::error('[' . getCurrentDate() . ']:' . '[04]视频剪切操作参数 system exec()failed  , code : ' . $sysStatus);
             $editMsg = $this->editResultMsg($shellResult);
             $updateData = [
                 'id' => $insertId,
@@ -854,7 +854,7 @@ class Live extends BaseBackend
             $this->updateEditDataById($updateData,1);
             return json(['status' => 500, 'msg' => $editMsg]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . ' [04]视频剪切操作参数 system function exec() run shell success ,return code ：' . $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . ' [04]视频剪切操作参数 system exec() success , code ：' . $sysStatus);
 
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editid . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editid . '.jpg';
@@ -932,7 +932,7 @@ class Live extends BaseBackend
         if (count($results) == 1) $shellResult = $results[0];
         #  [4] 系统函数执行失败
         if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '[04] 视频合并操作参数 system function exec() run shell failed  ,return code : ' . $sysStatus);
+            Log::error('[' . getCurrentDate() . ']:' . '[04] 视频合并操作参数 system  exec() failed , code : ' . $sysStatus);
             $updateData = [
                 'id' => $insertId,
                 'pid' => -1,
@@ -942,7 +942,7 @@ class Live extends BaseBackend
             $this->updateEditDataById($updateData,2);
             return json(['status' => 500, 'msg' => "shell error"]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频合并操作参数 system function exec() run shell success ,return code ：' . $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频合并操作参数 system exec()success ,code ：' . $sysStatus);
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
         #   [5] 根据返回的状态码提示消息
@@ -978,7 +978,33 @@ class Live extends BaseBackend
      */
     public function settingsCallBack()
     {
-        return $this->fetch();
+        $data = input('post.');
+        $data['event_type'] = json_encode($data['event_type']);
+        $insertId = Db::table('resty_stream_config')->insertGetId($data);
+        halt($insertId);
+    }
+
+    /**
+     * 视频上传完成 事件类型
+     * 以后修改为switch结构语句
+     */
+    public function fileUploadComplete()
+    {
+        $res = [
+            'EventTime'=>'2017-03-20T07:49:17Z',
+            'EventType'=>'FileUploadComplete',
+            'VideoId'=>'43q9fjasjdflask',
+            'Size'=>'1439213',
+        ];
+
+        $url = 'https://api.github.com/gists';
+        $headers = ['Accept' => 'application/json'];
+        $data = [];
+        $options = ['auth' => ['tinywan', 'github_klwdws1988']];
+        $request = \Requests::get($url, $headers, $options);
+        // int(200)
+        halt($request);
+
     }
 
     /**
@@ -986,7 +1012,7 @@ class Live extends BaseBackend
      */
     public function waterMark()
     {
-        return $this->fetch();
+
     }
 
     /**
@@ -1002,7 +1028,7 @@ class Live extends BaseBackend
      */
     public function urlAuth()
     {
-        return $this->fetch();
+
     }
 
     /**
@@ -1010,7 +1036,7 @@ class Live extends BaseBackend
      */
     public function playAuthentication()
     {
-        return $this->fetch();
+
     }
 
     /**

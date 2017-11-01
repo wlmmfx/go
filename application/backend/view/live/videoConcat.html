@@ -106,14 +106,13 @@
     <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
             <div class="col-sm-12">
                 <div class="row">
-                    <div class="col-lg-12"
-                         style="height: 160px; margin-bottom: 10px; margin-right: 10px;">
+                    <div class="col-lg-12" style="height: 200px; margin-bottom: 10px; margin-right: 10px;">
                         <ul class="ace-thumbnails" id="concat-video-add">
 
                         </ul>
                     </div>
                     <div class="col-lg-12">
-                        <span>新视频名称:</span>&nbsp;&nbsp;
+                        <span>新视频名称:</span>&nbsp;
                         <input type="text" class="form-control" id="new-video-name" name="new_video_name"
                                placeholder="请输入新视频名称">
                         <p></p>
@@ -121,27 +120,10 @@
                             <input type="checkbox" class="ace btn btn-primary" id="SelectAll" onclick="swapCheck()">
                             <span class="lbl">全选</span>
                         </label>
-                        <button class="btn btn-primary btn-minier concat-video-submit" type="submit">提交合并</button>
+                        <button class="btn btn-primary concat-video-submit" type="submit">提交合并</button>
                     </div>
                 </div>
             </div><!-- /span -->
-    </div>
-    <p></p>
-    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
-        <h5><i class="icon-edit"></i> 编辑列表</h5>
-        <hr>
-        <ul class="ace-thumbnails" id="video-line-edit">
-            {volist name="editVideos" id="vo"}
-            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
-                <div class="wrapper_player"
-                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
-                    <div class="video_player">
-                    </div>
-                    <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
-                </div>
-            </li>
-            {/volist}
-        </ul>
     </div>
 </div>
 <script type="text/javascript">
@@ -191,7 +173,7 @@
             $("#origin-video-id").val($(this).data("id"));
             console.log('-------视频预览---------' + $(this).data("id"));
             var $li = '<li id="data-' + $(this).data("id") + '">' +
-                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.jpg" width="180" height="120">' +
+                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.jpg" width="220" height="160">' +
                 '<span class="lbl" data-id=' + $(this).data("id") + ' id="remove-video-li"><i class="icon-trash bigger"></i></span>&nbsp;' +
                 '<label>'+
                 '<input name="concat-checkbox" type="checkbox" class="ace" value=' + $(this).data("id") + '>' +
@@ -208,7 +190,6 @@
             $('#data-' + $id).remove();
         });
     });
-
 
     //checkbox 全选/取消全选
     var $isCheckAll = false;

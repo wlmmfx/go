@@ -298,6 +298,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
             array (
                 0 => __DIR__ . '/..' . '/chrisboulton/php-resque/lib',
             ),
+            'Requests' => 
+            array (
+                0 => __DIR__ . '/..' . '/rmccue/requests/library',
+            ),
         ),
         'P' => 
         array (

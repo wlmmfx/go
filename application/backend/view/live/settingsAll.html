@@ -13,20 +13,18 @@
 
             <div class="tab-content">
                 <div id="home4" class="tab-pane active">
-                    <form action="" method="post" class="form-horizontal"
-                          role="form">
+                    <form action="{:url('/backend/live/settingsCallBack')}" method="post" class="form-horizontal" role="form">
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
                                 <td width='10%' align='right'>回调URL</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='webdomain' id="web-domain"
-                                           value='{$Think.config.webinfo.WEBDOMAIN}'/>
+                                    <input type="text" class="col-sm-6" name='callback_url' id="callback_url" value='{$Think.config.webinfo.WEBDOMAIN}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width='10%' align='right'>回调方式：</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='webname' id="web-name"
+                                    <input type="text" class="col-sm-6" name='callback_method' id="callback_method"
                                            value='http'/>
                                 </td>
                             </tr>
@@ -34,35 +32,35 @@
                                 <td align='right'>回调事件：</td>
                                 <td>
                                     <label>
-                                        <input name="form-field-checkbox" type="checkbox" class="ace">
+                                        <input name="event_type[]" type="checkbox" value="1" class="ace">
                                         <span class="lbl"> 上传完成</span>
                                     </label>
                                     &nbsp;&nbsp;
                                     <label>
-                                        <input name="form-field-checkbox" type="checkbox" class="ace">
+                                        <input name="event_type[]" type="checkbox" value="2" class="ace">
                                         <span class="lbl"> 剪切完成</span>
                                     </label>
                                     &nbsp;&nbsp;
                                     <label>
-                                        <input name="form-field-checkbox" type="checkbox" class="ace">
+                                        <input name="event_type[]" type="checkbox" value="3" class="ace">
                                         <span class="lbl"> 合并完成</span>
                                     </label>
                                     &nbsp;&nbsp;
                                     <label>
-                                        <input name="form-field-checkbox" type="checkbox" class="ace">
+                                        <input name="event_type[]" type="checkbox" value="4" class="ace">
                                         <span class="lbl"> 截图完成</span>
                                     </label>
                                     &nbsp;&nbsp;
                                     <label>
-                                        <input name="form-field-checkbox" type="checkbox" class="ace">
+                                        <input name="event_type[]" type="checkbox" value="5" class="ace">
                                         <span class="lbl"> 切片完成</span>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan='2' align='center' height='60'>
-                                    <a type="button" class="btn btn-success basic-config-hander"
-                                       style="width: 75px">保存</a>
+                                    <button type="submit" class="btn btn-success">提交</button>
+                                    <!--<a type="button" class="btn btn-success basic-config-hander" style="width: 75px">保存</a>-->
                                 </td>
                             </tr>
                         </table>

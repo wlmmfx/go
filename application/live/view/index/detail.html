@@ -129,6 +129,8 @@
         .bottommenus{z-index:9;}
 
     </style>
+    <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.2.0/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.2.0/aliplayer-min.js"></script>
     <div class="detail_title" meeetImg="http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4" >
         <div class="detail_title_left">
             <p class="detail_title_main"><span>{$live.name}</span><span>即将开始</span><div class="clear"></div></p>
@@ -144,13 +146,8 @@
         <div class="clear"></div>
     </div>
     <div class="detail_part1">
-        <div id="video_div_id" style=""></div>
-        <div id="needLogin">
-            <div class="row">
-                <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
-                    <source src="https://live.tinywan.com/hls/{$live.id}.m3u8" type="application/x-mpegURL">
-                </video>
-            </div>
+        <div style="width: 100%;height:600px; background-color: #892E65; position: relative;">
+            <div  class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
         </div>
     </div>
     <!-- 中部 -->
@@ -167,90 +164,11 @@
 
                 </div>
 
-
-
                 <div class="part3  active" style="line-height:24px;margin-top: 30px;">
-                    <p style="text-align:center"><img alt="" src="__PICTURE__/13004089d817252058.jpg" /></p>
-
-                    <div>&nbsp;</div>
-
-                    <p style="text-align:center"><img alt="" src="__PICTURE__/130102e98ca9428888.jpg" /></p>
-
-                    <div>&nbsp;</div>
-
-                    <p style="text-align:center"><img alt="" src="__PICTURE__/13012880cd30945295.jpg" /></p>
-
-                    <div>&nbsp;</div>
-
-                    <div style="text-align:center">&nbsp;</div>
-
-                    <p style="text-align:center">&nbsp;</p>
-
-                    <h3 style="text-align:center"><span style="font-size:24px"><strong>会议日程</strong></span></h3>
-
-                    <div>&nbsp;</div>
-
-                    <p style="text-align:center"><img alt="" src="__PICTURE__/13022628335a680318.jpg" /></p>
-
-                    <p style="text-align:center"><img alt="" src="__PICTURE__/13025714e471584261.jpg" /></p>
-
-                    <div>&nbsp;</div>
-
-                    <div>&nbsp;</div>
-
-                    <p><span style="font-size:20px"><strong>拟邀请嘉宾：</strong></span><br />
-                        <br />
-                        <span style="font-size:16px">　 &nbsp;&nbsp;</span><span style="font-size:14px">中国工程院院士、中国人工智能学会 理事长 李德毅<br />
-<br />
-　　微软小冰负责人 李迪<br />
-<br />
-　　图灵<a href="https://www.huodongjia.com/tag/1295/" style="box-sizing: border-box; padding: 0px; margin: 0px; font-family: &quot;PingFang SC&quot;, &quot;Lantinghei SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Microsoft YaHei&quot;, &quot;\\5FAE软雅黑&quot;, STHeitiSC-Light, simsun, &quot;\\5B8B体&quot;, &quot;WenQuanYi Zen Hei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; background-color: transparent; color: rgb(51, 122, 183); text-decoration: none; font-size: 16px;">机器人</a>创始人 俞志晨<br />
-<br />
-　　红衫资本合伙人 周逵<br />
-<br />
-　　百度风投ceo 刘维<br />
-<br />
-　　华创资本合伙人 熊伟铭<br />
-<br />
-　　地平线创始人兼ceo 余凯<br />
-<br />
-　　搜狗ceo 王小川<br />
-<br />
-　　地平线机器人<a href="https://www.huodongjia.com/tag/708/" style="box-sizing: border-box; padding: 0px; margin: 0px; font-family: &quot;PingFang SC&quot;, &quot;Lantinghei SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Microsoft YaHei&quot;, &quot;\\5FAE软雅黑&quot;, STHeitiSC-Light, simsun, &quot;\\5B8B体&quot;, &quot;WenQuanYi Zen Hei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; background-color: transparent; color: rgb(51, 122, 183); text-decoration: none; font-size: 16px;">汽车</a>业务总监 李星宇<br />
-<br />
-　　上海交通大学计算机系致远讲席教授 邓小铁<br />
-<br />
-　　香港智能<a href="https://www.huodongjia.com/tag/807/" style="box-sizing: border-box; padding: 0px; margin: 0px; font-family: &quot;PingFang SC&quot;, &quot;Lantinghei SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Microsoft YaHei&quot;, &quot;\\5FAE软雅黑&quot;, STHeitiSC-Light, simsun, &quot;\\5B8B体&quot;, &quot;WenQuanYi Zen Hei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; background-color: transparent; color: rgb(51, 122, 183); text-decoration: none; font-size: 16px;">金融</a><a href="https://www.huodongjia.com/tag/1192/" style="box-sizing: border-box; padding: 0px; margin: 0px; font-family: &quot;PingFang SC&quot;, &quot;Lantinghei SC&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Microsoft YaHei&quot;, &quot;\\5FAE软雅黑&quot;, STHeitiSC-Light, simsun, &quot;\\5B8B体&quot;, &quot;WenQuanYi Zen Hei&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; background-color: transparent; color: rgb(51, 122, 183); text-decoration: none; font-size: 16px;">科技</a>有限公司(FDT-AI)联合创始人兼CEO 柳崎峰<br />
-<br />
-　　点融网数据总监 单忆南 (Sync)<br />
-<br />
-　　海知智能创始人CEO 谢殿侠<br />
-<br />
-　　阿里巴巴集团技术委员会主席 王坚<br />
-<br />
-　　挖财网总裁创始人 顾晨炜<br />
-<br />
-　　银联智策COO 呼延如生<br />
-<br />
-　　连心医疗Founder/CEO 章桦<br />
-<br />
-　　大众出行总经理 袁栋梁</span></p>
-
-                    <p><span style="font-size:14px"><embed height="0" type="application/thunder_download_plugin" width="0"></embed></span></p>
-
-                    <p><embed height="0" type="application/thunder_download_plugin" width="0"></embed></p>
-
-                    <p><embed height="0" type="application/thunder_download_plugin" width="0"></embed></p>
-
-                    <p><embed height="0" type="application/thunder_download_plugin" width="0"></embed></p>
-
-                    <p><embed height="0" type="application/thunder_download_plugin" width="0"></embed></p>
-
-                    <p><embed height="0" id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" width="0" /></p>
 
                 </div>
                 <div class="part4">
-                    <div style="padding:40px 0;width:100%;text-align:center;color:#aaaaaa;font-size:14px;"><img style="height:32px;width:32px;" src="Picture/empty_icon01.png" /> 未上传任何附件</div>
+                    <div style="padding:40px 0;width:100%;text-align:center;color:#aaaaaa;font-size:14px;"><img style="height:32px;width:32px;" src="__PICTURE__/empty_icon01.png" /> 未上传任何附件</div>
 
                 </div>
             </div>
@@ -261,7 +179,7 @@
                 <div  class="imgBox" style="height:180px">
                     <a href="/member/organizer/281">
                         <div style="width:100%;float:left;margin-top:12px;">
-                            <img style="width:156px;height:78px;" src="__PICTURE__/13200227a565297160.jpg"/>
+                            <img style="width:156px;height:78px;" src="__PICTURE__/021435b21308184931.jpg"/>
                         </div></a>
                     <div class="img_bottom" style="width:100%;text-align:center;">
                         <a href="/member/organizer/281">
@@ -272,85 +190,6 @@
                         <div style="clear:both;"></div>
                     </div>
                 </div>
-
-            </div>
-            <div class="part">
-                <div class="text">
-                    <div class="span">推荐峰会</div>
-                </div>
-
-                <a target="_blank" href="/eventlist/detail/1461">
-                    <div  class="imgBox">
-                        <div style="width:40%;float:left;">
-                            <img style="width:136px;height:90px;" src="__PICTURE__/105529162e23758175.png"/>
-                        </div>
-                        <div class="img_bottom" style="width:58%;float:right;     margin-top: -7px;">
-                            <div style="text-align:left;float: left;overflow:hidden;font-size: 15px;margin-left:6px;color:#555555;line-height:28px;overflow: hidden;text-overflow: ellipsis;width: 90%;    white-space: nowrap;">
-                                IAS2017互联网架构峰会
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61f;</i>
-                                2017-12-02 09:00
-
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61e;</i>
-                                南京
-
-                            </div>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
-                </a>
-                <a target="_blank" href="/eventlist/detail/1432">
-                    <div  class="imgBox">
-                        <div style="width:40%;float:left;">
-                            <img style="width:136px;height:90px;" src="__PICTURE__/1329597a0639365515.jpg"/>
-                        </div>
-                        <div class="img_bottom" style="width:58%;float:right;     margin-top: -7px;">
-                            <div style="text-align:left;float: left;overflow:hidden;font-size: 15px;margin-left:6px;color:#555555;line-height:28px;overflow: hidden;text-overflow: ellipsis;width: 90%;    white-space: nowrap;">
-                                第九届金融科技与支付创新2017年度盛会（IFPI）
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61f;</i>
-                                2017-11-16 09:00
-
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61e;</i>
-                                上海
-
-                            </div>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
-                </a>
-                <a target="_blank" href="/eventlist/detail/1430">
-                    <div  class="imgBox">
-                        <div style="width:40%;float:left;">
-                            <img style="width:136px;height:90px;" src="__PICTURE__/1247324dffa2926766.jpg"/>
-                        </div>
-                        <div class="img_bottom" style="width:58%;float:right;     margin-top: -7px;">
-                            <div style="text-align:left;float: left;overflow:hidden;font-size: 15px;margin-left:6px;color:#555555;line-height:28px;overflow: hidden;text-overflow: ellipsis;width: 90%;    white-space: nowrap;">
-                                2017第6届全球软件案例研究峰会
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61f;</i>
-                                2017-11-09 09:00
-
-                            </div>
-                            <div style="float: left;color:#999;margin-left:6px;margin-right:10px;text-align:left;font-size:14px;">
-                                <i class="icon">&#xe61e;</i>
-                                北京
-
-                            </div>
-                            <div style="clear:both;"></div>
-                        </div>
-                    </div>
-                </a>
-
-
-
 
             </div>
 
@@ -408,5 +247,21 @@
                 break;
         }
         alert(msg);
+    });
+</script>
+
+<script>
+    var player = new Aliplayer({
+        id: "J_prismPlayer",
+        autoplay: true,
+        isLive:true,
+        playsinline:true,
+        width:"100%",
+        height:"600px",
+        controlBarVisibility:"always",
+        useH5Prism:false,
+        useFlashPrism:false,
+        source:"https://live.tinywan.com/hls/{$live.id}.m3u8",
+        cover:""
     });
 </script>

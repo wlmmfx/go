@@ -709,7 +709,7 @@ class Live extends BaseBackend
             'task_id' => $taskId,
             'edit_config' => json_encode($editConfig)
         ];
-        if($eidittype == 2) $msg = "视频合并(concat)操作";
+        if ($eidittype == 2) $msg = "视频合并(concat)操作";
 
         try {
             $insertId = Db::table('resty_stream_video_edit')->insertGetId($data);
@@ -726,11 +726,15 @@ class Live extends BaseBackend
      * @param $updateData
      * @return bool
      */
-    private function updateEditDataById($updateData,$eiditType)
+    private function updateEditDataById($updateData, $eiditType)
     {
         $msg = "视频剪切(cut)操作";
+<<<<<<< HEAD
         if($eiditType == 2) $msg = "视频合并(concat)操作";
         if($eiditType == 3) $msg = "视频重新编辑操作";
+=======
+        if ($eiditType == 2) $msg = "视频合并(concat)操作";
+>>>>>>> d7f3a584ed54a469947d3b93589a0f8db539fd55
         try {
             $insertId = Db::table('resty_stream_video_edit')->update($updateData);
             Log::info('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录成功 msg insertId = " . $insertId);
@@ -814,7 +818,7 @@ class Live extends BaseBackend
         #   根据LiveId获取视频信息
         $taskId = self::getVideoEditTaskId($origin_video_id);
         $editid = $new_video_id;
-        Log::info('[' . getCurrentDate() . ']:' . "[01] 视频剪切操作参数]$origin_video_id ： " . $origin_video_id);
+        Log::info('[' . getCurrentDate() . ']:' . "[01] 视频剪切操作参数] $origin_video_id ： " . $origin_video_id);
         $origVideoInfo = $this->videoInfoByVideoId($origin_video_id);
         $liveId = $origVideoInfo['liveId'];
         Log::info('[' . getCurrentDate() . ']:' . "[02] 视频剪切操作参数 ： " . json_encode($origVideoInfo));
@@ -835,15 +839,16 @@ class Live extends BaseBackend
         $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $new_video_name, $editConfig, 1);
         $cmdStr = "{$shellScript} {$taskId}";
         // 根据版本号拼接视频文件名
-        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作Shell 脚本参数 ： " . $cmdStr);
+        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作 Shell 脚本参数 ： " . $cmdStr);
         exec("{$cmdStr}", $results, $sysStatus);
-        Log::info('[' . getCurrentDate() . ']:' . "[04] 执行系统函数返回状态码 sysStatus ： " . $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
         $shellResult = -1;
+        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 执行系统函数返回结果 results =  ' . $results[0]);
         #   如果命令执行错误，则exec 的第二个参数会返回shell 脚本的 echo 出的值，$results 返回结果为一个数组
         if (count($results) == 1) $shellResult = $results[0];
         #   ffmpeg 脚本是否执行成功
         if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '[04]视频剪切操作参数 system exec()failed  , code : ' . $sysStatus);
+            Log::error('[' . getCurrentDate() . ']:' . '[05] 视频剪切操作参数 system exec() failed , code = ' . $sysStatus);
             $editMsg = $this->editResultMsg($shellResult);
             $updateData = [
                 'id' => $insertId,
@@ -852,18 +857,12 @@ class Live extends BaseBackend
                 'editresult' => $shellResult,
                 'editmsg' => $editMsg
             ];
-            $this->updateEditDataById($updateData,1);
+            $this->updateEditDataById($updateData, 1);
             return json(['status' => 500, 'msg' => $editMsg]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . ' [04]视频剪切操作参数 system exec() success , code ：' . $sysStatus);
-
+        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频剪切执行系统函数 Success , status = ' . $sysStatus);
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editid . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editid . '.jpg';
-        if ($version == 1) {
-            $resultVideoPathFile = self::RESULT_FILE_PATH . $liveId . '-' . $editid . '.mp4';
-            $resultImagePathFile = self::RESULT_FILE_PATH . $liveId . '-' . $editid . '.jpg';
-        }
-
         #   根据返回的状态码提示消息
         $shellResult = $sysStatus;
         if (file_exists($resultVideoPathFile) && file_exists($resultImagePathFile)) {
@@ -872,15 +871,14 @@ class Live extends BaseBackend
             $editMsg = $this->editResultMsg($shellResult);
             $updateData2 = [
                 'id' => $insertId,
-                'fileName' => $editid,
                 'state' => 1,
                 'duration' => self::getVideoDuration($resultVideoPathFile),
                 'fileSize' => filesize($resultVideoPathFile),
-                'editid' => $editid,
                 'editresult' => $editresultcode,
                 'editmsg' => $editMsg
             ];
-            $this->updateEditDataById($updateData2,1);
+            $this->updateEditDataById($updateData2, 1);
+            Log::info('[' . getCurrentDate() . ']:' . '[06] 视频剪切操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
         return json(['code' => 500, 'msg' => $origVideoInfo]);
@@ -899,7 +897,7 @@ class Live extends BaseBackend
         $new_video_name = request()->post("new_video_name");
         Log::info(getCurrentDate() . '--------------------' . json_encode($videoList));
         $cmdStr = "";
-        if($videoList == "" || empty($new_video_id) || empty($new_video_name)){
+        if ($videoList == "" || empty($new_video_id) || empty($new_video_name)) {
             return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
         }
         $videoArr = explode(",", $videoList);
@@ -927,23 +925,25 @@ class Live extends BaseBackend
         $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
         $cmdStr = "{$shell_script} {$taskId}";
         Log::info('[' . getCurrentDate() . ']:' . "[03] 视频合并操作Shell 脚本参数 ： " . $cmdStr);
-        // [3] 执行系统函数，运行shell 脚本
+        // [3] 执行系统函数，运行shell 脚本，$results 为一个数组
         exec("{$cmdStr}", $results, $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
         $shellResult = -1;
+        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 视频合并系统函数执行返回结果 results =  ' . $results[0]?$results[0]:'unknown');
         if (count($results) == 1) $shellResult = $results[0];
         #  [4] 系统函数执行失败
         if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '[04] 视频合并操作参数 system  exec() failed , code : ' . $sysStatus);
+            Log::error('[' . getCurrentDate() . ']:' . '[05] 视频合并操作参数 system  exec() failed , code : ' . $sysStatus);
             $updateData = [
                 'id' => $insertId,
                 'pid' => -1,
                 'editresult' => $shellResult,
                 'editmsg' => $this->editResultMsg($shellResult),
             ];
-            $this->updateEditDataById($updateData,2);
+            $this->updateEditDataById($updateData, 2);
             return json(['status' => 500, 'msg' => "shell error"]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频合并操作参数 system exec()success ,code ：' . $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频合并操作执行系统函数 Success , status = ' . $sysStatus);
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
         #   [5] 根据返回的状态码提示消息
@@ -952,14 +952,82 @@ class Live extends BaseBackend
             $editMsg = $this->editResultMsg($shellResult);
             $updateData = [
                 'id' => $insertId,
-                'fileName' => $editId,
                 'duration' => self::getVideoDuration($resultVideoPathFile),
                 'fileSize' => filesize($resultVideoPathFile),
-                'editid' => $editId,
                 'editresult' => $editresultcode,
                 'editmsg' => $editMsg,
             ];
-            $this->updateEditDataById($updateData,2);
+            $this->updateEditDataById($updateData, 2);
+            Log::info('[' . getCurrentDate() . ']:' . '[06] 视频合并操作成功完成 , msg =' . $editMsg);
+            return json(['status' => 200, 'msg' => $editMsg]);
+        }
+        return json(['status' => 200, 'msg' => null]);
+    }
+
+    /**
+     * -----------------------------------------------------------------重新编辑----------------------------------------
+     * 视频编辑失败，重新编辑
+     * @return mixed
+     */
+    public function videoReOperateByTaskId()
+    {
+        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
+        $task_id = request()->post("task_id");
+        if (empty($task_id)) {
+            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
+        }
+        $findRes = Db::table('resty_stream_video_edit')->where('task_id', $task_id)->find();
+        if (empty($findRes) || ($findRes == false)) {
+            return json(['code' => 403, 'msg' => '没有对应的任务 task_id ']);
+        }
+        $taskId = $task_id;
+        $insertId = $findRes['id'];
+        $editId = $findRes['editid'];
+        $editType = $findRes['eidittype'];
+        // [3] 执行系统函数，运行shell 脚本
+        if ($editType == 1) {
+            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_cut_task_id.sh";
+        } elseif ($editType == 2) {
+            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
+        } else {
+            return json(['code' => 403, 'msg' => '视频是剪切或者合并未知']);
+        }
+        $cmdStr = "{$shell_script} {$taskId}";
+        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频重新编辑操作Shell 脚本参数 ： " . $cmdStr);
+        // [3] 执行系统函数，运行shell 脚本
+        exec("{$cmdStr}", $results, $sysStatus);
+        Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 status = " . $sysStatus);
+        $shellResult = -1;
+        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 执行系统函数返回结果 results =  ' . $results[0]);
+        if (count($results) == 1) $shellResult = $results[0];
+        #  [4] 系统函数执行失败
+        if ($sysStatus != 0) {
+            Log::error('[' . getCurrentDate() . ']:' . '[05] 视频重新编辑执行系统函数 Failed , status = ' . $sysStatus);
+            $updateData = [
+                'id' => $insertId,
+                'pid' => -1,
+                'editresult' => $shellResult,
+                'editmsg' => $this->editResultMsg($shellResult),
+            ];
+            $this->updateEditDataById($updateData);
+            return json(['status' => 500, 'msg' => "shell error"]);
+        }
+        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频重新编辑执行系统函数 Success , status = ' . $sysStatus);
+        $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
+        $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
+        #   [5] 根据返回的状态码提示消息
+        if (file_exists($resultVideoPathFile) && file_exists($resultImagePathFile)) {
+            if ($shellResult == '0') $editresultcode = '1';
+            $editMsg = $this->editResultMsg($shellResult);
+            $updateData = [
+                'id' => $insertId,
+                'duration' => self::getVideoDuration($resultVideoPathFile),
+                'fileSize' => filesize($resultVideoPathFile),
+                'editresult' => $editresultcode,
+                'editmsg' => $editMsg,
+            ];
+            $this->updateEditDataById($updateData);
+            Log::info('[' . getCurrentDate() . ']:' . '[06] 视频重新编辑操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
         return json(['status' => 200, 'msg' => null]);
@@ -1068,10 +1136,10 @@ class Live extends BaseBackend
     public function fileUploadComplete()
     {
         $res = [
-            'EventTime'=>'2017-03-20T07:49:17Z',
-            'EventType'=>'FileUploadComplete',
-            'VideoId'=>'43q9fjasjdflask',
-            'Size'=>'1439213',
+            'EventTime' => '2017-03-20T07:49:17Z',
+            'EventType' => 'FileUploadComplete',
+            'VideoId' => '43q9fjasjdflask',
+            'Size' => '1439213',
         ];
 
         $url = 'https://api.github.com/gists';

@@ -107,7 +107,7 @@
                             {/case}
                             {default /}
                             <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
-                            <a href="javascript:reEditVideo('{$vo['task_id']}');" class="btn btn-warning btn-xs" >
+                            <a href="javascript:reEditVideo('{$vo.task_id}');" class="btn btn-warning btn-xs" >
                                 <i class="icon-refresh"></i> 重新生成
                             </a>
                             {/switch}
@@ -119,7 +119,7 @@
                                     <i class="icon-eye-open"></i> 预览
                                 </button>
                             </a>
-                            <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs" >
+                            <a href="javascript:delHanderModal('{$vo.id}');" class="btn btn-danger btn-xs" >
                                 <i class="icon-trash bigger-130"></i>删除
                             </a>
                         </td>

@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#sub-add">
+                        <i class="green icon-home bigger-110"></i>
+                        编辑栏目
+                    </a>
+                </li>
+                <li >
+                    <a data-toggle="tab" href="#category-list">
+                        <i class="green icon-home bigger-110"></i>
+                        栏目列表
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="sub-add" class="tab-pane  in active">
+                    <form action="{:url('/backend/live/vodEdit')}" method="post" class="form-horizontal"  enctype="multipart/form-data" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-11"> 视频名称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-11" placeholder="视频名称" name="name" value="{$vod.name}" class="col-xs-12 col-sm-8"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 播放地址(HLS) </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-1" placeholder="请输入hls播放地址" name="hls_url"  value="{$vod.hls_url}"
+                                       class="col-xs-10 col-sm-8"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 图片地址 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-2" placeholder="请输入图片地址" name="image_url" value="{$vod.image_url}" class="col-xs-10 col-sm-8"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 所属活动</label>
+
+                            <div class="col-sm-9">
+                                <select name="live_id" id="live_id">
+                                    {volist name="lives" id="vo"}
+                                    <option {if condition="$vo.id == $vod.liveId"}selected{/if} value="{$vo['id']}">{$vo['id']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+
+                            <div class="col-sm-9">
+                                <select name="cid" id="cate_id">
+                                    {volist name="categorys" id="vo"}
+                                    <option {if condition="$vo.id ==$vod.cId"}selected{/if} value="{$vo.id}">{$vo['name']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 标签</label>
+
+                            <div class="col-sm-9">
+                                <label class="middle">
+                                    {volist name="tags" id="vo"}
+                                    <input {if condition="$vo.id == $vod.tId"}checked{/if} class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
+                                    <span class="lbl"> {$vo['name']}</span>
+                                    {/volist}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> 视频内容 </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="content" id="content_data" style="width:1024px;height:500px;">{$vod.content}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> 下载资料 </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="download_data" id="download_data" style="width:1024px;height:500px;">{$vod.download_data}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions center">
+                            <input type="hidden" name="id" value="{:input('param.id')}">
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+    var ue = UE.getEditor('content_data',{
+        initialFrameWidth: 1100,   //初始化宽度
+        initialFrameHeight: 500,   //初始化高度
+        serverUrl:"{:url('/backend/common/ueditorUpload')}"
+    });
+    var ueMin = UE.getEditor('download_data', {
+        initialFrameWidth: 1100,   //初始化宽度
+        initialFrameHeight: 200,   //初始化高度
+        serverUrl: "{:url('/backend/article/saveinfo')}",
+        // 自定义工具栏目
+        toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'fontsize', '|',
+            'link', 'unlink', '|',
+        ]]
+    });
+</script>

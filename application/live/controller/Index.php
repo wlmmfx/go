@@ -55,4 +55,14 @@ class Index extends BaseFrontend
         $this->assign('live',$live);
         return $this->fetch();
     }
+
+    /**
+     * 点播详情
+     */
+    public function vodDetail(){
+        $liveId = input('param.id');
+        $live = Db::table('resty_vod')->where('id',$liveId)->find();
+        $this->assign('vod',$live);
+        return $this->fetch();
+    }
 }

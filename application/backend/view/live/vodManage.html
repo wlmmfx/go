@@ -1,0 +1,314 @@
+<style type="text/css">
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle!important;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="tabbable">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#tag-list">
+                        <i class="blue icon-list-ol bigger-110"></i>
+                        视频点播列表
+                    </a>
+                </li>
+
+                <li>
+                    <a data-toggle="tab" href="#tag-add">
+                        <i class="blue icon-plus bigger-110"></i>
+                        添加点播节目
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="tag-list" class="tab-pane in active">
+                    <table class="table table-border table-bordered table-bg">
+                        <thead>
+                        <tr class="text-c">
+                            <th>ID</th>
+                            <th>缩略图</th>
+                            <th>名称</th>
+                            <th>分类</th>
+                            <th>标签</th>
+                            <th>发布时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name='vods' key='key' item='vo'}
+                        <tr class="text-c" id="tag-{$vo['id']}">
+                            <td >{$vo["id"]}</td>
+                            <td >
+                                <img height="100" width="240" src="{$vo.image_url}" alt="{$vo['id']}">
+                            </td>
+                            <td >{$vo["name"]}</td>
+                            <td style="vertical-align: middle;">{$vo["cName"]}</td>
+                            <td style="vertical-align: middle;">{$vo["tName"]}</td>
+                            <td style="vertical-align: middle;">{$vo["create_time"] | date="Y-m-d H:i:s",###}</td>
+                            <td style="vertical-align: middle;">
+                                <a href="{:url('live/Index/vodDetail',['id'=>$vo['id']])}" target="_blank">
+                                    <button class="btn btn-primary btn-xs">
+                                        <i class="icon-eye-open"></i> 预览
+                                    </button>
+                                </a>
+                                <a href="{:url('backend/live/vodEdit',['id'=>$vo['id']])}">
+                                    <button class="btn btn-warning btn-xs">
+                                        <i class="icon-edit"></i>编辑
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    <div>{$vods->render()}</div>
+                </div>
+
+                <div id="tag-add" class="tab-pane">
+                    <form action="{:url('/backend/live/vodManage')}" method="post" class="form-horizontal"  enctype="multipart/form-data" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-11"> 视频名称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-11" placeholder="视频名称" name="name"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 播放地址(HLS) </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-1" placeholder="请输入hls播放地址" name="hls_url"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 图片地址 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="form-field-2" placeholder="请输入图片地址" name="image_url"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 所属活动</label>
+
+                            <div class="col-sm-9">
+                                <select name="live_id" id="live_id">
+                                    {volist name="lives" id="vo"}
+                                    <option value="{$vo['id']}">{$vo['id']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+
+                            <div class="col-sm-9">
+                                <select name="cid" id="cate_id">
+                                    {volist name="categorys" id="vo"}
+                                    <option value="{$vo['id']}">{$vo['name']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-6"> 标签</label>
+
+                            <div class="col-sm-9">
+                                <label class="middle">
+                                    {volist name="tags" id="vo"}
+                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
+                                    <span class="lbl"> {$vo['name']}</span>
+                                    {/volist}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> 视频内容 </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="content" id="content_data" style="width:1024px;height:500px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> 下载资料 </label>
+
+                            <div class="col-sm-9">
+                                <textarea name="download_data" id="download_data" style="width:1024px;height:500px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions center">
+                            <button type="submit" class="btn btn-success">提交</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="dropdown1" class="tab-pane">
+                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo
+                        retro fanny pack lo-fi farm-to-table readymade.</p>
+                </div>
+
+                <div id="dropdown2" class="tab-pane">
+                    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out
+                        master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan
+                        DIY, art party locavore wolf cliche high life echo park Austin.</p>
+                </div>
+            </div>
+        </div>
+    </div><!-- /span -->
+
+</div><!-- /row -->
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    确定要删除吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger del-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    确定要发布吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger publish-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" charset="utf-8">
+    window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+    var ue = UE.getEditor('content_data',{
+        initialFrameWidth: 1100,   //初始化宽度
+        initialFrameHeight: 500,   //初始化高度
+        serverUrl:"{:url('/backend/common/ueditorUpload')}"
+    });
+    var ueMin = UE.getEditor('download_data', {
+        initialFrameWidth: 1100,   //初始化宽度
+        initialFrameHeight: 200,   //初始化高度
+        serverUrl: "{:url('/backend/article/saveinfo')}",
+        // 自定义工具栏目
+        toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'fontsize', '|',
+            'link', 'unlink', '|',
+        ]]
+    });
+</script>
+<script type="text/javascript">
+    var $tag_id;
+    var $publish_status;
+    function delHanderModal(id) {
+        $tag_id = id;
+        $("#delHanderModal").modal("show");
+    }
+
+    /**
+     * 发布
+     * @param id
+     */
+    function publishHanderModal(id,publish_status) {
+        $tag_id = id;
+        $publish_status = publish_status;
+        $("#publishHanderModal").modal("show");
+    }
+    $(document).ready(function(){
+        $('body').delegate('.del-hander', 'click', function () {
+            $("#delHanderModal").modal("hide");
+            var $url = "{:url('backend/banner/del')}";
+            var $_data = {
+                'id': $tag_id
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+                        $('#tag-' + $tag_id).remove();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+        $('body').delegate('.publish-hander', 'click', function () {
+            $("#publishHanderModal").modal("hide");
+            var $url = "{:url('backend/banner/publish')}";
+            var $_data = {
+                'id': $tag_id,
+                'publish_status': $publish_status
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+                        $('#tag-' + $tag_id).css('background-color','#fff5d4');
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+    });
+</script>

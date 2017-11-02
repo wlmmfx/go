@@ -17,6 +17,7 @@ class Tag extends BaseBackend
     public function index()
     {
         $this->assign('tags', db('tag')->where('deleted',0)->select());
+        $this->assign('categorys', db('category')->where('pid',0)->order('id desc')->select());
         return $this->fetch();
     }
 

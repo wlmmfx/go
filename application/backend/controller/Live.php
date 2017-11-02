@@ -27,11 +27,13 @@ class Live extends BaseBackend
     const SHELL_SCRIPT_PATH = "/home/www/web/go-study-line/shell/ffmpeg/";
     const RESULT_FILE_PATH = "/home/www/ffmpeg-data/";
     protected $db;
+    protected $vod_db;
 
     public function _initialize()
     {
         parent::_initialize();
         $this->db = new \app\common\model\Live();
+        $this->vod_db = new \app\common\model\Vod();
     }
 
     /**
@@ -398,6 +400,68 @@ class Live extends BaseBackend
         return $this->fetch();
     }
 
+    /**
+     * 点播管理
+     */
+    public function vodManage()
+    {
+        if (request()->isPost()) {
+            $data = input('post.');
+            $res = $this->vod_db->store($data);
+            if ($res["valid"]) {
+                $this->success($res["msg"], "backend/live/vodManage");
+                exit;
+            } else {
+                return json(['code' => 500, 'msg' => $res["msg"]]);
+            }
+        }
+        $vods = Db::table("resty_vod")
+            ->alias('v')
+            ->join('resty_category c', 'c.id = v.cid')
+            ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
+            ->join('resty_tag t', 't.id = vt.tag_id')
+            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,t.name as tName')
+            ->order('v.create_time desc')
+            ->paginate(6);
+        $this->assign('categorys', db('category')->where('pid',116)->order('id desc')->select());
+        $this->assign('vods', $vods);
+        $this->assign('lives', db('live')->where('deleted',0)->select());
+        $this->assign('tags', db('tag')->where(['deleted'=>0,'cid'=>110])->select());
+        return $this->fetch();
+    }
+
+    /**
+     * 点播编辑
+     */
+    public function vodEdit($id)
+    {
+        if (request()->isPost()) {
+            $data = input('post.');
+            $res = $this->vod_db->edit($data);
+            if ($res["valid"]) {
+                $this->success($res["msg"], "backend/live/vodManage");
+                exit;
+            } else {
+                return json(['code' => 500, 'msg' => $res["msg"]]);
+            }
+        }
+        $vod = Db::table("resty_vod")
+            ->alias('v')
+            ->join('resty_category c', 'c.id = v.cid')
+            ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
+            ->join('resty_tag t', 't.id = vt.tag_id')
+            ->where('v.id',$id)
+            ->field('v.id,v.live_id as liveId,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,c.id as cId,t.name as tName,t.id as tId')
+            ->order('v.create_time desc')
+            ->find();
+        $categorys = db('category')->where('pid',116)->order('id desc')->select();
+        $this->assign('tags', db('tag')->where(['deleted'=>0,'cid'=>110])->select());
+        $this->assign('categorys', $categorys);
+        $this->assign('vod',$vod);
+        $this->assign('lives', db('live')->where('deleted',0)->select());
+        return $this->fetch();
+    }
+
     /**---------------------------------------------视频编辑开始-------------------------------------------------------*/
 
     /**
@@ -729,12 +793,8 @@ class Live extends BaseBackend
     private function updateEditDataById($updateData, $eiditType)
     {
         $msg = "视频剪切(cut)操作";
-<<<<<<< HEAD
         if($eiditType == 2) $msg = "视频合并(concat)操作";
         if($eiditType == 3) $msg = "视频重新编辑操作";
-=======
-        if ($eiditType == 2) $msg = "视频合并(concat)操作";
->>>>>>> d7f3a584ed54a469947d3b93589a0f8db539fd55
         try {
             $insertId = Db::table('resty_stream_video_edit')->update($updateData);
             Log::info('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录成功 msg insertId = " . $insertId);
@@ -1028,82 +1088,6 @@ class Live extends BaseBackend
             ];
             $this->updateEditDataById($updateData);
             Log::info('[' . getCurrentDate() . ']:' . '[06] 视频重新编辑操作成功完成 , msg =' . $editMsg);
-            return json(['status' => 200, 'msg' => $editMsg]);
-        }
-        return json(['status' => 200, 'msg' => null]);
-    }
-
-    /**
-     * -----------------------------------------------------------------重新编辑视频--------------------------------------------
-     * 重新编辑视频
-     * @return mixed
-     */
-    public function videoReOperateByTaskId()
-    {
-        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
-        $taskId = request()->post("task_id");
-        if(empty($taskId)){
-            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
-        }
-        $findRes = Db::table('resty_stream_video_edit')->where('task_id', $taskId)->find();
-        if($findRes['eidittype'] == 1){
-            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_cut_task_id.sh";
-        }elseif ($findRes['eidittype'] == 2 ){
-            $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
-        }else{
-            return json(['status' => 403, 'msg' => "未知视频格式，task_id 没有"]);
-        }
-        // [2] 更新编辑记录
-        $insertId = $findRes['id'];
-        $editId = $findRes['editid'];
-        $tmpData = [
-          'id' => $insertId,
-          'editresult' => 2,
-          'desc' => '重新编辑开始',
-        ];
-        Db::table('resty_stream_video_edit')->update($tmpData);
-        $cmdStr = "{$shell_script} {$taskId}";
-        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频重新编辑操作Shell 脚本参数 ： " . $cmdStr);
-        // [3] 执行系统函数，运行shell 脚本
-        exec("{$cmdStr}", $results, $sysStatus);
-        $shellResult = -1;
-        if (count($results) == 1) $shellResult = $results[0];
-        #  [4] 系统函数执行失败
-        if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '[04] 视频重新编辑操作参数 system  exec() failed , code : ' . $sysStatus);
-            $updateData = [
-                'id' => $insertId,
-                'desc' => '重新编辑失败',
-                'name' => '[重编]'.$findRes['name'],
-                'fileTime' => getCurrentDate(),
-                'createTime' => getCurrentDate(),
-                'pid' => -1,
-                'editresult' => $shellResult,
-                'editmsg' => $this->editResultMsg($shellResult),
-            ];
-            $this->updateEditDataById($updateData,3);
-            return json(['status' => 500, 'msg' => "shell error"]);
-        }
-        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频重新编辑操作参数 system exec()success ,code ：' . $sysStatus);
-        $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
-        $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
-        #   [5] 根据返回的状态码提示消息
-        if (file_exists($resultVideoPathFile) && file_exists($resultImagePathFile)) {
-            $editresultcode = -1;
-            if ($shellResult == '0') $editresultcode = '1';
-            $editMsg = $this->editResultMsg($shellResult);
-            $updateData = [
-                'id' => $insertId,
-                'name' => '[重编]'.$findRes['name'],
-                'desc' => '重新编辑成功',
-                'fileTime' => getCurrentDate(),
-                'createTime' => getCurrentDate(),
-                'duration' => self::getVideoDuration($resultVideoPathFile),
-                'fileSize' => filesize($resultVideoPathFile),
-                'editresult' => $editresultcode,
-                'editmsg' => $editMsg,
-            ];
-            $this->updateEditDataById($updateData,3);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
         return json(['status' => 200, 'msg' => null]);

@@ -9,10 +9,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
     public static $files = array (
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '0f066c7cf996f26fedf8f5e90a916a95' => __DIR__ . '/..' . '/houdunwang/config/src/helper.php',
         'a1b9718204ff2589da0807dfa6153c7a' => __DIR__ . '/..' . '/houdunwang/crypt/src/helper.php',
@@ -72,6 +72,7 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+            'PhpAmqpLib\\' => 11,
             'Phinx\\' => 6,
         ),
         'O' => 
@@ -81,11 +82,16 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         ),
         'M' => 
         array (
+            'Mpdf\\' => 5,
             'Monolog\\' => 8,
         ),
         'L' => 
         array (
             'League\\OAuth2\\Client\\' => 21,
+        ),
+        'K' => 
+        array (
+            'Knp\\Snappy\\' => 11,
         ),
         'G' => 
         array (
@@ -224,6 +230,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
+        ),
         'Phinx\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/phinx/src/Phinx',
@@ -236,6 +246,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -244,6 +258,10 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         array (
             0 => __DIR__ . '/..' . '/league/oauth2-client/src',
             1 => __DIR__ . '/..' . '/league/oauth2-github/src',
+        ),
+        'Knp\\Snappy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy',
         ),
         'GuzzleHttp\\Stream\\' => 
         array (
@@ -350,9 +368,14 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
 
     public static $classMap = array (
         'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
+        'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
+        'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
+        'FilterASCIIHexDecode' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
+        'FilterLZW' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterLZW.php',
         'PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
         'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
         'PHPMailerOAuthGoogle' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
@@ -800,7 +823,9 @@ class ComposerStaticInitee33ab6d7d4ede583edbaf1fcd83c759
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
+        'fpdi_pdf_parser' => __DIR__ . '/..' . '/setasign/fpdi/fpdi_pdf_parser.php',
         'ntlm_sasl_client_class' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
+        'pdf_context' => __DIR__ . '/..' . '/setasign/fpdi/pdf_context.php',
         'phpmailerException' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
         'think\\view\\driver\\Angular' => __DIR__ . '/..' . '/topthink/think-angular/drivers/thinkphp5/Angular.php',
     );

@@ -2,3 +2,4 @@ database.php
 *.xml
 *.log
 runtime/*
+vendor/*

@@ -417,8 +417,8 @@ class Live extends BaseBackend
         }
         $vods = Db::table("resty_vod")
             ->alias('v')
-            ->join('resty_category c', 'c.id = v.cid')
             ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
+            ->join('resty_category c', 'c.id = v.cid')
             ->join('resty_tag t', 't.id = vt.tag_id')
             ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,t.name as tName')
             ->order('v.create_time desc')

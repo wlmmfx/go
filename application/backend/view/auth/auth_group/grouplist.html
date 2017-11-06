@@ -25,7 +25,6 @@
                             <th>ID</th>
                             <th>名称</th>
                             <th>状态</th>
-                            <th>规则</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -41,7 +40,6 @@
                                     <button class="btn btn-xs btn-warning set" value="{$user['id']}"><i class="icon-eye-close"></i>禁用</button>
                                 {/if}
                             </td>
-                            <td>{$user['rules']}</td>
                             <td>
                                 <a href="{:url('backend/auth.auth_group/addrules',['id'=>$user['id']])}">
                                     <button class="btn btn-xs btn-warning">

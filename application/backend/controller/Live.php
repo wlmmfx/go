@@ -194,7 +194,7 @@ class Live extends BaseBackend
     }
 
     /**
-     * 视频管理
+     * 视频管理界面
      */
     public function videoManage()
     {
@@ -523,10 +523,10 @@ class Live extends BaseBackend
     }
 
     /**
-     * 素材编辑
+     * 素材剪切
      * @return mixed
      */
-    public function videoEdit()
+    public function videoCut()
     {
         $Videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('createTime desc')->paginate(12);
         $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->paginate(12);
@@ -536,7 +536,7 @@ class Live extends BaseBackend
     }
 
     /**
-     * 视频合并
+     * 素材合并
      * @return mixed
      */
     public function videoConcat()

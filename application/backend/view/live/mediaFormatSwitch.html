@@ -45,12 +45,12 @@
 </style>
 <div class="row">
     <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">编辑列表</h3>
+        <h3 class="header smaller lighter blue">多媒体转码</h3>
         <div class="table-responsive">
             <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
                 <div class="row" >
                     <div class="col-sm-6">
-                        访问人物
+                        新建转码
                     </div>
                     <div class="col-sm-6">
                         水电费水电费
@@ -65,13 +65,12 @@
                                 <span class="lbl"></span>
                             </label>
                         </th>
-                        <th>视频资源信息</th>
+                        <th>输出文件名</th>
                         <th>任务ID</th>
-                        <th>名称</th>
-                        <th>大小</th>
-                        <th>时长</th>
-                        <th>状态(全部)</th>
-                        <th>编辑时间(降序)</th>
+                        <th>转码格式</th>
+                        <th>转码状态</th>
+                        <th>添加时间</th>
+                        <th>输出地址</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -84,35 +83,34 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
+                        <td>{$vo.name}</td>
                         <td>
-                            <a href="javascript:playModal('{$vo.liveId}','{$vo.fileName}','0');">
-                                <div class="wrapper_player"
-                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
-                                    <div id="video_player">
-                                    </div>
-                                </div>
+                            <a href="#">
+                                ID：{$vo.task_id}
                             </a>
                         </td>
-                        <td>{$vo.task_id}</td>
                         <td>{$vo.name}</td>
-                        <td>{$vo.fileSize|trans_byte}</td>
-                        <td>{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
                         <td>
                             {switch name="vo.editresult"}
                             {case value="1"}
-                            <span class="badge label-success "><i class="icon-save"></i>&nbsp;已完成</span>
+                            <span class="badge label-success "><i class="icon-save"></i>&nbsp;转码成功</span>
                             {/case}
                             {case value="2"}
-                            <span class="badge badge-yellow"><i class="icon-refresh icon-spin primary"></i>&nbsp;生成中</span>
+                            <span class="badge badge-yellow"><i class="icon-refresh icon-spin primary"></i>&nbsp;转码中...10%</span>
                             {/case}
                             {default /}
-                            <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
+                            <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp转码失败</span>
                             <a href="javascript:reEditVideo('{$vo.task_id}');" class="btn btn-warning btn-xs" >
                                 <i class="icon-refresh"></i> 重新生成
                             </a>
                             {/switch}
                         </td>
-                        <td>{$vo.createTime}</td>
+                        <td>
+                            {$vo.createTime}
+                        </td>
+                        <td>
+                            https://live.tinywan.com/hls/201710007.m3u8
+                        </td>
                         <td>
                             <a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">
                                 <button class="btn btn-primary btn-xs">

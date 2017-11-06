@@ -1169,6 +1169,17 @@ class Live extends BaseBackend
     }
 
     /**
+     * -----------------------------------------媒体转码---------------------------------------------------------------
+     * 【媒体转码】媒体转码管理
+     */
+    public function mediaFormatSwitch()
+    {
+        $editVideos = Db::table('resty_stream_video_edit')->where(['type' => 3, 'deleted' => 0])->order('createTime desc')->paginate(6);
+        $this->assign('editVideos', $editVideos);
+        return $this->fetch();
+    }
+
+    /**
      * 通过FFmpeg 获取视频信息
      */
     public function getVideoInfoByFFmpeg()

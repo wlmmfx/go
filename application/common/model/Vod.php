@@ -97,13 +97,16 @@ class Vod extends BaseModel
             return ['valid' => 0, 'msg' => "必须选择一个标签"];
         }
         $result = $this->allowField(true)->save($data, [$this->pk => $data['id']]);
+        //先删除后添加，负责这里会出现Bug,那就是重复
+        $vodTag = new VodTag();
+        $vodTag->where('vod_id',$data['id'])->delete();
         foreach ($data['tag'] as $v){
             $relData [] = [
                 'vod_id'=>$this->id,
                 'tag_id'=>$v
             ];
         }
-        $resultTag = (new VodTag())->saveAll($relData);
+        $resultTag = $vodTag->saveAll($relData);
         // id 已经存在的，只能更新
         if (false === $result  || $resultTag == false) {
             return ['valid' => 0, 'msg' => $this->getError()];

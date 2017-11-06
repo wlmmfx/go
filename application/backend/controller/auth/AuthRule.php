@@ -77,7 +77,6 @@ class AuthRule extends BaseBackend
         return $this->fetch();
     }
 
-
     /**
      * 编辑规则
      * @return mixed
@@ -88,6 +87,7 @@ class AuthRule extends BaseBackend
         if (request()->isPost()) {
             $res = $this->db->edit(input('post.'));
             if ($res["valid"]) {
+                add_operation_log($res["msg"]);
                 $this->success($res["msg"], "backend/auth.auth_rule/rulelist");
                 exit;
             } else {

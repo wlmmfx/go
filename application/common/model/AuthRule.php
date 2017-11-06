@@ -68,6 +68,10 @@ class AuthRule extends BaseModel
         return $tmp;
     }
 
+    /**
+     * @param $data
+     * @return array
+     */
     public function edit($data)
     {
         // id 已经存在的，只能更新

@@ -1,5 +1,41 @@
 <?php
 //--------------------------------------------------common------------------------------------------------------------
+/**
+ * 根据IP地址获取城市信息
+ * @param $ip
+ */
+function get_city_by_ip($ip)
+{
+    $host = "https://dm-81.data.aliyun.com";
+    $path = "/rest/160601/ip/getIpInfo.json";
+    $method = "GET";
+    $appcode = "e607e7ed7d78441097c6eb6fddd309b1";
+    $headers = [];
+    array_push($headers, "Authorization:APPCODE " . $appcode);
+    $querys = "ip=" . $ip;
+    $url = $host . $path . "?" . $querys;
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_FAILONERROR, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    if (1 == strpos("$" . $host, "https://")) {
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    }
+    $res = json_decode(curl_exec($curl),true);
+    if($res['code'] != 0) return false;
+    return $res['data'];
+}
+
+/**
+ * IP 地址格式化
+ */
+function ip_format($ip){
+    $res = get_city_by_ip($ip);
+    return $res['country'].'、'.$res['region'].'、'.$res['city'].'&nbsp;（'.$res['isp'].'）';
+}
 
 /* * *************************
  * 生成随机字符串，可以自己扩展   //若想唯一，只需在开头加上用户id
@@ -765,7 +801,7 @@ function add_operation_log($desc = null, $unique_flag = 'system')
     $nickname = get_admin_nickname();
     $user_id = get_admin_user_id();
     $ipaddr = request()->ip();
-    $query_string = implode('--', array_merge($_GET, $_POST, input()));
+    $query_string = json_encode(array_merge($_GET, $_POST, input()));
     $is_desc = 0;
 
     if ($desc) $is_desc = 1;

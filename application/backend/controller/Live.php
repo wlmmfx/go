@@ -194,7 +194,7 @@ class Live extends BaseBackend
     }
 
     /**
-     * 视频管理
+     * 视频管理界面
      */
     public function videoManage()
     {
@@ -523,10 +523,10 @@ class Live extends BaseBackend
     }
 
     /**
-     * 素材编辑
+     * 素材剪切
      * @return mixed
      */
-    public function videoEdit()
+    public function videoCut()
     {
         $Videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('createTime desc')->paginate(12);
         $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->paginate(12);
@@ -536,7 +536,7 @@ class Live extends BaseBackend
     }
 
     /**
-     * 视频合并
+     * 素材合并
      * @return mixed
      */
     public function videoConcat()
@@ -561,7 +561,7 @@ class Live extends BaseBackend
 
     /**
      * 根据视频 videoid 获取部分视频信息
-     * @param $videoId
+     * @param $id
      * @return mixed
      */
     private function videoInfoByVideoId($id)
@@ -694,7 +694,7 @@ class Live extends BaseBackend
      * @param $editmsg
      * @param $editdesc
      * @param $version
-     * @param $activityid2
+     * @param $streamName
      * @return bool
      */
     private function saveCutDataToDb($activityid, $filename, $filesize, $duration, $pid, $editid, $editresultcode, $editmsg, $editdesc, $version, $streamName)
@@ -1206,8 +1206,6 @@ class Live extends BaseBackend
 
     /**
      * OSS 上传测试
-     * @param $ossClient
-     * @param $bucket
      */
     public function uploadDir()
     {
@@ -1219,6 +1217,12 @@ class Live extends BaseBackend
         $ossbObject = 'data/201710002/video';
         $prefix = "data/201710002/video";
         printf(__FUNCTION__ . ": completeMultipartUpload OK\n");
+    }
+
+    public function getCityByIp(){
+        $ip = '115.192.189.173';
+        $res = ip_format($ip);
+        echo $res;
     }
 
 }

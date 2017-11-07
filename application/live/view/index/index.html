@@ -5,27 +5,11 @@
     <div class="home_banner">
         <div class="carousel-inner" role="listbox"><!--style="width:100%;height:100%;"-->
             <div class="quake-slider-images" id="template_inner">
-                <a target="_blank" href="/ld/1440">
-                    <img src="__PICTURE__/112902ef0081026343.jpg"/>
+                {volist name='banners' id='vo'}
+                <a target="_blank" href="{$vo.link}">
+                    <img src="http://oss.tinywan.com/{$vo.image_origin}"/>
                 </a>
-                <a target="_blank" href="/ld/1486">
-                    <img src="__PICTURE__/1051539a7390144317.png"/>
-                </a>
-                <a target="_blank" href="/ld/1496">
-                    <img src="__PICTURE__/0958113f1280322954.png"/>
-                </a>
-                <a target="_blank" href="/ld/1485">
-                    <img src="__PICTURE__/1412419a7574759344.jpg"/>
-                </a>
-                <a target="_blank" href="/ld/1479">
-                    <img src="__PICTURE__/180358ee962d805705.jpg"/>
-                </a>
-                <a target="_blank" href="/ld/1433">
-                    <img src="__PICTURE__/171404ca45ea065712.jpg"/>
-                </a>
-                <a target="_blank" href="/ld/1461">
-                    <img src="__PICTURE__/11283203ce10333525.png"/>
-                </a>
+                {/volist}
             </div>
         </div>
     </div>

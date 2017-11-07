@@ -29,6 +29,8 @@ class Index extends BaseFrontend
      */
     public function index()
     {
+//        halt(db('banner')->where('deleted',0)->order('id desc')->select());
+        $this->assign('banners', db('banner')->where(['publish_status'=>1,'deleted'=>0])->order('id desc')->select());
         return $this->fetch();
     }
 

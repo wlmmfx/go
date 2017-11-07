@@ -15,6 +15,7 @@ use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
 use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
 use think\Controller;
+use think\Request;
 
 class Index extends Controller
 {
@@ -70,6 +71,25 @@ class Index extends Controller
             ->setSmsFreeSignName("弍萬")
             ->setSmsTemplateCode("SMS_50285067");
         print_r($client->execute($req));
+    }
 
+    /**
+     * 表单验证
+     */
+    public function fromValidate(Request $request)
+    {
+        // 定义表单验证规则
+        $rules = [
+            'name'  => 'require|max:25',
+            'email' => 'email',
+        ];
+        // 验证表单数据
+        $result = $this->validate($request->param(), $rules);
+        if (true !== $result) {
+            // 验证失败 输出错误信息
+            return '数据验证失败：' . $result;
+        } else {
+            return '数据验证通过！';
+        }
     }
 }

@@ -3,14 +3,12 @@
         <thead>
         <tr>
             <th style="text-align: center">#ID</th>
-            <th style="text-align: center">用户ID</th>
-            <th style="text-align: center">操作时间</th>
             <th style="text-align: center">账号</th>
             <th style="text-align: center">模块</th>
             <th style="text-align: center">控制器</th>
             <th style="text-align: center">操作</th>
-            <th style="text-align: center">请求参数</th>
-            <th style="text-align: center">登陆IP</th>
+            <th style="text-align: center">操作时间</th>
+            <th style="text-align: center">登陆信息</th>
             <th style="text-align: center">详细说明</th>
         </tr>
         </thead>
@@ -18,9 +16,7 @@
         {volist name='logs' id='vo'}
             <tr class="gradeX">
                 <td>{$vo['id']}</td>
-                <td><a href="#">{$vo['guid']}</a> </td>
-                <td width="9%">{$vo['addtime']}</td>
-                <td width="9%">{$vo['account']}</td>
+                <td >{$vo['account']}</td>
                 <td>{$vo['module']}</td>
                 <td>{$vo['controller']}</td>
                 <td>
@@ -32,8 +28,10 @@
                         {$vo['action']}
                     {/if}
                 </td>
-                <td>-</td>
-                <td>{$vo['ipaddr']}</td>
+                <td >
+                    <span class="label label-info arrowed-right">{$vo['addtime']|date_to_time}</span>&nbsp;{$vo['addtime']}
+                </td>
+                <td>{$vo['ipaddr']|ip_format}</td>
                 <td>{$vo['desc']}</td>
             </tr>
         {/volist}

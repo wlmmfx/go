@@ -16,7 +16,7 @@ class Tag extends BaseModel
     protected $table = "resty_tag"; //完整的表名
 
     /**
-     * 添加分类
+     * 添加
      * @param $data
      * @return array
      */
@@ -24,7 +24,6 @@ class Tag extends BaseModel
     {
         $result = $this->validate(true)->save($data);
         if (false === $result) {
-            // 验证失败 输出错误信息
             return ['valid' => 0, 'msg' => $this->getError()];
         }
         return ['valid' => 1, 'msg' => "添加成功"];

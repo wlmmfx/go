@@ -6,11 +6,11 @@
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success">
-                <a href="http://{$Think.server.http_host}" target="_blank">首页</a>
+                <a href="http://{$Think.server.http_host}" target="_blank">主页</a>
             </button>
 
             <button class="btn btn-info">
-                <i class="icon-pencil"></i>
+                <a href="https://www.tinywan.com/live/index/index" target="_blank">直播</a>
             </button>
 
             <button class="btn btn-warning">
@@ -241,12 +241,7 @@
                                 点播管理
                             </a>
                         </li>
-                        <li>
-                            <a href="{:url('backend/live/videoManage')}">
-                                <i class="icon-facetime-video"></i>
-                                视频管理
-                            </a>
-                        </li>
+
                         <li>
                             <a href="{:url('backend/live/uploadVideoManage')}">
                                 <i class="icon-leaf"></i>
@@ -271,13 +266,13 @@
                             <ul class="submenu">
                                 <li>
                                     <a href="{:url('backend/live/videoCut')}">
-                                        <i class="icon-pencil"></i>
+                                        <i class="icon-cut"></i>
                                         视频剪切
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{:url('backend/live/videoConcat')}">
-                                        <i class="icon-pencil"></i>
+                                        <i class="icon-copy"></i>
                                         视频合并
                                     </a>
                                 </li>
@@ -312,6 +307,12 @@
                     </a>
 
                     <ul class="submenu">
+                        <li>
+                            <a href="{:url('backend/live/mediaFormatSwitch')}">
+                                <i class="icon-lock"></i>
+                                文件转码管理
+                            </a>
+                        </li>
                         <li>
                             <a href="{:url('backend/live/urlAuth')}">
                                 <i class="icon-lock"></i>

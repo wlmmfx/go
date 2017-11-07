@@ -42,8 +42,10 @@ class BaseModel extends Model
             $module = $request->module();
             $controller = $request->controller();
             $action = $request->action();
-            $data["guid"] = session('open_user_id');
-            $data['event_type'] = "after_insert";
+            $data["guid"] = session('admin.admin_id');
+            $data["account"] = session('admin.username');
+            $data["nickname"] = session('admin.username');
+            $data['event_type'] = "beforeInsert";
             $data['url'] = $request->url();
             $data['module'] = $module;
             $data['controller'] = $controller;
@@ -51,7 +53,8 @@ class BaseModel extends Model
             $data['model'] = $base_name;
             $data["query_string"] = json_encode($request->param());
             $data["ipaddr"] = $request->ip();
-            $data["addtime"] = date('Y-m-d H:i:s');
+            $data["addtime"] = date('Y-m-d H:i:s',$request->time());
+            $data["desc"] = $request->query();
             $model->table('resty_logs')->insert($data);
         });
     }

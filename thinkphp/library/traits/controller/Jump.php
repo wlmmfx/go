@@ -34,7 +34,7 @@ trait Jump
      * @param array     $header 发送的Header信息
      * @return void
      */
-    protected function success($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
+    protected function success($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
     {
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
@@ -68,7 +68,7 @@ trait Jump
      * @param array     $header 发送的Header信息
      * @return void
      */
-    protected function error($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
+    protected function error($msg = '', $url = null, $data = '', $wait = 1, array $header = [])
     {
         if (is_null($url)) {
             $url = Request::instance()->isAjax() ? '' : 'javascript:history.back(-1);';

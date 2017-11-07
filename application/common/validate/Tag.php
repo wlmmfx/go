@@ -6,7 +6,7 @@
  * Time: 11:05
  */
 
-namespace app\backend\validate;
+namespace app\common\validate;
 
 use think\Validate;
 

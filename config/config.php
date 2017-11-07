@@ -46,4 +46,20 @@ return [
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
     'dispatch_error_tmpl'    => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
+
+    // 异常页面的模板文件
+    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
+    'http_exception_template'    =>  [
+        // 定义404错误的模板文件地址
+        404 =>  APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . '404.html',
+        // 还可以定义其它的HTTP status
+        401 =>  APP_PATH . '401.html',
+    ],
+
+    // 是否开启请求缓存 true自动缓存 支持设置请求缓存规则
+    'request_cache'          => false,
+    // 请求缓存有效期
+    'request_cache_expire'   => 60,
+    // 全局请求缓存排除规则
+    'request_cache_except'   => [],
 ];

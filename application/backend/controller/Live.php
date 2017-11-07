@@ -18,6 +18,7 @@ use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
 use think\Db;
+use think\exception\HttpException;
 use think\Log;
 use think\Request;
 
@@ -34,6 +35,28 @@ class Live extends BaseBackend
         parent::_initialize();
         $this->db = new \app\common\model\Live();
         $this->vod_db = new \app\common\model\Vod();
+    }
+
+    /**
+     * 当我们访问了一个不存在的操作方法，就会触发空操作检查
+     * @param $method
+     * @return string
+     */
+//    public function _empty($method)
+//    {
+//        return '当前操作名:'.$method;
+//    }
+
+    /**
+     * 测试请求缓存
+     * @return string
+     */
+    public function hello()
+    {
+        // 抛出404异常
+        throw new HttpException(404, '页面异常');
+        //return '当前请求时间:' . date('y-m-d H:i:s', request()->time());
+        //return $this->fetch();
     }
 
     /**
@@ -407,12 +430,13 @@ class Live extends BaseBackend
     {
         if (request()->isPost()) {
             $data = input('post.');
+            // 验证表单数据
             $res = $this->vod_db->store($data);
             if ($res["valid"]) {
                 $this->success($res["msg"], "backend/live/vodManage");
                 exit;
             } else {
-                return json(['code' => 500, 'msg' => $res["msg"]]);
+                $this->success($res["msg"]);
             }
         }
         $vods = Db::table("resty_vod")
@@ -873,7 +897,7 @@ class Live extends BaseBackend
         $new_video_name = request()->post("new_video_name");
         $origin_video_id = request()->post("origin_video_id");
         if (empty($starttime) || empty($endtime) || empty($new_video_name) || empty($origin_video_id)) {
-            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
+            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"],403);
         }
         #   根据LiveId获取视频信息
         $taskId = self::getVideoEditTaskId($origin_video_id);
@@ -941,7 +965,7 @@ class Live extends BaseBackend
             Log::info('[' . getCurrentDate() . ']:' . '[06] 视频剪切操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
-        return json(['code' => 500, 'msg' => $origVideoInfo]);
+        return json(['code' => 500, 'msg' => $origVideoInfo],500);
     }
 
     /**

@@ -41,6 +41,8 @@ class BaseBackend extends Base
 
     /**
      * 初始化操作
+     * 初始化方法里面的return操作是无效的，也不能使用redirect助手函数进行重定向
+     * 如果你是要进行重定向操作（例如权限检查后的跳转）请使用$this->redirect()方法
      */
     protected function _initialize()
     {
@@ -48,11 +50,11 @@ class BaseBackend extends Base
         $this->uid = session('admin.admin_id');
         // 登陆检查
         if (empty($this->uid)) {
-            return $this->error("您还没有登录！",Url::build('backend/login/login'));
+             $this->error("您还没有登录，请登录后访问！",Url::build('backend/login/login'));
         }
         // 权限检查
         if($this->check_access() === false){
-            return $this->error("您没有访问权限！");
+             $this->error("您没有访问权限！");
         }
     }
 

@@ -26,4 +26,10 @@ class Admin extends Validate
         'code.captcha'        => '验证码不正确',
     ];
 
+    // 验证场景
+    protected $scene = [
+        'add'   =>  ['name','email'],
+        'edit'  =>  ['email'],
+    ];
+
 }

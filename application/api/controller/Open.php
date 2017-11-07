@@ -91,10 +91,37 @@ class Open extends Base
     public function testSendMail()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->find();
-            $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
-            $result = send_email_qq('756684177@qq.com', '新用户注册', '11111111');
-        return $result;
+        $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
+        $result = send_email_qq('756684177@qq.com', '新用户注册', '11111111');
+
+        return json($result)->code(200)->header(['Cache-control' => 'no-cache,must-revalidate']);
+        return json($result)->code(200)->header(['Cache-control' => 'no-cache,must-revalidate']);
     }
+
+    public function setHeaderInfo()
+    {
+        $header = [
+            'Cache-control' => 'no-cache,must-revalidate',
+            'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
+        ];
+        $result = send_email_qq('756684177@qq.com', '新用户注册', '11111111');
+        return json($result)->code(200)->header('Cache-control', 'no-cache,must-revalidate');
+        return json($result)->code(200)->header(['Cache-control' => 'no-cache,must-revalidate']);
+        // 多个头设置响应的头信息
+        return json($result)->code(200)->header($header);
+    }
+
+    public function setJsonInfo()
+    {
+        $result = send_email_qq('756684177@qq.com', '新用户注册', '11111111');
+        $options = [
+            'var_jsonp_handler'     => 'callback',
+            'default_jsonp_handler' => 'jsonpReturn',
+            'json_encode_param'     => JSON_PRETTY_PRINT,
+        ];
+        return json($result)->options($options);
+    }
+
 
     public function testSendMail2()
     {

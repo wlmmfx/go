@@ -4,14 +4,26 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  DateTime: 2017/9/21 14:45
+ * |  DateTime: 2017/11/7 10:08
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
-use think\Route;
 
-// 定义路由规则 并设置60秒的缓存
-Route::get('/','blog/Index/index',['cache'=>60]);
-//Route::rule('/','blog/Index/index');
-// 文章详情路由
-Route::rule('bd/:id','blog/Index/detail');
+namespace app\backend\controller;
+
+
+class TraitTest
+{
+    use \traits\controller\Jump;
+
+    /**
+     * 现在我们可以直接使用\traits\controller\Jump中定义的方法
+     * 包括success/error/result/redirect
+     * @return string
+     */
+    public function hello()
+    {
+        return 'hello';
+    }
+
+}

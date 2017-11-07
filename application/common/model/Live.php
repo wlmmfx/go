@@ -22,13 +22,18 @@ class Live extends BaseModel
      */
     public function store($data)
     {
-        $result = $this->save($data);
+        $result = $this->validate(true)->save($data);
         if (false === $result) {
             return ['valid' => 0, 'msg' => $this->getError()];
         }
         return ['valid' => 1, 'msg' => "添加成功"];
     }
 
+    /**
+     * 录像操作
+     * @param $data
+     * @return array
+     */
     public function recordHandle($data)
     {
         if ($data['recordStatus'] == 1) {

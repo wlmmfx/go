@@ -37,10 +37,7 @@ class Vod extends BaseModel
         "update_time"
     ];
 
-    //模型事件是指在进行模型的写入操作的时候触发的操作行为，包括模型的save方法和delete方法。
-    /**
-     * 初始化处理
-     */
+    //初始化处理
     protected static function init()
     {
 
@@ -70,11 +67,14 @@ class Vod extends BaseModel
         if(!isset($data['tag'])){
             return ['valid' => 0, 'msg' => "必须选择一个标签"];
         }
-        // 过滤post数组中的非数据表字段数据 allowField(true)
-        $result = $this->allowField(true)->save($data);
+        /**
+         * 1、调用当前模型对应的Vod验证器类进行数据验证
+         * 2、过滤post数组中的非数据表字段数据 allowField(true)
+         */
+        $result = $this->validate(true)->allowField(true)->save($data);
         foreach ($data['tag'] as $v){
             $relData [] = [
-                'vod_id'=>$this->id,
+                'vod_id'=>$this->pk,
                 'tag_id'=>$v
             ];
         }

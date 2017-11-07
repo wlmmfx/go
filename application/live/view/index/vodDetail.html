@@ -1,14 +1,11 @@
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="__CSS__/eventlist_detail.css" rel="stylesheet">
     <link href="__CSS__/iconfont.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="__CSS__/swiper.3.1.2.min.css">
     <script type="text/javascript" src="__JS__/swiper.3.1.2.min.js"></script>
-    <script type="text/javascript" src="__JS__/jquery.min.js"></script>
     <script type="text/javascript" src="__JS__/detail.js"></script>
     <script type="text/javascript" src="__JS__/jquery.qrcode.min.js"></script>
-    <script type="text/javascript" src="__JS__/layer.js"></script>
 
     <!-- 数据 -->
     <input id="userIdPage" value="" hidden>
@@ -134,6 +131,7 @@
     <div class="detail_title" meeetImg="http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4" >
         <div class="detail_title_left">
             <p class="detail_title_main"><span>{$vod.name}</span></p>
+            <input type="hidden" name="vod_id" id="vod_id" value="{$vod.id}">
             <div class="detail_title_timer">
             </div>
         </div>
@@ -234,4 +232,25 @@
         source:"{$vod.hls_url}",
         cover:"{$vod.image_url}"
     });
+    //播放器对外事件
+    var handleReady = function(e)
+    {
+        console.log('开始播放器验证');
+        var url = "{:url('api/open/playValidate')}";
+        var data = {
+            "vod_id": $("#vod_id").val(),
+            "user_id": 123456
+        };
+        var success = function (data) {
+            console.log(getCurrentDateTime() + '-=-' + data.code);
+            if (data.code == 200) {
+                alert("恭喜你,视频截切成功"+ data.msg);
+            } else {
+                player.on('');
+                alert("视频剪切异常，错误信息：" + data.msg);
+            }
+        };
+        $.post(url, data, success, 'json');
+    };
+    player.on('ready',handleReady);
 </script>

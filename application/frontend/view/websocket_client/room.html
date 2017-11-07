@@ -1,0 +1,163 @@
+<script type="text/javascript" src="//g.alicdn.com/tb/apush/1.0.16/??socketio.js,apush.js"></script>
+<script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./json2.js"></script>
+<script>
+    with (document)with (body)with (insertBefore(createElement("script"), firstChild))setAttribute("exparams", "userid=&aplus&ali_beacon_id=218%2e108%2e35%2e150%2e1481536921808%2e113822%2e7&ali_apache_id=218%2e108%2e35%2e150%2e1481536921150%2e859739%2e4&ali_apache_track=&ali_apache_tracktmp=&dmtrack_c={}&pageid=da6cd6440be696181510045448&hn=apushgateway011230150024%2eet2&asid=AQAAAAAIdwFaukVgSQAAAABOkaI/EL73Og==&sidx=2mzWRAh3AVo9jN/AzJTyIKUfurRoUz7M&ckx=apushgatewayalibabacomdemohtm|apushgatewayalibabacompersistentmsgdemohtm", id = "beacon-aplus", src = "//u.alicdn.com/js/aplus_ae.js")
+</script>
+
+<div class="container">
+    <ul class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active">搜索</li>
+    </ul>
+    <!-- 简介 -->
+    <div class="row">
+        <br/><input type="button" value="创建client" id="createClient"
+                    title="调用方法Apush.createClient(appId,tokenUrl,msgCallback,terminalId,terminalType,connectCallback,reconnectCallback,disconnectCallback)">
+        <br/>
+        <br/>
+        查询与当前userId相同的客户端连接数:<br/>
+        <input type="button" value="getConnectionCountByUserId" id="getConnectionCountByUserId"
+               title="在app后台应用中调用方法getConnectionCountByUserId">
+        <br/>
+        <br/>
+        发一条消息，userId相同的客户端会同时收到消息，同一个userId最多有1000个客户端会收到消息。如果客户端不在线则此消息被丢弃，如果要使用可持久的消息，请参考<a href="persistentMsgDemo.htm">可持久消息demo</a>:<br/>
+        <input type="button" value="sendMsg" id="sendMsg" title="在app后台应用中调用sendMsg方法发送消息">
+        <br/>
+        <br/>
+        日志输出：<br/>
+        <textarea id="receiveMsg" rows="5" cols="130"></textarea>
+        <br/>
+        <input type="button" value="清除日志输出" id="clearHistory">
+        <input type="button" value="客户端关闭" id="clientClose">
+        <br/>
+        <br/>
+    </div>
+</div>
+
+<script>
+    {
+        var appId = 'cd985a8985a84c8f842770fbec9531c3';
+        var apushClient;
+
+        //创建client并订阅用户消息
+        function createClient() {
+            if (apushClient == null) {
+                // 实际使用时请在你自己的app后台中调用apush的getToken方法实现此url
+                var tokenUrl = getUrlBase() + "/demo/getDemoToken.do?appId=9999999999&userId=userTest1";
+                var terminalId = null;//不填则系统生成一个随机字符窜作为terminalId
+                var terminalType = null;//不填则系统默认为pc
+
+                //收到消息时的处理方法
+                var msgCallback = function (msg) {
+                    // msgType用于消息分类处理，用户可以在发送消息时设置自定义的msgType，在收到消息时判断msgType，"reqUnReadMsgCount"、"testMsg"、"tokenExpired"为apush预定义的msgType，请不要使用。
+                    if (msg.msgType == "msgTypeTest") {
+                        // 你的业务逻辑
+                    }
+                    /* else if (msg.msgType == "youDefinedMsgType1"){
+                     //你的业务逻辑
+                     } else if (msg.msgType == "youDefinedMsgType2"){
+                     //你的业务逻辑
+                     }
+                     */
+                    //demo程序的日志
+                    log((new Date()).Format("yyyy-MM-dd hh:mm:ss.S") + " msgCallback:" + JSON.stringify(msg));
+                }
+                //第一次连接成功时触发的方法
+                var connectCallback = function (msg) {
+                    //msg.arg变量中存放了userId相同的在线客户端数
+                    log((new Date()).Format("yyyy-MM-dd hh:mm:ss.S") + " connectCallback:" + JSON.stringify(msg));
+                }
+
+                //意外断开后重连成功时触发的方法
+                var reconnectCallback = function (msg) {
+                    log((new Date()).Format("yyyy-MM-dd hh:mm:ss.S") + " reconnectCallback:" + JSON.stringify(msg));
+                }
+
+                //连接断开时触发的方法,一般你不需要在这里做任何重连的处理,apush会自动重连
+                var disconnectCallback = function (msg) {
+                    //demo程序的日志
+                    log((new Date()).Format("yyyy-MM-dd hh:mm:ss.S") + " disconnectCallback:" + JSON.stringify(msg));
+                }
+
+                apushClient = Apush.createClient(appId, tokenUrl, msgCallback, terminalId, terminalType, connectCallback, reconnectCallback, disconnectCallback);
+                //demo程序的日志
+                log((new Date()).Format("yyyy-MM-dd hh:mm:ss.S") + "create client");
+            }
+        }
+
+        //断开连接并销毁client
+        function closeClient() {
+            if (apushClient != null) {
+                apushClient.close();
+                apushClient = null;
+            }
+        }
+
+        function sendMsg() {
+            var url = getUrlBase() + "/demo/sendMsg.do";
+            $.get(url, {appId: appId, userId: "userTest1", tm: new Date().getTime()},
+                function (rt) {
+                    log("sendMsg:" + rt);
+                });
+        }
+
+        function getConnectionCountByUserId() {
+            var url = getUrlBase() + "/demo/getConnectionCountByUserId.do";
+            $.get(url, {appId: appId, userId: "userTest1", tm: new Date().getTime()},
+                function (rt) {
+                    log("getConnectionCountByUserId:" + rt);
+                });
+        }
+
+        function log(msg) {
+            receiveMsg.value = receiveMsg.value + msg + '\n'
+            receiveMsg.scrollTop = receiveMsg.scrollHeight
+            console.log(msg);
+        }
+
+        function getUrlBase() {
+            var protocol = window.location.protocol.slice(0, -1);
+            var host = (window.document ? window.document.domain : window.location.hostname);
+            var port = window.location.port;
+            var urlBase;
+            if (port) {
+                urlBase = (protocol || 'http') + '://' + host + ':' + port;
+            } else {
+                urlBase = (protocol || 'http') + '://' + host;
+            }
+            return urlBase;
+        }
+
+        function init() {
+            // 设置Apush的js包的日志级别,调试用
+            Apush._loglevel = 'info';
+            //绑定事件
+            $('#createClient').click(createClient);
+            $('#getConnectionCountByUserId').click(getConnectionCountByUserId);
+            $('#sendMsg').click(sendMsg);
+            $('#clientClose').click(closeClient);
+            clearHistory.onclick = function () {
+                receiveMsg.value = "";
+            };
+        }
+
+        init();
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt + '-';
+        }
+    }
+
+</script>

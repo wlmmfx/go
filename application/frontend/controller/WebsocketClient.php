@@ -447,5 +447,12 @@ class WebsocketClient extends BaseFrontend
         }
         return json($resJson);
     }
+
+    /**
+     * 点播详情
+     */
+    public function room(){
+        return $this->fetch();
+    }
 }
 

@@ -65,4 +65,6 @@ class Index extends BaseFrontend
         $this->assign('vod',$live);
         return $this->fetch();
     }
+
+
 }

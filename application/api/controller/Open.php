@@ -122,6 +122,53 @@ class Open extends Base
         return json($result)->options($options);
     }
 
+    /**
+     * APush物联网websocket长连接comet消息推送api
+     * @return $this
+     */
+    public function sendPersistentMsg()
+    {
+        //指定接收消息的客户端
+        $userId = 123;
+        //用户自定义的msgType
+        $msgType = 'msgType1';
+        //消息内容
+        $msgContent = 'msgContent 001';
+        //消息最多缓存在多少秒
+        $expireAfterSeconds = 60;
+        //设置消息只发给terminalId为指定值的客户端，客户端的terminalId在客户端连接
+        $terminalId = 'terminalId1';
+        //设置消息只发给terminalType为指定值的客户端，客户端的terminalType在客户端
+        $terminalType = 'pcWeb';
+        //如果有多个满足条件的客户端，只把消息发送给最近登录的一个
+        $justSendToOneClient = 'true';
+        $host = "http://apush2.market.alicloudapi.com";
+        $path = "/sendPersistentMsg";
+        $method = "POST";
+        $appcode = "e607e7ed7d78441097c6eb6fddd309b1";
+        $headers = array();
+        array_push($headers, "Authorization:APPCODE " . $appcode);
+        //根据API的要求，定义相对应的Content-Type
+        array_push($headers, "Content-Type".":"."application/x-www-form-urlencoded; charset=UTF-8");
+        $querys = "";
+        $bodys = "userId=$userId&msgType=$msgType&msgContent=$msgContent&expireAfterSeconds=$expireAfterSeconds&terminalId=$terminalId&terminalType=$terminalType&justSendToOneClient=$justSendToOneClient";
+        $url = $host . $path;
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_FAILONERROR, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        if (1 == strpos("$".$host, "https://"))
+        {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $bodys);
+        var_dump(curl_exec($curl));
+    }
+
 
     public function testSendMail2()
     {

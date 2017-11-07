@@ -1,8 +1,8 @@
 <style type="text/css">
     .chat-room-container {
         font-family: "Courier New";
-        width: 680px;
-        height: 300px;
+        width: 100%;
+        height: 600px;
         overflow: auto;
         border: 1px solid black;
         padding: 10px 0px 20px 10px;
@@ -20,13 +20,17 @@
         z-index: 999;
         top: 0px;
         left: 0px;
-        width: 1024%;
+        width: 100%;
         height: 768%;
         background-color: #ccc;
         text-align: center;
         padding-top: 20%;
         filter: alpha(opacity=75);
         opacity: 0.75;
+    }
+    #DataToSend{
+        width: 100%;
+        height: 40px;
     }
 </style>
 <script type="text/javascript">
@@ -101,14 +105,11 @@
             ws.close();
         } else {
             lockOn("进入聊天室...");
-//            Log("准备连接到聊天服务器 ...");
             try {
                 if ("WebSocket" in window) {
-//                    ws = new WebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
                     ws = new WebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
                 }
                 else if ("MozWebSocket" in window) {
-//                    ws = new MozWebSocket("wss://" + wsServerIP + ":" + wsServerPort+"/chatroom/");
                     ws = new MozWebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
                 }
                 SocketCreated = true;
@@ -133,7 +134,8 @@
         lockOff();
         Log("连接已经建立。", "OK");
         $("#SendDataContainer").show();
-        var $txtName = document.getElementById("txtName").value;
+        var $userId = (new Date()).valueOf();
+        var $txtName = '用户'+$userId;
         var wsSend = {
             "type": 'join',
             "user_id": '13669631192',
@@ -219,6 +221,7 @@
     };
 
     $(document).ready(function () {
+        ToggleConnectionClicked();
         var WebSocketsExist = true;
         try {
             var dummy = new WebSocket("wss://"+wsServerIP+":"+wsServerPort+"/chat/");
@@ -260,7 +263,7 @@
             <h1>Web Socket 聊天室</h1>
             <br/>
 
-            用户名： <input type="text" id="txtName" value="贰萬"/>
+            <!--用户名： <input type="text" id="txtName" value="贰萬"/>-->
             <button id='ToggleConnection' type="button" onclick='ToggleConnectionClicked();'>连接</button>
             <br/>
             <br/>

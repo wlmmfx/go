@@ -41,7 +41,8 @@ class Tag extends BaseBackend
      */
     public function del()
     {
-        if ($this->request->isAjax()) {
+        if ($this->request->isAjax())
+        {
             $id = input('post.id');
             $res = $this->db->del($id);
             if ($res['valid']) {

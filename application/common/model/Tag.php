@@ -51,7 +51,7 @@ class Tag extends BaseModel
      */
     public function del($id)
     {
-        $res = $this->where('id', $id)->update(['recordStatus' => 1]);
+        $res = $this->where('id', $id)->update(['deleted' => 1]);
         if (false === $res) return ['valid' => 0, 'msg' => "删除失败"];
         return ['valid' => 1, 'msg' => "删除成功"];
     }

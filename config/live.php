@@ -14,7 +14,7 @@ use think\Route;
 //Route::get('/','live/Index/index');
 //Route::rule('/','blog/Index/index');
 // 文章详情路由
-Route::rule('liv/:id','live/Index/detail');
-Route::rule('vod/:id','live/Index/vodDetail');
-Route::rule('eventlist','live/Index/eventList');
-Route::rule('livelist','live/Index/liveList');
+Route::rule('liv/:id',['live/Index/detail',[],['id'=>'\d+']],'GET');
+Route::rule('vod/:id','live/Index/vodDetail','GET');
+Route::rule('eventlist','live/Index/eventList','GET');
+Route::rule('livelist','live/Index/liveList','GET'  );

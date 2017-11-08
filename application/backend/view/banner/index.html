@@ -226,7 +226,11 @@
             })
         });
 
-        $('body').delegate('.publish-hander', 'click', function () {
+        $('body').delegate('.publish-hander', 'click', function (e) {
+            var ev = e || window.event; // 事务
+            console.log(ev);
+            ev.preventDefault();// 阻止链接跳转
+            var $tmpUrl = this.href; // 保存点击的地址
             $("#publishHanderModal").modal("hide");
             var $url = "{:url('backend/banner/publish')}";
             var $_data = {
@@ -240,10 +244,11 @@
                 dataType: "json",
                 //服务器成功响应处理函数
                 success: function ($response) {
-                    console.log($response)
+                    console.log($response);
                     if ($response.code == 200) {
                         $('#tag-' + $tag_id).css('background-color','#fff5d4');
                         successShow($response.msg);
+                        $('#tab-content').load($tmpUrl).fadeIn('slow');
                     } else {
                         failShow($response.msg);
                     }

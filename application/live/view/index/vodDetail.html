@@ -244,10 +244,9 @@
         var success = function (data) {
             console.log(getCurrentDateTime() + '-=-' + data.code);
             if (data.code == 200) {
-                alert("恭喜你,视频截切成功"+ data.msg);
+                console.log("恭喜你,视频截切成功"+ data.msg);
             } else {
-                player.on('');
-                alert("视频剪切异常，错误信息：" + data.msg);
+                console.log("视频剪切异常，错误信息：" + data.msg);
             }
         };
         $.post(url, data, success, 'json');

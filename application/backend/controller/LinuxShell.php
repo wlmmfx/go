@@ -49,6 +49,20 @@ class LinuxShell extends BaseBackend
     }
 
     /**
+     * 主题设置
+     * @return mixed
+     */
+    public function internalStorageTheme()
+    {
+        $this->assign('moniServerIp',self::SERVER_IP);
+        $this->assign('wsServerIP',self::SERVER_IP);
+        $this->assign('wsServerPort',self::WS_SERVER_PORT);
+        $this->assign('memoryTitle',self::SERVER_IP."Theme系统实时空闲内存监控");
+        $this->assign('dishTitle',"Theme视频存放空间占比率");
+        return $this->fetch();
+    }
+
+    /**
      * WEB内存管理
      */
     public function webInternalStorage()

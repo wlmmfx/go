@@ -21,6 +21,23 @@ class Open extends Base
         return '11'.__FUNCTION__;
     }
 
+    public function createLicense($service_uuid, $expire_time, $private_key = 'amailive', $rand = 0, $uid = 0)
+    {
+        $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime($expire_time . " minute ")));
+        $hash_value = md5($service_uuid . "-" . $timestatmp . "-" . $rand . "-" . $uid . "-" . $private_key);
+        $auth_key = $timestatmp . '-' . $rand . '-' . $uid . '-' . $hash_value;
+        return $auth_key;
+    }
+
+
+    public function getLicenseByUuid()
+    {
+        $service_uuid = input('get.service_uuid');
+        if(empty($service_uuid) || $service_uuid == '') return json('请求的参数不完整，请检查参数是否合适',400);
+        $expire_time = 720000;
+        return $this->createLicense($service_uuid,$expire_time);
+    }
+
     /**
      * 支付宝回调地址
      */

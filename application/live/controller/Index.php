@@ -68,5 +68,4 @@ class Index extends BaseFrontend
         return $this->fetch();
     }
 
-
 }

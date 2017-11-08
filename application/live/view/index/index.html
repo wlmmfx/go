@@ -23,130 +23,20 @@
             <div class="container-fluid activities">
 
                 <div class="event_list clearfix slide secondtime" id="theme1">
+                    {volist name='vods' id='vo'}
                     <div class="col-ls-5">
-                        <a href="/ld/1393"
+                        <a href="vod/{$vo.id}.html"
                            target="_blank">
                             <div class="li">
                                 <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/1536237c931c556474.jpg"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-19 08:30 - 20 17:30</span><em class="forword">直播中</em></p>
+                                    <img src="{$vo.image_url}"/>
+                                    <p class="img_span" style="margin-left: 0px;"><span>{$vo.name}</span><em class="forword">回顾</em></p>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1287"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/151322262f62894457.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-20 08:55 - 11:45</span><em class="forword">已结束</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1440"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/15532880e451593970.jpg"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-20 09:00 - 21 18:00</span><em class="forword">直播中</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1443"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/154115b20404264237.jpg"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-20 13:00 - 16:30</span><em class="forword">已结束</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1439"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/15505601915f878264.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 09:00 - 17:30</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1451"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/145402a82a3d478686.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 10:00 - 17:00</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1464"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/143555b79f5c058096.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 13:30 - 18:00</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1486"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/100430e7333d989393.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 13:30 - 14:00</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1487"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/14583171ddba024583.jpg"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 13:30 - 17:30</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1428"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/092948c51bda562068.jpg"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 14:00 - 22 17:00</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-ls-5">
-                        <a href="/ld/1466"
-                           target="_blank">
-                            <div class="li">
-                                <div class="event_cover" style="height:126px">
-                                    <img src="__PICTURE__/1037233e49bc396794.png"/>
-                                    <p class="img_span" style="margin-left: 0px;"><span>10-21 14:00 - 17:00</span><em>即将开始</em></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
+                    {/volist}
                 </div>
-
             </div>
         </div>
     </div>

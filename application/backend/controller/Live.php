@@ -443,8 +443,7 @@ class Live extends BaseBackend
             ->alias('v')
             ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
             ->join('resty_category c', 'c.id = v.cid')
-            ->join('resty_tag t', 't.id = vt.tag_id')
-            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,t.name as tName')
+            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
             ->order('v.create_time desc')
             ->paginate(6);
         $this->assign('categorys', db('category')->where('pid',116)->order('id desc')->select());

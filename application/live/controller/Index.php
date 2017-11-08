@@ -29,8 +29,17 @@ class Index extends BaseFrontend
      */
     public function index()
     {
-//        halt(db('banner')->where('deleted',0)->order('id desc')->select());
+        $vods = Db::table("resty_vod")
+            ->alias('v')
+            ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
+            ->join('resty_category c', 'c.id = v.cid')
+            ->join('resty_tag t', 't.id = vt.tag_id')
+            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,t.name as tName')
+            ->order('v.create_time desc')
+            ->limit(6)
+            ->select();
         $this->assign('banners', db('banner')->where(['publish_status'=>1,'deleted'=>0])->order('id desc')->select());
+        $this->assign('vods', $vods);
         return $this->fetch();
     }
 

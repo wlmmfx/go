@@ -12,6 +12,7 @@ namespace app\common\model;
 
 use houdunwang\arr\Arr;
 use think\Db;
+use think\Log;
 
 class Vod extends BaseModel
 {
@@ -71,10 +72,10 @@ class Vod extends BaseModel
          * 1、调用当前模型对应的Vod验证器类进行数据验证
          * 2、过滤post数组中的非数据表字段数据 allowField(true)
          */
-        $result = $this->validate(true)->allowField(true)->save($data);
+        $result = $this->allowField(true)->save($data);
         foreach ($data['tag'] as $v){
             $relData [] = [
-                'vod_id'=>$this->pk,
+                'vod_id'=>$this->id,
                 'tag_id'=>$v
             ];
         }

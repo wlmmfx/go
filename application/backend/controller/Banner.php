@@ -35,7 +35,7 @@ class Banner extends BaseBackend
     {
         $categorys = db('category')->where('pid',129)->order('id desc')->select();
         $this->assign('categorys', $categorys);
-        $this->assign('banners', db('banner')->where('deleted',0)->order('id desc')->select());
+        $this->assign('banners', db('banner')->where('deleted',0)->order('id desc')->paginate(6));
         return $this->fetch();
     }
 

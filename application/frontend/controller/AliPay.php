@@ -49,8 +49,8 @@ class AliPay extends Controller
             'service'=>'create_direct_pay_by_user',
             'partner'=>'2088802807619823',
             '_input_charset'=>'utf-8',
-            'notify_url'=>'http://www.19981.com',
-            'return_url'=>'http://www.19981.com',
+            'notify_url'=>'https://www.tinywan.com/api/open/AliPayRedirectUri',
+            'return_url'=>'https://www.tinywan.com/',
             'out_trade_no'=> $data['out_trade_no'],
             'subject'=>$data['subject'],
             'payment_type'=>'1',
@@ -103,9 +103,9 @@ class AliPay extends Controller
     }
 
     /**
-     * 除去数组中的空值和签名参数
-     * @param $para 签名参数组
-     * return 去掉空值与签名参数后的新签名参数组
+     * 除去数组中的空值和签名参数,去掉空值与签名参数后的新签名参数组
+     * @param $para
+     * @return array
      */
     protected function paraFilter($para) {
         $para_filter = array();
@@ -117,8 +117,8 @@ class AliPay extends Controller
     }
 
     /**
-     * 对数组排序
-     * @param $para 排序前的数组
+     * 对数组排序,排序前的数组
+     * @param $para
      * return 排序后的数组
      */
     protected function argSort($para) {
@@ -130,7 +130,7 @@ class AliPay extends Controller
     /**
      * 生成签名结果
      * @param $para_sort 已排序要签名的数组
-     * return 签名结果字符串
+     * @return string 签名结果字符串
      */
     protected function buildRequestMysign($para_sort) {
         //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串

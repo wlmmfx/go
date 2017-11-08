@@ -35,7 +35,7 @@ class Banner extends BaseBackend
     {
         $categorys = db('category')->where('pid',129)->order('id desc')->select();
         $this->assign('categorys', $categorys);
-        $this->assign('banners', db('banner')->where('deleted',0)->select());
+        $this->assign('banners', db('banner')->where('deleted',0)->order('id desc')->select());
         return $this->fetch();
     }
 
@@ -112,11 +112,9 @@ class Banner extends BaseBackend
     public function update(){
         // 获取提交过来的所有数据，包括文件 : $this->request->param(true);
         if (request()->isPost()) {
+            $data = input('post.');
             if ($_FILES['thumb']['tmp_name']) {
-                $data = input('post.');
                 $file = request()->file("thumb");
-                //开始一个缩略图，直接获取当前请求中的文件上传对象
-                $image = Image::open($file);
                 // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/banner');
                 if ($info) {
@@ -132,9 +130,6 @@ class Banner extends BaseBackend
                      */
                     $ossbObject = 'uploads/banner';
                     //  定义缩略图保存路径
-                    $thumbObjectPath = ROOT_PATH . 'public' . DS . 'uploads/banner' . DS . $thumbName;
-                    // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
-                    $image->thumb(240, 150)->save($thumbObjectPath);
                     $localDirectory = $ossbObject . DS;
                     /**
                      * 缩略图上传、原始图上传
@@ -157,8 +152,15 @@ class Banner extends BaseBackend
                 } else {
                     return json(['code' => 500, 'msg' => $res["msg"]]);
                 }
+            }else{
+                $res = $this->db->edit($data);
+                if ($res["valid"]) {
+                    $this->success($res["msg"], "backend/banner/index");
+                    exit;
+                } else {
+                    return json(['code' => 500, 'msg' => $res["msg"]]);
+                }
             }
-            return json(['code' => 500, 'msg' => "Not Forbidden"]);
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }

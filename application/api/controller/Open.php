@@ -12,12 +12,26 @@
 namespace app\api\controller;
 
 use app\common\controller\Base;
+use redis\BaseRedis;
 use think\Db;
 
 class Open extends Base
 {
     public function index(){
         return '11'.__FUNCTION__;
+    }
+
+    /**
+     * 支付宝回调地址
+     */
+    public function AliPayRedirectUri(){
+        $redis = BaseRedis::Instance();
+        $redis->connect('127.0.0.1');
+        $redis->hMGet('alipay',[
+            'get'=>$_GET,
+            'post'=>$_POST,
+        ]);
+        halt($redis->hGetAll('alipay'));
     }
 
     /**
@@ -88,6 +102,22 @@ class Open extends Base
         return json($resJson);
     }
 
+    /**
+     * 播放验证
+     */
+    public function playValidate(){
+        $resJson = [
+            'code' => 200,
+            'msg' => 'success',
+            'data' => json_encode($_POST)
+        ];
+        return json($resJson);
+    }
+
+    /**
+     * 测试文件
+     * @return $this
+     */
     public function testSendMail()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->find();

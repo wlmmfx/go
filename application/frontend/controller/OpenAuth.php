@@ -106,6 +106,7 @@ class OpenAuth extends BaseFrontend
         //$scope = "snsapi_base";
         $scope = "snsapi_userinfo";
         $appid = 'wx94c43716d8a91f3f';
+//        $appid = 'wx8cdfa8abbc7433fa';
         /*基本授权 方法跳转地址*/
         $redirect_uri = urlencode('http://www.tinywan.com/frontend/open_auth/wechatRedirectUri');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
@@ -117,8 +118,10 @@ class OpenAuth extends BaseFrontend
      */
     public function wechatRedirectUri()
     {
+//        $appid = 'wx8cdfa8abbc7433fa';
         $appid = 'wx94c43716d8a91f3f';
         $appsecret = 'd4624c36b6795d1d99dcf0547af5443d';
+//        $appsecret = 'bcbefa89681e5f2d9e62ca22e3f5e6e4';
         /*回调的时候自带的这个参数*/
         $code = $this->request->get('code');
         //第一步:取全局access_token
@@ -129,6 +132,7 @@ class OpenAuth extends BaseFrontend
         $oauth2 = getJson($oauth2Url);
         //第三步:根据全局access_token和openid查询用户信息
         $access_token = $token["access_token"];
+        if(empty($oauth2['openid'])) return $this->success("授权失败",'/');
         $openid = $oauth2['openid'];
         $get_user_info_url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=$access_token&openid=$openid&lang=zh_CN";
         $userJsonRes = getJson($get_user_info_url);

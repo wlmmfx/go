@@ -24,7 +24,7 @@ class Excel extends BaseFrontend
      */
     public static function redis()
     {
-        $redis = BaseRedis::Instance();
+        $redis = BaseRedis::instance();
         $redis->connect("127.0.0.1", 6379);
         return $redis;
     }

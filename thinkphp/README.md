@@ -86,6 +86,9 @@ www  WEB部署目录（或者子目录）
 ├─think                 命令行入口文件
 ~~~
 
+> router.php用于php自带webserver支持，可用于快速测试
+> 切换到public目录后，启动命令：php -S localhost:8888  router.php
+> 上面的目录结构和名称是可以改变的，这取决于你的入口文件和配置参数。
 
 ## 命名规范
 
@@ -102,7 +105,7 @@ ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
 
 本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-版权所有Copyright © 2006-2016 by ThinkPHP (http://thinkphp.cn)
+版权所有Copyright © 2006-2017 by ThinkPHP (http://thinkphp.cn)
 
 All rights reserved。
 

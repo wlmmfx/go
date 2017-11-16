@@ -214,4 +214,5 @@ class OpenAuth extends BaseFrontend
             echo $token->getToken();
         }
     }
+
 }

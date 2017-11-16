@@ -150,11 +150,6 @@ class Member extends BaseFrontend
     /**
      * -------------------------------------------------------------------------------个人中心
      */
-    public function dd()
-    {
-
-    }
-
     public function getCode()
     {
         $data = [
@@ -167,6 +162,65 @@ class Member extends BaseFrontend
         halt($res);
         //1 验证数据
         halt(session("TINYWAN:13669361192"));
+    }
+
+
+    /**
+     * 手机号码注册
+     */
+    public function mobileSign()
+    {
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    /**
+     * 异步发送手机验证码
+     */
+    public function sendMobileCode()
+    {
+        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
+        $mobile = request()->get("mobile");
+        $code = rand(100000, 999999);
+        session("TINYWAN:" . $mobile, $code);
+        $sendRes = send_dayu_sms($mobile, "register", ['code' => $code]);
+        if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
+            $res = [
+                "code" => 200,
+                "msg" => "验证码发送成功"
+            ];
+            Log::info("--------------------验证码 : " . $mobile . " 发送成功");
+        } else {
+            $res = [
+                "code" => 500,
+                "msg" => "验证码发送失败"
+            ];
+            Log::error("-------------------验证码 : " . $mobile . " 发送失败 ，错误原因：" . $sendRes->sub_msg);
+        }
+        return json($res);
+    }
+
+    /**
+     * 手机验证码验证和微信绑定操作
+     */
+    public function mobileCodeValidate()
+    {
+        if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
+        $mobile = request()->post("mobile");
+        $clientCode = request()->post("code");
+        $serverCode = session("TINYWAN:" . $mobile);
+        if ($clientCode != $serverCode) {
+            $res = [
+                "code" => 500,
+                "msg" => "手机号码绑定失败"
+            ];
+        } else {
+            $res = [
+                "code" => 200,
+                "msg" => "恭喜你！手机号码绑定成功"
+            ];
+        }
+        return json($res);
     }
 
 }

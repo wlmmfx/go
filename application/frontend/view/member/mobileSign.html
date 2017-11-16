@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport" content="target-densitydpi=device-dpi,width=750, maximum-scale=0.5">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    <title>客户登录页面</title>
+    <style>
+        #validationCode {
+            width: 220px;
+            height: 60px;
+            background: #3dc968;
+            border-color: #3dc968;
+            color: #ffffff;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        .error {
+            width: 300px !important;
+            color: #b81e0d;
+        }
+
+        .pop {
+            width: 400px;
+            height: 200px;
+            border: 1px solid #f3f2f0;
+            background-color: #fdfdfd;
+            border-radius: 10px;
+        }
+
+        .page1 {
+            margin-left: 30px;
+            height: 100px;
+        }
+
+        .page1 .tel {
+            text-align: center;
+            font-size: 16px;
+            height: 25px;
+            width: 200px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 5px;
+        }
+
+        .page1 .code {
+            height: 25px;
+            width: 100px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
+
+        .page2 {
+            margin-left: 30px;
+            display: none;
+        }
+
+        .info .code1 {
+            border-radius: 5px;
+            background-color: #00a0e9;
+            padding: 2px 8px;
+            height: 25px;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="pop">
+    <div class="con">
+        <!--<span class="close"><img src="img/close.png"></span>-->
+        <form class="login_form" method="post" id="checkform">
+            <div class="page1">
+                <p class="info">
+                    <span class="title">手机号：</span>
+                    <input type="text" class="tel" id="mobile" onkeyup=" value=value.replace(/[^\w\.\/]/ig,'')" required="" placeholder="请输入您的手机号">
+                </p>
+                <p class="info">
+                    <span class="title">验证码：</span>
+                    <input type="tel" class="code" placeholder="输入验证码">
+                    <span class="code1">获取短信校验码</span>
+                </p>
+                <div class="demand demand2" style="width: 70%; margin-top: 20px;">提交</div>
+            </div>
+        </form>
+        <div class="page2">
+            <p class="p1">提交成功</p>
+            <p class="p2">我们将在索要成功后</p>
+            <p class="p2">第一时间通知您！</p>
+            <div class="demand demand3" style="width: 80%; margin-top: 20px; margin-bottom: 10px;">朕知道了</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+<script>
+    //校验手机号
+    jQuery.extend({
+        checkmobileNo: function(str) {
+            var re =/^1[3|7|5|8]\d{9}$/;
+            if (re.test(str)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+
+    $(function () {
+        var $user_id = 1227;
+        //发送验证码给手机
+        $('body').delegate('.code1', 'click', function () {
+            var $url = "{:url('frontend/member/sendMobileCode')}";
+            var $data = {
+                "mobile": $("#mobile").val(),
+                "user_id": $user_id
+            };
+            console.table($data);
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: $data,
+                dataType: "json",
+                success: function (data, status) {
+                    console.table(data);
+                    if (data.code == 200) {
+                        alert("验证码已发送");
+                        $(".code1").attr("disabled", "disabled");
+                        $(".code1").css("background-color", "#b4b2b3");
+                        //下面就是实现倒计时的效果代码
+                        var d = new Date();
+                        d.setSeconds(d.getSeconds() + 59);
+                        var m = d.getMonth() + 1;
+                        var time = d.getFullYear() + '-' + m + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+                        var id = ".code1";
+                        var end_time = new Date(Date.parse(time.replace(/-/g, "/"))).getTime(),
+                            sys_second = (end_time - new Date().getTime()) / 1000;
+                        var timer = setInterval(function() {
+                                if (sys_second > 1) {
+                                    sys_second -= 1;
+                                    var day = Math.floor((sys_second / 3600) / 24);
+                                    var hour = Math.floor((sys_second / 3600) % 24);
+                                    var minute = Math.floor((sys_second / 60) % 60);
+                                    var second = Math.floor(sys_second % 60);
+                                    var time_text = '';
+                                    if (day > 0) {
+                                        time_text += day + '天';
+                                    }
+                                    if (hour > 0) {
+                                        if (hour < 10) {
+                                            hour = '0' + hour;
+                                        }
+                                        time_text += hour + '小时';
+                                    }
+                                    if (minute > 0) {
+                                        if (minute < 10) {
+                                            minute = '0' + minute;
+                                        }
+                                        time_text += minute + '分';
+                                    }
+                                    if (second > 0) {
+                                        if (second < 10) {
+                                            second = '0' + second;
+                                        }
+                                        time_text += second + '秒后,重新获取';
+                                    }
+                                    $(id).text(time_text);
+                                } else {
+                                    clearInterval(timer);
+                                    $(".code1").attr("disabled", false);
+                                    $(".code1").text('重新获取');
+                                    $(".code1").css("background-color", "#f67a62");
+                                }
+                            },
+                            1000);
+                    }else{
+                        alert("发送失败，请再试一次。");
+                    }
+                },
+                error: function (data, status) {
+                    console.log(data);
+                }
+            });
+        });
+
+
+        //验证验证码和手机发送的验证码是否一致
+        $('body').delegate('.demand2', 'click', function () {
+            var $url = "{:url('frontend/member/mobileCodeValidate')}";
+            var $data = {
+                "mobile": $("#mobile").val(),
+                "code": $(".code").val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: $url,
+                data: $data,
+                dataType: "json",
+                success: function (data, status) {
+                    console.table(data);
+                    if (data.code == 200) {
+                        alert(data.msg);
+                    } else {
+                        alert("验证码不正确！");
+                    }
+                },
+                error: function (data, status) {
+                    alert(status);
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
+
+
+

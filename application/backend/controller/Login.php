@@ -100,8 +100,20 @@ class Login extends Controller
         $this->view->engine->layout(false);
         //1 验证数据
         if ($request->isPost()) {
+            $autoLogin = input('post.autoLogin');
+            $email = input('post.email');
+            $password = input('post.password');
             $res = (new Admin())->login(input("post."));
             if ($res['valid']) {
+                // 自动登录设置
+                if($autoLogin == 1){
+                    setcookie('username',$email,strtotime('+7 days'));
+                    $salt = 'Tinywan';
+                    $auth = md5($email.$password.$salt);
+                    setcookie('auth',$auth,strtotime('+7 days'));
+                }else{
+                    setcookie('username',$email);
+                }
                 //success
                 add_operation_log($res['msg']);
                 $this->success($res['msg'], "backend/entry/index");

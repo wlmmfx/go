@@ -12,9 +12,11 @@
 namespace app\frontend\controller;
 
 
+use app\common\controller\BaseFrontend;
 use EasyWeChat\Foundation\Application;
+use think\Log;
 
-class WeChat
+class WeChat extends BaseFrontend
 {
     public function index()
     {
@@ -24,18 +26,29 @@ class WeChat
     }
 
     /**
-     * home
+     * 来设置消息处理函数
+     */
+    public function setMessageHandler()
+    {
+        $server = self::easyWeChatApp()->server;
+        $server->setMessageHandler(function ($message) {
+            return "您好！欢迎关注我!";
+        });
+        $response = $server->serve();
+        $response->send();
+        return $response;
+    }
+
+    /**
+     * profile
      */
     public function profile()
     {
-        $app = new Application(config('easywechat'));
-        $oauth = $app->oauth;
+        $oauth = self::easyWeChatApp()->oauth;
         // 未登录
         if (empty($_SESSION['wechat_user'])) {
-            $_SESSION['target_url'] = 'user/profile';
+            $_SESSION['target_url'] = 'https://www.tinywan.com/frontend/we_chat/profile';
             return $oauth->redirect();
-            // 这里不一定是return，如果你的框架action不是返回内容的话你就得使用
-            // $oauth->redirect()->send();
         }
         // 已经登录过
         $user = $_SESSION['wechat_user'];
@@ -47,12 +60,20 @@ class WeChat
      */
     public function oauth_callback()
     {
-        $app = new Application(config('easywechat'));
-        $oauth = $app->oauth;
+        $oauth = self::easyWeChatApp()->oauth;
         // 获取 OAuth 授权结果用户信息
         $user = $oauth->user();
         $_SESSION['wechat_user'] = $user->toArray();
         $targetUrl = empty($_SESSION['target_url']) ? '/' : $_SESSION['target_url'];
         header('location:' . $targetUrl); // 跳转到 user/profile
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public function getUserInfo()
+    {
+        $user = self::easyWeChatApp()->oauth->user();
+        halt($user);
     }
 }

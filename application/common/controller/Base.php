@@ -13,6 +13,7 @@ namespace app\common\controller;
 
 use aliyun\oss\Oss;
 use app\common\model\TaskList;
+use EasyWeChat\Foundation\Application;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use think\Controller;
@@ -22,6 +23,8 @@ class Base extends Controller
 {
     // 任务实例
     public $task_db;
+
+    public static $easywechat_instance;
 
     // 自定义状态码
     static $return_code = [
@@ -169,9 +172,29 @@ class Base extends Controller
     /**
      * 根据视频$videoId获取唯一的任务执行ID签名序号
      * @param $videoId
+     * @return string
+     * @static
      */
-    public static function getVideoEditTaskId($videoId){
-        return md5(time().$videoId);
+    public static function getVideoEditTaskId($videoId)
+    {
+        return md5(time() . $videoId);
+    }
+
+    /**
+     * 实例化一个EasyWeChat实例
+     * @return Application
+     * @static
+     */
+    public static function easyWeChatApp()
+    {
+        try {
+            if (is_null(self::$easywechat_instance)) {
+                static::$easywechat_instance = new Application(config('easywechat'));
+            }
+            return static::$easywechat_instance;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
 }

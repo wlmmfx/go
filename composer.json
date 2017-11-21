@@ -45,7 +45,8 @@
         "aliyuncs/oss-sdk-php": "^2.2",
         "chrisboulton/php-resque": "1.2.x",
         "topthink/think-image": "^1.0",
-        "ethanhann/redisearch-php": "^0.8.0"
+        "ethanhann/redisearch-php": "^0.8.0",
+        "overtrue/wechat": "~3.1"
     },
     "autoload": {
         "psr-4": {

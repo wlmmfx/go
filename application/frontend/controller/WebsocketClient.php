@@ -20,7 +20,7 @@ class WebsocketClient extends BaseFrontend
     const SERVER_USER_NAME = "www";
     const SERVER_AUTH = "12312";
     const SERVER_IP = "www.tinywan.com";
-    const WS_SERVER_PORT = "8081";
+    const WS_SERVER_PORT = "4431";
     const SHELL_SCRIPT_PATH = "/home/www/web/go-study-line/shell/auto-install/";
 
     /**

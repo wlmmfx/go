@@ -70,9 +70,9 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row"
-                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                 style="border: 1px dashed #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
                 <div class="col-sm-4">
-                    <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
+                    <video id="live-stream" style="height: 100%; width: 100%;" class="video-js vjs-default-skin" controls autoplay>
                         <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
                                 type="video/mp4">
                     </video>
@@ -103,7 +103,7 @@
         </div>
     </div>
     <p></p>
-    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+    <div class="row" style="border: 1px dashed #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-lg-12" style="height: 200px; margin-bottom: 10px; margin-right: 10px;">
@@ -281,10 +281,6 @@
 <script src="__COMMON__/videojs/videojs/video.js"></script>
 <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
-    var options = {
-        width: 540,
-        height: 280
-    }
     var player = videojs('live-stream', options);
     player.addClass('vjs-matrix');
 

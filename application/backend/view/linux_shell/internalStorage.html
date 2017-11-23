@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="panel panel-info">
             <div class="panel-heading">
                 系统负载/网络流量实时监控信息
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="panel panel-info">
             <div class="panel-heading">
                 实时监控在线人员
@@ -225,8 +225,8 @@
             $('#server-run-time').text(server_run_days);
             $('#wsUsed').text(wsUsed + "(" + moniDataUnit + ")");
             $('#wsSurplus').text(wsSurplus + "(" + moniDataUnit + ")");
-            $('#ifconfig_input').text(ifconfig_input + ' (bytes) 【 约' + bytesToSize(ifconfig_input) + ' 】');
-            $('#ifconfig_output').text(ifconfig_output + ' (bytes) 【 约' + bytesToSize(ifconfig_output) + ' 】');
+            $('#ifconfig_input').text(ifconfig_input + ' (bytes)');
+            $('#ifconfig_output').text(ifconfig_output + ' (bytes)');
         };
 
         //----------highcharts的图标插件部分--------------

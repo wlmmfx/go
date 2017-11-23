@@ -408,6 +408,7 @@
                     </form>
                     <!-- PAGE CONTENT ENDS -->
                 </div>
+
                 <!-- 微信配置 -->
                 <div id="wechat-config" class="tab-pane">
                     <!-- PAGE CONTENT BEGINS -->
@@ -419,18 +420,101 @@
                                         class="label label-xlg arrowed-right arrowed-in-right">微信公众号配置信息</span></th>
                             </tr>
                             <tr>
-                                <td width='10%' align='right'>APP_ID：</td>
+                                <td width='10%' align='right'>Debug 模式：</td>
                                 <td>
                                     <input type="text" class="col-sm-3" name='APP_ID'
-                                           value='{$Think.config.wechat.APP_ID}'
+                                           value='{$Think.config.easywechat.debug}'
                                            class='len400'/>
                                 </td>
                             </tr>
                             <tr>
-                                <td align='right'>APP_SECRET：</td>
+                                <td width='10%' align='right'>app_id：</td>
                                 <td>
-                                    <input type="text" class="col-sm-3" name='APP_SECRET'
-                                           value='{$Think.config.wechat.APP_SECRET}' class='len400'/>
+                                    <input type="text" class="col-sm-3" name='app_id'
+                                           value='{$Think.config.easywechat.app_id}'
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>secret：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='secret'
+                                           value='{$Think.config.easywechat.secret}'
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>token：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='token'
+                                           value='{$Think.config.easywechat.token}'
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>aes_key：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='aes_key'
+                                           value='{$Think.config.easywechat.aes_key}'
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>日志level：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='level'
+                                           value="{$Think.config.easywechat.log['level']}"
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width='10%' align='right'>日志permission：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='permission'
+                                           value="{$Think.config.easywechat.log['permission']}"
+                                           class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>日志file：</td>
+                                <td>
+                                    <input type="text" class="col-sm-4" name='file'
+                                           value="{$Think.config.easywechat.log['file']}" class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>【OAuth】scopes：{$Think.config.easywechat.oauth.scopes}</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='scopes'
+                                           value="{$Think.config.easywechat.oauth['scopes'][0]}" class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>【OAuth】callback ：</td>
+                                <td>
+                                    <input type="text" class="col-sm-4" name='callback'
+                                           value="{$Think.config.easywechat.oauth['callback']}" class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>【支付】merchant_id：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='file'
+                                           value="{$Think.config.easywechat.payment['merchant_id']}" class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>【支付】key：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='file'
+                                           value="{$Think.config.easywechat.payment['key']}" class='len400'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='right'>【支付】cert_path：</td>
+                                <td>
+                                    <input type="text" class="col-sm-3" name='file'
+                                           value="{$Think.config.easywechat.payment['cert_path']}" class='len400'/>
                                 </td>
                             </tr>
                             <tr>

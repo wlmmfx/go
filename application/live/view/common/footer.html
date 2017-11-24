@@ -68,97 +68,98 @@
             var day = $(this).attr("data");
             $(".choose").removeClass("hov");
             $(this).addClass("hov");
-        })
-
-        if ("web" == "web") {
-            $('.carousel-inner').quake({
-                effects: ['blind', 'linearPealReverse', 'diagonalFade', 'barsUp', 'barsDown', 'blindFade', 'explode',
-                    'explodeFancy', 'mixBars', 'mixBarsFancy', 'fade', 'blindFadeReverse', 'slideIn', 'slideInFancy',
-                    'slideLeft', 'slideRight', 'slideUp', 'slideDown', 'fallingBlindFade', 'raisingBlindFade'],
-                thumbnails: true,
-                captionOpacity: '0.3'
-            });
-            /*			    $('.one-time').slick({
-             dots: false,
-             slidesToShow: 6,
-             slidesToScroll: 1,
-             touchMove: false,
-             })*/
-            slide();
-            $('.secondtime').slick({
-                dots: false,
-                slidesToShow: 6,
-                slidesToScroll:6,
-                touchMove: false
-                /*       autoplay: true,
-                 autoplaySpeed: 5000*/
-            });
-
-            /*主页主办方动画*/
-            $('.organizerchange li').click(function(){
-                if($(this).hasClass('active')){
-                    return;
-                }
-                var index=$(this).index();
-                $(this).addClass('active').siblings().removeClass('active');
-                /*  if(index==0){
-                 $('.home_or_tj_list').eq(index).show();
-                 $('.home_or_tj_list').eq(1).hide()
-                 }else{
-                 $('.home_or_tj_list').eq(0).hide()
-                 $('.home_or_tj_list').eq(index).show()
-                 }*/
-                $('.home_or_tj_list').eq(0).animate({marginLeft:-1280*index+'px'})
-            })
-
-            /*    var  timer=setInterval("change()",5000);
-             $('.home_or_tj_list').mouseenter(function(){
-             clearInterval(timer)
-             })
-             $('.home_or_tj_list').mouseleave(function(){
-             timer=setInterval("change()",5000);
-             })*/
-
-
-        } else {
-            $(function () {
-                var $ol = $('.carousel-indicators');
-                $ol.find('li').eq(0).addClass('active');
-                var $div = $('.carousel-inner');
-                $div.find('.item').eq(0).addClass('active');
-            });
-            $(function () {
-                var count = 0;
-                $("[data-target='#carousel-example-generic_mobile']").each(function () {
-                    $(this).attr("data-slide-to", count++);
-                });
-            });
-        }
-        $("img.img_lazy").lazyload({threshold: 100, effect: "fadeIn"});
-    });
-
-    $(function(){
-        var lang = "ch";
-        $('#datetimepicker2').unbind().click(function(){
-            $('#datetimepicker2').datetimepicker("show");
-
         });
 
-        $("#datetimepicker2").datetimepicker({
-            linkField:"startTime",
-            lang : lang,
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            minView : "2"
-        }).on('changeDate', function(ev){
+//        if ("web" == "web") {
+//            $('.carousel-inner').quake(
+//                {
+//                effects: ['blind', 'linearPealReverse', 'diagonalFade', 'barsUp', 'barsDown', 'blindFade', 'explode',
+//                    'explodeFancy', 'mixBars', 'mixBarsFancy', 'fade', 'blindFadeReverse', 'slideIn', 'slideInFancy',
+//                    'slideLeft', 'slideRight', 'slideUp', 'slideDown', 'fallingBlindFade', 'raisingBlindFade'],
+//                thumbnails: true,
+//                captionOpacity: '0.3'
+//            });
+//            /*			    $('.one-time').slick({
+//             dots: false,
+//             slidesToShow: 6,
+//             slidesToScroll: 1,
+//             touchMove: false,
+//             })*/
+//            slide();
+//            $('.secondtime').slick({
+//                dots: false,
+//                slidesToShow: 6,
+//                slidesToScroll:6,
+//                touchMove: false
+//                /*       autoplay: true,
+//                 autoplaySpeed: 5000*/
+//            });
+//
+//            /*主页主办方动画*/
+//            $('.organizerchange li').click(function(){
+//                if($(this).hasClass('active')){
+//                    return;
+//                }
+//                var index=$(this).index();
+//                $(this).addClass('active').siblings().removeClass('active');
+//                /*  if(index==0){
+//                 $('.home_or_tj_list').eq(index).show();
+//                 $('.home_or_tj_list').eq(1).hide()
+//                 }else{
+//                 $('.home_or_tj_list').eq(0).hide()
+//                 $('.home_or_tj_list').eq(index).show()
+//                 }*/
+//                $('.home_or_tj_list').eq(0).animate({marginLeft:-1280*index+'px'})
+//            })
+//
+//            /*    var  timer=setInterval("change()",5000);
+//             $('.home_or_tj_list').mouseenter(function(){
+//             clearInterval(timer)
+//             })
+//             $('.home_or_tj_list').mouseleave(function(){
+//             timer=setInterval("change()",5000);
+//             })*/
+//
+//
+//        } else {
+//            $(function () {
+//                var $ol = $('.carousel-indicators');
+//                $ol.find('li').eq(0).addClass('active');
+//                var $div = $('.carousel-inner');
+//                $div.find('.item').eq(0).addClass('active');
+//            });
+//            $(function () {
+//                var count = 0;
+//                $("[data-target='#carousel-example-generic_mobile']").each(function () {
+//                    $(this).attr("data-slide-to", count++);
+//                });
+//            });
+//        }
+//        $("img.img_lazy").lazyload({threshold: 100, effect: "fadeIn"});
+    });
 
-            setTimeout(function(){
-                var startTime = $('#startTime').val();
-                startTime = startTime.substring(0,10);
-                location.href="/eventlist?datetime="+startTime;
-            })
-        })
-    })
+//    $(function(){
+//        var lang = "ch";
+//        $('#datetimepicker2').unbind().click(function(){
+//            $('#datetimepicker2').datetimepicker("show");
+//
+//        });
+//
+//        $("#datetimepicker2").datetimepicker({
+//            linkField:"startTime",
+//            lang : lang,
+//            autoclose: true,
+//            format: "yyyy-mm-dd",
+//            minView : "2"
+//        }).on('changeDate', function(ev){
+//
+//            setTimeout(function(){
+//                var startTime = $('#startTime').val();
+//                startTime = startTime.substring(0,10);
+//                location.href="/eventlist?datetime="+startTime;
+//            })
+//        })
+//    })
 
     /*主页主办方动画*/
     var i=0;

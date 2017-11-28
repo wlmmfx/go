@@ -41,12 +41,19 @@ class Wedding extends BaseBackend
         ]);
     }
 
+    /**
+     * 数据库连接测试
+     */
     public function connection(){
 
         $content = $this->_db->table('wx_accounts')->select();
         halt($content);
     }
 
+    /**
+     * 显示祝福内容
+     * @return mixed
+     */
     public function wechatContent(){
         $content = $this->_db->table('feeds')
             ->alias('f')

@@ -32,9 +32,12 @@
                 <td>{$vo['createTime']}</td>
                 <td>{$vo['country']}、{$vo['province']}、{$vo['city']}</td>
                 <td>
+                    <a href="javascript:editHanderModal({$vo['id']},0);" class="btn btn-warning btn-xs" >
+                        <i class="icon-edit"></i>编辑
+                    </a>
                     {switch name="vo['visible']"}
                     {case value="1"}
-                    <a href="javascript:delHanderModal({$vo['id']},0);" class="btn btn-mini btn-xs" >
+                    <a href="javascript:delHanderModal({$vo['id']},0);" class="btn btn-purple btn-xs" >
                         <i class="icon-eye-close"></i>隐藏
                     </a>
                     {/case}

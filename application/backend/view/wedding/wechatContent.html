@@ -1,0 +1,119 @@
+<div class="row">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>#ID</th>
+            <th>微信昵称</th>
+            <th>状态</th>
+            <th>祝福内容</th>
+            <th>时间</th>
+            <th>登陆信息</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name='contents' id='vo'}
+            <tr class="gradeX" id="tag-{$vo['id']}">
+                <td>{$vo['id']}</td>
+                <td><img src="{$vo['headImgUrl']}" style="width: 40px;border-radius: 40px;"> <span style="color: #1a67bd">{$vo['nickName']}</span></td>
+                <td>
+                    {switch name="vo['visible']"}
+                    {case value="1"}
+                    <i class="icon-eye-open"></i>
+                    {/case}
+                    {case value="0"}
+                    <i class="icon-eye-close"></i>
+                    {/case}
+                    {default /}
+                    <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;未知</span>
+                    {/switch}
+                </td>
+                <td>{$vo['msg']}</td>
+                <td>{$vo['createTime']}</td>
+                <td>{$vo['country']}、{$vo['province']}、{$vo['city']}</td>
+                <td>
+                    {switch name="vo['visible']"}
+                    {case value="1"}
+                    <a href="javascript:delHanderModal({$vo['id']},0);" class="btn btn-mini btn-xs" >
+                        <i class="icon-eye-close"></i>隐藏
+                    </a>
+                    {/case}
+                    {case value="0"}
+                    <a href="javascript:delHanderModal({$vo['id']},1);" class="btn btn-success btn-xs" >
+                        <i class="icon-eye-open"></i>显示
+                    </a>
+                    {/case}
+                    {default /}
+                    <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
+                    {/switch}
+                </td>
+            </tr>
+        {/volist}
+        </tbody>
+    </table>
+    <div>{$contents->render()}</div>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    确定执行该操作吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger del-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var $tag_id;
+    var $tag_visible;
+    function delHanderModal(id,visible) {
+        $tag_id = id;
+        $tag_visible = visible;
+        $("#delHanderModal").modal("show");
+    }
+    $(document).ready(function(){
+        $('body').delegate('.del-hander', 'click', function () {
+            $("#delHanderModal").modal("hide");
+            var $url = "{:url('backend/wedding/delContent')}";
+            var $_data = {
+                'id': $tag_id,
+                'visible': $tag_visible
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+//                        $('#tag-' + $tag_id).remove();
+                        window.location.reload();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+    });
+</script>

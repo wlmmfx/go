@@ -59,7 +59,7 @@ class Wedding extends BaseBackend
             ->alias('f')
             ->join('wx_accounts w','f.accountID = w.accountID')
             ->order('f.id desc')
-            ->paginate(6);
+            ->paginate(12);
         $this->assign('contents',$content);
         return $this->fetch();
     }

@@ -12,8 +12,6 @@
 
 namespace app\socket\controller;
 
-use app\common\controller\Base;
-use app\frontend\controller\Redis;
 use redis\BaseRedis;
 use redis\MsgRedis;
 use think\worker\Server;

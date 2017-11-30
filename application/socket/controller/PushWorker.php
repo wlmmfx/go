@@ -12,7 +12,6 @@
 
 namespace app\socket\controller;
 
-use redis\BaseRedis;
 use redis\MsgRedis;
 use think\worker\Server;
 use Workerman\Lib\Timer;
@@ -46,19 +45,9 @@ class PushWorker extends Server
     }
 
     /**
-     * 消息Redis实例
-     * @return \Redis
-     * @static
-     */
-    public static function redis()
-    {
-        return BaseRedis::message();
-    }
-
-    /**
      * 接受发送消息
      * @param $connection
-     * @param $data
+     * @param $message
      */
     public function onMessage($connection, $message)
     {
@@ -71,7 +60,7 @@ class PushWorker extends Server
             $connection->user_name = $clientData['user_name'];
 //            $room_id = $clientData['room_id'];
             //统计客户端的信息等业务,进入房间的人数增长，自增
-            MsgRedis::saveLateComments('L80001',json_encode($clientData['content']));
+//            MsgRedis::saveLateComments('L80001',json_encode($clientData['content']));
             // 广播给所有用户，该用户加入
             $sendData = json_encode(['type' => $clientData['type'],
                 'data' => $connection->user_name,

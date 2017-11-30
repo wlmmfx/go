@@ -27,7 +27,7 @@ class Wedding extends BaseBackend
             // 服务器地址
             'hostname'    => 'rdshcnvt1o401vaib374.mysql.rds.aliyuncs.com',
             // 数据库名
-            'database'    => 'tinywan_wedding',
+            'database'    => 'resty',
             // 数据库用户名
             'username'    => 'tinywan_test',
             // 数据库密码

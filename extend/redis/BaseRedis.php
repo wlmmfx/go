@@ -26,6 +26,7 @@ class BaseRedis
      */
     private function __construct()
     {
+
     }
 
     /**
@@ -62,10 +63,13 @@ class BaseRedis
      * $redis->set('key', 'value');
      * </pre>
      */
-    public static function session()
+    public static function message()
     {
         try {
-            $_connectSource = self::instance()->connect(self::ConfigFile()->redis->redis->path, self::ConfigFile()->redis->redis->port);
+            $_connectSource = self::instance()->connect(config('redis.message')['host'], config('redis.message')['port']);
+            if (config('redis.message')['host']) {
+                self::instance()->auth(config('redis.message')['host']);
+            }
             if ($_connectSource === FALSE) return FALSE;
             return static::$_instance;
         } catch (\Exception $e) {

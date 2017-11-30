@@ -12,6 +12,7 @@ namespace app\api\controller;
 
 
 use Faker\Factory;
+use redis\BaseRedis;
 use think\Controller;
 use think\Db;
 
@@ -75,33 +76,9 @@ class Faker extends Controller
     }
 
     public function book(){
-        $sign = input('param.sign');
-        if (empty($sign)) {
-            $resJson = [
-                'code' => 500,
-                'msg' => 'param sign is null',
-                'data' => null
-            ];
-        } else {
-            $faker = new Boo;
-            $fakerName = [];
-            for ($i=0; $i < 10; $i++) {
-                $fakerName[] = [
-                    'userName'=>$faker->name,
-                    'Email'=>$faker->email,
-                    'Company'=>$faker->company,
-                    'Address'=>$faker->address,
-                    'Image'=>$faker->imageUrl($width = 640, $height = 480,'cats', true, 'Faker', true),
-                    'Content'=>$faker->text($maxNbChars = 200),
-                    'DateTime'=>$faker->dateTimeThisCentury($max = 'now', $timezone = date_default_timezone_get()),
-                ];
-            }
-            $resJson = [
-                'code' => 200,
-                'msg' => 'success',
-                'data' =>$fakerName
-            ];
-        }
-        return json($resJson);
+        $redis = BaseRedis::location();
+        halt($redis->lRange('L80001CommentsLate',0,10));
+        $redis->set("USERNAME",'Tinywan');
+        halt($redis);
     }
 }

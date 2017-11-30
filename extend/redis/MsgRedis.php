@@ -20,7 +20,7 @@ class MsgRedis
      */
     public static function redisInstance()
     {
-        return BaseRedis::msgRedis();
+        return BaseRedis::location();
     }
 
     /**

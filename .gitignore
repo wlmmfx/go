@@ -3,4 +3,3 @@ database.php
 *.log
 runtime/*
 vendor/*
-.idea/*

@@ -3,7 +3,7 @@ return [
     'app_status'          => 'office',    //home office  通过这里可以切换配置文件home.php 和office.php的配置文件
     'app_author'          => 'Tinywan',
     'app_email'          => '756684177@qq.com',
-    'app_debug'              => true,
+    'app_debug'              => false,
     // 默认的空控制器名
     'empty_controller'       => 'Error',
     // 入口自动绑定模块

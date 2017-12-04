@@ -55,7 +55,7 @@ class MysqlSession implements \SessionHandlerInterface
      * Initialize session
      * @since 5.4.0
      */
-    public function open($save_path, $name)
+    public function open($save_path,$session_name)
     {
         try{
             $this->_lift_time = get_cfg_var("session.gc_maxlifetime");
@@ -92,13 +92,14 @@ class MysqlSession implements \SessionHandlerInterface
      * Write session data
      * @since 5.4.0
      */
-    public function write($session_id, $session_data)
+    public function write( $session_id,  $session_data)
     {
         $newExp = $this->_lift_time + time();
         // mysql_escape_string --  转义一个字符串用于 mysql_query
         $session_id = mysqli_escape_string($this->_link, $session_id);
         //首选查询session_id 是否存在，如果存在则更新数据，否则是第一次写入数据
         $sql = "select * from resty_session WHERE session_id=" . $session_id;
+        echo $sql;
         $result = mysqli_query($this->_link, $sql);
         /**
          * mysql_num_rows() 返回结果集中行的数目。此命令仅对 SELECT 语句有效。

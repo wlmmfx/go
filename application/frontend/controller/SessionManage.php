@@ -12,6 +12,8 @@ namespace app\frontend\controller;
 
 
 use session\MysqlSession;
+use session\RedisSession;
+use think\Config;
 
 class SessionManage
 {
@@ -27,8 +29,8 @@ class SessionManage
         $_SESSION['name'] = 'Tinywan';
         $_SESSION['age'] = 24;
         $_SESSION['Github'] = 'github.com/Tinywan';
-        echo "Session 的名字：",session_name(),"<br/>";
-        echo "Session id：",session_id(),"<br/>";
+        echo "Session 的名字：", session_name(), "<br/>";
+        echo "Session id：", session_id(), "<br/>";
         // 获取session中的数据
         var_dump($_SESSION);
         return 1;
@@ -40,14 +42,14 @@ class SessionManage
         $_SESSION['cookie_name'] = 'Cookie';
         $_SESSION['cookie_time'] = "1小时";
         //保存一个数组
-        $data =[
-            'id'=>1002,
-            'age'=>24,
-            'name'=>"Tinywan"
+        $data = [
+            'id' => 1002,
+            'age' => 24,
+            'name' => "Tinywan"
         ];
         $_SESSION['user1002'] = $data;
         // 设置Session 保存周期
-        setcookie(session_name(),session_id(),time()+3600);
+        setcookie(session_name(), session_id(), time() + 3600);
         print_r($_SESSION);
         return 1;
     }
@@ -56,20 +58,38 @@ class SessionManage
      * session MySQl存储
      * @return int
      */
-    public function sessionSaveMySQL()
+    public function mysqlSession()
     {
-        try{
-        $session = new MysqlSession();
-        // 自定义回话管理器
-        ini_set('session.save_handler','user');
-        session_set_save_handler($session,true);
+        var_dump(Config::get('session'));
+//        try {
+//            $session = new MysqlSession();
+//            // 自定义回话管理器
+//            ini_set('session.save_handler', 'user');
+//            session_set_save_handler($session);
+//            session_start();
+//            $_SESSION['name'] = 23;
+//            $_SESSION['username'] = "Tinywan";
+////            var_dump($session);
+//        } catch (\Exception $e) {
+//            echo 1;
+//        }
+    }
+
+    /**
+     * Redis 操作Session
+     */
+    public function redisSession01()
+    {
+        $config = [
+            'host'=>'127.0.0.1',
+            'port'=>6379
+        ];
+        $redis = new RedisSession($config);
+        $redis->begin();
+        // 这也是必须的，打开session，必须在session_set_save_handler后面执行
         session_start();
-        $_SESSION['age'] = 24;
-        $_SESSION['username'] = "Tinywan";
-        $save_path=1; $name=1;
-        var_dump($session);
-        }catch (\Exception $e){
-            var_dump($e->getMessage());
-        }
+        $_SESSION['RedisName'] = "RedisSession";
+        $_SESSION['RedisAge'] = 11;
+        print_r($_SESSION);
     }
 }

@@ -45,9 +45,12 @@ class Faker extends Controller
      * 测试数据
      * @return \think\response\Json
      */
-    public function user1(){
+    public function user1()
+    {
+        //如果需要设置允许所有域名发起的跨域请求，可以使用通配符 *
+        header('Access-Control-Allow-Origin:*');
         $sign = input('param.sign');
-        if (empty($sign)) {
+        if (empty($sign) || $sign!='hehuiyun') {
             $resJson = [
                 'code' => 500,
                 'msg' => 'param sign is null',

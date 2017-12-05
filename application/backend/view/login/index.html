@@ -88,8 +88,7 @@
                                         <fieldset>
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="text" class="form-control email" placeholder="邮箱"
-                                                           name="email"/>
+                                                    <input type="text" class="form-control email" placeholder="邮箱" value="{$Think.cookie.username}" name="email"/>
                                                     <i class="icon-user"></i>
                                                 </span>
                                             </label>
@@ -97,10 +96,11 @@
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
                                                     <input type="password" class="form-control password"
-                                                           placeholder="密码" name="password" minlength="6" maxlength="32"/>
+                                                           placeholder="密码" name="password" value="{$Think.cookie.passwd}" minlength="6" maxlength="32"/>
                                                     <i class="icon-lock"></i>
                                                 </span>
                                             </label>
+
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
                                                             <img src="{:captcha_src()}" alt="captcha" class="verifyCode" onclick="this.src=this.src+'?'+Math.random()"/>
@@ -119,8 +119,12 @@
 
                                             <div class="clearfix">
                                                 <label class="inline">
-                                                    <input type="checkbox" class="ace" name="autoLogin" value="1"/>
-                                                    <span class="lbl"> 记住我（一周之内）</span>
+                                                    {if condition="$Think.cookie.remember eq 'on'"}
+                                                    <input type="checkbox" checked="checked" class="ace" name="remember" value="1"/>
+                                                    {else /}
+                                                    <input type="checkbox" class="ace" name="remember"/>
+                                                    {/if}
+                                                    <span class="lbl"> 记住我</span>
                                                 </label>
 
                                                 <button type="submit"

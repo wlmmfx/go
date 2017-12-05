@@ -3,7 +3,4 @@ database.php
 *.log
 runtime/*
 vendor/*
-<<<<<<< HEAD
-=======
-
->>>>>>> fda7d8a414b1c6954f9dc564debadf85826b4609
+.idea/*

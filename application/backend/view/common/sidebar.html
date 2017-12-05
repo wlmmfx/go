@@ -1,6 +1,9 @@
 <div class="sidebar" id="sidebar">
     <script type="text/javascript">
-        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -10,7 +13,7 @@
             </button>
 
             <button class="btn btn-info">
-                <a href="https://www.tinywan.com/live/index/index" target="_blank">直播</a>
+                <a href="https://www.tinywan.com/lives" target="_blank">直播</a>
             </button>
 
             <button class="btn btn-warning">
@@ -110,37 +113,62 @@
 
                 <li>
                     <a href="{:url('backend/category/index')}">
-                        <i class="icon-caret-right"></i>
+                        <i class="icon-double-angle-right"></i>
                         分类管理
                     </a>
                 </li>
 
                 <li>
                     <a href="{:url('backend/banner/index')}">
-                        <i class="icon-caret-right"></i>
+                        <i class="icon-double-angle-right"></i>
                         轮播图管理
                     </a>
                 </li>
 
                 <li>
                     <a href="{:url('backend/tag/index')}">
-                        <i class="icon-tags"></i>
+                        <i class="icon-double-angle-right"></i>
                         标签管理
                     </a>
                 </li>
 
                 <li>
                     <a href="{:url('backend/article/index')}">
-                        <i class="icon-group"></i>
+                        <i class="icon-double-angle-right"></i>
                         文章列表
                     </a>
                 </li>
+
                 <li>
-                    <a href="{:url('backend/wedding/wechatContent')}">
-                        <i class="icon-group"></i>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
                         婚礼管理
+                        <b class="arrow icon-angle-down"></b>
                     </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="{:url('backend/wedding/wechatContent')}">
+                                <i class="icon-facetime-video"></i>
+                                祝福HOME
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="http://wedding.tinywan.com/">
+                                <i class="icon-leaf"></i>
+                                弹幕管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://wedding.tinywan.com/wall">
+                                <i class="icon-dollar"></i>
+                                婚庆墙
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
             </ul>
         </li>
 
@@ -186,9 +214,30 @@
                 </li>
 
                 <li>
-                    <a href="jqgrid.html">
+                    <a href="/vts/status">
                         <i class="icon-double-angle-right"></i>
-                        磁盘监控
+                        VTS监控
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/nignx_status">
+                        <i class="icon-double-angle-right"></i>
+                        Nginx状态监控
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/server/status">
+                        <i class="icon-double-angle-right"></i>
+                        心跳健康监控
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/fpm_status">
+                        <i class="icon-double-angle-right"></i>
+                        PHP-FPM监控
                     </a>
                 </li>
             </ul>
@@ -373,6 +422,9 @@
     </div>
 
     <script type="text/javascript">
-        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+        try {
+            ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
     </script>
 </div>

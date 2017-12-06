@@ -11,7 +11,23 @@
 namespace app\common\command;
 
 
-class SwooleServer
+use Swoole\Server;
+use think\console\Command;
+use think\console\Input;
+use think\console\Output;
+
+class SwooleServer extends Command
 {
+    protected $swoole;
+
+    public function configure()
+    {
+        $this->setName('socketServer')->setDescription('This is  Swoole socket service');
+    }
+
+    public function execute(Input $input, Output $output)
+    {
+        $this->swoole = new Server();
+    }
 
 }

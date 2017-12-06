@@ -11,5 +11,6 @@
 
 return [
     'app\common\command\Test',
-    'app\common\command\Mail'
+    'app\common\command\Mail',
+    'app\common\command\SwooleServer'
 ];

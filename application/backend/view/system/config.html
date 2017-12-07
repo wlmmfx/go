@@ -58,7 +58,14 @@
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
                                 <th colspan='2'>
-                                    <a type="button" class="btn btn-purple clear-cache">清除系统缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-info optimize_route"
+                                       data-name="optimize_route">生成路由缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-purple optimize_config"
+                                       data-name="optimize_config">生成配置缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary optimize_schema"
+                                       data-name="optimize_schema">生成数据表字段缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger clear-cache"
+                                       data-name="clear_cache">清除系统缓存</a>
                                 </th>
                             </tr>
 
@@ -665,21 +672,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        // Success before include CommonJS
-        function successShow($msg) {
-            $("#auth-image").attr('src', '__COMMON__/images/success.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
-
-        // Fail before include CommonJS
-        function failShow($msg) {
-            $(".modal-body").css("color", "red");
-            $("#auth-image").attr('src', '__COMMON__/images/error.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
-
         // 基本信息修改
         $('body').delegate('.basic-config-hander', 'click', function () {
             var $url = "{:url('backend/system/basicconfig')}";
@@ -714,12 +706,14 @@
             })
         });
 
-        // 清楚缓存
-        $('body').delegate('.clear-cache', 'click', function () {
-            var $url = "{:url('backend/system/clearCache')}";
+        /**
+         * 公共Ajax
+         */
+        function commonAjax($url, $data) {
             $.ajax({
                 url: $url,
                 type: 'get',
+                data: $data,
                 dataType: "json",
                 //服务器成功响应处理函数
                 success: function ($response) {
@@ -734,6 +728,47 @@
                     alert(e);
                 }
             })
+        }
+
+        // 清楚缓存
+        $('body').delegate('.clear-cache', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
         });
+
+        // 生成路由缓存
+        $('body').delegate('.optimize_route', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 生成配置缓存
+        $('body').delegate('.optimize_config', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 生成数据表字段缓存
+        $('body').delegate('.optimize_schema', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
     });
 </script>

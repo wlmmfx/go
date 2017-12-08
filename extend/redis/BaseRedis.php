@@ -67,8 +67,8 @@ class BaseRedis
     {
         try {
             $_connectSource = self::instance()->connect(config('redis.message')['host'], config('redis.message')['port']);
-            if (config('redis.message')['host']) {
-                self::instance()->auth(config('redis.message')['host']);
+            if (config('redis.message')['auth']) {
+                self::instance()->auth(config('redis.message')['auth']);
             }
             if ($_connectSource === FALSE) return FALSE;
             return static::$_instance;

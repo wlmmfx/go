@@ -1,0 +1,1000 @@
+ 1022  vim init.sh
+ 1023  vim auto-install-package/install.sh
+ 1024  ./init.sh 
+ 1025  vim auto-install-package/install.sh
+ 1026  ./init.sh 
+ 1027  vim auto-install-package/install.sh
+ 1028  ./init.sh 
+ 1029  vim auto-install-package/install.sh
+ 1030  ./init.sh 
+ 1031  vim auto-install-package/install.sh
+ 1032  ./init.sh 
+ 1033  vim init.sh
+ 1034  ./init.sh 
+ 1035  vim init.sh
+ 1036  ./init.sh 
+ 1037  vim init.sh
+ 1038  ./init.sh 
+ 1039  vim init.sh
+ 1040  ls
+ 1041  vim init.sh
+ 1042  vim auto-install-package/install.sh
+ 1043  pwd
+ 1044  vim init.sh
+ 1045  vim auto-install-package/install.sh
+ 1046  vim init.sh
+ 1047  vim auto-install-package/install.sh
+ 1048  ls
+ 1049  vim auto-install-package/rtmp_record.sh 
+ 1050  vim auto-install-package/install.sh
+ 1051  cd auto-install-package/
+ 1052  ls
+ 1053  cp --force --backup=numbered install.sh install.sh 
+ 1054  ls
+ 1055  vim install.sh
+ 1056  ls
+ 1057  vim push-nginx.conf
+ 1058  vim push_to_node.sh
+ 1059  whereis ffmpeg
+ 1060  ls
+ 1061  vim push_to_node.sh 
+ 1062  chmod +x push_to_node.sh 
+ 1063  ls
+ 1064  vim install.sh
+ 1065  vim push_to_node.sh
+ 1066  vim rtmp_record.sh 
+ 1067  cd script/auto-install/
+ 1068  ls
+ 1069  cd auto-install-package/
+ 1070  ls
+ 1071  vim record-nginx.conf
+ 1072  ls
+ 1073  ls
+ 1074  cd build/
+ 1075  ls
+ 1076  cd ..
+ 1077  cd web/go-study-line/
+ 1078  ls
+ 1079  cd shell/
+ 1080  ls
+ 1081  cd auto-install/
+ 1082  ls
+ 1083  vim init.sh 
+ 1084  ls
+ 1085  vim init-fix.sh 
+ 1086  ls
+ 1087  cat txt.log 
+ 1088  cat text1.txt 
+ 1089  ls
+ 1090  vim cli.php 
+ 1091  php ./cli.php "192.168.1.181,192.168.1.182,192.168.1.183" "www123,www67,www433"
+ 1092  ls
+ 1093  pwd
+ 1094  php ./cli.php "192.168.1.181,192.168.1.182,192.168.1.183" "www123,www67,www433"
+ 1095  cat init-php-cli.sh 
+ 1096  ls
+ 1097  cat run.php 
+ 1098  cat cli.php 
+ 1099  vim cli.php 
+ 1100  php ./cli.php "192.168.1.181,192.168.1.182,192.168.1.183" "www123,www67,www433"
+ 1101  ls
+ 1102  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1103  vim cli.php 
+ 1104  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1105  vim cli.php 
+ 1106  ;s
+ 1107  ls
+ 1108  vim init-fix.sh 
+ 1109  ls
+ 1110  vim cli.php 
+ 1111  vim init-fix.sh 
+ 1112  php ./cli.php 
+ 1113  vim cli.php 
+ 1114  php ./cli.php 
+ 1115  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1116  ls
+ 1117  vim init-fix.sh 
+ 1118  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1119  ls
+ 1120  cat text1.txt 
+ 1121  sudo websocketd --port=63804 --ssl --sslcert="/etc/letsencrypt/live/www.tinywan.com/fullchain.pem" --sslkey="/etc/letsencrypt/live/www.tinywan.com//privkey.pem" ./read-line.sh
+ 1122  ls
+ 1123  vim /usr/local/openresty/nginx/conf/nginx.conf
+ 1124  man cp
+ 1125  cd bin/
+ 1126  ls
+ 1127  pwd
+ 1128  ls
+ 1129  cd bin/
+ 1130  ls
+ 1131  cp rtmp_record.sh /home/www/script/auto-install/auto-install-package/
+ 1132  vim rtmp_record.sh 
+ 1133  cd ~
+ 1134  ls
+ 1135  cd script/
+ 1136  ls
+ 1137  cd auto-install/
+ 1138  ls
+ 1139  vim init.sh 
+ 1140  cd ~
+ 1141  ls
+ 1142  cd bin/logs/
+ 1143  ls
+ 1144  cd ~
+ 1145  ls
+ 1146  cd web/go-study-line/
+ 1147  ls
+ 1148  cd shell/
+ 1149  ls
+ 1150  cd auto-install/
+ 1151  ls
+ 1152  vim read-line.sh 
+ 1153  cat shell.log 
+ 1154  ls
+ 1155  su - root
+ 1156  cd /usr/local/openresty/nginx/
+ 1157  ls
+ 1158  cd conf/
+ 1159  ls
+ 1160  cd vhost
+ 1161  ls
+ 1162  vim live.tinywan.com.conf 
+ 1163  cd ~
+ 1164  ls
+ 1165  cd web/go-study-line/
+ 1166  ls
+ 1167  cd shell/auto-install/
+ 1168  ls
+ 1169  cat text1.txt 
+ 1170  history 
+ 1171  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1172  vim cli.php 
+ 1173  ls
+ 1174  vim init-fix.sh 
+ 1175  cp --force --backup=numbered init-fix.sh init-fix.sh 
+ 1176  ls
+ 1177  rm txt.log 
+ 1178  cat run.php 
+ 1179  ls
+ 1180  cat server_num.sh 
+ 1181  q1
+ 1182  ls
+ 1183  vim init-fix.sh
+ 1184  ls
+ 1185  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1186  man ln
+ 1187  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1188  ls
+ 1189  vim init-fix.sh
+ 1190  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1191  ls
+ 1192  cd web/go-study-line/shell/
+ 1193  ls
+ 1194  cd auto-install/
+ 1195  ls
+ 1196  echo " " > shell.log 
+ 1197  tail -f -n 1000 shell.log 
+ 1198  echo " " > shell.log 
+ 1199  tail -f -n 1000 shell.log 
+ 1200  echo pwd
+ 1201  pwd
+ 1202  tail -f -n 1000 shell.log 
+ 1203  cd script/
+ 1204  ls
+ 1205  cd auto-install/
+ 1206  ls
+ 1207  vim init.sh
+ 1208  cd auto-install-package/
+ 1209  ls
+ 1210  mkdir conf
+ 1211  cd conf/
+ 1212  ls
+ 1213  cd ..
+ 1214  ls
+ 1215  ls -lh
+ 1216  cd conf/
+ 1217  ls
+ 1218  chmod +x nginx-push.conf 
+ 1219  ls
+ 1220  cd ..
+ 1221  ls
+ 1222  vim install.sh
+ 1223  cd ..
+ 1224  ls
+ 1225  ./init.sh
+ 1226  vim auto-install-package/install.sh
+ 1227  vim init.sh
+ 1228  ./init.sh
+ 1229  cd auto-install-package/
+ 1230  ls
+ 1231  vim install.sh
+ 1232  ls
+ 1233  vim install.sh
+ 1234  osscmd 
+ 1235  vim install.sh
+ 1236  ls
+ 1237  vim rtmp_record.sh 
+ 1238  sudo find / -name phpize
+ 1239  /usr/local/php-7.1.8/bin/phpize
+ 1240  vim install.sh
+ 1241  ls
+ 1242  cd conf/
+ 1243  ls
+ 1244  vim nginx-push.conf 
+ 1245  cd ..
+ 1246  ls
+ 1247  cd ..
+ 1248  ls
+ 1249  vim check_www.sh
+ 1250  chmod +x check_www.sh 
+ 1251  ls
+ 1252  ./check_www.sh 
+ 1253  vim check_www.sh
+ 1254  ./check_www.sh 
+ 1255  vim check_www.sh
+ 1256  ./check_www.sh 
+ 1257  vim check_www.sh
+ 1258  ./check_www.sh 
+ 1259  sudo ./check_www.sh 
+ 1260  vim check_www.sh
+ 1261  cat /etc/passwd
+ 1262  cd /home/
+ 1263  ls
+ 1264  cd www/script/
+ 1265  ls
+ 1266  cd auto-install/
+ 1267  ls
+ 1268  vim check_www.sh 
+ 1269  ls
+ 1270  vim auto-install-package/install.sh
+ 1271  ls
+ 1272  vim install.sh
+ 1273  cd auto-install-package/
+ 1274  ls
+ 1275  vim install.sh.~2~ 
+ 1276  vim install.sh
+ 1277  vim install.sh.~2~ 
+ 1278  vim install.sh
+ 1279  ls
+ 1280  vim install.sh.~3~ 
+ 1281  vim install.sh
+ 1282  osscmd 
+ 1283  osscmd config
+ 1284  osscmd info
+ 1285  osscmd --help
+ 1286  cd web/go-study-line/
+ 1287  ls
+ 1288  composer require elasticsearch/elasticsearch
+ 1289  ls
+ 1290  cat composer.json 
+ 1291  sudo systemctl restart nginx
+ 1292  sudo systemctl restart php-fpm.service 
+ 1293  sudo systemctl status php-fpm.service 
+ 1294  ls
+ 1295  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1296  ps -aux | grep nginx
+ 1297  vim /usr/local/openresty/nginx/conf/nginx.conf
+ 1298  sudo systemctl stop nginx.service
+ 1299  sudo systemctl status nginx.service
+ 1300  sudo systemctl status php-fpm.service 
+ 1301  sudo systemctl stop php-fpm.service 
+ 1302  sudo systemctl status php-fpm.service 
+ 1303  sudo systemctl start php-fpm.service 
+ 1304  sudo systemctl status php-fpm.service 
+ 1305  sudo systemctl status nginx.service
+ 1306  sudo systemctl start nginx.service
+ 1307  sudo systemctl status nginx.service
+ 1308  sudo systemctl stop nginx.service
+ 1309  sudo systemctl status nginx.service
+ 1310  ps -aux | grep nginx
+ 1311  sudo killall nginx 
+ 1312  ps -aux | grep nginx
+ 1313  sudo /usr/local/openresty/nginx/sbin/nginx -c /usr/local/openresty/nginx/conf/nginx.conf
+ 1314  ps -aux | grep nginx
+ 1315  whereis nginx
+ 1316  whereis php-fmp
+ 1317  vim /etc/init.d/nginx 
+ 1318  sudo service nginx restart 
+ 1319  sudo service nginx stop
+ 1320  ps -aux | grep nginx
+ 1321  sudo service nginx start
+ 1322  ps -aux | grep nginx
+ 1323  ls
+ 1324  cd ~
+ 1325  cd build/
+ 1326  ls
+ 1327  cd nginx-rtmp-module/
+ 1328  ls
+ 1329  cp stat.xsl /home/www/script/auto-install/auto-install-package/
+ 1330  ls
+ 1331  cd record-flv/
+ 1332  ls
+ 1333  ls -lh
+ 1334  cd ..
+ 1335  ls
+ 1336  cd record-data/
+ 1337  ls
+ 1338  cd 201710005/
+ 1339  lks
+ 1340  ls
+ 1341  cd video/
+ 1342  ls
+ 1343  cd ~
+ 1344  ls
+ 1345  cd script/
+ 1346  ls
+ 1347  cd auto-install/
+ 1348  ls
+ 1349  vim init.sh
+ 1350  cd auto-install-package/
+ 1351  ls
+ 1352  vim install.sh
+ 1353  ls
+ 1354  cd conf/
+ 1355  ls
+ 1356  cd ..
+ 1357  ls
+ 1358  vim install.sh
+ 1359  ls
+ 1360  vim install.sh
+ 1361  cd web/go-study-line/shell/auto-install/
+ 1362  ls
+ 1363  tail -f -n 1000 shell.log 
+ 1364  ls
+ 1365  echo " " > shell.log 
+ 1366  tail -f -n 1000 shell.log 
+ 1367  echo " " > shell.log 
+ 1368  tail -f -n 1000 shell.log 
+ 1369  echo " " > shell.log 
+ 1370  tail -f -n 1000 shell.log 
+ 1371  echo " " > shell.log 
+ 1372  tail -f -n 1000 shell.log 
+ 1373  echo " " > shell.log 
+ 1374  tail -f -n 1000 shell.log 
+ 1375  echo " " > shell.log 
+ 1376  tail -f -n 1000 shell.log 
+ 1377  echo " " > shell.log 
+ 1378  tail -f -n 1000 shell.log 
+ 1379  echo " " > shell.log 
+ 1380  tail -f -n 1000 shell.log 
+ 1381  cat /home/www/.ssh/known_hosts
+ 1382  ls
+ 1383  tail -f -n 1000 shell.log 
+ 1384  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1385  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1386  tail -f -n 1000 shell.log 
+ 1387  echo " " > shell.log 
+ 1388  tail -f -n 1000 shell.log 
+ 1389  echo " " > shell.log 
+ 1390  tail -f -n 1000 shell.log 
+ 1391  echo " " > shell.log 
+ 1392  tail -f -n 1000 shell.log 
+ 1393  echo " " > shell.log 
+ 1394  tail -f -n 1000 shell.log 
+ 1395  echo " " > shell.log 
+ 1396  tail -f -n 1000 shell.log 
+ 1397  LS
+ 1398  ls
+ 1399  vim /usr/local/openresty/nginx/conf/nginx.conf
+ 1400  vim /usr/local/openresty/nginx/conf/vhost/live.tinywan.com.conf 
+ 1401  cd /usr/local/openresty/nginx/conf/vhost
+ 1402  ls
+ 1403  cd ..
+ 1404  ls
+ 1405  pwd
+ 1406  cd lua_script
+ 1407  ls
+ 1408  cd ..
+ 1409  ls
+ 1410  mkdir -p /usr/local/openresty/nginx/conf/lua_script1
+ 1411  ls
+ 1412  rm -r lua_script1/
+ 1413  ping www.tinywan.com
+ 1414  ls
+ 1415  cd lua_script/
+ 1416  ls
+ 1417  pwd
+ 1418  ls
+ 1419  cd ..
+ 1420  ls
+ 1421  cd vhost
+ 1422  ls
+ 1423  vim live.tinywan.com.conf 
+ 1424  cd ..
+ 1425  ls
+ 1426  cd lua_script/
+ 1427  ls
+ 1428  cd ..
+ 1429  ls
+ 1430  mv lua_script lua
+ 1431  ls
+ 1432  pwd
+ 1433  ls
+ 1434  cd vhost
+ 1435  ls
+ 1436  vim live.tinywan.com.conf 
+ 1437  ls
+ 1438  cd ..
+ 1439  ls
+ 1440  cd lua/
+ 1441  ls
+ 1442  cd ..
+ 1443  ls
+ 1444  vim nginx.conf
+ 1445  cd lua/
+ 1446  ls
+ 1447  pwd
+ 1448  ls
+ 1449  cd ..
+ 1450  ls
+ 1451  cd vhost
+ 1452  ls
+ 1453  vim www.tinywan.com.conf 
+ 1454  sudo service nginx restart 
+ 1455  cd ..
+ 1456  ls
+ 1457  vim nginx.conf
+ 1458  cd lua/
+ 1459  ls
+ 1460  vim rtmp_auth_key.lua 
+ 1461  ls
+ 1462  vim auth_key_test.lua 
+ 1463  ls
+ 1464  vim stream_address_switch.lua 
+ 1465  ls
+ 1466  vim rtmp_auth_key.lua 
+ 1467  ls
+ 1468  vim rtmp_auth_key.lua 
+ 1469  ls
+ 1470  cd ~
+ 1471  ls
+ 1472  cd -
+ 1473  ls
+ 1474  cd bin/
+ 1475  ls
+ 1476  vim rtmp_record.sh 
+ 1477  tail -f -n 1000 logs/recorded_201710.log 
+ 1478  mv hls_address_auth.lua /usr/local/openresty/nginx/conf/lua_script
+ 1479  ls
+ 1480  rm install.log 
+ 1481  ls
+ 1482  cp rtmp_auth_key.lua /usr/local/openresty/nginx/conf/lua
+ 1483  cp stream_address_switch.lua /usr/local/openresty/nginx/conf/lua
+ 1484  ls
+ 1485  rm rtmp_auth_key.lua 
+ 1486  rm stream_address_switch.lua 
+ 1487  ls
+ 1488  mv auth_key_test.lua /usr/local/openresty/nginx/conf/lua
+ 1489  ls
+ 1490  cd /usr/local/openresty/
+ 1491  ls
+ 1492  cd lualib/
+ 1493  ls
+ 1494  cd resty/
+ 1495  ls
+ 1496  pwd
+ 1497  ls
+ 1498  vim redis_iresty.lua 
+ 1499  ifconfig
+ 1500  redis-cli 172.19.230.35
+ 1501  redis-cli -h 172.19.230.35
+ 1502  redis-cli
+ 1503  vim redis_iresty.lua 
+ 1504  cd ~
+ 1505  ls
+ 1506  cd record-flv/
+ 1507  ls
+ 1508  vim /usr/local/openresty/nginx/conf/nginx.conf
+ 1509  ls
+ 1510  rm *
+ 1511  cd ..
+ 1512  ls
+ 1513  cd record-data/
+ 1514  ls
+ 1515  rm -r *
+ 1516  ls
+ 1517  cd ~
+ 1518  ls
+ 1519  cd web/
+ 1520  ls
+ 1521  cd go-study-line/
+ 1522  ls
+ 1523  cd shell/auto-install/
+ 1524  ls
+ 1525  cat text1.txt 
+ 1526  ls
+ 1527  history > text.txt
+ 1528  ls
+ 1529  cat text.txt 
+ 1530  http://wxdevelop.amailive.com/Pagepay/pagePay
+ 1531  ls
+ 1532  cat shell.log 
+ 1533  echo " " > shell.log 
+ 1534  cat shell.log 
+ 1535  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1536  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1537  ls
+ 1538  vim cli.php 
+ 1539  vim init-fix.sh
+ 1540  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1541  ps -aux | grep sh
+ 1542  kill -9 32405
+ 1543  ps -aux | grep sh
+ 1544  kill -9 32499
+ 1545  ps -aux | grep sh
+ 1546  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1547  ps -aux | grep sh
+ 1548  kill -9 32578
+ 1549  kill -9 32669
+ 1550  ps -aux | grep sh
+ 1551  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1552  ls
+ 1553  vim init-fix.sh
+ 1554  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1555  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w1,RootOracle11w1"
+ 1556  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1557  ls
+ 1558  cd we
+ 1559  cd web/
+ 1560  cd web/[2~[2~
+ 1561  cd go-study-line/shell/auto-install/
+ 1562  ls
+ 1563  tail 
+ 1564  cd web/go-study-line/shell/auto-install/
+ 1565  ls
+ 1566  tail -f -n 1000 shell.log 
+ 1567  tail -f -n 100 shell.log 
+ 1568  ls
+ 1569  cd web/
+ 1570  ls
+ 1571  cd go-study-line/shell/auto-install/
+ 1572  ls
+ 1573  cat text2.txt 
+ 1574  ls
+ 1575  echo " " > shell.log 
+ 1576  cat shell.log 
+ 1577  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1578  ls
+ 1579  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1580  ls
+ 1581  cat text1.txt 
+ 1582  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1583  ps -aux | grep sh
+ 1584  kill -9 12262
+ 1585  kill -9 12349
+ 1586  ps -aux | grep sh
+ 1587  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1588  redis-cli -h 120.26.78.239
+ 1589  ping www.tinywan.com
+ 1590  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1591  ps -aux | grep sh
+ 1592  kill -9 15350
+ 1593  ps -aux | grep sh
+ 1594  kill -9 15437
+ 1595  ps -aux | grep sh
+ 1596  php ./cli.php "120.26.78.239,118.178.56.70" "RootOracle11w,RootOracle11w"
+ 1597  cd script/
+ 1598  ls
+ 1599  cd auto-install/
+ 1600  ls
+ 1601  cd auto-install-package/
+ 1602  ls
+ 1603  wget https://raw.github.com/JasonGiedymin/nginx-init-ubuntu/master/nginx
+ 1604  ls
+ 1605  vim nginx 
+ 1606  vim /etc/init.d/nginx 
+ 1607  service nginx restart 
+ 1608  sudo service nginx restart 
+ 1609  ps -aux | grep nginx
+ 1610  sudo service nginx stop
+ 1611  ps -aux | grep nginx
+ 1612  sudo service nginx start
+ 1613  ps -aux | grep nginx
+ 1614  ls
+ 1615  rm nginx 
+ 1616  cp /etc/init.d/nginx ./nginx-script
+ 1617  ls
+ 1618  vim nginx-script 
+ 1619  ls
+ 1620  mv nginx-script nginx
+ 1621  ls
+ 1622  add-apt-repository 
+ 1623  ffmpeg
+ 1624  sudo apt-get install software-properties-common
+ 1625  cd web/go-study-line/shell/auto-install/
+ 1626  ls
+ 1627  tail -f -n 1000 shell.log 
+ 1628  ls
+ 1629  echo " " > shell.log 
+ 1630  tail -f -n 1000 shell.log 
+ 1631  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1632  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1633  tail -f -n 1000 shell.log 
+ 1634  echo " " > shell.log 
+ 1635  tail -f -n 1000 shell.log 
+ 1636  echo " " > shell.log 
+ 1637  tail -f -n 1000 shell.log 
+ 1638  echo " " > shell.log 
+ 1639  tail -f -n 1000 shell.log 
+ 1640  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1641  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1642  tail -f -n 1000 shell.log 
+ 1643  echo " " > shell.log 
+ 1644  tail -f -n 1000 shell.log 
+ 1645  echo " " > shell.log 
+ 1646  tail -f -n 1000 shell.log 
+ 1647  echo " " > shell.log 
+ 1648  tail -f -n 1000 shell.log 
+ 1649  echo " " > shell.log 
+ 1650  tail -f -n 1000 shell.log 
+ 1651  echo " " > shell.log 
+ 1652  tail -f -n 1000 shell.log 
+ 1653  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1654  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1655  echo " " > shell.log 
+ 1656  tail -f -n 1000 shell.log 
+ 1657  echo " " > shell.log 
+ 1658  tail -f -n 1000 shell.log 
+ 1659  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1660  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1661  echo " " > shell.log 
+ 1662  tail -f -n 1000 shell.log 
+ 1663  cd /usr/local/openresty/nginx/conf/lua/
+ 1664  ls
+ 1665  cd -
+ 1666  redis-cli 
+ 1667  echo " " > shell.log 
+ 1668  tail -f -n 1000 shell.log 
+ 1669  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1670  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1671  tail -f -n 1000 shell.log 
+ 1672  echo " " > shell.log 
+ 1673  tail -f -n 1000 shell.log 
+ 1674  echo " " > shell.log 
+ 1675  tail -f -n 1000 shell.log 
+ 1676  echo " " > shell.log 
+ 1677  tail -f -n 1000 shell.log 
+ 1678  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1679  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1680  echo " " > shell.log 
+ 1681  tail -f -n 1000 shell.log 
+ 1682  ls
+ 1683  cd web/
+ 1684  ls
+ 1685  cd go-study-line/config/
+ 1686  ls
+ 1687  cd extra/
+ 1688  ls
+ 1689  vim email.php 
+ 1690  redis-cli -h 139.224.239.21
+ 1691  ifconfig
+ 1692  redis-cli -h 172.19.230.35
+ 1693  redis-cli -h 127.0.0.1
+ 1694  ls
+ 1695  cd /usr/local/redis/
+ 1696  ls
+ 1697  cd etc/
+ 1698  ls
+ 1699  cp redis.conf.bak redis-6111.conf
+ 1700  ls
+ 1701  mv redis-6111.conf redis-auto-install-6111.conf 
+ 1702  mv redis-auto-install-6111.conf redis-auto-install-61227.conf 
+ 1703  vim redis-auto-install-61227.conf 
+ 1704  usr/local/redis/bin/redis-server /usr/local/redis/etc/redis-auto-install-61227.conf 
+ 1705  /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis-auto-install-61227.conf 
+ 1706  ps -aux | grep redis
+ 1707  vim redis-auto-install-61227.conf 
+ 1708  ps -aux | grep redis
+ 1709  kill -9 14193
+ 1710  ps -aux | grep redis
+ 1711  /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis-auto-install-61227.conf 
+ 1712  ps -aux | grep redis
+ 1713  kill -9 14211
+ 1714  ps -aux | grep redis
+ 1715  vim redis-auto-install-61227.conf 
+ 1716  /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis-auto-install-61227.conf 
+ 1717  add-apt-repository ppa:kirillshkrogalev/ffmpeg-next --force-yes -y
+ 1718  add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+ 1719  sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next --force-yes -y
+ 1720  sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+ 1721  man add-apt-repository
+ 1722  sudo add-apt-repository -f -ppa:kirillshkrogalev/ffmpeg-next
+ 1723  sudo add-apt-repository -y -ppa:kirillshkrogalev/ffmpeg-next
+ 1724  sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+ 1725  cd /usr/local/openresty/nginx/html/
+ 1726  ls
+ 1727  cd ..
+ 1728  ls
+ 1729  vim conf/vhost/live.tinywan.com.conf 
+ 1730  vim conf/nginx.conf
+ 1731  cd ~
+ 1732  websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1733  ls
+ 1734  cd script/
+ 1735  ls
+ 1736  cd auto-install/
+ 1737  ls
+ 1738  cd ~
+ 1739  ls
+ 1740  cd web/go-study-line/shell/
+ 1741  ls
+ 1742  cd auto-install/
+ 1743  ls
+ 1744  websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1745  sudo websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1746  ls
+ 1747  cd web/
+ 1748  ls
+ 1749  cd go-study-line/shell/auto-install/
+ 1750  ls
+ 1751  history > text2.txt
+ 1752  cat text2.txt 
+ 1753  ls
+ 1754  cd /home/www/script/
+ 1755  ls
+ 1756  cd auto-install/
+ 1757  ls
+ 1758  cd auto-install-package/
+ 1759  ls
+ 1760  vim install.sh
+ 1761  ls
+ 1762  cd conf/
+ 1763  ls
+ 1764  vim nginx-push.conf 
+ 1765  ls
+ 1766  vim install.sh
+ 1767  ls
+ 1768  cd conf/
+ 1769  ls
+ 1770  vim install.sh
+ 1771  cd ..
+ 1772  ls
+ 1773  vim install.sh
+ 1774  ls
+ 1775  chmod +x stream_live_node_inner_ip.sh 
+ 1776  ls
+ 1777  cd conf/
+ 1778  ls
+ 1779  vim nginx-live-node.conf 
+ 1780  cd ..
+ 1781  vim install.sh
+ 1782  ls
+ 1783  vim push_to_node.sh 
+ 1784  vim rtmp_record.sh 
+ 1785  vim push_to_node.sh 
+ 1786  vim rtmp_record.sh 
+ 1787  vim push_to_node.sh 
+ 1788  ls
+ 1789  vim stream_live_node_inner_ip.sh 
+ 1790  vim push_to_node.sh 
+ 1791  vim install.sh
+ 1792  ls
+ 1793  vim install.sh
+ 1794  ls
+ 1795  vim push_to_node.sh 
+ 1796  vim rtmp_record.sh 
+ 1797  vim push_to_node.sh 
+ 1798  ls
+ 1799  vim install.sh
+ 1800  cd /usr/local/openresty/nginx/conf/lua/
+ 1801  ls
+ 1802  cd ..
+ 1803  ls
+ 1804  cd logs/
+ 1805  ls
+ 1806  tail -r -n 1000 error.log 
+ 1807  tail -n 1000 error.log 
+ 1808  tail -f -n 1000 error.log 
+ 1809  ls
+ 1810  cd /usr/local/openresty/nginx/
+ 1811  ls
+ 1812  cd conf/vhost
+ 1813  ls
+ 1814  vim main.conf 
+ 1815  vim live.tinywan.com.conf 
+ 1816  vim vod.tinywan.com.conf 
+ 1817  cp vod.tinywan.com.conf livecdn.tinywan.com.conf 
+ 1818  ls
+ 1819  vim livecdn.tinywan.com.conf 
+ 1820  sudo service nginx restart 
+ 1821  vim livecdn.tinywan.com.conf 
+ 1822  sudo service nginx restart 
+ 1823  ls
+ 1824  vim livecdn.tinywan.com.conf 
+ 1825  cd ..
+ 1826  ls
+ 1827  cd lua/
+ 1828  ls
+ 1829  vim proxy_pass_livenode.lua 
+ 1830  ls
+ 1831  cd ..
+ 1832  ls
+ 1833  cd ..
+ 1834  ls
+ 1835  cd lualib/resty/
+ 1836  ls
+ 1837  vim redis_iresty.lua 
+ 1838  pwd
+ 1839  cd /usr/local/openresty/nginx/conf/lua/
+ 1840  ls
+ 1841  vim proxy_pass_livenode.lua 
+ 1842  vim ../nginx.conf
+ 1843  sudo service nginx restart 
+ 1844  vim ../nginx.conf
+ 1845  ls
+ 1846  vim ../vhost/livecdn.tinywan.com.conf 
+ 1847  sudo service nginx restart 
+ 1848  ls
+ 1849  pwd
+ 1850  vim ../vhost/livecdn.tinywan.com.conf 
+ 1851  sudo service nginx restart 
+ 1852  curl http://livecdn.tinywan.com/live/4001496639505.m3u8
+ 1853  vim proxy_pass_livenode.lua 
+ 1854  cp proxy_pass_livenode.lua proxy_pass_livenode.lua.bak 
+ 1855  vim proxy_pass_livenode.lua 
+ 1856  sudo service nginx restart 
+ 1857  ps -aux | grep nginx
+ 1858  sudo service nginx stop
+ 1859  ps -aux | grep nginx
+ 1860  sudo service nginx stop
+ 1861  ps -aux | grep nginx
+ 1862  sudo killall nginx 
+ 1863  ps -aux | grep nginx
+ 1864  sudo service nginx restart 
+ 1865  ps -aux | grep nginx
+ 1866  vim proxy_pass_livenode.lua 
+ 1867  sudo service nginx restart 
+ 1868  vim proxy_pass_livenode.lua 
+ 1869  sudo service nginx restart 
+ 1870  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1871  vim proxy_pass_livenode.lua 
+ 1872  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1873  vim proxy_pass_livenode.lua 
+ 1874  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1875  vim proxy_pass_livenode.lua 
+ 1876  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1877  vim proxy_pass_livenode.lua 
+ 1878  ls
+ 1879  vim proxy_pass_livenode.lua.bak 
+ 1880  vim proxy_pass_livenode.lua 
+ 1881  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1882  vim proxy_pass_livenode.lua 
+ 1883  vim proxy_pass_livenode.lua.bak 
+ 1884  vim proxy_pass_livenode.lua 
+ 1885  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1886  vim proxy_pass_livenode.lua 
+ 1887  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1888  vim proxy_pass_livenode.lua 
+ 1889  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1890  vim proxy_pass_livenode.lua 
+ 1891  vim proxy_pass_livenode.lua.bak 
+ 1892  vim proxy_pass_livenode.lua 
+ 1893  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1894  vim proxy_pass_livenode.lua 
+ 1895  sudo /usr/local/openresty/nginx/sbin/nginx -s reload
+ 1896  vim proxy_pass_livenode.lua 
+ 1897  ls
+ 1898  vim hls_address_auth.lua 
+ 1899  ls
+ 1900  vim ../vhost/livecdn.tinywan.com.conf 
+ 1901  ls
+ 1902  vim hls_address_auth.lua 
+ 1903  ls
+ 1904  cd ~
+ 1905  ls
+ 1906  cd script/auto-install/
+ 1907  ls
+ 1908  cd auto-install-package/
+ 1909  ls
+ 1910  cd conf/
+ 1911  ls
+ 1912  vim nginx-live-node-proxy.conf 
+ 1913  ls
+ 1914  cd ..
+ 1915  ls
+ 1916  vim install.sh
+ 1917  ls
+ 1918  vim conf/nginx-live-node-proxy.conf 
+ 1919  ls
+ 1920  vim install.sh
+ 1921  ls
+ 1922  get-arr-last.sh
+ 1923  vim get-arr-last.sh
+ 1924  ls
+ 1925  chmod +x get-arr-last.sh 
+ 1926  ls
+ 1927  ./get-arr-last.sh 
+ 1928  cat get-arr-last.sh 
+ 1929  ls
+ 1930  cp --force --backup=numbered install.sh install.sh 
+ 1931  ls
+ 1932  vim install.sh
+ 1933  ls
+ 1934  cd /usr/local/openresty/nginx/
+ 1935  ls
+ 1936  cd conf/vhost
+ 1937  ls
+ 1938  vim livecdn.tinywan.com.conf 
+ 1939  ls
+ 1940  cd script/
+ 1941  ls
+ 1942  cd auto-install/
+ 1943  ls
+ 1944  vim auto-install-package/install.sh
+ 1945  ls
+ 1946  cd auto-install-package/
+ 1947  ls
+ 1948  cd cxo
+ 1949  cd conf/
+ 1950  ls
+ 1951  vim nginx-live-node.conf 
+ 1952  cd ..
+ 1953  ls
+ 1954  vim stream_live_node_inner_ip.sh 
+ 1955  redis-cli 
+ 1956  redis-cli -h 139.224.239.21 -p 61227 -a stream-system-auto-install-redis-password
+ 1957  ls
+ 1958  mv /usr/local/openresty/nginx/conf/lua/
+ 1959  mv proxy_pass_livenode.lua /usr/local/openresty/nginx/conf/lua/
+ 1960  ls
+ 1961  redis-cli -h 139.224.239.21 -p 61227 -a stream-system-auto-install-redis-password
+ 1962  ls
+ 1963  cd web/go-study-line/shell/auto-install/
+ 1964  ls
+ 1965  cat shell.log 
+ 1966  tail -f -n 1000 shell.log 
+ 1967  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 1968  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 1969  tail -f -n 1000 shell.log 
+ 1970  echo " " > shell.log 
+ 1971  tail -f -n 1000 shell.log 
+ 1972  vim 
+ 1973  tail -f -n 1000 shell.log 
+ 1974  ls
+ 1975  cd web/go-study-line/shell/auto-install/
+ 1976  ls
+ 1977  cat text1.txt 
+ 1978  ls
+ 1979  websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1980  sudo websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1981  cd /home/w
+ 1982  cd /home/www/
+ 1983  ls
+ 1984  cd web/
+ 1985  ls
+ 1986  cd go-study-line/
+ 1987  ls
+ 1988  cd shell/
+ 1989  ls
+ 1990  cd auto-install/
+ 1991  ls
+ 1992  cat text2.txt 
+ 1993  php ./cli.php "121.41.88.209,115.29.8.55" "RootOracle11f,RootOracle11g"
+ 1994  echo " " > shell.log 
+ 1995  cat shell.log 
+ 1996  sudo websocketd --port=63804 --ssl --sslcert='/etc/letsencrypt/live/www.tinywan.com/fullchain.pem' --sslkey='/etc/letsencrypt/live/www.tinywan.com//privkey.pem' ./read-line.sh
+ 1997  cd web/go-study-line/shell/auto-install/
+ 1998  ls
+ 1999  vim init-fix.sh
+ 2000  ls
+ 2001  history 
+ 2002  ls
+ 2003  cat text2.txt 
+ 2004  history 
+ 2005  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.26.78.239
+ 2006  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 118.178.56.70
+ 2007  ssh-keygen -f "/home/www/.ssh/known_hosts" -R 120.55.184.175
+ 2008  ls
+ 2009  cat text.txt 
+ 2010  cat text2.txt 
+ 2011  ls
+ 2012  php ./cli.php "120.26.78.239,118.178.56.70,120.55.184.175" "RootOracle11w,RootOracle11w,RootOracle11w"
+ 2013  ps -aux | grep sh
+ 2014  killall ssh-copy-id
+ 2015  ps -aux | grep sh
+ 2016  php ./cli.php "120.26.78.239,118.178.56.70,120.55.184.175" "RootOracle11w,RootOracle11w,RootOracle11w"
+ 2017  ps -aux | grep sh
+ 2018  ls
+ 2019  rm text.txt 
+ 2020  rm text1.txt 
+ 2021  history > text3.txt 

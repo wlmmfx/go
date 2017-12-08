@@ -36,7 +36,7 @@ class WebRtc extends BaseBackend
         $res = self::redis()->hMset($taskKey, [
             'task_id' => 1,
             'status' => 1,
-            'task_type' => 1,
+            'task_type' => 2,
             'email_type' => 1,
             'mobile_type' => 2,
             'user_email' => '1170427228@qq.com',
@@ -49,6 +49,7 @@ class WebRtc extends BaseBackend
             'email_scene' => 2,
             'mobile_status' => 0,
             'msg' => "测试消息",
+            'live_id' => "19901227",
         ]);
         // 加入队列
         if(true === $res){

@@ -123,14 +123,8 @@ class Admin extends BaseBackend
     {
         $uid = input('param.id');
         $userInfo = $this->_db->where(['id' => $uid])->find();
-        $taskData['task_type'] = 2;
-        $taskData['status'] = 0;
-        $taskData['email_type'] = 3;
-        $taskData['email_scene'] = 2;
-        $taskData['user_email'] = $userInfo['email'];
-        // 加入邮件队列
-        $res = $this->addTaskList($taskData);
-        if ($res["valid"]) {
+        $res = addEmailTaskQueue(1, $userInfo['email']);
+        if ($res) {
             $this->success($res["msg"]);
             exit;
         } else {

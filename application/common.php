@@ -962,6 +962,79 @@ function send_dayu_sms($tel, $type, $data)
 }
 
 /**
+ * 消息Redis
+ * @return \Redis
+ * @static
+ */
+function messageRedis()
+{
+    return \redis\BaseRedis::message();
+}
+
+ /**
+ * Redis任务邮件队列
+ * @param int $email_type
+ * @param $user_email
+ * @param int $email_scene
+ * @param string $live_id
+ * @return array|bool
+ */
+function addEmailTaskQueue($email_type = 1, $user_email, $email_scene = 2, $live_id = '2020')
+{
+    if (empty($user_email)) {
+        return ["传递参数不合适"];
+    }
+    $taskKey = "TASK_LIST:" . time();
+    $res = messageRedis()->hMset($taskKey, [
+        'status' => 1,
+        'task_type' => 2,
+        'email_type' => $email_type,
+        'user_email' => $user_email,
+        'create_time' => getCurrentDate(),
+        'email_status' => 0,
+        'email_scene' => $email_scene,
+        'msg' => "邮件测试消息",
+        'live_id' => $live_id,
+    ]);
+    if (true === $res) {
+        $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);
+        if ($resList == true) return true;
+    }
+    return false;
+}
+
+
+/**
+ * Redis任务短信队列
+ * @param $user_mobile
+ * @param int $mobile_type
+ * @param string $live_id
+ * @return array|bool
+ */
+function addSMSTaskQueue($user_mobile, $mobile_type = 1, $live_id = '2020')
+{
+    if (empty($user_mobile)) {
+        return ["传递参数不合适"];
+    }
+    $taskKey = "TASK_LIST:" . time();
+    $res = messageRedis()->hMset($taskKey, [
+        'status' => 1,
+        'task_type' => 1,
+        'mobile_type' => $mobile_type,
+        'user_mobile' => $user_mobile,
+        'create_time' => getCurrentDate(),
+        'mobile_status' => 0,
+        'msg' => "短信测试消息",
+        'live_id' => $live_id,
+    ]);
+    if (true === $res) {
+        $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);
+        if ($resList == true) return true;
+    }
+    return false;
+}
+
+/**
  * --------------------------------------------------方法注入------------------------------------------------------------
  */
 

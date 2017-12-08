@@ -16,6 +16,7 @@ use app\common\model\TaskList;
 use EasyWeChat\Foundation\Application;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
+use redis\BaseRedis;
 use think\Controller;
 use think\Log;
 
@@ -196,5 +197,7 @@ class Base extends Controller
             return false;
         }
     }
+
+
 
 }

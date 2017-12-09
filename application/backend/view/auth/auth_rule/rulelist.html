@@ -1,17 +1,23 @@
+<style type="text/css">
+    .table tbody>tr>td, .table tfoot>tr>td {
+        padding: 4px;
+        vertical-align: middle;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="tabbable">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active">
                     <a data-toggle="tab" href="#category-list">
-                        <i class="green icon-home bigger-110"></i>
+                        <i class="icon-list-ul bigger-110"></i>
                         规则列表
                     </a>
                 </li>
 
                 <li>
                     <a data-toggle="tab" href="#category-add">
-                        <i class="green icon-home bigger-110"></i>
+                        <i class="icon-plus bigger-110"></i>
                         添加顶级规则
                     </a>
                 </li>
@@ -19,7 +25,7 @@
 
             <div class="tab-content">
                 <div id="category-list" class="tab-pane in active">
-                    <table class="table table-border table-bordered table-bg">
+                    <table class="table table-striped table-bordered table-hover">
                         <thead>
                         <tr class="text-c">
                             <th>ID</th>
@@ -34,7 +40,7 @@
                         </thead>
                         <tbody>
                         {volist name='lists' id='user'}
-                        <tr class="text-c">
+                        <tr>
                             <td>{$user['id']}</td>
                             <td>
                                 {if condition="$user['_level'] eq 1"}
@@ -57,7 +63,7 @@
                             <td>
                                 <a href="{:url('backend/auth.auth_rule/subpage',['id'=>$user['id']])}">
                                     <button class="btn btn-success btn-xs">
-                                        <i class="icon-folder-open"></i>添加子规则
+                                        <i class="icon-plus"></i>添加子规则
                                     </button>
                                 </a>
                                 <a href="{:url('backend/auth.auth_rule/edit',['id'=>$user['id']])}">

@@ -52,7 +52,6 @@ class Push extends Server
 
     /**
      * 收到信息
-     * @param $connection
      * @param $data
      */
     public function onMessage($conn, $data)

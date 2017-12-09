@@ -86,10 +86,13 @@ class Index extends BaseFrontend
             return json(['code' => 404]);
         }
         // 文章单个缓存
-        $articleDetailCacheKey = 'resty_article_detail' . $postId;
-        if ($this->article_cache == true && Cache::has($articleDetailCacheKey)) {
-            $article = Cache::get($articleDetailCacheKey);
+        $articleDetailCacheKey = 'resty_article_detail:' . $postId;
+        if ($this->article_cache == true && redisCache()->has($articleDetailCacheKey) == true) {
+            $article = redisCache()->get($articleDetailCacheKey);
+            $article['DataSources'] = 'content from Cache';
         } else {
+            // 先删除，再查询缓存
+            redisCache()->rm($articleDetailCacheKey);
             $article = Db::table("resty_article")
                 ->alias('a')
                 ->join('resty_category c', 'c.id = a.cate_id')
@@ -97,16 +100,15 @@ class Index extends BaseFrontend
                 ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
                 ->where('a.id', $postId)
                 ->find();
-            $article['DataSources'] = 'content from Cache';
-            // 缓存
-            if ($this->article_cache == true) Cache::set($articleDetailCacheKey, $article, 3);
+            // 使用Redis缓存操作
+            if ($this->article_cache == true) redisCache()->set($articleDetailCacheKey, $article);
             $article['DataSources'] = 'content from MySQL';
         }
-
+        halt($article);
         // 标签多条缓存
-        $articleTags = 'resty_tag_detail' . $postId;
-        if ($this->article_cache == true && Cache::has($articleTags)) {
-            $tags = Cache::get($articleTags);
+        $articleTags = 'resty_tag_detail:' . $postId;
+        if ($this->article_cache == true && redisCache()->has($articleTags)) {
+            $tags = redisCache()->get($articleTags);
         } else {
             $tags = Db::table("resty_tag")
                 ->alias('t')
@@ -124,10 +126,10 @@ class Index extends BaseFrontend
                     'DataSources' => 'tags content from Cache',
                 ];
             }
-            if ($this->article_cache == true) Cache::set($articleTags, $tmpTags, 3);
+            if ($this->article_cache == true) redisCache()->set($articleTags, $tmpTags, 3);
         }
         $commentInfos = $this->getCommentListByPostId($postId);
-        Db::table('resty_article')->where('id', $postId)->setInc('views');
+        Db::table('resty_article')->where('id', $postId)->cache(10)->setInc('views');
         $this->assign('article', $article);
         $this->assign('tags', $tags);
         $this->assign('comments', $commentInfos);

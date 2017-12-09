@@ -55,8 +55,7 @@
                             <th>名称</th>
                             <th>类型</th>
                             <th>时间</th>
-                            <th>推流地址</th>
-                            <th>直播地址</th>
+                            <th>流地址</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -68,18 +67,18 @@
                             <td style="vertical-align: middle;">
                             <span>{$vo["c_name"]}</span><br>
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <span >开始时间：{$vo["liveStartTime"]}</span><br>
                                 <span >结束时间：{$vo["liveEndTime"]}</span>
                             </td>
-                            <td>
-                                <span >rtmp://live.tinywan.com/live/{$vo["id"]}</span><br>
+                            <td style="vertical-align: middle;">
+                                HLS推流地址：rtmp://live.tinywan.com/live/{$vo["id"]}<br>
+                                DASH推流地址：rtmp://live.tinywan.com/dash/{$vo["id"]}<p></p>
+                                RTMP播放地址：rtmp://live.tinywan.com/live/{$vo["id"]}<br>
+                                HLS播放地址：https://live.tinywan.com/hls/{$vo["id"]}.m3u8<br>
+                                DASH播放地址：https://live.tinywan.com/dash/{$vo["id"]}.mpd<br>
                             </td>
-                            <td>
-                            <span >RTMP地址：rtmp://live.tinywan.com/live/{$vo["id"]}</span><br>
-                            <span >HLS地址：https://live.tinywan.com/hls/{$vo["id"]}.m3u8</span>
-                            </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 {if condition="$vo.recordStatus == 1 "}
                                 <a href="javascript:recordHandleModal({$vo['id']},{$vo.recordStatus});" class="btn btn-danger btn-xs" >
                                     <i class="icon-facetime-video"></i> 停止录像

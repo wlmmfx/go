@@ -346,7 +346,7 @@ class WebsocketClient extends BaseFrontend
             'server_config' => [
                 'ip_group' => '120.26.78.239,118.178.56.70,120.26.93.84,118.178.123.62',//服务器IP地址
                 'user_group' => 'root,root,root,root',//服务器账号
-                'pwd_group' => 'RootOracle11w,RootOracle11w,RootOracle11w,RootOracle11w'//账号账号密码
+                'pwd_group' => 'www123,www123,www123,www123'//账号账号密码
             ],
             'path_config' => [
                 'script_path' => '/home/www/script/auto-install',         // 脚本路径，安装包路径

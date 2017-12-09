@@ -13,6 +13,24 @@ YM=`date +%Y%m`
 FLOG="/home/www/ffmpeg-data/oss_video_cut_${YM}.log"
 loglevel=0 #debug:0; info:1; warn:2; error:3
 TIME=`date '+%Y-%m-%d %H:%M:%S'`
+function LOG(){
+        local log_type=$1
+        local LOG_CONTENT=$2
+        logformat="`date '+%Y-%m-%d %H:%M:%S'` \t[${log_type}]\tFunction: ${FUNCNAME[@]}\t[line:`caller 0 | awk '{print$1}'`]\t [log_info: ${LOG_CONTENT}]"
+        {
+        case $log_type in
+                debug)
+                        [[ $loglevel -le 0 ]] && echo -e "\033[34m${logformat}\033[0m" ;;
+                info)
+                        [[ $loglevel -le 1 ]] && echo -e "\033[32m${logformat}\033[0m" ;;
+                warn)
+                        [[ $loglevel -le 2 ]] && echo -e "\033[33m${logformat}\033[0m" ;;
+                error)
+                        [[ $loglevel -le 3 ]] && echo -e "\033[31m${logformat}\033[0m" ;;
+        esac
+        } | tee -a $FLOG
+}
+
 FFMPEG_PATH="/usr/bin/ffmpeg"
 API_SIGN=$1
 API_URL="https://www.tinywan.com/api/open/videoEditConf"
@@ -56,6 +74,7 @@ if [ ! -f $datapath$videofile ];then
         exit 1;
 fi
 
+#LOG debug "liveId = ${liveId} videofile= ${videofile} starttime=${starttime} endtime=${endtime} outputfile=${outputfile} cut_image_time=${cut_image_time} auto_slice=${auto_slice}"
 FFMPEG_CUT_FILE=$($FFMPEG_PATH -i $datapath$videofile -vcodec copy -acodec copy -ss $starttime -to $endtime  $tempfile -y >>/dev/null 2>>/dev/null  && echo "success" || echo "fail")
 # [05] ffmpeg cut check
 if [ ! -f $tempfile ]; then
@@ -71,10 +90,12 @@ if [ ! -f $datapath$outputvideo ]; then
     exit 1;
 fi
 
-FFMPEG_CUT_IMAGE_JPG=$($FFMPEG_PATH -y -ss ${cut_image_time} -i $datapath$outputvideo  -vframes 1 $datapath$outputimage >>/dev/null 2>>/dev/null && echo "success" || echo "fail")
+FFMPEG_CUT_IMAGE_JPG=$($FFMPEG_PATH -y -ss ${cut_image_time} -i $datapath$outputvideo  -vframes 1 $datapath$outputimage >>/dev/null 2>>/dev/null)
+#FFMPEG_CUT_IMAGE_JPG=$($FFMPEG_PATH -y -ss ${cut_image_time} -i $datapath$outputvideo  -f image2 -y $datapath$outputimage  >>/dev/null 2>>/dev/null)
 
 if [ ! -f $datapath$outputimage ]; then
-        FFMPEG_CUT_IMAGE_PNG=$($FFMPEG_PATH -y -ss ${cut_image_time}  -analyzeduration 2147483647 -probesize 2147483647 -i $datapath$outputvideo  -vframes 1 $datapath$outputpng >>/dev/null 2>>/dev/null && echo "success" || echo "fail")
+        FFMPEG_CUT_IMAGE_PNG=$($FFMPEG_PATH -y -ss ${cut_image_time}  -analyzeduration 2147483647 -probesize 2147483647 -i $datapath$outputvideo  -vframes 1 $datapath$outputpng >>/dev/null 2>>/dev/null)
+        #LOG debug "datapath-outputpng--------------- : "$datapath$outputpng
         convert $datapath$outputpng $datapath$outputimage >>/dev/null 2>>/dev/null;
 fi
 
@@ -82,7 +103,6 @@ if [ ! -f $datapath$outputimage ]; then
     echo -5;
     exit 1;
 fi
-
 upload_oss(){
     osscmd put  $datapath$outputvideo oss://tinywan-oss/data/$liveId/video/$outputvideo  >>/dev/null 2>>/dev/null;
     osscmd put  $datapath$outputimage oss://tinywan-oss/data/$liveId/video/$outputimage  >>/dev/null 2>>/dev/null;

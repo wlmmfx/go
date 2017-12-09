@@ -45,9 +45,13 @@ class Faker extends Controller
      * 测试数据
      * @return \think\response\Json
      */
-    public function user1(){
+    public function user1()
+    {
+        //如果需要设置允许所有域名发起的跨域请求，可以使用通配符 *
+        header('Access-Control-Allow-Origin:*');
         $sign = input('param.sign');
-        if (empty($sign)) {
+        $page = input('param.page',10);
+        if (empty($sign) || $sign!='hehuiyun') {
             $resJson = [
                 'code' => 500,
                 'msg' => 'param sign is null',
@@ -56,12 +60,56 @@ class Faker extends Controller
         } else {
             $faker = Factory::create($locale = 'zh_CN');
             $fakerName = [];
-            for ($i=0; $i < 10; $i++) {
+            for ($i=0; $i < $page; $i++) {
                 $fakerName[] = [
                     'userName'=>$faker->name,
+                    'City'=>$faker->city,
                     'Email'=>$faker->email,
                     'Company'=>$faker->company,
                     'Address'=>$faker->address,
+                    'Color'=>$faker->hexColor,
+                    'Mobile'=>$faker->phoneNumber,
+                    'SafeColor'=>$faker->safeColorName,
+                    'CreditCardNumber'=>$faker->creditCardNumber,
+                    'Image'=>$faker->imageUrl($width = 640, $height = 480,'cats', true, 'Faker', true),
+                    'DateTime'=>$faker->dateTimeThisCentury($max = 'now', $timezone = date_default_timezone_get()),
+                ];
+            }
+            $resJson = [
+                'code' => 200,
+                'msg' => 'success',
+                'data' =>$fakerName
+            ];
+        }
+        return json($resJson);
+    }
+
+    public function user2()
+    {
+        //如果需要设置允许所有域名发起的跨域请求，可以使用通配符 *
+        header('Access-Control-Allow-Origin:*');
+        $sign = input('param.sign');
+        $limit = input('param.limit',10,'int');
+        if (empty($sign) || $sign!='hehuiyun' || empty($limit)) {
+            $resJson = [
+                'code' => 500,
+                'msg' => 'param sign is error',
+                'data' => null
+            ];
+        } else {
+            $faker = Factory::create($locale = 'zh_CN');
+            $fakerName = [];
+            for ($i=0; $i < $limit; $i++) {
+                $fakerName[] = [
+                    'userName'=>$faker->name,
+                    'City'=>$faker->city,
+                    'Email'=>$faker->email,
+                    'Company'=>$faker->company,
+                    'Address'=>$faker->address,
+                    'Color'=>$faker->hexColor,
+                    'Mobile'=>$faker->phoneNumber,
+                    'SafeColor'=>$faker->safeColorName,
+                    'CreditCardNumber'=>$faker->creditCardNumber,
                     'Image'=>$faker->imageUrl($width = 640, $height = 480,'cats', true, 'Faker', true),
                     'DateTime'=>$faker->dateTimeThisCentury($max = 'now', $timezone = date_default_timezone_get()),
                 ];

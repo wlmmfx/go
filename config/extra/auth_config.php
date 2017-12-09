@@ -8,7 +8,7 @@
  */
 return [
     'db_prefix' => 'resty_',
-    'auth_on' => true,
+    'auth_on' => 0,
     'auth_type' => 2,
     'auth_group' => 'auth_group',
     'auth_group_access' => 'auth_group_access',

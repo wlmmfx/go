@@ -11,30 +11,87 @@
 
 namespace app\common\command;
 
+use redis\BaseRedis;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\Db;
-use think\Log;
 
-class Mail extends Command
+class ThinkConsoleServer extends Command
 {
     protected $sleep = 3;
 
     protected function configure()
     {
-        $this->setName('send_mail')->setDescription('this is mail list');
+            $this->setName('ThinkConsoleServer')->setDescription('Based on ThinkPHP5 command-line daemon service');
     }
 
     protected function execute(Input $input, Output $output)
     {
         while (true) {
-            $output->writeln(json_encode($this->sendAllByMsgType()));
+            $output->writeln(json_encode($this->sendMsgByRedis()));
             sleep($this->sleep);
         }
     }
 
     /**
+     * redis instance
+     */
+    public static function redis()
+    {
+        return BaseRedis::message();
+    }
+
+    /**
+     * Redis数据库操作
+     * 通过Redis存储消息发送
+     * @return string
+     */
+    protected function sendMsgByRedis()
+    {
+        $listRes = self::redis()->lRange("TASK_QUEUE",0,3);
+        if(empty($listRes)) return getCurrentDate()." : Redis Queue is Null";
+        foreach ($listRes as $key=>$value){
+            $msgData = self::redis()->hGetAll($value);
+            if($msgData['status'] == 1) {
+                //判断消息类型
+                switch ($msgData['task_type']) {
+                    case 1:
+                        if ($msgData['mobile_type'] == 1) {
+                            $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg']]);
+                        } elseif ($msgData['mobile_type'] == 2) {
+                            $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg'], 'number' => $msgData['live_id']]);
+                        } else {
+                            $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg']]);
+                        }
+                        // 短信发送成功更新记录
+                        if (isset($sendRes->result) && ($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
+                            self::redis()->hSet($value, 'status', 0);
+                            self::redis()->lRem('TASK_QUEUE',$value, 2);
+                        }
+                        break;
+                    case 2:
+                        $result = send_email_qq($msgData['user_email'], self::getEmailType($msgData['email_type']), self::getEmailTemplate($msgData['email_scene'], $msgData['email_type'], $msgData['user_email']));
+                        if ($result['error'] == 0) {
+                            self::redis()->hSet($value, 'status', 0);
+                            self::redis()->lRem('TASK_QUEUE',$value, 2);
+                        }
+                        break;
+                    case 3:
+                        echo '3';
+                        break;
+                    // 删除过期的队列
+                    default:
+                        echo '1';
+                }
+            }
+        }
+        return 'Redis Queue is Null 3';
+    }
+
+
+    /**
+     * MySQL数据库操作
      * 根据消息类型发送消息
      * $task_type 可选类值：
      * 1：短信通知
@@ -43,7 +100,7 @@ class Mail extends Command
      * $msg['task_msg']
      * @return string
      */
-    protected function sendAllByMsgType()
+    protected function sendMsgByMySQL()
     {
         $res = Db::table('resty_task_list')->where('status', 0)->select();
         if (!empty($res)) {
@@ -82,7 +139,7 @@ class Mail extends Command
 
     /**
      * 获取短信标识符
-     * @param $email_type
+     * @param $mobile_type
      * @return mixed
      */
     protected static function getSmsType($mobile_type)

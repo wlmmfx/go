@@ -57,6 +57,19 @@
                           role="form">
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
+                                <th colspan='2'>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-info optimize_route"
+                                       data-name="optimize_route">生成路由缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-purple optimize_config"
+                                       data-name="optimize_config">生成配置缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary optimize_schema"
+                                       data-name="optimize_schema">生成数据表字段缓存</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger clear-cache"
+                                       data-name="clear_cache">清除系统缓存</a>
+                                </th>
+                            </tr>
+
+                            <tr>
                                 <th colspan='2'><span
                                         class="label label-xlg arrowed-right arrowed-in-right">网站基本信息配置</span></th>
                             </tr>
@@ -91,7 +104,8 @@
                             <tr>
                                 <td align='right'>版权信息</td>
                                 <td>
-                                    <input type="text" class="col-sm-6" name='copy' id="copy" value='{$Think.config.webinfo.COPY}'
+                                    <input type="text" class="col-sm-6" name='copy' id="copy"
+                                           value='{$Think.config.webinfo.COPY}'
                                            class='len400'/>
                                 </td>
                             </tr>
@@ -596,7 +610,8 @@
                 <!-- 存储配置 -->
                 <div id="storage-config" class="tab-pane">
                     <!-- PAGE CONTENT BEGINS -->
-                    <form action="{:url('backend/system/storageConfig')}" method="post" class="form-horizontal" role="form">
+                    <form action="{:url('backend/system/storageConfig')}" method="post" class="form-horizontal"
+                          role="form">
                         <table class="table table-border table-bordered table-bg mt-20">
                             <tr>
                                 <th colspan='2'>
@@ -657,21 +672,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        // Success before include CommonJS
-        function successShow($msg) {
-            $("#auth-image").attr('src', '__COMMON__/images/success.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
-
-        // Fail before include CommonJS
-        function failShow($msg) {
-            $(".modal-body").css("color", "red");
-            $("#auth-image").attr('src', '__COMMON__/images/error.svg');
-            $(".auth-msg").html($msg);
-            $("#authHanderModal").modal("show");
-        }
-
         // 基本信息修改
         $('body').delegate('.basic-config-hander', 'click', function () {
             var $url = "{:url('backend/system/basicconfig')}";
@@ -705,6 +705,70 @@
                 }
             })
         });
-        // 有时间继续修改
+
+        /**
+         * 公共Ajax
+         */
+        function commonAjax($url, $data) {
+            $.ajax({
+                url: $url,
+                type: 'get',
+                data: $data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    if ($response.code == 200) {
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        }
+
+        // 清楚缓存
+        $('body').delegate('.clear-cache', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 生成路由缓存
+        $('body').delegate('.optimize_route', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 生成配置缓存
+        $('body').delegate('.optimize_config', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 生成数据表字段缓存
+        $('body').delegate('.optimize_schema', 'click', function () {
+            var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
     });
 </script>

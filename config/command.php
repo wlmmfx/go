@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
+    'app\common\command\ThinkConsoleServer',
     'app\common\command\Test',
-    'app\common\command\Mail'
+    'app\common\command\SwooleServer'
 ];

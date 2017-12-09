@@ -11,6 +11,9 @@
 
 namespace redis;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
+use think\Exception;
+
 class BaseRedis
 {
 
@@ -30,10 +33,11 @@ class BaseRedis
     }
 
     /**
-     *  单例方法,用于访问实例的公共的静态方法
-     *  这个实例方法适合于开发者自由的连接到自己相连接的Redis数据库中去。列如：在项目中选择不同的Redis数据库,127.0.0.1
-     * @return \Redis
+     * 单例方法,用于访问实例的公共的静态方法
+     * 这个实例方法适合于开发者自由的连接到自己相连接的Redis数据库中去。列如：在项目中选择不同的Redis数据库,127.0.0.1
      * @static
+     * @return \Redis
+     * @throws Exception
      * eg:
      * <pre>
      * $redis = BaseRedis::Instance();
@@ -42,15 +46,19 @@ class BaseRedis
      * $redis->set('name','value');
      * </pre>
      */
+
     public static function instance()
     {
         try {
+            if (!class_exists('redis', false)) {
+                throw new Exception("必须安装redis扩展，请检查扩展是否安装");
+            }
             if (!(static::$_instance instanceof \Redis)) {
                 static::$_instance = new \Redis();
             }
             return static::$_instance;
         } catch (\Exception $e) {
-            return false;
+            throw new Exception($e->getMessage(), 100006);
         }
     }
 
@@ -67,8 +75,8 @@ class BaseRedis
     {
         try {
             $_connectSource = self::instance()->connect(config('redis.message')['host'], config('redis.message')['port']);
-            if (config('redis.message')['host']) {
-                self::instance()->auth(config('redis.message')['host']);
+            if (config('redis.message')['auth']) {
+                self::instance()->auth(config('redis.message')['auth']);
             }
             if ($_connectSource === FALSE) return FALSE;
             return static::$_instance;

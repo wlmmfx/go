@@ -159,6 +159,29 @@ class System extends BaseBackend
     }
 
     /**
+     * 事务系统日志
+     * @return mixed
+     */
+    public function actionLogTrans()
+    {
+        $id = 1173;
+        // 启动事务
+        Db::startTrans();
+        try {
+            $res1 = Db::name('logs')->find($id);
+            if (!$res1) throw new \Exception("没有查找到");
+            $res2 = Db::name('logs')->delete($id);
+            if (!$res2) throw new \Exception("删除失败");
+            // 提交事务
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            return json_encode($e->getMessage());
+        }
+        return true;
+    }
+
+    /**
      * 清除缓存操作
      * $sysStatus 返回值：[0]：执行成功 [1]：脚本参数为空 [2]：项目目录不存在
      */

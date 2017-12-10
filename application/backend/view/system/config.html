@@ -65,7 +65,9 @@
                                     <a href="javascript:void(0);" class="btn btn-sm btn-primary optimize_schema"
                                        data-name="optimize_schema">生成数据表字段缓存</a>
                                     <a href="javascript:void(0);" class="btn btn-sm btn-danger clear-cache"
-                                       data-name="clear_cache">清除系统缓存</a>
+                                       data-name="clear_cache">系统缓存清除</a>
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-warning clear-cache-redis"
+                                       data-name="clear_cache_redis">Redis缓存清除</a>
                                 </th>
                             </tr>
 
@@ -730,7 +732,7 @@
             })
         }
 
-        // 清楚缓存
+        // 清除缓存
         $('body').delegate('.clear-cache', 'click', function () {
             var $url = "{:url('backend/system/systemConsole')}";
             var $data = {
@@ -763,6 +765,16 @@
         // 生成数据表字段缓存
         $('body').delegate('.optimize_schema', 'click', function () {
             var $url = "{:url('backend/system/systemConsole')}";
+            var $data = {
+                "type": $(this).data('name')
+            };
+            console.log($data);
+            commonAjax($url,$data);
+        });
+
+        // 清除缓存文件
+        $('body').delegate('.clear-cache-redis', 'click', function () {
+            var $url = "{:url('backend/system/cacheClearRedis')}";
             var $data = {
                 "type": $(this).data('name')
             };

@@ -60,7 +60,7 @@ class BaseBackend extends Base
 
     /**
      * 检测权限
-     * @param $uid
+     * @return bool
      */
     private function check_access()
     {

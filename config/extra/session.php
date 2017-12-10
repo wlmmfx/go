@@ -11,6 +11,6 @@
      'timeout' => '0',
      'persistent' => true,
      'session_name' => 'RESTY_PHPSESSID:',
-     'record' => '1200',
+     'record' => '1200'
  ];
 

@@ -323,7 +323,7 @@ class Live extends BaseBackend
     }
 
     /**
-     * 素材视频图片上传
+     * 素材视频上传
      * @return mixed|\think\response\Json
      */
     public function liveVideoUploadFrom()
@@ -446,10 +446,10 @@ class Live extends BaseBackend
             ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
             ->order('v.create_time desc')
             ->paginate(6);
-        $this->assign('categorys', db('category')->where('pid',116)->order('id desc')->select());
+        $this->assign('categorys', db('category')->where('pid', 116)->order('id desc')->select());
         $this->assign('vods', $vods);
-        $this->assign('lives', db('live')->where('deleted',0)->select());
-        $this->assign('tags', db('tag')->where(['deleted'=>0,'cid'=>110])->select());
+        $this->assign('lives', db('live')->where('deleted', 0)->select());
+        $this->assign('tags', db('tag')->where(['deleted' => 0, 'cid' => 110])->select());
         return $this->fetch();
     }
 
@@ -473,15 +473,15 @@ class Live extends BaseBackend
             ->join('resty_category c', 'c.id = v.cid')
             ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
             ->join('resty_tag t', 't.id = vt.tag_id')
-            ->where('v.id',$id)
+            ->where('v.id', $id)
             ->field('v.id,v.live_id as liveId,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName,c.id as cId,t.name as tName,t.id as tId')
             ->order('v.create_time desc')
             ->find();
-        $categorys = db('category')->where('pid',116)->order('id desc')->select();
-        $this->assign('tags', db('tag')->where(['deleted'=>0,'cid'=>110])->select());
+        $categorys = db('category')->where('pid', 116)->order('id desc')->select();
+        $this->assign('tags', db('tag')->where(['deleted' => 0, 'cid' => 110])->select());
         $this->assign('categorys', $categorys);
-        $this->assign('vod',$vod);
-        $this->assign('lives', db('live')->where('deleted',0)->select());
+        $this->assign('vod', $vod);
+        $this->assign('lives', db('live')->where('deleted', 0)->select());
         return $this->fetch();
     }
 
@@ -816,8 +816,8 @@ class Live extends BaseBackend
     private function updateEditDataById($updateData, $eiditType)
     {
         $msg = "视频剪切(cut)操作";
-        if($eiditType == 2) $msg = "视频合并(concat)操作";
-        if($eiditType == 3) $msg = "视频重新编辑操作";
+        if ($eiditType == 2) $msg = "视频合并(concat)操作";
+        if ($eiditType == 3) $msg = "视频重新编辑操作";
         try {
             $insertId = Db::table('resty_stream_video_edit')->update($updateData);
             Log::info('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录成功 msg insertId = " . $insertId);
@@ -896,7 +896,7 @@ class Live extends BaseBackend
         $new_video_name = request()->post("new_video_name");
         $origin_video_id = request()->post("origin_video_id");
         if (empty($starttime) || empty($endtime) || empty($new_video_name) || empty($origin_video_id)) {
-            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"],403);
+            return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"], 403);
         }
         #   根据LiveId获取视频信息
         $taskId = self::getVideoEditTaskId($origin_video_id);
@@ -964,7 +964,7 @@ class Live extends BaseBackend
             Log::info('[' . getCurrentDate() . ']:' . '[06] 视频剪切操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
-        return json(['code' => 500, 'msg' => $origVideoInfo],500);
+        return json(['code' => 500, 'msg' => $origVideoInfo], 500);
     }
 
     /**
@@ -1012,7 +1012,7 @@ class Live extends BaseBackend
         exec("{$cmdStr}", $results, $sysStatus);
         Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
         $shellResult = -1;
-        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 视频合并系统函数执行返回结果 results =  ' . $results[0]?$results[0]:'unknown');
+        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 视频合并系统函数执行返回结果 results =  ' . $results[0] ? $results[0] : 'unknown');
         if (count($results) == 1) $shellResult = $results[0];
         #  [4] 系统函数执行失败
         if ($sysStatus != 0) {
@@ -1242,7 +1242,8 @@ class Live extends BaseBackend
         printf(__FUNCTION__ . ": completeMultipartUpload OK\n");
     }
 
-    public function getCityByIp(){
+    public function getCityByIp()
+    {
         $ip = '115.192.189.173';
         $res = ip_format($ip);
         echo $res;

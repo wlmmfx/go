@@ -96,7 +96,7 @@ class PushWorker extends Server
             $sendData = json_encode(['type' => '123',
                 'data' => $connection->user_name,
                 'create_time' => date('Y-m-d H:i:s', time()),
-                'content' => $clientData['content'],
+                'content' => "Redis数据",
                 'errcode' => 0,
                 'errmsg' => ''
             ]);

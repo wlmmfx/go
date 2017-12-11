@@ -11,6 +11,7 @@
 namespace app\frontend\controller;
 
 use app\common\controller\BaseFrontend;
+use GatewayClient\Gateway;
 use redis\MsgRedis;
 use think\Db;
 use think\Log;
@@ -46,6 +47,7 @@ class WebsocketClient extends BaseFrontend
         return $this->fetch('index');
     }
 
+    //-------------------------------------在线聊天室--------------------------------------------------------------
     /**
      * http://test.thinkphp5-line.com/frontend/websocket_client/chatroom
      * 在线聊天室
@@ -57,6 +59,33 @@ class WebsocketClient extends BaseFrontend
         $this->assign('wsServerPort', self::WS_SERVER_PORT);
         return $this->fetch();
     }
+
+    /**
+     *
+     */
+    public function bindClientId() {
+
+        $client_id = $_POST['client_id'];
+        // 设置GatewayWorker服务的Register服务ip和端口，请根据实际情况改成实际值
+        Gateway::$registerAddress = '127.0.0.1:1238';
+
+        $bindUid = session('uid');
+        // 假设用户已经登录，用户uid和群组id在session中
+        // client_id与uid绑定
+        Gateway::bindUid($client_id, $bindUid);
+        // 加入某个群组（可调用多次加入多个群组）
+        // Gateway::joinGroup($client_id, $group_id);
+    }
+
+    public function AjaxSendMessage() {
+        $message = $_POST['message'];
+        // 设置GatewayWorker服务的Register服务ip和端口，请根据实际情况改成实际值
+        Gateway::$registerAddress = '127.0.0.1:1238';
+
+        GateWay::sendToAll($message);
+    }
+
+    //-------------------------------------在线聊天室-------------------------------------------------------------------
 
     public function chatRoomRedis()
     {
@@ -454,5 +483,6 @@ class WebsocketClient extends BaseFrontend
     public function room(){
         return $this->fetch();
     }
+
 }
 

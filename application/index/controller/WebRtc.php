@@ -36,9 +36,9 @@ class WebRtc extends BaseFrontend
     }
 
     /**
- * 上传视频文件
- * $_FILES = {"video-blob":{"name":"blob","type":"video\/webm","tmp_name":"\/tmp\/phpLGMdIl","error":0,"size":3874663}}
- */
+     * 上传视频文件
+     * $_FILES = {"video-blob":{"name":"blob","type":"video\/webm","tmp_name":"\/tmp\/phpLGMdIl","error":0,"size":3874663}}
+     */
     public function recordUploadToServer()
     {
         foreach (['video', 'audio'] as $type) {
@@ -169,23 +169,61 @@ class WebRtc extends BaseFrontend
         }
     }
 
-    /**
-     *
-     */
-    public function recordUploadToServer2()
+
+    public function ossUpload($savePath, $category = '', $isunlink = false, $bucket = "dddgame")
     {
-        $filePath = ROOT_PATH . 'public' . DS . 'uploads/' . "7327288799239044.webm";
-        $oss = Oss::Instance();
-        $bucket = config('aliyun_oss.BUCKET');
-        // object名称 这里一定要指定 object名称 存储的文件名 错误：$object = 'WebRTC/';
-        $object = 'WebRTC/water_logo.png';
-        try {
-            $oss->uploadFile($bucket, $object, $filePath);
-        } catch (OssException $e) {
-            printf(__FUNCTION__ . ": FAILED\n");
-            printf($e->getMessage() . "\n");
-            return;
+        $accessKeyId = config('aliyun_oss.accessKeyId');//去阿里云后台获取秘钥
+        $accessKeySecret = config('aliyun_oss.accessKeySecret');//去阿里云后台获取秘钥
+        $endpoint = config('aliyun_oss.endpoint');//你的阿里云OSS地址
+        $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+        //        判断bucketname是否存在，不存在就去创建
+        if( !$ossClient->doesBucketExist($bucket)){
+            $ossClient->createBucket($bucket);
         }
-        print(__FUNCTION__ . ": OK" . "\n");
+        $category=empty($category)?$bucket:$category;
+
+        $savePath = str_replace("\\","/",$savePath);
+
+        $object = $category.'/'.$savePath;//想要保存文件的名称
+        $file =  './uploads/'.$savePath;//文件路径，必须是本地的。
+
+        try{
+            $ossClient->uploadFile($bucket,$object,$file);
+            if ($isunlink==true){
+                unlink($file);
+            }
+        }catch (OssException $e){
+            $e->getErrorMessage();
+        }
+        $oss=config('aliyun_oss.url');
+        return $oss."/".$object;
+    }
+
+    /**
+     * 上传单个文件
+     */
+    public function uploadFile()
+    {
+        $bucket = config('aliyun_oss.BUCKET');
+        $filePath = ROOT_PATH . 'public' . DS . 'uploads/' . "5791827221668267.webm";
+        $fileName = "56799999999999999.webm";
+        $object = 'WebRTC789';
+        $res = Oss::uploadFile($bucket,$filePath,$fileName,$object);
+        if($res['code']) return "success";
+        return $res['msg'];
+    }
+
+    /**
+     * 上传单个文件
+     */
+    public function uploadDir()
+    {
+        $bucket = config('aliyun_oss.BUCKET');
+        $prefix = 'WebRTC789/web';
+        $localDirectory = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads'.DIRECTORY_SEPARATOR.'web';
+        Log::error($localDirectory);
+        $res = Oss::uploadDir($bucket,$prefix,$localDirectory);
+        if($res['code']) return "success";
+        return $res['msg'];
     }
 }

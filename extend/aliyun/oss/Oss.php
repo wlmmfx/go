@@ -7,14 +7,13 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/9/4 22:28
  * |  Mail: Overcome.wan@Gmail.com
- * |  Created by PhpStorm
+ * |  Function: 简单的OSS上传封装
  * '-------------------------------------------------------------------*/
 
 namespace aliyun\oss;
 
 use OSS\Core\OssException;
 use OSS\OssClient;
-use think\Log;
 
 class Oss
 {
@@ -32,7 +31,7 @@ class Oss
     }
 
     /**
-     * 单例方法,用于访问实例的公共的静态方法
+     * OSS 单例模式
      * @return bool|null|OssClient
      * @static
      */
@@ -48,49 +47,101 @@ class Oss
     }
 
     /**
-     * 创建存储空间
-     * @param string $bucket 存储空间名称
-     * @return null
+     * 创建bucket
+     * @param $bucket
+     * @return array|string
+     * @static
      */
     public static function createBucket($bucket)
     {
         try {
-            static::$_oss_instance->createBucket($bucket);
+            //判断bucket是否存在
+            if (self::Instance()->doesBucketExist($bucket)) return ['code' => false, 'msg' => $bucket . " 已经存在"];
+            self::Instance()->createBucket($bucket);
         } catch (OssException $e) {
-            Log::error('OSS--创建存储空间异常-------------------'.json_encode($e->getMessage()));
-            return false;
+            return json_encode($e->getMessage());
         }
-        return true;
+        return ['code' => true, 'msg' => "OK", 'url' => "http://" . $bucket . '.' . config('aliyun_oss.ENDPOINT')];
     }
 
     /**
-     * 上传文件
+     * 创建虚拟目录object
+     * @param $bucket
+     * @param $object
+     * @param null $options
+     * @return array
+     * @static
+     */
+    public static function createObjectDir($bucket, $object, $options = NULL)
+    {
+        try {
+            //检测Object是否存在
+            if (self::Instance()->doesObjectExist($bucket, $object, $options)) return ['code' => false, 'msg' => $object . " 已经存在"];
+            self::Instance()->createObjectDir($bucket, $object, $options);
+        } catch (OssException $e) {
+            return ['code' => false, 'msg' => json_encode($e->getMessage())];
+        }
+        return ['code' => true, 'msg' => "OK", 'url' => "OK"];
+    }
+
+
+    /**
+     * 上传本地单个文件
+     * @param $bucket bucket名称
+     * @param $filePath 本地文件路径
+     * @param $fileName 上传到OSS存储的文件名
+     * @param string $objectName object名称 默认为 data
+     * @return bool|string
+     * @static
+     */
+    public static function uploadFile($bucket, $filePath, $fileName, $objectName = 'data')
+    {
+        //DIRECTORY_SEPARATOR 是php的内置变量，显示系统分隔符的，在win下 \  在linux下 /
+        $object = $objectName . DIRECTORY_SEPARATOR . $fileName;
+        try {
+            //判断bucket是否存在
+            if (!self::Instance()->doesBucketExist($bucket)) self::createBucket($bucket);
+            self::Instance()->uploadFile($bucket, $object, $filePath);
+        } catch (OssException $e) {
+            return ['code' => false, 'msg' => json_encode($e->getMessage())];
+        }
+        return ['code' => true, 'msg' => "OK", 'url' => "http://" . $bucket . '.' . config('aliyun_oss.ENDPOINT') . DIRECTORY_SEPARATOR . $object];
+    }
+
+    /**
+     * 上传本地目录内的文件或者目录到指定bucket的指定prefix的object中
+     *
+     * @param string $bucket bucket名称
+     * @param string $prefix 需要上传到的object的key前缀，可以理解成bucket中的子目录，结尾不能是'/'，接口中会补充'/'
+     * @param string $localDirectory 需要上传的本地目录
+     * @param string $exclude 需要排除的目录
+     * @param bool $recursive 是否递归的上传localDirectory下的子目录内容
+     * @param bool $checkMd5
+     * @return bool
+     * @static
+     */
+    public static function uploadDir($bucket, $prefix, $localDirectory, $exclude = '.|..|.svn|.git', $recursive = false, $checkMd5 = true)
+    {
+        try {
+            self::Instance()->uploadDir($bucket, $prefix, $localDirectory, $exclude, $recursive, $checkMd5);
+        } catch (OssException $e) {
+            return ['code' => false, 'msg' => json_encode($e->getMessage())];
+        }
+        return ['code' => true, 'msg' => "OK", 'url' => "http://" . $bucket . '.' . config('aliyun_oss.ENDPOINT') . DIRECTORY_SEPARATOR];
+    }
+
+
+    /**
+     * 上传字符串作为object的内容
      * @param string $bucket 存储空间名称
      * @return null
      */
     public static function putObject($bucket, $object, $content)
     {
         try {
-            static::$_oss_instance->putObject($bucket, $object, $content);
+            self::Instance()->putObject($bucket, $object, $content);
         } catch (OssException $e) {
-            Log::error('OSS--上传文件-------------------'.json_encode($e->getMessage()));
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 上传文件
-     * @param string $bucket 存储空间名称
-     * @return null
-     */
-    public static function uploadDir($bucket, $prefix, $localDirectory)
-    {
-        try {
-            static::$_oss_instance->uploadDir($bucket, $prefix, $localDirectory);
-        } catch (OssException $e) {
-            Log::error('OSS--上传文件-------------------'.json_encode($e->getMessage()));
-            return false;
+            return json_encode($e->getMessage());
         }
         return true;
     }
@@ -103,9 +154,8 @@ class Oss
     public static function getObject($bucket, $object)
     {
         try {
-            static::$_oss_instance->getObject($bucket, $object);
+            self::Instance()->getObject($bucket, $object);
         } catch (OssException $e) {
-            Log::error('OSS--下载文件-------------------'.json_encode($e->getMessage()));
             return false;
         }
         return true;
@@ -120,9 +170,8 @@ class Oss
     public static function deleteObject($bucket, $object)
     {
         try {
-            static::$_oss_instance->deleteObject($bucket, $object);
+            self::Instance()->deleteObject($bucket, $object);
         } catch (OssException $e) {
-            Log::error('OSS--删除操作-------------------'.json_encode($e->getMessage()));
             return false;
         }
         return true;

@@ -93,7 +93,7 @@ class Member extends BaseFrontend
     {
         //1 验证数据
         if ($request->isPost()) {
-            $res = (new Admin())->mobileRegister(input("post."));
+            $res = (new OpenUser())->mobileRegister(input("post."));
             if ($res['valid']) {
                 //success
                 add_operation_log('注册成功');
@@ -101,7 +101,7 @@ class Member extends BaseFrontend
                 exit;
             } else {
                 //fail
-                add_operation_log('登录失败');
+                add_operation_log('注册失败');
                 $this->error($res['msg']);
                 exit;
             }
@@ -110,7 +110,7 @@ class Member extends BaseFrontend
     }
 
     /**
-     * 手机验证码
+     * 手机验证码发送
      * @return mixed
      */
     public function mobileCodeCheck(Request $request)
@@ -122,26 +122,15 @@ class Member extends BaseFrontend
             $this->error("该手机号已经存在");
             exit;
         }
-        // 验证码
         $code = rand(100000, 999999);
-        // 过期时间
-        $expireTime = 60;
-        //保存当前手机的验证码到Redis
-        session("TINYWAN:" . $mobile, $code);
+        messageRedis()->setex("MOBILE:".$mobile,600,$code);
         //发送验证码操作
-        $sendRes = send_dayu_sms($mobile, "register", ['code' => $code]);
-        //发送成功
-        if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
-            $res = [
-                "code" => 200,
-                "msg" => "验证码发送成功"
-            ];
+        $sendRes = addSMSTaskQueue($mobile, 1, $code);
+        if ($sendRes) {
+            $res = ["code" => 200, "msg" => "验证码发送成功"];
             Log::info("--------------------验证码 : " . $mobile . " 发送成功");
         } else {
-            $res = [
-                "code" => 500,
-                "msg" => "验证码发送失败"
-            ];
+            $res = ["code" => 500, "msg" => "验证码发送失败"];
             Log::error("-------------------验证码 : " . $mobile . " 发送失败 ，错误原因：" . $sendRes->sub_msg);
         }
         return json($res);

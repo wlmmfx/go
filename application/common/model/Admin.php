@@ -11,6 +11,7 @@
 
 namespace app\common\model;
 
+use function EasyWeChat\Payment\get_client_ip;
 use think\Db;
 use think\Loader;
 use think\Log;
@@ -332,7 +333,9 @@ html;
     {
         // 1 手机验证码验证
         Log::error("----------手机验证码验证--------" . json_encode($data));
-        $serverCode = session("TINYWAN:" . $data["mobile"]);
+        $serverCodeExpires = messageRedis()->ttl("MOBILE:" . $data["mobile"]);
+        if ($serverCodeExpires == false) return ['valid' => 0, 'msg' => "手机验证码已经失效，请重新获取"];
+        $serverCode = messageRedis()->get("MOBILE:" . $data["mobile"]);
         if ($serverCode != $data["code"]) return ['valid' => 0, 'msg' => "手机验证码错误"];
         // 2 验证数据
         $validate = new Validate([
@@ -346,15 +349,16 @@ html;
             return ['valid' => 0, 'msg' => $validate->getError()];
         }
         // 3 插入数据库
+        $userName = self::getRandUserName();
         $res = $this->data([
-            'username' => self::getRandUserName(),
+            'username' => $userName,
             'password' => md5($data["password"]),
             'mobile' => $data["mobile"],
-            'loginip' => "127.0.0.1",
+            'loginip' => get_client_ip()
         ])->save();
         if (!$res) return ['valid' => 0, 'msg' => "数据库添加数据失败"];
-        session('frontend.id', $this->pk);
-        session('frontend.username', $data["mobile"]);
+        session('admin.admin_id', $this->pk);
+        session('admin.username', $userName);
         return ['valid' => 1, 'msg' => "注册成功"];
     }
 

@@ -1006,13 +1006,14 @@ function addEmailTaskQueue($email_type = 1, $user_email, $email_scene = 2, $live
 
 
 /**
- * Redis任务短信队列
+ * 手机短信发送Redis任务短信队列
  * @param $user_mobile
  * @param int $mobile_type
+ * @param $msg
  * @param string $live_id
  * @return array|bool
  */
-function addSMSTaskQueue($user_mobile, $mobile_type = 1, $live_id = '2020')
+function addSMSTaskQueue($user_mobile, $mobile_type = 1, $msg, $live_id = '1227')
 {
     if (empty($user_mobile)) {
         return ["传递参数不合适"];
@@ -1025,7 +1026,7 @@ function addSMSTaskQueue($user_mobile, $mobile_type = 1, $live_id = '2020')
         'user_mobile' => $user_mobile,
         'create_time' => getCurrentDate(),
         'mobile_status' => 0,
-        'msg' => "短信测试消息",
+        'msg' => $msg,
         'live_id' => $live_id,
     ]);
     if (true === $res) {

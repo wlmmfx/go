@@ -14,6 +14,7 @@ namespace app\common\controller;
 use aliyun\oss\Oss;
 use app\common\model\TaskList;
 use EasyWeChat\Foundation\Application;
+use Faker\Factory;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use redis\BaseRedis;
@@ -191,6 +192,17 @@ class Base extends Controller
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * 获取随机姓名
+     * @return string
+     * @static
+     */
+    public static function getRandUserName()
+    {
+        $faker = Factory::create($locale = 'zh_CN');
+        return $faker->name;
     }
 
 }

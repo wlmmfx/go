@@ -151,12 +151,12 @@ class Oss
      * @param string $bucket 存储空间名称
      * @return null
      */
-    public static function getObject($bucket, $object)
+    public static function getObject($bucket, $object, $options = NULL)
     {
         try {
-            self::Instance()->getObject($bucket, $object);
+            self::Instance()->getObject($bucket, $object, $options);
         } catch (OssException $e) {
-            return false;
+            return json_encode($e->getMessage());
         }
         return true;
     }

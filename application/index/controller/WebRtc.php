@@ -14,6 +14,7 @@ namespace app\index\controller;
 use aliyun\oss\Oss;
 use app\common\controller\BaseFrontend;
 use OSS\Core\OssException;
+use OSS\OssClient;
 use think\Db;
 use think\Log;
 
@@ -177,26 +178,26 @@ class WebRtc extends BaseFrontend
         $endpoint = config('aliyun_oss.endpoint');//你的阿里云OSS地址
         $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
         //        判断bucketname是否存在，不存在就去创建
-        if( !$ossClient->doesBucketExist($bucket)){
+        if (!$ossClient->doesBucketExist($bucket)) {
             $ossClient->createBucket($bucket);
         }
-        $category=empty($category)?$bucket:$category;
+        $category = empty($category) ? $bucket : $category;
 
-        $savePath = str_replace("\\","/",$savePath);
+        $savePath = str_replace("\\", "/", $savePath);
 
-        $object = $category.'/'.$savePath;//想要保存文件的名称
-        $file =  './uploads/'.$savePath;//文件路径，必须是本地的。
+        $object = $category . '/' . $savePath;//想要保存文件的名称
+        $file = './uploads/' . $savePath;//文件路径，必须是本地的。
 
-        try{
-            $ossClient->uploadFile($bucket,$object,$file);
-            if ($isunlink==true){
+        try {
+            $ossClient->uploadFile($bucket, $object, $file);
+            if ($isunlink == true) {
                 unlink($file);
             }
-        }catch (OssException $e){
+        } catch (OssException $e) {
             $e->getErrorMessage();
         }
-        $oss=config('aliyun_oss.url');
-        return $oss."/".$object;
+        $oss = config('aliyun_oss.url');
+        return $oss . "/" . $object;
     }
 
     /**
@@ -208,8 +209,8 @@ class WebRtc extends BaseFrontend
         $filePath = ROOT_PATH . 'public' . DS . 'uploads/' . "5791827221668267.webm";
         $fileName = "56799999999999999.webm";
         $object = 'WebRTC789';
-        $res = Oss::uploadFile($bucket,$filePath,$fileName,$object);
-        if($res['code']) return "success";
+        $res = Oss::uploadFile($bucket, $filePath, $fileName, $object);
+        if ($res['code']) return "success";
         return $res['msg'];
     }
 
@@ -220,10 +221,52 @@ class WebRtc extends BaseFrontend
     {
         $bucket = config('aliyun_oss.BUCKET');
         $prefix = 'WebRTC789/web';
-        $localDirectory = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads'.DIRECTORY_SEPARATOR.'web';
+        $localDirectory = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'web';
         Log::error($localDirectory);
-        $res = Oss::uploadDir($bucket,$prefix,$localDirectory);
-        if($res['code']) return "success";
+        $res = Oss::uploadDir($bucket, $prefix, $localDirectory);
+        if ($res['code']) return "success";
         return $res['msg'];
+    }
+
+    /**
+     * OSS 文件下载的服务器本地后在下载了客户端
+     */
+    public function fileDownload()
+    {
+        $bucket = config('aliyun_oss.BUCKET');
+        $object = 'WebRTC/31731102727331063.webm';
+        Log::error($object);
+        $oss = Oss::Instance();
+        $filepath = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . '888888888.webm';
+        $options = [
+            $oss::OSS_FILE_DOWNLOAD => $filepath
+        ];
+        $res = $oss->getObject($bucket, $object, $options);
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($filepath));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control:must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filepath));
+        readfile($filepath);
+    }
+
+    /**
+     * OSS 文件直接下载到客户端
+     */
+    public function fileDownload2()
+    {
+        $outfile = '2323232323.webm';
+        $sourceFile = 'http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/WebRTC/31731102727331063.webm';
+        header("Cache-Control:");
+        header("Cache-Control: public");
+        //设置输出浏览器格式
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=" . $outfile);
+        header("Accept-Ranges: bytes");
+        ob_end_clean();
+        readfile($sourceFile);
     }
 }

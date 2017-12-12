@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0a23317ab0e0e15e9976b0cbcc19d41",
+    "content-hash": "9613e5ee379308ca7e06fe60964b31a0",
     "packages": [
         {
             "name": "alchemy/binary-driver",

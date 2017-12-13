@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li>
+    <span class="ajax-del-opt"
+          data-ajax-url="xxx"
+          data-jump-url="xxx"
+          data-done="$(this).closest('li').remove()">删除</span>
+    <li>
+    <li>
+    <span class="ajax-del-opt"
+          data-ajax-url="xxx"
+          data-jump-url="xxx"
+          data-done="$(this).closest('li').remove()">删除</span>
+    <li>
+</ul>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script>
+    $(document).on('click', '.ajax-del-opt', function (event) {
+        event.preventDefault();
+        var url = $(this).data('ajax-url');
+        var done = $(this).data('done');
+        var self = this;
+
+        Ajax.sendData({
+                type: 'POST',
+                url: url,
+                success: (result) = > {
+                if (result.errcode == 0)
+                {
+                    const fn = new Function(done);
+                    fn.call(self);
+                }else{
+                        //...
+                    }
+                },
+        dataType: 'json'
+    });
+    })
+    ;
+</script>
+</body>
+</html>

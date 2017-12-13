@@ -21,11 +21,15 @@ class Stream extends Controller
     /**
      * 直播回调URL
      */
-    public function pushCallbackUrl(){
-        Log::error("pushCallbackUrl---".json_encode($_GET));
+    public function pushCallbackUrl()
+    {
+        Log::error("pushCallbackUrl---" . json_encode($_GET));
     }
 
-
+    /**
+     * 通过一个接口去创建一个流
+     * @return \think\response\Json
+     */
     public function createStreamAddress()
     {
         //请求参数
@@ -51,7 +55,6 @@ class Stream extends Controller
         //返回数据为JSON格式，进行转换为数组打印输出
         return json(json_decode($response, true));
     }
-
 
     /**
      * 查询推流历史
@@ -126,6 +129,96 @@ class Stream extends Controller
             'data' => $streamINfo
         ];
         return json($result);
+    }
+
+    /**
+     * 简单的PHP函数
+     */
+    public function createRange($number)
+    {
+        $data = [];
+        for ($i = 0; $i < $number; $i++) {
+            $data[] = time();
+        }
+        return $data;
+    }
+
+    /**
+     *  打印结果：
+     *  1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+        1513174700
+     */
+    public function simpleFunction()
+    {
+        $result = $this->createRange(10); // 这里调用上面我们创建的函数
+        foreach($result as $value){
+            sleep(1); //这里停顿1秒，我们后续有用
+            echo $value.'<br />';
+        }
+    }
+
+    /**
+     * 创建生成器
+     * @param $number
+     * @return \Generator
+     */
+    function yieldCreateRange($number){
+        for($i=0;$i<$number;$i++){
+            yield time();
+        }
+    }
+
+    /**
+     * 使用简单的生成器
+     *  打印结果：
+     *  1513174966
+        1513174967
+        1513174968
+        1513174969
+        1513174970
+        1513174971
+        1513174972
+        1513174973
+        1513174974
+        1513174975
+     */
+    public function yieldSimpleFunction()
+    {
+        $result = $this->yieldCreateRange(10); // 这里调用上面我们创建的函数
+        foreach($result as $value){
+            sleep(1); //这里停顿1秒，我们后续有用
+            echo $value.'<br />';
+        }
+    }
+
+    /**
+     * 实际开发应用
+     */
+    public function readTextFunction()
+    {
+        header("content-type:text/html;charset=utf-8");
+        $handle = fopen(ROOT_PATH . 'public' . DS . 'uploads/test.txt', 'rb');
+        while (feof($handle)===false) {
+            # code...
+            yield fgets($handle);
+        }
+        fclose($handle);
+    }
+
+    public function echoTextFunction()
+    {
+        foreach ($this->readTextFunction() as $key => $value) {
+            echo $value.'<br />';
+        }
+        echo 11111111111;
     }
 
 }

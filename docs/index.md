@@ -5,6 +5,7 @@
 +  master主分支只提供发布版本
 +  [学习笔记](/201702/LEARING.md)
 +  [易混淆笔记](/201702/MEMBER.md)
++  [Javascript笔记](/201702/javascript.md)
 
 ##  Js代码
 

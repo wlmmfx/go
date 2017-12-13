@@ -11,10 +11,21 @@
 namespace app\api\controller;
 
 
+use aliyun\api\Live;
 use think\Controller;
+use think\Db;
+use think\Log;
 
 class Stream extends Controller
 {
+    /**
+     * 直播回调URL
+     */
+    public function pushCallbackUrl(){
+        Log::error("pushCallbackUrl---".json_encode($_GET));
+    }
+
+
     public function createStreamAddress()
     {
         //请求参数
@@ -38,6 +49,83 @@ class Stream extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
         //返回数据为JSON格式，进行转换为数组打印输出
-        return json(json_decode($response,true));
+        return json(json_decode($response, true));
     }
+
+
+    /**
+     * 查询推流历史
+     * @return \think\response\Json
+     */
+    public function getLiveStreamsPublishListAction()
+    {
+        $DomainName = "lives.tinywan.com";    //'tinywan.amai8.com'
+        $AppName = "live";   //'live'
+        $StartTime = "2017-12-13 11:39:39";   //2017-12-13 11:39:39;
+        $EndTime = "2017-12-13 19:54:16";   //2017-12-13 19:54:16;
+        if (empty($DomainName) || empty($AppName) || empty($StartTime) || empty($EndTime)) {
+            $result = [
+                'status_code' => 500,
+                'msg' => 'The input parameter that is mandatory for processing this request is not supplied ',
+                'data' => null
+            ];
+            return json($result);
+        }
+
+        $StreamName = null;
+        $result = Live::DescribeLiveStreamsPublishList($DomainName, $AppName, $StreamName, prcToUtc($StartTime), prcToUtc($EndTime));
+        $result = [
+            'status_code' => 200,
+            'msg' => 'success',
+            'data' => $result
+        ];
+        return json($result);
+    }
+
+    /**
+     * 创建推流地址
+     * @return \think\response\Json
+     */
+    public function createPushAddress()
+    {
+        $appId = 13669361192;
+        $expireTime = 900000;
+        $authKeyStatus = 0;
+        $autoStartRecord = 0;
+        $domainName = 'lives.tinywan.com';
+        // stream.tinywan.com CNAME 到 video-center.alivecdn.com
+        $sourceName = "stream.tinywan.com";
+        $appName = "live";
+        if (empty($domainName) || empty($appId) || empty($appName)) {
+            $result = [
+                'status_code' => 40601,
+                'msg' => 'The input parameter not supplied',
+                'data' => null
+            ];
+            return json($result);
+        }
+
+        $streamINfo = Live::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus);
+        $insertData = [
+            'user_id' => time(),
+            'domain_name' => $streamINfo['domainName'],
+            'app_name' => $streamINfo['appName'],
+            'stream_name' => $streamINfo['streamName'],
+            'push_address' => $streamINfo['push_address'],
+            'rtmp_address' => $streamINfo['rtmp_address'],
+            'flv_address' => $streamINfo['flv_address'],
+            'm3u8_address' => $streamINfo['m3u8_address'],
+            'expire_time' => $streamINfo['expireTime'],
+            'create_time' => $streamINfo['createTime'],
+        ];
+        $res = Db::table("resty_stream_name")->insert($insertData);
+
+        $result = [
+            'status_code' => 200,
+            'msg' => 'success',
+            'data' => $streamINfo
+        ];
+        return json($result);
+    }
+
 }

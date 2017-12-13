@@ -170,38 +170,9 @@ class WebRtc extends BaseFrontend
         }
     }
 
-
-    public function ossUpload($savePath, $category = '', $isunlink = false, $bucket = "dddgame")
-    {
-        $accessKeyId = config('aliyun_oss.accessKeyId');//去阿里云后台获取秘钥
-        $accessKeySecret = config('aliyun_oss.accessKeySecret');//去阿里云后台获取秘钥
-        $endpoint = config('aliyun_oss.endpoint');//你的阿里云OSS地址
-        $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
-        //        判断bucketname是否存在，不存在就去创建
-        if (!$ossClient->doesBucketExist($bucket)) {
-            $ossClient->createBucket($bucket);
-        }
-        $category = empty($category) ? $bucket : $category;
-
-        $savePath = str_replace("\\", "/", $savePath);
-
-        $object = $category . '/' . $savePath;//想要保存文件的名称
-        $file = './uploads/' . $savePath;//文件路径，必须是本地的。
-
-        try {
-            $ossClient->uploadFile($bucket, $object, $file);
-            if ($isunlink == true) {
-                unlink($file);
-            }
-        } catch (OssException $e) {
-            $e->getErrorMessage();
-        }
-        $oss = config('aliyun_oss.url');
-        return $oss . "/" . $object;
-    }
-
     /**
      * 上传单个文件
+     * @return string
      */
     public function uploadFile()
     {
@@ -215,7 +186,8 @@ class WebRtc extends BaseFrontend
     }
 
     /**
-     * 上传单个文件
+     * 上传本地目录
+     * @return string
      */
     public function uploadDir()
     {
@@ -229,7 +201,7 @@ class WebRtc extends BaseFrontend
     }
 
     /**
-     * OSS 文件下载的服务器本地后在下载了客户端
+     * OSS 文件下载到服务器，然后再读取文件下载到客户端
      */
     public function fileDownload()
     {
@@ -270,3 +242,8 @@ class WebRtc extends BaseFrontend
         readfile($sourceFile);
     }
 }
+
+
+
+
+

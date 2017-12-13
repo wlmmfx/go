@@ -718,6 +718,29 @@ function getCurrentDate()
     return date('Y-m-d H:i:s', time());
 }
 
+/**
+ * UTc时间转换为北京时间
+ * @param $utcTime
+ * @return false|string
+ * @static
+ */
+function utcToPRC($utcTime)
+{
+    date_default_timezone_set('PRC');
+    return date('Y-m-d H:i:s', strtotime($utcTime));
+}
+
+/**
+ * 北京时间转换为UTc时间 3位 格式为：2015-12-01T17:36:00Z
+ * @param $prcTime
+ * @return false|string
+ * @static
+ */
+function prcToUtc($prcTime)
+{
+    return gmdate("Y-m-d\TH:i:s\Z", strtotime($prcTime));
+}
+
 //--------------------------------------------------auth2.0------------------------------------------------------------
 /**
  * 获取github信息

@@ -71,9 +71,9 @@ return [
 
     'log' => [
         'type' => 'socket',
-        'host' => '120.26.93.84',
+        'host' => 'slog.tinywan.com',
         //日志强制记录到配置的client_id
-        'force_client_ids' => ['tinywan123456'],
+        'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
         //限制允许读取日志的client_id
         'allow_client_ids' => ['tinywan123456'],
     ],

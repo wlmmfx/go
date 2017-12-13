@@ -30,7 +30,7 @@ class Stream extends Controller
     {
         //请求参数
         $appId = 757158805;
-        $domainName = 'tinywan.amai8.com';
+        $domainName = 'live.tinywan.com';
         $appName = 'live';
         //签名密钥
         $appSecret = 'e2c18ce6683bd185f7565ea606bda0314e7c5a49';
@@ -39,7 +39,7 @@ class Stream extends Controller
         //签名串，由签名算法sha1生成
         $sign = strtoupper(sha1($str));
         //请求资源访问路径以及请求参数，参数名必须为大写
-        $url = "http://ssconsole.amaitech.com/openapi/createPushFlowAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
+        $url = "http://live.tinywan.com/openapi/createPushFlowAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
         //CURL方式请求
         $ch = curl_init() or die (curl_error());
         curl_setopt($ch, CURLOPT_URL, $url);

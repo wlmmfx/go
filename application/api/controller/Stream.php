@@ -506,7 +506,7 @@ class Stream extends Controller
     {
         //请求参数
         $appId = 1586740578218850;
-        $domainName = 'live.tinywan.com';
+        $domainName = 'lives.tinywan.com';
         $appName = 'live123';
         //签名密钥
         $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';

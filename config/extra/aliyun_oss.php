@@ -12,7 +12,8 @@ return [
     'ENDPOINT_INTERNAL'           => 'oss-cn-shanghai-internal.aliyuncs.com', // 阿里云oss endpoint
     'ENDPOINT'           => 'oss-cn-shanghai.aliyuncs.com', // 阿里云oss endpoint
     'BUCKET'             => 'tinywan-oss',  // bucket 名称
-    'DOMAIN'             => 'http://oss.tinywan.com/',  // 访问域名
+//    'DOMAIN'             => 'http://oss.tinywan.com/',  // 访问域名
+    'DOMAIN'             => 'http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/',  // 访问域名
     'CDN_SERVER_ADDRESS'             => 'https://cdn.aliyuncs.com',
     'ALI_AUTH_DOMAIN'             => 'https://cdn.aliyuncs.com',
     'ALI_AUTH_PRIVATEKEY'             => 'https://cdn.aliyuncs.com',

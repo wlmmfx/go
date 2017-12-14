@@ -8,6 +8,7 @@
             <th>应用名称</th>
             <th>开始/结束时间</th>
             <th>推流IP地址</th>
+            <th>推流IP地址</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -15,7 +16,7 @@
         {volist name='lists' id='vo'}
         <tr class="gradeX">
             <td>{$vo['id']}</td>
-            <td >{$vo['stream_name']}</td>
+            <td>{$vo['stream_name']}</td>
             <td>{$vo['domain_name']}</td>
             <td>{$vo['app_name']}</td>
             <td>
@@ -27,7 +28,19 @@
                 {$vo['stop_time']|date="Y-m-d H:i:s",###}
                 {/empty}
             </td>
-            <td >{$vo['client_ip']|ip_format}</td>
+            <td>{$vo['client_ip']|ip_format}</td>
+            <td>
+                {switch name="vo.action"}
+                {case value="publish_done"}
+                <span class="badge label-success "><i class="icon-save"></i>&nbsp;已完成</span>
+                {/case}
+                {case value="publish"}
+                <span class="badge badge-yellow"><i class="icon-refresh icon-spin primary"></i>&nbsp;正在推流中</span>
+                {/case}
+                {default /}
+                <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
+                {/switch}
+            </td>
             <td>
                 <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
                     <button class="btn btn-primary btn-xs">
@@ -57,8 +70,9 @@
             </div>
             <div class="modal-body">
                 <div class="wrapper">
-                    <video width="100%" id="video-container" height="100%" controls autoplay>
-
+                    <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
+                        <source src="https://lives.tinywan.com/live123/8001513243629.m3u8"
+                                type="application/x-mpegURL">
                     </video>
                 </div>
             </div>
@@ -66,14 +80,37 @@
     </div>
 </div>
 
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
-    function playModal(domainName,appName,streamName) {
-        $("#video-container").children().remove();
+    var options = {
+        width: 540,
+        height: 380
+    };
+    var player = videojs('live-stream', options);
+
+//    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+////        console.warn('VIDEOJS player event: ', e.type);
+//        if (e.type == "play") {
+//            console.log('开始播放');
+//        } else if (e.type == "playing") {
+//            console.log('正在播放...');
+//        } else if (e.type == "pause") {
+//            console.log('暂停视频播放');
+//        } else if (e.type == "firstplay") {
+//            console.log('firstplay播放');
+//        } else {
+//            console.log('1111111111111');
+//        }
+//    });
+
+    function playModal(domainName, appName, streamName) {
         $("#playModal").modal("show");
-        console.log("http://" + domainName + '/'+appName+'/' + streamName+'.m3u8');
-        $("#video-container").html('<source id="source-container" src="http://' + domainName +'/'+appName+'/' + streamName + '.m3u8" type="video/mp4">');
-        //你在动态赋值src后要加载这个视频文件即:
-        $("#video-container").load();
+//        console.log("https://" + domainName + '/' + appName + '/' + streamName + '.m3u8');
+//        $("#live-stream").html('<source id="source-container" src="https://' + domainName + '/' + appName + '/' + streamName + '.m3u8" type="application/x-mpegURL" >');
+//        //你在动态赋值src后要加载这个视频文件即:
+////        $("#live-stream").load();
+//        player.play();
     }
 
 </script>

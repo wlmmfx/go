@@ -42,7 +42,6 @@ class Stream extends Controller
     }
 
 
-
     public static function getApiSign($allParam)
     {
         $appSecret = 'f48d03070f4572069dfafab41027a913a50ea06e';
@@ -83,9 +82,9 @@ class Stream extends Controller
         $time = $request->get('time');
         $usrargs = $request->get('usrargs');
         $node = $request->get('node');
-//        if (empty($action) || empty($id)) {
-//            $this->redirect("https://www.tinywan.com/", 302);
-//        }
+        if (empty($action) || empty($streamName)) {
+            $this->redirect("https://www.tinywan.com/", 302);
+        }
         $curl = self::curl();
         $redis = messageRedis();
         //推流限制
@@ -117,8 +116,8 @@ class Stream extends Controller
             ]);
 
             //更新推流记录表
-            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time,$usrargs, $node, $action_str = "dssssssss");
-            Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 Id = ' . $tabRes);
+            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
+            Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 Id = ' . json_encode($tabRes));
             //-------------------------------------notify_url地址回调---------------------------------------------------
             $notifyUrl = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'notify_url');
         } else {
@@ -214,7 +213,7 @@ class Stream extends Controller
     {
         // appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451'.$userModel->mobile.time());
         //根据appId查询否存在该用户
-        $userInfo = Db::table("resty_open_user")->where('app_id',':app_id')->bind(['app_id'=>$appId])->find();
+        $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         if (false == $userInfo) return false;
         $appSecret = $userInfo['app_secret'];  //$appSecret = sha1('http://sewise.www.com/');
         //去除最后的签名
@@ -244,7 +243,7 @@ class Stream extends Controller
      */
     public static function getUidByAppId($appId)
     {
-        $userInfo = Db::table("resty_open_user")->where('app_id',':app_id')->bind(['app_id'=>$appId])->find();
+        $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         return $userInfo['id'];
     }
 
@@ -317,7 +316,7 @@ class Stream extends Controller
             'create_time' => $streamINfo['createTime'],
         ];
         $insertId = Db::table("resty_stream_name")->insertGetId($insertData);
-        if(!$insertId){
+        if (!$insertId) {
             $result = [
                 'status_code' => 500,
                 'msg' => '数据库发生异常，请稍后访问'
@@ -491,9 +490,9 @@ class Stream extends Controller
      */
     public function createSigin()
     {
-        $userInfo = Db::table("resty_open_user")->where('id',10)->find();
+        $userInfo = Db::table("resty_open_user")->where('id', 10)->find();
         echo $appId = base_convert(uniqid(), 16, 10);
-        $appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451'.$userInfo['mobile'].time());
+        $appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451' . $userInfo['mobile'] . time());
         halt($appSecret);
     }
 
@@ -506,7 +505,7 @@ class Stream extends Controller
     {
         //请求参数
         $appId = 1586740578218850;
-        $domainName = 'live.tinywan.com';
+        $domainName = 'lives.tinywan.com';
         $appName = 'live123';
         //签名密钥
         $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';

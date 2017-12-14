@@ -1,28 +1,37 @@
 <div class="row">
-    <table class="table table-striped table-bordered table-hover">
+    <div class="alert alert-info no-margin">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove"></i>
+        </button>
+
+        <i class="icon-umbrella bigger-120 blue"></i>
+        推流地址：rtmp://video-center.alivecdn.com/{live}/{流名称}?vhost={推流域名}<br/>
+        <i class="icon-facetime-video bigger-120 blue"></i>
+        eg：rtmp://stream.tinywan.com/<strong>live123</strong>/<strong>8001513259043</strong>?vhost= <strong>lives.tinywan.com</strong>
+
+    </div>
+    <div class="hr dotted"></div>
+    <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>#ID</th>
+            <th>推流地址</th>
             <th>流名称</th>
             <th>推流域名</th>
-            <th>应用名称</th>
-            <th>开始/结束时间</th>
-            <th>推流IP地址</th>
+            <th>推流时间</th>
+            <th>推流地域</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         {volist name='lists' id='vo'}
         <tr class="gradeX">
-            <td>{$vo['id']}</td>
+            <td>rtmp://stream.tinywan.com/{$vo['app_name']}</td>
             <td >{$vo['stream_name']}</td>
             <td>{$vo['domain_name']}</td>
-            <td>{$vo['app_name']}</td>
             <td>
-                开始时间：{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
-                结束时间：
-                {empty name="$vo['stop_time']"}
-                正在推流
+                起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
+                止:&nbsp;{empty name="$vo['stop_time']"}
+                <i class="icon-spinner icon-spin green"></i> <span class="smaller lighter green">正在推流</span>
                 {else /}
                 {$vo['stop_time']|date="Y-m-d H:i:s",###}
                 {/empty}
@@ -56,24 +65,56 @@
                 <h5 class="modal-title">预览播放</h5>
             </div>
             <div class="modal-body">
-                <div class="wrapper">
-                    <video width="100%" id="video-container" height="100%" controls autoplay>
-
-                    </video>
-                </div>
+                <video id="video-container" class="video-js vjs-default-skin" controls autoplay>
+                    <source src="https://lives.tinywan.com/live123/8001513259043.m3u8" type="application/x-mpegURL">
+                </video>
             </div>
         </div>
     </div>
 </div>
-
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
+//    var options = {
+//        width: 540,
+//        height: 380
+//    };
+//    var player = videojs('video-container', options);
+//    player.addClass('vjs-matrix');
+//
+//    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+//        if (e.type == "play") {
+//            console.log('开始播放');
+//        } else if (e.type == "playing") {
+//            console.log('正在播放...');
+//        } else if (e.type == "pause") {
+//            console.log('暂停视频播放');
+//        } else if (e.type == "firstplay") {
+//            console.log('firstplay播放');
+//        } else {
+//            console.log('1111111111111');
+//        }
+//    });
     function playModal(domainName,appName,streamName) {
-        $("#video-container").children().remove();
+        var options = {
+            width: 540,
+            height: 380
+        };
+        var player = videojs('video-container', options);
+//        player.src({
+//            src: 'https://lives.tinywan.com/live123/8001513259043.m3u8',
+//            type: 'application/x-mpegURL',
+//            withCredentials: true
+//        });
         $("#playModal").modal("show");
-        console.log("http://" + domainName + '/'+appName+'/' + streamName+'.m3u8');
-        $("#video-container").html('<source id="source-container" src="http://' + domainName +'/'+appName+'/' + streamName + '.m3u8" type="video/mp4">');
+//        player.play();
+        console.log("https://" + domainName + '/'+appName+'/' + streamName+'.m3u8');
+//        $("#video-container").html('<source src="https://' + domainName +'/'+appName+'/' + streamName + '.m3u8" type="application/x-mpegURL">');
         //你在动态赋值src后要加载这个视频文件即:
-        $("#video-container").load();
+//        $("#video-container").load();
+        console.log('----------------------'+player);
+//        player.play();
     }
 
 </script>

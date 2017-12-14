@@ -263,4 +263,32 @@ class System extends BaseBackend
         return json(['code' => 200, 'msg' => '操作成功']);
     }
 
+    /**
+     * 消息队列列表
+     */
+    public function messageQueueList()
+    {
+        $taskKey = "TASK_LIST:*";
+        $redis = messageRedis();
+        $res = $redis->keys($taskKey);
+        $tmpArr = [];
+        foreach ($res as $hkey){
+            $tmpArr[] = [
+                'status'=>$redis->hGet($hkey,'status'),
+                'task_type'=>$redis->hGet($hkey,'task_type'),
+                'email_type'=>$redis->hGet($hkey,'email_type'),
+                'user_email'=>$redis->hGet($hkey,'user_email'),
+                'user_mobile'=>$redis->hGet($hkey,'user_mobile'),
+                'create_time'=>$redis->hGet($hkey,'create_time'),
+                'email_status'=>$redis->hGet($hkey,'email_status'),
+                'email_scene'=>$redis->hGet($hkey,'email_scene'),
+                'msg'=>$redis->hGet($hkey,'msg'),
+                'live_id'=>$redis->hGet($hkey,'live_id'),
+            ];
+        }
+//        halt($tmpArr);
+        $this->assign('messages',$tmpArr);
+        return $this->fetch();
+    }
+
 }

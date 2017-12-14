@@ -1255,7 +1255,7 @@ class Live extends BaseBackend
      */
     public function globalStreamDataList()
     {
-        $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(20);
+        $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(14);
         return $this->fetch('', [
             'lists' => $streamList
         ]);
@@ -1263,7 +1263,7 @@ class Live extends BaseBackend
 
     public function globalStreamRecordList()
     {
-        $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(20);
+        $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(14);
         return $this->fetch('', [
             'lists' => $recordList
         ]);

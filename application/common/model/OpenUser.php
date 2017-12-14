@@ -108,4 +108,37 @@ class OpenUser extends BaseModel
         session('open_user_username', $userName);
         return ['valid' => 1, 'msg' => "注册成功"];
     }
+
+    /**
+     *
+     * @param $appId
+     * @param $allParam
+     * @return bool|string
+     */
+    public  function checkApiSign($appId, $allParam)
+    {
+        //根据appId查询否存在该用户
+        $userInfo = OpenUser::get($appId);
+        if (false == $userInfo) return false;
+        $appSecret = $userInfo->appSecret;  //$appSecret = sha1('http://sewise.amai8.com/');
+        //去除最后的签名
+        unset($allParam['_url']);
+        unset($allParam['Sign']);
+        // 1. 对加密数组进行字典排序
+        foreach ($allParam as $key => $value) {
+            $sortParam[$key] = $key;
+        }
+        // 2. 字典排序的作用就是防止因为参数顺序不一致而导致下面拼接加密不同
+        sort($sortParam);
+        // 3. 将Key和Value拼接
+        $str = "";
+        foreach ($sortParam as $k => $v) {
+            $str = $str . $sortParam[$k] . $allParam[$v];
+        }
+        //3.将appSecret作为拼接字符串的后缀,形成最后的字符串
+        $finalStr = $str . $appSecret;
+        //4. 通过sha1加密,转化为大写大写获得签名
+        $sign = strtoupper(sha1($finalStr));
+        return $sign;
+    }
 }

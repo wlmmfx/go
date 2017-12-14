@@ -102,7 +102,7 @@ return [
             // 设置不同的缓存保存目录
             'path' => RUNTIME_PATH . 'file/',
             // 缓存前缀
-            'prefix' => 'FileCache:',
+            'prefix' => 'FILE_CACHE:',
             // 缓存有效期 0表示永久缓存
             'expire' => 0,
         ],
@@ -115,7 +115,7 @@ return [
             'port' => '63789',
             'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
             // 缓存前缀
-            'prefix' => 'RedisCache:',
+            'prefix' => 'REDIS_CACHE:',
             // 缓存有效期 0表示永久缓存
             'expire' => 604800,
         ],

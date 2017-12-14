@@ -241,6 +241,44 @@ class WebRtc extends BaseFrontend
         ob_end_clean();
         readfile($sourceFile);
     }
+
+    /**
+     * Html5 Ajax多图片可预览上传图片=====================================================================================
+     * @return mixed
+     */
+    public function uploadImage()
+    {
+        if (request()->isPost()) {
+            Log::error('-----11111111-------' . $_FILES['FileData']['name']);
+            $file_path = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads/' . $_FILES['FileData']['name'];
+            $returnMsg = "{status:true}";
+            move_uploaded_file($_FILES["FileData"]["tmp_name"], $file_path);
+            return $returnMsg;
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * Html5 轻松解决跨域无刷新上传图片====================================================================================
+     * Help: https://mengkang.net/375.html
+     * @return string
+     */
+    public function html5UploadImageHandle()
+    {
+        if (request()->isPost()) {
+            header('Access-Control-Allow-Origin:*');
+            Log::error('-----11111111-------' . json_encode($_FILES));
+            $fileName = 'test' . rand(0000, 99999) . '.jpg';
+            $destination = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'uploads/'.$fileName;
+            if (!move_uploaded_file($_FILES["fileToUpload"]['tmp_name'], $destination)) {
+                return json(array('info' => '上传失败'));
+            } else {
+                $imgUrl = "https://www.tinywan.com/uploads/".$fileName;
+                return json(array('url' => $imgUrl));
+            }
+        }
+        return $this->fetch();
+    }
 }
 
 

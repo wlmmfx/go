@@ -62,6 +62,44 @@ class Live
     }
 
     /**
+     * 禁止直播流推送
+     * @param $DomainName 您的推流域名
+     * @param $AppName 应用名称
+     * @param $StreamName 流名称
+     * @param $ResumeTime 恢复流的时间 UTC时间 格式：2015-12-01T17:37:00Z
+     * @return mixed
+     */
+    public static function setAliForbidLiveStream($DomainName, $AppName, $StreamName, $ResumeTime)
+    {
+        $Action = 'ForbidLiveStream';
+        $LiveStreamType = 'publisher';
+        $access_key_id =  config('aliyun_api.ACCESSKEYID');
+        $cdn_server_address = 'https://cdn.aliyuncs.com';
+        $parameters = ["Format" => "JSON",
+            "Version" => "2014-11-11",
+            "AccessKeyId" => $access_key_id,
+            "SignatureVersion" => "1.0",
+            "SignatureMethod" => "HMAC-SHA1",
+            "SignatureNonce" => self::uuid(),
+            "TimeStamp" => gmdate('c'),
+        ];
+        //这几个参数应该是输入的 这里写死了
+        $parameters['Action'] = $Action;
+        $parameters['DomainName'] = $DomainName;
+        $parameters['AppName'] = $AppName;
+        $parameters['StreamName'] = $StreamName;
+        $parameters['LiveStreamType'] = $LiveStreamType;
+        $parameters['ResumeTime'] = $ResumeTime;
+
+        //添加签名信息
+        $parameters['Signature'] = self::getSign($parameters);
+        //拼接url
+        $url = $cdn_server_address . "/?" . http_build_query($parameters);
+        $responseResult = json_decode(file_get_contents($url), true);
+        return $responseResult;
+    }
+
+    /**
      * 查看一段时间内某个域名（或域名下某应用）的推流记录
      * @param $DomainName
      * @param $AppName

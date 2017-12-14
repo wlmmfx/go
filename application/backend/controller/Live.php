@@ -1249,4 +1249,23 @@ class Live extends BaseBackend
         echo $res;
     }
 
+    /**
+     * 阿里云直播模块
+     * 全局推流名称列表
+     */
+    public function globalStreamDataList()
+    {
+        $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(20);
+        return $this->fetch('', [
+            'lists' => $streamList
+        ]);
+    }
+
+    public function globalStreamRecordList()
+    {
+        $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(20);
+        return $this->fetch('', [
+            'lists' => $recordList
+        ]);
+    }
 }

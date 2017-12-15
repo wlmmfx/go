@@ -1261,11 +1261,38 @@ class Live extends BaseBackend
         ]);
     }
 
+    /**
+     * 推流记录列表
+     * @return mixed
+     */
     public function globalStreamRecordList()
     {
         $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(14);
         return $this->fetch('', [
             'lists' => $recordList
         ]);
+    }
+
+    /**
+     * 推流黑名单列表
+     */
+    public function globalStreamBlackList()
+    {
+        $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
+        $redis = messageRedis();
+        $res = $redis->keys($taskKey);
+        $tmpArr = [];
+        foreach ($res as $hkey){
+            $tmpArr[] = [
+                'create_time'=>$redis->hGet($hkey,'create_time'),
+                'stream_name'=>$redis->hGet($hkey,'stream_name'),
+                'client_ip'=>$redis->hGet($hkey,'client_ip'),
+                'domain_name'=>$redis->hGet($hkey,'domain_name'),
+                'app_name'=>$redis->hGet($hkey,'app_name')
+            ];
+        }
+        array_multisort(array_column($tmpArr,'create_time'),SORT_DESC,$tmpArr);
+        $this->assign('lists',$tmpArr);
+        return $this->fetch();
     }
 }

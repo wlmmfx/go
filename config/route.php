@@ -60,6 +60,7 @@ Route::any('hello/:name','backend/demo/hello',[
     'method' => 'get'
 ],['name' => '[A-Za-z0-9]+']);
 
+Route::rule(':version/user/:id','api/:version.User/read');
 
 /**
  * ------------------------------------------------------路由配置定义----------------------------------------------------

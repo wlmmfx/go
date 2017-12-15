@@ -100,7 +100,14 @@ class Stream extends Controller
             //推流有效性检测
             $StreamNameValidity = $redis->sIsMember('GLOBAL_STREAM_WHITE_LIST', $streamName);
             if ($StreamNameValidity == false || $StreamNameValidity == '') {
-                $redis->zAdd('GLOBAL_STREAM_BLACK_LIST', time(), $streamName);
+                // 哈希列表
+                $redis->hMset('GLOBAL_STREAM_BLACK_LIST:'.time(), [
+                    'stream_name'=>$streamName,
+                    'client_ip'=>$clientIP,
+                    'domain_name'=>$domainName,
+                    'app_name'=>$appName,
+                    'create_time'=>$time
+                ]);
                 try {
                     $forbid = Live::setAliForbidLiveStream($domainName, $appName, $streamName, prcToUtc('2036-12-03  09:15:00'));
                     Log::debug('[' . getCurrentDate() . ']:' . $streamName . '禁止直播流成功,Response：' . json_encode($forbid));
@@ -547,7 +554,6 @@ class Stream extends Controller
         return json(['code'=>200]);
     }
 
-
     /**
      * 测试第三方回调地址
      */
@@ -563,9 +569,7 @@ class Stream extends Controller
 
     public function tinywanPackage()
     {
-        $live = new \live\Live();
-        halt($live);
+        Log::error("111111111111");
     }
-
 
 }

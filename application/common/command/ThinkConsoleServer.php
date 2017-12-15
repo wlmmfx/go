@@ -11,6 +11,7 @@
 
 namespace app\common\command;
 
+use Curl\Curl;
 use redis\BaseRedis;
 use think\console\Command;
 use think\console\Input;
@@ -23,7 +24,7 @@ class ThinkConsoleServer extends Command
 
     protected function configure()
     {
-            $this->setName('ThinkConsoleServer')->setDescription('Based on ThinkPHP5 command-line daemon service');
+        $this->setName('ThinkConsoleServer')->setDescription('Based on ThinkPHP5 command-line daemon service');
     }
 
     protected function execute(Input $input, Output $output)
@@ -44,16 +45,18 @@ class ThinkConsoleServer extends Command
 
     /**
      * Redis数据库操作
-     * 通过Redis存储消息发送
+     * status 0:执行成功 1:正在执行 2:执行失败
      * @return string
      */
     protected function sendMsgByRedis()
     {
-        $listRes = self::redis()->lRange("TASK_QUEUE",0,3);
-        if(empty($listRes)) return getCurrentDate()." : Redis Queue is Null";
-        foreach ($listRes as $key=>$value){
+        $listRes = self::redis()->lRange("TASK_QUEUE", 0, 3);
+        if (empty($listRes)) {
+            return getCurrentDate() . " : Redis Queue is Null";
+        }
+        foreach ($listRes as $key => $value) {
             $msgData = self::redis()->hGetAll($value);
-            if($msgData['status'] == 1) {
+            if ($msgData['status'] == 1) {
                 //判断消息类型
                 switch ($msgData['task_type']) {
                     case 1:
@@ -67,26 +70,103 @@ class ThinkConsoleServer extends Command
                         // 短信发送成功更新记录
                         if (isset($sendRes->result) && ($sendRes->result->err_code == 0) && ($sendRes->result->success == true)) {
                             self::redis()->hSet($value, 'status', 0);
-                            self::redis()->lRem('TASK_QUEUE',$value, 2);
+                            self::redis()->lRem('TASK_QUEUE', $value, 2);
+                            self::redis()->hSet($value, 'task_msg', 'success');
+                        } else {
+                            self::redis()->hSet($value, 'status', 2);
+                            self::redis()->hSet($value, 'task_msg', json_encode($sendRes));
                         }
                         break;
                     case 2:
                         $result = send_email_qq($msgData['user_email'], self::getEmailType($msgData['email_type']), self::getEmailTemplate($msgData['email_scene'], $msgData['email_type'], $msgData['user_email']));
                         if ($result['error'] == 0) {
                             self::redis()->hSet($value, 'status', 0);
-                            self::redis()->lRem('TASK_QUEUE',$value, 2);
+                            self::redis()->lRem('TASK_QUEUE', $value, 2);
+                            self::redis()->hSet($value, 'task_msg', 'success');
+                        } else {
+                            self::redis()->hSet($value, 'status', 2);
+                            self::redis()->hSet($value, 'task_msg', json_encode($result['message']));
                         }
                         break;
                     case 3:
-                        echo '3';
+                        $result3 = self::callbackTaskHandle($msgData['event_type'], $msgData['callback_url'], $msgData['stream_id'], $msgData['stream_name'], $msgData['create_time']);
+                        if ($result3) {
+                            self::redis()->hSet($value, 'status', 0);
+                            self::redis()->lRem('TASK_QUEUE', $value, 2);
+                            self::redis()->hSet($value, 'task_msg', 'success');
+                        } else {
+                            self::redis()->hSet($value, 'status', 2);
+                            self::redis()->hSet($value, 'task_msg', json_encode($result3['message']));
+                        }
                         break;
                     // 删除过期的队列
                     default:
                         echo '1';
                 }
             }
+            return 'Redis Queue Success ID: ' . $value;
         }
-        return 'Redis Queue is Null 3';
+    }
+
+    protected static function curl()
+    {
+        return new Curl();
+    }
+
+    /**
+     * 发布一个回调地址
+     * @param $event_type
+     * @param $callback_url
+     * @param $stream_id
+     * @param $stream_name
+     * @param $time
+     * @return string
+     * @static
+     */
+    public static function callbackTaskHandle($event_type, $callback_url, $stream_id, $stream_name, $time)
+    {
+        $curl = self::curl();
+        $callbackRes = $curl->get($callback_url, [
+            'event_type' => $event_type,
+            'stream_id' => $stream_id,
+            'stream_name' => $stream_name,
+            'time' => $time,
+        ]);
+        if ($callbackRes->code == 200) {
+            return true;
+        }
+        return json_encode($curl->errorMessage);
+        /**
+         * 这里如何保证100次推送成功
+         * 在这里要读取Redis的值吗？
+         * 1 是加入的队列状态，这里一直不返回就可以了
+         */
+//        $count = 0;
+//        $res = '';
+//        while (true) {
+//            $count++;
+//            $curl = self::curl();
+//            $callbackRes = $curl->get($callback_url, [
+//                'event_type' => $event_type,
+//                'stream_id' => $stream_id,
+//                'stream_name' => $stream_name,
+//                'on_publish_time' => date('Y-m-d H:i:s'),
+//            ]);
+//            if ($curl->error) {
+//                $res = json_encode($curl->errorCode . $curl->errorMessage);
+//                break;
+//            }
+//            //最大通知次数
+//            if ($count > 10) break;
+//            //如果客户端返回数据为 200 则表示接收到数据了
+//            if ($callbackRes->code == 200) {
+//                $res = "callback is success";
+//                break;
+//            }
+//            sleep(1);
+//            continue;
+//        }
+//        return $res;
     }
 
 
@@ -110,7 +190,7 @@ class ThinkConsoleServer extends Command
                         if ($msg['mobile_type'] == 1) {
                             $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
                         } elseif ($msg['mobile_type'] == 2) {
-                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg'],'number'=>$msg['live_id']]);
+                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg'], 'number' => $msg['live_id']]);
                         } else {
                             $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
                         }

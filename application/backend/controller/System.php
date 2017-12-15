@@ -263,4 +263,43 @@ class System extends BaseBackend
         return json(['code' => 200, 'msg' => '操作成功']);
     }
 
+    public function clearRedisKey()
+    {
+        $cacheRes = messageRedis()->keys('TASK_QUEUE:*');
+        foreach ($cacheRes as $value) {
+            messageRedis()->del($value);
+        }
+        return json(['code' => 200, 'msg' => '操作成功']);
+    }
+
+    /**
+     * 消息队列列表
+     */
+    public function messageQueueList()
+    {
+        $taskKey = "TASK_LIST:*";
+        $redis = messageRedis();
+        $res = $redis->keys($taskKey);
+        $tmpArr = [];
+        foreach ($res as $hkey){
+            $tmpArr[] = [
+                'create_time'=>$redis->hGet($hkey,'create_time'),
+                'status'=>$redis->hGet($hkey,'status'),
+                'task_type'=>$redis->hGet($hkey,'task_type'),
+                'email_type'=>$redis->hGet($hkey,'email_type'),
+                'user_email'=>$redis->hGet($hkey,'user_email'),
+                'user_mobile'=>$redis->hGet($hkey,'user_mobile'),
+                'email_status'=>$redis->hGet($hkey,'email_status'),
+                'email_scene'=>$redis->hGet($hkey,'email_scene'),
+                'msg'=>$redis->hGet($hkey,'msg'),
+                'task_msg'=>$redis->hGet($hkey,'task_msg'),
+                'callback_url'=>$redis->hGet($hkey,'callback_url'),
+                'live_id'=>$redis->hGet($hkey,'live_id'),
+            ];
+        }
+        array_multisort(array_column($tmpArr,'create_time'),SORT_DESC,$tmpArr);
+        $this->assign('messages',$tmpArr);
+        return $this->fetch();
+    }
+
 }

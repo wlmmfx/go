@@ -12,7 +12,6 @@ namespace app\api\controller;
 
 
 use aliyun\api\Live;
-use app\common\model\OpenUser;
 use Curl\Curl;
 use think\Controller;
 use think\Db;
@@ -42,7 +41,12 @@ class Stream extends Controller
     }
 
 
-
+    /**
+     * 获取一个签名
+     * @param $allParam
+     * @return string
+     * @static
+     */
     public static function getApiSign($allParam)
     {
         $appSecret = 'f48d03070f4572069dfafab41027a913a50ea06e';
@@ -83,9 +87,9 @@ class Stream extends Controller
         $time = $request->get('time');
         $usrargs = $request->get('usrargs');
         $node = $request->get('node');
-//        if (empty($action) || empty($id)) {
-//            $this->redirect("https://www.tinywan.com/", 302);
-//        }
+        if (empty($action) || empty($streamName)) {
+            $this->redirect("https://www.tinywan.com/", 302);
+        }
         $curl = self::curl();
         $redis = messageRedis();
         //推流限制
@@ -106,19 +110,22 @@ class Stream extends Controller
                 return json([0]);
             }
             $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = '321312');
+            //是否需要拉流
+            //notify_url地址回调，添加到消息队列中去
+            if ($notifyUrl != false){
+                $msgRes = addCallbackTaskQueue($action,$notifyUrl,$streamId,$streamName);
+                Log::error('------添加到消息队列中去-----'.json_encode($msgRes));
+            }
             Log::debug('[' . getCurrentDate() . ']:' . '[1] 数据库表记录插入Id = ' . $tabRes);
         } elseif ($action == 'publish_done') {
             //结束推流事件
-            $curl->get($notifyUrl, [
-                'event_type' => 'onPublishDone',
-                'stream_id' => $streamId,
-                'stream_name' => $streamName,
-                'on_publish_done_time' => getCurrentDate(),
-            ]);
-
+            if ($notifyUrl != false){
+                $msgRes = addCallbackTaskQueue($action,$notifyUrl,$streamId,$streamName);
+                Log::error('------添加到消息队列中去-----'.json_encode($msgRes));
+            }
             //更新推流记录表
-            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time,$usrargs, $node, $action_str = "dssssssss");
-            Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 Id = ' . $tabRes);
+            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
+            Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 结果 = ' . json_encode($tabRes));
             //-------------------------------------notify_url地址回调---------------------------------------------------
             $notifyUrl = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'notify_url');
         } else {
@@ -214,7 +221,7 @@ class Stream extends Controller
     {
         // appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451'.$userModel->mobile.time());
         //根据appId查询否存在该用户
-        $userInfo = Db::table("resty_open_user")->where('app_id',':app_id')->bind(['app_id'=>$appId])->find();
+        $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         if (false == $userInfo) return false;
         $appSecret = $userInfo['app_secret'];  //$appSecret = sha1('http://sewise.www.com/');
         //去除最后的签名
@@ -244,7 +251,7 @@ class Stream extends Controller
      */
     public static function getUidByAppId($appId)
     {
-        $userInfo = Db::table("resty_open_user")->where('app_id',':app_id')->bind(['app_id'=>$appId])->find();
+        $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         return $userInfo['id'];
     }
 
@@ -317,7 +324,7 @@ class Stream extends Controller
             'create_time' => $streamINfo['createTime'],
         ];
         $insertId = Db::table("resty_stream_name")->insertGetId($insertData);
-        if(!$insertId){
+        if (!$insertId) {
             $result = [
                 'status_code' => 500,
                 'msg' => '数据库发生异常，请稍后访问'
@@ -491,9 +498,9 @@ class Stream extends Controller
      */
     public function createSigin()
     {
-        $userInfo = Db::table("resty_open_user")->where('id',10)->find();
+        $userInfo = Db::table("resty_open_user")->where('id', 10)->find();
         echo $appId = base_convert(uniqid(), 16, 10);
-        $appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451'.$userInfo['mobile'].time());
+        $appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451' . $userInfo['mobile'] . time());
         halt($appSecret);
     }
 
@@ -526,6 +533,38 @@ class Stream extends Controller
         curl_close($ch);
         //返回数据为JSON格式，进行转换为数组打印输出
         return json(json_decode($response, true));
+    }
+
+    /**
+     * 回调测试
+     * @return \think\response\Json
+     */
+    public function testNotifyUrl()
+    {
+        $redis = messageRedis();
+        $redis->set("testNotifyUrl",json_encode($_GET));
+        $redis->incr("testNotifyUrlNums");
+        return json(['code'=>200]);
+    }
+
+
+    /**
+     * 测试第三方回调地址
+     */
+    public function yieldSimpleWhile()
+    {
+        $curl = self::curl();
+        $callback_url = "https://www.tinywan.com/api/stream/testNotifyUrl";
+        $res = $callbackRes = $curl->get($callback_url, [
+            'on_publish_time' => date('Y-m-d H:i:s'),
+        ]);
+        halt($res->code);
+    }
+
+    public function tinywanPackage()
+    {
+        $live = new \live\Live();
+        halt($live);
     }
 
 

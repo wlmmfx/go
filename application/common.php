@@ -996,39 +996,6 @@ function messageRedis()
 }
 
 /**
- * Redis任务邮件队列
- * @param int $email_type
- * @param $user_email
- * @param int $email_scene
- * @param string $live_id
- * @return array|bool
- */
-function addEmailTaskQueue($email_type = 1, $user_email, $email_scene = 2, $live_id = '2020')
-{
-    if (empty($user_email)) {
-        return ["传递参数不合适"];
-    }
-    $taskKey = "TASK_LIST:" . time();
-    $res = messageRedis()->hMset($taskKey, [
-        'status' => 1,
-        'task_type' => 2,
-        'email_type' => $email_type,
-        'user_email' => $user_email,
-        'create_time' => getCurrentDate(),
-        'email_status' => 0,
-        'email_scene' => $email_scene,
-        'msg' => "邮件测试消息",
-        'live_id' => $live_id,
-    ]);
-    if (true === $res) {
-        $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);
-        if ($resList == true) return true;
-    }
-    return false;
-}
-
-
-/**
  * 手机短信发送Redis任务短信队列
  * @param $user_mobile
  * @param int $mobile_type
@@ -1057,6 +1024,72 @@ function addSMSTaskQueue($user_mobile, $mobile_type = 1, $msg, $live_id = '1227'
         if ($resList == true) return true;
     }
     return false;
+}
+
+
+/**
+ * Redis任务邮件队列
+ * @param int $email_type
+ * @param $user_email
+ * @param int $email_scene
+ * @param string $live_id
+ * @return array|bool
+ */
+function addEmailTaskQueue($email_type = 1, $user_email, $email_scene = 2, $live_id = '2020')
+{
+    //注意：这里传递的每一个值务必都是真的
+    if (empty($user_email) || empty($user_email) || empty($email_scene) || empty($live_id)) {
+        return ["传递参数不合适"];
+    }
+    $taskKey = "TASK_LIST:" . time();
+    $res = messageRedis()->hMset($taskKey, [
+        'status' => 1,
+        'task_type' => 2,
+        'email_type' => $email_type,
+        'user_email' => $user_email,
+        'create_time' => getCurrentDate(),
+        'email_status' => 0,
+        'email_scene' => $email_scene,
+        'msg' => "邮件测试消息",
+        'live_id' => $live_id,
+    ]);
+    if (true === $res) {
+        $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);
+        if ($resList == true) return true;
+    }
+    return false;
+}
+
+/**
+ * 回调任务队列
+ * @param $event_type
+ * @param $callback_url
+ * @param $stream_id
+ * @param $stream_name
+ * @param $time
+ * @return bool
+ */
+function addCallbackTaskQueue($event_type, $callback_url, $stream_id, $stream_name)
+{
+    if (empty($event_type) || empty($callback_url) || empty($stream_id) || empty($stream_name)) {
+        return ["传递参数不合适"];
+    }
+    $redis = messageRedis();
+    $taskKey = "TASK_LIST:" . time();
+    $res = $redis->hMset($taskKey, [
+        'status' => 1,
+        'task_type' => 3,
+        'event_type' => $event_type,
+        'callback_url' => $callback_url,
+        'stream_id' => $stream_id,
+        'create_time' => getCurrentDate(),
+        'stream_name' => $stream_name
+    ]);
+    if (true === $res) {
+        $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);
+        if ($resList == true) return true;
+    }
+    return true;
 }
 
 /**

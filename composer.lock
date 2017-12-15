@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8c38f122d64405e9b19899d76f1d94d",
+    "content-hash": "a1ea002c325bbde75a0111dec35d5c1c",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -3078,6 +3078,42 @@
                 "text recognition"
             ],
             "time": "2017-12-06T21:05:48+00:00"
+        },
+        {
+            "name": "tinywan/easy-live",
+            "version": "v0.01",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tinywan/easy-live.git",
+                "reference": "6325131acff511641005772bc2421b114ebabe37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/Tinywan/easy-live/6325131acff511641005772bc2421b114ebabe37.zip",
+                "reference": "6325131acff511641005772bc2421b114ebabe37",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "live\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tinywan",
+                    "email": "756684177@qq.com"
+                }
+            ],
+            "description": "nginx live module",
+            "time": "2017-12-15T07:46:57+00:00"
         },
         {
             "name": "topthink/framework",

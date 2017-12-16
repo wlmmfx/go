@@ -3,6 +3,7 @@
     .table th, .table td {
         vertical-align: middle !important;
     }
+
     .wrapper {
         margin-left: -20px;
         margin-right: -19px;
@@ -10,6 +11,11 @@
         margin-top: -17px;
     }
 </style>
+<script>
+    function fresh(){
+        window.location.reload();   //刷新整页
+    }
+</script>
 <div class="row">
     <div class="alert alert-info no-margin">
         <button type="button" class="close" data-dismiss="alert">
@@ -23,24 +29,29 @@
 
     </div>
     <div class="hr dotted"></div>
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover" id="iframeout">
         <thead>
         <tr>
             <th>推流地址</th>
-            <th>推流域名</th>
-            <th>流名称</th>
+            <th>应用名称</th>
             <th>推流时间</th>
             <th>推流地域</th>
-            <th>操作</th>
+            <th>操作&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="fresh()" class="btn btn-xs">
+                    <i class="icon-refresh bigger-110"></i>
+                </button>
+            </th>
         </tr>
         </thead>
         <tbody>
         {volist name='lists' id='vo'}
         <tr class="gradeX">
-            <td>rtmp://stream.tinywan.com/{$vo['app_name']}</td>
-            <td>{$vo['domain_name']}</td>
-            <td>{$vo['stream_name']}</td>
-
+            <td>rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
+                <span class="pink smaller lighter copy-url"
+                data-clipboard-text="rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
+                style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+            </td>
+            <td>{$vo['app_name']}</td>
             <td>
                 起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
                 止:&nbsp;{empty name="$vo['stop_time']"}
@@ -51,14 +62,14 @@
             </td>
             <td>{$vo['client_ip']|ip_format}</td>
             <td>
-                <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
+                <a  href="javascript:liveAddressModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
                     <button class="btn btn-primary btn-xs">
-                        <i class="icon-folder-open"></i>详情
+                        <i class="icon-laptop"></i>&nbsp;直播地址
                     </button>
                 </a>
                 <a href="javascript:playModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
-                    <button class="btn btn-warning btn-xs">
-                        <i class="icon-play-circle"></i>预览
+                    <button class="btn btn-pink btn-xs">
+                        <i class="icon-play-circle"></i>&nbsp;预览
                     </button>
                 </a>
             </td>
@@ -87,6 +98,69 @@
         </div>
     </div>
 </div>
+
+<!-- 直播推流地址（Modal） -->
+<div class="modal fade" id="liveAddressModal" tabindex="-1" role="dialog" aria-labelledby="liveAddressModal" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title"><i class="icon-play-circle"></i> 直播地址</h5>
+            </div>
+            <div class="modal-body">
+                <strong>RTMP 格式:&nbsp;</strong>
+                <span class="rtmp-copy-url">0</span>&nbsp;&nbsp;&nbsp;
+                <span class="pink lighter copy-url-address" data-clipboard-text="123" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+
+                <div class="hr dotted"></div>
+                <strong>FLV 格式:&nbsp;</strong>
+                <span class="flv-copy-url">0</span>&nbsp;&nbsp;&nbsp;
+                <span class="pink lighter copy-url-address" data-clipboard-text="456" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+                <div class="hr dotted"></div>
+                <strong>M3U8 格式:&nbsp;</strong>
+                <span class="hls-copy-url">0</span>&nbsp;&nbsp;&nbsp;
+                <span class="pink lighter copy-url-address" data-clipboard-text="789" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-info" data-dismiss="modal" style="width: 75px">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 复制粘贴模态框（Modal） -->
+<div class="modal fade" id="copyUrl" tabindex="-1" role="dialog" aria-labelledby="copyUrl" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title"><i class="icon-copy"></i> 复制成功</h5>
+            </div>
+            <div class="modal-body">
+                <p></p>
+                <img  src="__COMMON__/images/success.svg" alt="" width="40"/>&nbsp;&nbsp;&nbsp;
+                <span class="auth-msg"> 链接地址已复制到粘贴板，点击右键“粘贴” 或 Ctrl+V 获取。</span>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-info" data-dismiss="modal" style="width: 75px">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function () {
+    var clipboard = new Clipboard('.copy-url');
+    clipboard.on('success', function(e) {
+        console.log(e);
+        $("#copyUrl").modal("show");
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+});
+</script>
+
 <script>
     function playModal(domainName, appName, streamName) {
         $("#playModal").modal("show");
@@ -102,4 +176,34 @@
         console.log("https://" + domainName + '/' + appName + '/' + streamName + '.m3u8');
     }
 
+    /**
+     * 直播推流地址
+     */
+    function liveAddressModal(domainName, appName, streamName) {
+        $("#liveAddressModal").modal("show");
+        $(".rtmp-copy-url").html("rtmp://"+domainName+"/"+appName+"/"+streamName);
+        $(".flv-copy-url").html("https://"+domainName+"/"+appName+"/"+streamName+'.flv');
+        $(".hls-copy-url").html("https://"+domainName+"/"+appName+"/"+streamName+'.m3u8');
+        //设置值
+//        console.log($(".rtmp-copy-url").children('span').children());
+//        console.log($(".flv-copy-url").parent().children(".copy-url-address").attr("data-clipboard-text"));
+//        console.log($(".hls-copy-url,.copy-url-address").attr("data-clipboard-text"));
+        $(".rtmp-copy-url,.copy-url-address").attr("data-clipboard-text","rtmp://"+domainName+"/"+appName+"/"+streamName);
+        $(".flv-copy-url.copy-url-address").attr("data-clipboard-text","http://"+domainName+"/"+appName+"/"+streamName+'.flv');
+        $(".hls-copy-url.copy-url-address").attr("data-clipboard-text","http://"+domainName+"/"+appName+"/"+streamName+'.flv');
+    }
+
+</script>
+
+<script>
+$(function () {
+    var clipboard = new Clipboard('.copy-url-address');
+    clipboard.on('success', function(e) {
+        console.log(e);
+        $("#copyUrl").modal("show");
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+});
 </script>

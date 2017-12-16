@@ -118,13 +118,17 @@ class Login extends Controller
                 }
                 //success
                 add_operation_log($res['msg']);
-                $this->success($res['msg'], "backend/entry/index");
-                exit;
+                // Session失效后，重新登录跳转到上次访问的页面
+                $REFFERER_URL = session('REFFERER_URL');
+                if($REFFERER_URL){
+                    $this->success($res['msg'], $REFFERER_URL);
+                }else{
+                    $this->success($res['msg'], "backend/entry/index");
+                }
             } else {
                 //fail
                 add_operation_log($res['msg']);
                 $this->error($res['msg']);
-                exit;
             }
         }
         return $this->fetch("index");

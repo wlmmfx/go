@@ -62,7 +62,7 @@ class OpenUser extends BaseModel
         $insertData['account'] = 'Tinywan' . rand(1111, 9999);
         $insertData['password'] = md5($data['email']);
         $insertData['email'] = $data['email'];
-        $insertData['create_time'] = date("Y-m-d H:i:s");;
+        $insertData['create_time'] = time();;
         $userId = Db::table('resty_open_user')->insertGetId($insertData);
         if ($userId) {
             session('open_user_id', $userId);
@@ -115,7 +115,7 @@ class OpenUser extends BaseModel
      * @param $allParam
      * @return bool|string
      */
-    public  function checkApiSign($appId, $allParam)
+    public function checkApiSign($appId, $allParam)
     {
         //根据appId查询否存在该用户
         $userInfo = OpenUser::get($appId);

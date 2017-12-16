@@ -50,6 +50,8 @@ class BaseBackend extends Base
         $this->uid = session('admin.admin_id');
         // 登陆检查
         if (empty($this->uid)) {
+             // 记录当前请求页面
+             session('REFFERER_URL',$_SERVER['REQUEST_URI']);
              $this->error("您还没有登录，请登录后访问！",Url::build('backend/login/login'));
         }
         // 权限检查

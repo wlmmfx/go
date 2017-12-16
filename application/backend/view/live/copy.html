@@ -1,0 +1,27 @@
+
+<!-- 1. Define some markup -->
+<div>hello</div>
+<button class="btn123" data-clipboard-action="copy3123123123" data-clipboard-target="div">Co12312py</button>
+
+<!-- 2. Include library -->
+<script src="/common/plugins/clipboard/clipboard.js"></script>
+
+<!-- 3. Instantiate clipboard -->
+<script>
+    var clipboard = new Clipboard('.btn123');
+
+    clipboard.on('success', function(e) {
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function(e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });
+</script>
+
+

@@ -8,8 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\controller;
-
+namespace app\api\controller\v1;
 
 use Faker\Factory;
 use redis\BaseRedis;
@@ -43,11 +42,11 @@ class Faker extends Controller
 
     /**
      * 测试数据
+     * API 路由地址：https://www.tinywan.com/v1/faker/hehuiyun
      * @return \think\response\Json
      */
-    public function read($sign)
+    public function read($sign,$limit=10)
     {
-        $page=10;
         //如果需要设置允许所有域名发起的跨域请求，可以使用通配符 *
         header('Access-Control-Allow-Origin:*');
 //        $sign = input('param.sign');
@@ -61,7 +60,7 @@ class Faker extends Controller
         } else {
             $faker = Factory::create($locale = 'zh_CN');
             $fakerName = [];
-            for ($i=0; $i < $page; $i++) {
+            for ($i=0; $i < $limit; $i++) {
                 $fakerName[] = [
                     'userName'=>$faker->name,
                     'City'=>$faker->city,

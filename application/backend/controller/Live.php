@@ -1278,6 +1278,7 @@ class Live extends BaseBackend
      */
     public function globalStreamBlackList()
     {
+//        halt($_SESSION);
         $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
         $redis = messageRedis();
         $res = $redis->keys($taskKey);
@@ -1293,6 +1294,10 @@ class Live extends BaseBackend
         }
         array_multisort(array_column($tmpArr,'create_time'),SORT_DESC,$tmpArr);
         $this->assign('lists',$tmpArr);
+        return $this->fetch();
+    }
+
+    public function copy(){
         return $this->fetch();
     }
 }

@@ -1,51 +1,56 @@
-<div class="row">
-    <div class="alert alert-info no-margin">
-        <button type="button" class="close" data-dismiss="alert">
-            <i class="icon-remove"></i>
-        </button>
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            全局流列表
+            <small>
+                <i class="icon-double-angle-right"></i>
+            Static &amp; Dynamic Tables
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
 
-        <i class="icon-facetime-video bigger-120 blue"></i>
-        推流地址：rtmp://video-center.alivecdn.com/{live}/{流名称}?vhost={推流域名}
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>流名称</th>
+                    <th>推流域名</th>
+                    <th>应用名称</th>
+                    <th>创建时间</th>
+                    <th>用户信息</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name='lists' id='vo'}
+                <tr class="gradeX">
+                    <td>{$vo['id']}</td>
+                    <td >{$vo['stream_name']}</td>
+                    <td>{$vo['domain_name']}</td>
+                    <td>{$vo['app_name']}</td>
+                    <td>{$vo['create_time']}</td>
+                    <td>{$vo['user_id']}</td>
+                    <td>
+                        <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
+                            <button class="btn btn-primary btn-xs">
+                                <i class="icon-folder-open"></i>详情
+                            </button>
 
+                        </a>
+                        <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
+                            <button class="btn btn-warning btn-xs">
+                                <i class="icon-lock"></i>禁止推流
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+            <div>{$lists->render()}</div>
+        </div><!-- /span -->
     </div>
-    <div class="hr dotted"></div>
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>#ID</th>
-            <th>流名称</th>
-            <th>推流域名</th>
-            <th>应用名称</th>
-            <th>创建时间</th>
-            <th>用户信息</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {volist name='lists' id='vo'}
-        <tr class="gradeX">
-            <td>{$vo['id']}</td>
-            <td >{$vo['stream_name']}</td>
-            <td>{$vo['domain_name']}</td>
-            <td>{$vo['app_name']}</td>
-            <td>{$vo['create_time']}</td>
-            <td>{$vo['user_id']}</td>
-            <td>
-                <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
-                    <button class="btn btn-primary btn-xs">
-                        <i class="icon-folder-open"></i>详情
-                    </button>
-
-                </a>
-                <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
-                    <button class="btn btn-warning btn-xs">
-                        <i class="icon-lock"></i>禁止推流
-                    </button>
-                </a>
-            </td>
-        </tr>
-        {/volist}
-        </tbody>
-    </table>
-    <div>{$lists->render()}</div>
 </div>
+

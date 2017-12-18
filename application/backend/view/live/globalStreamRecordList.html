@@ -55,7 +55,7 @@
             <td>
                 起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
                 止:&nbsp;{empty name="$vo['stop_time']"}
-                <i class="icon-spinner icon-spin green"></i> <span class="smaller lighter green">正在推流</span>
+                <i class="icon-spinner icon-spin green"></i> <span class="smaller green lighter">正在推流</span>
                 {else /}
                 {$vo['stop_time']|date="Y-m-d H:i:s",###}
                 {/empty}
@@ -175,6 +175,10 @@ $(function () {
         });
         console.log("https://" + domainName + '/' + appName + '/' + streamName + '.m3u8');
     }
+
+    $('#playModal').on('hide.bs.modal', function () {
+        window.location.reload();
+    });
 
     /**
      * 直播推流地址

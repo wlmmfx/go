@@ -24,4 +24,4 @@ Route::get('bd/:id', 'blog/Index/detail', [], ['id' => '\d+']);
 //    Route::post('search', 'search');
 //    Route::put('comment', 'comment');
 //}, [], ['id' => '\d+', 'category' => '^[A-Za-z]\w+', 'year' => '\d{4}', 'month' => '\d{2}']);
-Route::miss('/', 'GET');
+//Route::miss('/', 'GET');

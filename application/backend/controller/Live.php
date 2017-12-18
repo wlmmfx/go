@@ -101,9 +101,9 @@ class Live extends BaseBackend
         $lives = Db::table("resty_live")
             ->alias('l')
             ->join('resty_category c', 'c.id = l.cate_id')
-            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,l.recordStatus,c.name as c_name")
+            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,l.stream_name,c.name as c_name")
             ->order("l.createTime desc,l.liveStartTime desc")
-            ->paginate(4);
+            ->paginate(8);
         $categorys = db('category')->where('pid', 116)->order('id desc')->select();
         $this->assign('lives', $lives);
         $this->assign('categorys', $categorys);
@@ -116,9 +116,12 @@ class Live extends BaseBackend
     public function liveStore()
     {
         if (request()->isPost()) {
-            $streamName = '400' . time();
-            $startTime = date('Y-m-d H:i:s', time());
-            $res = $this->db->store(input('post.'));
+            $data = input('post.');
+            $apiData = self::apiCreateAddress();
+            if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败");
+            $data['stream_id'] = $apiData['data']['streamId'];
+            $data['stream_name'] = $apiData['data']['streamName'];
+            $res = $this->db->store($data);
             if ($res["valid"]) {
                 $this->success($res["msg"], "backend/live/liveIndex");
                 exit;
@@ -130,23 +133,60 @@ class Live extends BaseBackend
     }
 
     /**
+     * 通过接口创建推流地址
+     * @return \think\response\Json
+     */
+    protected static function apiCreateAddress()
+    {
+        //请求参数
+        $appId = 1586740578218850;
+        $domainName = 'lives.tinywan.com';
+        $appName = 'live123';
+        //签名密钥
+        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
+        //签名串，由签名算法sha1生成
+        $sign = strtoupper(sha1($str));
+        //请求资源访问路径以及请求参数，参数名必须为大写
+        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
+        //CURL方式请求
+        $ch = curl_init() or die (curl_error());
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 360);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        //返回数据为JSON格式，进行转换为数组打印输出
+        return json_decode($response, true);
+    }
+
+    /**
      * 活动详细信息
      */
     public function liveDetail()
     {
         $liveId = input('param.id');
+        $streamName = input('param.streamName');
+        $live = Db::table("resty_live")->where('id', $liveId)->find();
+        // 获取接口信息
+        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->find();
         $lives = Db::table("resty_live")
             ->alias('l')
             ->join('resty_file f', 'f.live_id = l.id')
             ->where('l.id', $liveId)
-            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,l.recordStatus,f.path")
+            ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,f.path")
             ->order("f.id desc")
             ->paginate(12);
-        $videos = Db::table('resty_stream_video')->order('createTime desc')->paginate(12);
-        $this->assign('videos', $videos);
-        $this->assign('lives', $lives);
-        $this->assign('liveId', $liveId);
-        return $this->fetch();
+        $videos = Db::table('resty_stream_video')->where('streamName', $streamName)->order('createTime desc')->paginate(12);
+        return $this->fetch('', [
+            'videos' => $videos,
+            'live' => $live,
+            'lives' => $lives,
+            'streamInfo' => $streamInfo,
+            'liveId' => $liveId,
+        ]);
     }
 
     /**
@@ -332,6 +372,8 @@ class Live extends BaseBackend
             $file = request()->file("video_file");
             if ($file) {
                 $id = input('post.id', '201710008');
+                $postView = input('post.view');
+                $view = isset($view) ? $postView : 0;
                 $upload_desc = input('post.upload_desc');
                 $cutImageTime = input('post.cut_image_time');
                 $startPath = ROOT_PATH . 'public' . DS . 'uploads/videos/' . $id;
@@ -382,24 +424,35 @@ class Live extends BaseBackend
                     $insertRes = Db::table('resty_stream_video_edit')->insertGetId($videoData);
                     if ($insertRes) {
                         // 遍历删除原图和缩略图
-                        $res = [
-                            'code' => 200,
-                            'msg' => '恭喜你，上传成功',
-                            'data' => [
-                                'Id' => $id,
-                                'Extension' => $ext,
-                                'Filename' => $baseName,
-                                'format_name' => self::ffprobe()->format($fileTmpPath)->get("format_name"),
-                                'format_long_name' => self::ffprobe()->format($fileTmpPath)->get("format_long_name"),
-                                'bit_rate' => self::ffprobe()->format($fileTmpPath)->get("bit_rate"),
-                                'Size' => trans_byte($fileSize),
-                                'Duration' => gmstrftime('%H:%M:%S', $duration),
-                                'width' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('width'),
-                                'height' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('height'),
-                                'codec_type' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_type'),
-                                'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
-                            ]
-                        ];
+                        if ($view) {
+                            $res = [
+                                'code' => 200,
+                                'msg' => '恭喜你，上传成功',
+                                'data' => [
+                                    'view' => 1,
+                                    'Id' => $id,
+                                    'Extension' => $ext,
+                                    'Filename' => $baseName,
+                                    'format_name' => self::ffprobe()->format($fileTmpPath)->get("format_name"),
+                                    'format_long_name' => self::ffprobe()->format($fileTmpPath)->get("format_long_name"),
+                                    'bit_rate' => self::ffprobe()->format($fileTmpPath)->get("bit_rate"),
+                                    'Size' => trans_byte($fileSize),
+                                    'Duration' => gmstrftime('%H:%M:%S', $duration),
+                                    'width' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('width'),
+                                    'height' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('height'),
+                                    'codec_type' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_type'),
+                                    'codec_long_name' => self::ffprobe()->streams($fileTmpPath)->videos()->first()->get('codec_long_name'),
+                                ]
+                            ];
+                        } else {
+                            $res = [
+                                'code' => 200,
+                                'msg' => '恭喜你，上传成功',
+                                'data' => [
+                                    'view' => 0
+                                ]
+                            ];
+                        }
                         $this->rmdirs($savePath);
                     } else {
                         $res = [
@@ -1283,21 +1336,22 @@ class Live extends BaseBackend
         $redis = messageRedis();
         $res = $redis->keys($taskKey);
         $tmpArr = [];
-        foreach ($res as $hkey){
+        foreach ($res as $hkey) {
             $tmpArr[] = [
-                'create_time'=>$redis->hGet($hkey,'create_time'),
-                'stream_name'=>$redis->hGet($hkey,'stream_name'),
-                'client_ip'=>$redis->hGet($hkey,'client_ip'),
-                'domain_name'=>$redis->hGet($hkey,'domain_name'),
-                'app_name'=>$redis->hGet($hkey,'app_name')
+                'create_time' => $redis->hGet($hkey, 'create_time'),
+                'stream_name' => $redis->hGet($hkey, 'stream_name'),
+                'client_ip' => $redis->hGet($hkey, 'client_ip'),
+                'domain_name' => $redis->hGet($hkey, 'domain_name'),
+                'app_name' => $redis->hGet($hkey, 'app_name')
             ];
         }
-        array_multisort(array_column($tmpArr,'create_time'),SORT_DESC,$tmpArr);
-        $this->assign('lists',$tmpArr);
+        array_multisort(array_column($tmpArr, 'create_time'), SORT_DESC, $tmpArr);
+        $this->assign('lists', $tmpArr);
         return $this->fetch();
     }
 
-    public function copy(){
+    public function copy()
+    {
         return $this->fetch();
     }
 }

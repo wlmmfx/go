@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use app\common\controller\BaseBackend;
+use think\Config;
 use think\Db;
 use think\Log;
 
@@ -127,6 +128,19 @@ class System extends BaseBackend
      */
     public function payConfig()
     {
+        $file = CONF_PATH . 'extra/system_cache.php';
+        var_dump($_GET);
+        $tmpArr['cache']['redis'] = [
+            'type'=>$_GET['type'],
+            'expire'=>$_GET['expire']
+        ];
+        // 打印一个数组
+        $config = array_merge(include $file, array_change_key_case($tmpArr, CASE_LOWER));
+
+        $str = "<?php\r\n return " . var_export($config, true) . ";\r\n?>";
+//        halt($config);
+        halt(file_put_contents($file, $str));
+        die;
         $this->assign('sub_title', "支付配置");
         return $this->fetch();
     }
@@ -256,7 +270,7 @@ class System extends BaseBackend
         if (empty($cacheKey) || $cacheKey == null) {
             return json(['code' => 403, 'msg' => '配置文件不正确']);
         }
-        $cacheRes = messageRedis()->keys('RedisCache:*');
+        $cacheRes = messageRedis()->keys('REDIS_CACHE:*');
         foreach ($cacheRes as $value) {
             messageRedis()->del($value);
         }

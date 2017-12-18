@@ -55,7 +55,6 @@
                             <th>名称</th>
                             <th>类型</th>
                             <th>时间</th>
-                            <th>流地址</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -63,31 +62,15 @@
                         {volist name='lives' id='vo'}
                         <tr class="text-c">
                             <td style="vertical-align: middle;">{$vo["id"]}</td>
-                            <td style="vertical-align: middle;"><a href="{:url('backend/live/liveDetail',['id'=>$vo['id']])}">{$vo["name"]}</a></td>
+                            <td style="vertical-align: middle;"><a href="{:url('backend/live/liveDetail',['id'=>$vo['id'],'streamName'=>$vo['stream_name']])}">{$vo["name"]}</a></td>
                             <td style="vertical-align: middle;">
                             <span>{$vo["c_name"]}</span><br>
                             </td>
                             <td style="vertical-align: middle;">
-                                <span >开始时间：{$vo["liveStartTime"]}</span><br>
-                                <span >结束时间：{$vo["liveEndTime"]}</span>
+                                <span >起：{$vo["liveStartTime"]}</span><br>
+                                <span >止：{$vo["liveEndTime"]}</span>
                             </td>
                             <td style="vertical-align: middle;">
-                                HLS推流地址：rtmp://live.tinywan.com/live/{$vo["id"]}<br>
-                                DASH推流地址：rtmp://live.tinywan.com/dash/{$vo["id"]}<p></p>
-                                RTMP播放地址：rtmp://live.tinywan.com/live/{$vo["id"]}<br>
-                                HLS播放地址：https://live.tinywan.com/hls/{$vo["id"]}.m3u8<br>
-                                DASH播放地址：https://live.tinywan.com/dash/{$vo["id"]}.mpd<br>
-                            </td>
-                            <td style="vertical-align: middle;">
-                                {if condition="$vo.recordStatus == 1 "}
-                                <a href="javascript:recordHandleModal({$vo['id']},{$vo.recordStatus});" class="btn btn-danger btn-xs" >
-                                    <i class="icon-facetime-video"></i> 停止录像
-                                </a>
-                                {else /}
-                                <a href="javascript:recordHandleModal({$vo['id']},{$vo.recordStatus});" class="btn btn-info btn-xs" >
-                                    <i class="icon-facetime-video"></i> 开始录像
-                                </a>
-                                {/if}
                                 <a href="{:url('live/Index/detail',['id'=>$vo['id']])}" target="_blank">
                                     <button class="btn btn-primary btn-xs">
                                         <i class="icon-eye-open"></i> 预览

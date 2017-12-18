@@ -117,8 +117,17 @@ class Stream extends Controller
                 return json([0]);
             }
             $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = '321312');
-            //是否需要拉流
-            //notify_url地址回调，添加到消息队列中去
+            // 是否需要拉流
+            $rtmp_address = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'rtmp_address');
+//            self::liveRecordHandle($streamName,$pushAddress);
+            //-----------------------------使用FFmpeg推送流到指定的流媒体服务器上去（录像服务器）-----------------------------
+            $recordServiceIP = 'live.tinywan.com';
+            $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $rtmp_address . "\t -c copy  -f flv rtmp://{$recordServiceIP}/record/" . $streamName;
+            system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
+            if ($sysStatus != 0) {
+                Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
+            }
+            // notify_url 地址回调，添加到消息队列中去
             if ($notifyUrl != false){
                 $msgRes = addCallbackTaskQueue($action,$notifyUrl,$streamId,$streamName);
                 Log::error('------添加到消息队列中去-----'.json_encode($msgRes));
@@ -139,6 +148,28 @@ class Stream extends Controller
             Log::error('[' . getCurrentDate() . ']:' . $streamName . ':未知推流消息事件,Error：\n');
         }
         return json([0]);
+    }
+
+    /**
+     * 录像操作
+     * 思路：
+     * 1、推流到专门的录像服务器
+     * 2、专门的录像服务器直接进行录像既可以
+     */
+    public static function liveRecordHandle($streamName,$pushAddress){
+        $redis = messageRedis();
+        //这里的拉流地址要做处理的哦
+        $recordServiceIP = 'live.tinywan.com';
+        //使用FFmpeg推送流到指定的流媒体服务器上去（录像服务器）
+        $cmdStr = "nohup /usr/bin/ffmpeg -r 25 -i " . $pushAddress . "\t -c copy  -f flv rtmp://{$recordServiceIP}/live/" . $streamName;
+        Log::notice($cmdStr);
+        // $sysStatus = 0 success ;
+        system("{$cmdStr}", $results);
+//        if ($sysStatus != 0) {
+//            Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()执行失败,返回状态码：' . $sysStatus."结果：".json_encode($sysStatus));
+//        }
+        Log::debug('[' . getCurrentDate() . ']:' . "系统函数exec()执行成功,返回状态码：结果：". json_encode($results));
+        return true;
     }
 
     /**

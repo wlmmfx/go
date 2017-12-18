@@ -63,6 +63,8 @@ class Index extends BaseFrontend
     public function detail(){
         $liveId = input('param.id');
         $live = Db::table('resty_live')->where('id',$liveId)->find();
+        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->find();
+        $this->assign('streamInfo',$streamInfo);
         $this->assign('live',$live);
         return $this->fetch();
     }

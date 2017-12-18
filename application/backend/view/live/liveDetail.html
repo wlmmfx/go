@@ -37,6 +37,13 @@
         <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab">
                 <li class="active">
+                    <a data-toggle="tab" href="#live-detail-list">
+                        <i class="red  icon-cogs bigger-110"></i>
+                        详细信息
+                    </a>
+                </li>
+
+                <li>
                     <a data-toggle="tab" href="#live-image">
                         <i class="red  icon-cogs bigger-110"></i>
                         图片管理
@@ -66,8 +73,75 @@
             </ul>
 
             <div class="tab-content">
+                <!-- 活动详情页面 -->
+                <div id="live-detail-list" class="tab-pane in active">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 pricing-span-header">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header">
+                                            <h5 class="bigger lighter">详情列表</h5>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <ul class="list-unstyled list-striped pricing-table-header">
+                                                    <li>名称</li>
+                                                    <li>{$live['name']} </li>
+                                                    <li>开始/结束时间</li>
+                                                    <li>{$live['liveStartTime']} / {$live['liveEndTime']} </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header">
+                                            <h5 class="bigger lighter">流信息</h5>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <p></p>
+                                                <strong>推流地址:&nbsp;</strong>
+                                                <span class="rtmp-copy-url">{$streamInfo['push_address']}</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['push_address']}" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+
+                                                <div class="hr dotted"></div>
+                                                <strong>RTMP 播放地址:&nbsp;</strong>
+                                                <span class="rtmp-copy-url">{$streamInfo['rtmp_address']}</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['rtmp_address']}" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+
+                                                <div class="hr dotted"></div>
+                                                <strong>FLV 播放地址:&nbsp;</strong>
+                                                <span class="flv-copy-url">{$streamInfo['flv_address']}</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['flv_address']}" style="cursor:pointer;"><i
+                                                        class="icon-copy"></i>&nbsp;复制</span>
+
+                                                <div class="hr dotted"></div>
+                                                <strong>M3U8 播放地址:&nbsp;</strong>
+                                                <span class="hls-copy-url">{$streamInfo['m3u8_address']}</span>&nbsp;&nbsp;&nbsp;
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['m3u8_address']}" style="cursor:pointer;"><i
+                                                        class="icon-copy"></i>&nbsp;复制</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- PAGE CONTENT BEGINS -->
+                                </div>
+
+                            </div>
+                        </div><!-- /.col -->
+
+                    </div><!-- /.row -->
+                </div>
+
                 <!-- 图片管理 -->
-                <div id="live-image" class="tab-pane in active">
+                <div id="live-image" class="tab-pane">
                     <button class="btn btn-info btn-sm">
                         <i class="icon-exchange align-top bigger-125"></i>
                         排序
@@ -453,6 +527,15 @@
 
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
+    //弹框复制
+    var clipboard2 = new Clipboard('.copy-url-address');
+    clipboard2.on('success', function (e) {
+        e.clearSelection();
+        $("#copyUrl").modal("show");
+    });
+    clipboard2.on('error', function (e) {
+        console.log(e);
+    });
     // Success before include CommonJS
     function successShow($msg) {
         $("#auth-image").attr('src', '__COMMON__/images/success.svg');

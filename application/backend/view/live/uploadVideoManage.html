@@ -190,6 +190,17 @@
                                         <textarea class="form-control" id="upload_desc" name="upload_desc"
                                                   placeholder="请输入上传描述信息"></textarea>
                                     </div>
+                                    <div>
+                                        <label for="form-field-1">
+                                            是否显示上传详细信息
+                                        </label>
+                                        <div>
+                                            <label>
+                                                <input name="view" type="checkbox" class="ace" value="1">
+                                                <span class="lbl"> 是</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="space-4"></div>
                                     <div class="ace-file-input ace-file-multiple">
                                         <div class="ace-file-input ace-file-multiple">
@@ -313,27 +324,29 @@
             complete: function (xhr) {
                 console.log('------' + xhr.responseText);
                 var $data = JSON.parse(xhr.responseText); //由JSON字符串转换为JSON对象，json转成object
-                var item = '<ul class="list-unstyled spaced">' +
-                    '<li>' +
-                    '<i class="icon-file bigger-110 purple"></i> 文件名：' + $data.data.Filename +
-                    '</li>' +
-                    '<li>' +
-                    '<i class="icon-crop bigger-110 purple"></i> 扩展名：' + $data.data.Extension +
-                    '</li>' +
-                    '<li>' +
-                    '<i class="icon-resize-vertical bigger-110 purple"></i> 大小：' + $data.data.Size +
-                    '</li>' +
-                    '<li>' +
-                    '<i class="icon-time bigger-110 purple"></i> 时长：' + $data.data.Duration +
-                    '</li>' +
-                    '<li>' +
-                    '<i class="icon-crop bigger-110 purple"></i> 宽度x高度：' + $data.data.width + 'x' + $data.data.height +
-                    '</li>' +
-                    '<li>' +
-                    '<i class="icon-smile bigger-110 purple"></i> 编码格式：' + $data.data.codec_long_name +
-                    '</li>' +
-                    '</ul>';
-                status.html(item);
+                if($data.data.view == 1){
+                    var item = '<ul class="list-unstyled spaced">' +
+                        '<li>' +
+                        '<i class="icon-file bigger-110 purple"></i> 文件名：' + $data.data.Filename +
+                        '</li>' +
+                        '<li>' +
+                        '<i class="icon-crop bigger-110 purple"></i> 扩展名：' + $data.data.Extension +
+                        '</li>' +
+                        '<li>' +
+                        '<i class="icon-resize-vertical bigger-110 purple"></i> 大小：' + $data.data.Size +
+                        '</li>' +
+                        '<li>' +
+                        '<i class="icon-time bigger-110 purple"></i> 时长：' + $data.data.Duration +
+                        '</li>' +
+                        '<li>' +
+                        '<i class="icon-crop bigger-110 purple"></i> 宽度x高度：' + $data.data.width + 'x' + $data.data.height +
+                        '</li>' +
+                        '<li>' +
+                        '<i class="icon-smile bigger-110 purple"></i> 编码格式：' + $data.data.codec_long_name +
+                        '</li>' +
+                        '</ul>';
+                    status.html(item);
+                }
             }
         });
 

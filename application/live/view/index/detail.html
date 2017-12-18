@@ -213,7 +213,9 @@
         controlBarVisibility:"always",
         useH5Prism:false,
         useFlashPrism:false,
-        source:"https://live.tinywan.com/hls/{$live.id}.m3u8",
-        cover:""
+        source:"https://{$streamInfo.domain_name}/{$streamInfo.app_name}/{$streamInfo.stream_name}.m3u8",
+        cover:"https://oss.tinywan.com/data/201710014/video/5a375ab1361a0.jpg",
+    },function(player){
+        console.log("播放器创建了。");
     });
 </script>

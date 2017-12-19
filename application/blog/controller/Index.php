@@ -113,7 +113,7 @@ class Index extends BaseFrontend
         $articleDetailCacheKey = 'resty_article_detail:' . $postId;
         if ($this->cache_switch == true && redisCache()->has($articleDetailCacheKey) == true) {
             $article = redisCache()->get($articleDetailCacheKey);
-            $article['DataSources'] = 'content from Cache';
+            //$article['DataSources'] = 'content from Cache';
         } else {
             // 先删除，再查询缓存
             redisCache()->rm($articleDetailCacheKey);
@@ -133,7 +133,7 @@ class Index extends BaseFrontend
         $articleTagKey = 'resty_tag_detail:' . $postId;
         if ($this->cache_switch == true && redisCache()->has($articleTagKey)) {
             $tags = redisCache()->get($articleTagKey);
-            $tags['DataSources'] = 'tags content from Cache';
+//            $tags['DataSources'] = 'tags content from Cache';
         } else {
             redisCache()->rm($articleTagKey);
             $tags = Db::table("resty_tag")

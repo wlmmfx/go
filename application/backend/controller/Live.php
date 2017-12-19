@@ -538,6 +538,23 @@ class Live extends BaseBackend
         return $this->fetch();
     }
 
+    /**
+     * 点播删除
+     * @param $id
+     */
+    public function vodDelete($id){
+        $res = $this->vod_db->del($id);
+        if ($res["valid"]) {
+            $desc = '删除分点播id : ' . $id . '成功';
+            add_operation_log($desc);
+            return $this->success($res["msg"], "backend/live/vodManage");
+        } else {
+            $desc = '删除分点播id : ' . $id . '失败';
+            add_operation_log($desc);
+            return $this->error($res["msg"]);
+        }
+    }
+
     /**---------------------------------------------视频编辑开始-------------------------------------------------------*/
 
     /**
@@ -1245,6 +1262,77 @@ class Live extends BaseBackend
     }
 
     /**
+     * 阿里云直播模块
+     * 全局推流名称列表
+     */
+    public function globalStreamDataList()
+    {
+        if ($this->request->isPost()) {
+            $keyword = input('post.keyword');
+            $condition = [
+                'stream_name' => ['like', '%'.$keyword.'%'],
+            ];
+            $streamList = Db::table('resty_stream_name')->where($condition)->paginate(14, false, [
+                'var_page' => 'page',
+                'query' => request()->param(),
+            ]);
+        } else {
+            $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(14);
+        }
+        return $this->fetch('', [
+            'lists' => $streamList
+        ]);
+    }
+
+    /**
+     * 推流记录列表
+     * @return mixed
+     */
+    public function globalStreamRecordList()
+    {
+        if ($this->request->isPost()) {
+            $keyword = input('post.keyword');
+            $condition = [
+                'stream_name' => ['like', '%'.$keyword.'%'],
+            ];
+            $config = [
+                'query' => request()->param(),
+            ];
+            $recordList = Db::table('resty_push_flow_record')->where($condition)->order('id desc')->paginate(4, false,$config);
+        } else {
+            $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(4);
+        }
+        return $this->fetch('', [
+            'lists' => $recordList
+        ]);
+    }
+
+    /**
+     * 推流黑名单列表
+     */
+    public function globalStreamBlackList()
+    {
+//        halt($_SESSION);
+        $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
+        $redis = messageRedis();
+        $res = $redis->keys($taskKey);
+        $tmpArr = [];
+        foreach ($res as $hkey) {
+            $tmpArr[] = [
+                'create_time' => $redis->hGet($hkey, 'create_time'),
+                'stream_name' => $redis->hGet($hkey, 'stream_name'),
+                'client_ip' => $redis->hGet($hkey, 'client_ip'),
+                'domain_name' => $redis->hGet($hkey, 'domain_name'),
+                'app_name' => $redis->hGet($hkey, 'app_name')
+            ];
+        }
+        array_multisort(array_column($tmpArr, 'create_time'), SORT_DESC, $tmpArr);
+        $this->assign('lists', $tmpArr);
+        return $this->fetch();
+    }
+
+
+    /**
      * -----------------------------------------媒体转码---------------------------------------------------------------
      * 【媒体转码】媒体转码管理
      */
@@ -1300,54 +1388,6 @@ class Live extends BaseBackend
         $ip = '115.192.189.173';
         $res = ip_format($ip);
         echo $res;
-    }
-
-    /**
-     * 阿里云直播模块
-     * 全局推流名称列表
-     */
-    public function globalStreamDataList()
-    {
-        $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(14);
-        return $this->fetch('', [
-            'lists' => $streamList
-        ]);
-    }
-
-    /**
-     * 推流记录列表
-     * @return mixed
-     */
-    public function globalStreamRecordList()
-    {
-        $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(14);
-        return $this->fetch('', [
-            'lists' => $recordList
-        ]);
-    }
-
-    /**
-     * 推流黑名单列表
-     */
-    public function globalStreamBlackList()
-    {
-//        halt($_SESSION);
-        $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
-        $redis = messageRedis();
-        $res = $redis->keys($taskKey);
-        $tmpArr = [];
-        foreach ($res as $hkey) {
-            $tmpArr[] = [
-                'create_time' => $redis->hGet($hkey, 'create_time'),
-                'stream_name' => $redis->hGet($hkey, 'stream_name'),
-                'client_ip' => $redis->hGet($hkey, 'client_ip'),
-                'domain_name' => $redis->hGet($hkey, 'domain_name'),
-                'app_name' => $redis->hGet($hkey, 'app_name')
-            ];
-        }
-        array_multisort(array_column($tmpArr, 'create_time'), SORT_DESC, $tmpArr);
-        $this->assign('lists', $tmpArr);
-        return $this->fetch();
     }
 
     public function copy()

@@ -11,73 +11,123 @@
         margin-top: -17px;
     }
 </style>
-<script>
-    function fresh() {
-        window.location.reload();   //刷新整页
-    }
-</script>
+
+<div class="page-header">
+    <h1>
+        历史记录
+        <small>
+            <i class="icon-double-angle-right"></i>
+            动态表格分析列表
+        </small>
+    </h1>
+</div><!-- /.page-header -->
 <div class="row">
-    <div class="alert alert-info no-margin">
-        <button type="button" class="close" data-dismiss="alert">
-            <i class="icon-remove"></i>
-        </button>
+    <div class="col-xs-12">
+        <div class="table-responsive">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-yellow">类型</button>
 
-        <i class="icon-umbrella bigger-120 blue"></i>
-        推流地址：rtmp://video-center.alivecdn.com/{live}/{流名称}?vhost={推流域名}<br/>
-        <i class="icon-facetime-video bigger-120 blue"></i>
-        eg：rtmp://stream.tinywan.com/<strong>live123</strong>/<strong>8001513259043</strong>?vhost= <strong>lives.tinywan.com</strong>
+                        <button data-toggle="dropdown" class="btn btn-sm btn-yellow dropdown-toggle">
+                            <i class="icon-angle-down icon-only"></i>
+                        </button>
 
+                        <ul class="dropdown-menu dropdown-yellow">
+                            <li>
+                                <a href="#">RTMP</a>
+                            </li>
+                            <li>
+                                <a href="#">RTSP</a>
+                            </li>
+                            <li>
+                                <a href="#">RTP</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-info">区域</button>
+
+                        <button data-toggle="dropdown" class="btn btn-sm btn-info dropdown-toggle">
+                            <i class="icon-angle-down icon-only"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-info">
+                            <li>
+                                <a href="#">北京</a>
+                            </li>
+                            <li>
+                                <a href="#">上海</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <form action="" method="post">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="请输入推流名称..."  name="keyword" type="text" id="form-field-mask-3">
+                            <span class="input-group-btn">
+                            <button type="submit" class="btn btn-purple btn-sm">&nbsp;搜索&nbsp;<i
+                                    class="icon-search icon-on-right bigger-110"></i>
+                            </button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="hr dotted"></div>
+            <table class="table table-striped table-hover" id="iframeout">
+                <thead>
+                <tr>
+                    <th>推流地址</th>
+                    <th>推流名称</th>
+                    <th>推流时间</th>
+                    <th>推流地域</th>
+                    <th>操作&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button onclick="fresh()" class="btn btn-xs">
+                            <i class="icon-refresh bigger-110"></i>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name='lists' id='vo'}
+                <tr class="gradeX">
+                    <td>rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
+                        <span class="pink smaller lighter copy-url"
+                              data-clipboard-text="rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
+                              style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+                    </td>
+                    <td>{$vo['stream_name']}</td>
+                    <td>
+                        起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
+                        止:&nbsp;{empty name="$vo['stop_time']"}
+                        <i class="icon-spinner icon-spin green"></i> <span class="smaller green lighter">正在推流</span>
+                        {else /}
+                        {$vo['stop_time']|date="Y-m-d H:i:s",###}
+                        {/empty}
+                    </td>
+                    <td>{$vo['client_ip']|ip_format}</td>
+                    <td>
+                        <a href="javascript:liveAddressModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
+                            <button class="btn btn-primary btn-xs">
+                                <i class="icon-laptop"></i>&nbsp;直播地址
+                            </button>
+                        </a>
+                        <a href="javascript:playModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
+                            <button class="btn btn-pink btn-xs">
+                                <i class="icon-play-circle"></i>&nbsp;预览
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </div>
+        <div class="hr dotted"></div>
+        <div>{$lists->render()}</div>
     </div>
-    <div class="hr dotted"></div>
-    <table class="table table-striped table-hover" id="iframeout">
-        <thead>
-        <tr>
-            <th>推流地址</th>
-            <th>应用名称</th>
-            <th>推流时间</th>
-            <th>推流地域</th>
-            <th>操作&nbsp;&nbsp;&nbsp;&nbsp;
-                <button onclick="fresh()" class="btn btn-xs">
-                    <i class="icon-refresh bigger-110"></i>
-                </button>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        {volist name='lists' id='vo'}
-        <tr class="gradeX">
-            <td>rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
-                <span class="pink smaller lighter copy-url"
-                      data-clipboard-text="rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
-                      style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
-            </td>
-            <td>{$vo['app_name']}</td>
-            <td>
-                起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
-                止:&nbsp;{empty name="$vo['stop_time']"}
-                <i class="icon-spinner icon-spin green"></i> <span class="smaller green lighter">正在推流</span>
-                {else /}
-                {$vo['stop_time']|date="Y-m-d H:i:s",###}
-                {/empty}
-            </td>
-            <td>{$vo['client_ip']|ip_format}</td>
-            <td>
-                <a href="javascript:liveAddressModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
-                    <button class="btn btn-primary btn-xs">
-                        <i class="icon-laptop"></i>&nbsp;直播地址
-                    </button>
-                </a>
-                <a href="javascript:playModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
-                    <button class="btn btn-pink btn-xs">
-                        <i class="icon-play-circle"></i>&nbsp;预览
-                    </button>
-                </a>
-            </td>
-        </tr>
-        {/volist}
-        </tbody>
-    </table>
-    <div>{$lists->render()}</div>
 </div>
 
 <!-- 模态框（Modal） -->
@@ -170,9 +220,9 @@
      */
     function liveAddressModal(domainName, appName, streamName) {
         $("#liveAddressModal").modal("show");
-        $(".rtmp-copy-url").html("rtmp://"+domainName+"/"+appName+"/"+streamName);
-        $(".flv-copy-url").html("https://"+domainName+"/"+appName+"/"+streamName+'.flv');
-        $(".hls-copy-url").html("https://"+domainName+"/"+appName+"/"+streamName+'.m3u8');
+        $(".rtmp-copy-url").html("rtmp://" + domainName + "/" + appName + "/" + streamName);
+        $(".flv-copy-url").html("https://" + domainName + "/" + appName + "/" + streamName + '.flv');
+        $(".hls-copy-url").html("https://" + domainName + "/" + appName + "/" + streamName + '.m3u8');
         //设置值
         $(".rtmp-copy-url").next(".copy-url-address").attr("data-clipboard-text", "rtmp://" + domainName + "/" + appName + "/" + streamName);
         $(".flv-copy-url").next(".copy-url-address").attr("data-clipboard-text", "http://" + domainName + "/" + appName + "/" + streamName + '.flv');

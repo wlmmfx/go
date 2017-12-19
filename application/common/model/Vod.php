@@ -12,6 +12,7 @@ namespace app\common\model;
 
 use houdunwang\arr\Arr;
 use think\Db;
+use think\Exception;
 use think\Log;
 
 class Vod extends BaseModel
@@ -122,13 +123,18 @@ class Vod extends BaseModel
      */
     public function del($id)
     {
-        //1 获取当前删除数据id 的pid的值
-        $pid = $this->where('id', $id)->value('pid');
-        //2 将当前要删除的id的子集数据的pid 修改为删除数据自己的pid ,这样子就做到了往上提一级的概念
-        $this->where('pid', $id)->update(['pid' => $pid]);
-        //3 执行当前数据的删除
-        $res = Category::destroy($id);
-        if (false === $res) return ['valid' => 0, 'msg' => "删除失败"];
-        return ['valid' => 1, 'msg' => "删除成功"];
+        // 事务
+        DB::startTrans();
+        try{
+            $res1 = $this->where('id',$id)->delete();
+            $res2 = Db::table('resty_vod_tag')->where('vod_id',$id)->delete();
+            // 提交事务
+            Db::commit();
+            $res =  ['valid' => 1, 'msg' => "删除成功"];
+        }catch (Exception $e){
+            Db::rollback();
+            $res = ['valid' => 0, 'msg' => json_encode($e->getMessage())];
+        }
+        return $res;
     }
 }

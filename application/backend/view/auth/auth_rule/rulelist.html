@@ -43,7 +43,7 @@
                             <th>类型</th>
                             <th>状态</th>
                             <th>级别</th>
-                            <th>额外的规则条件</th>
+                            <th>规则条件</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -55,13 +55,13 @@
                                 {if condition="$user['_level'] eq 1"}
                                 <span class="label label-lg label-info arrowed-right">{$user['_title']}</span>
                                 {elseif condition="$user['_level'] eq 2"/}
-                                <span class="label label-lg label-grey arrowed-right">{$user['_title']}</span>
+                                <span class="label label-lg label-light arrowed-right">{$user['_title']}</span>
                                 {else/}
                                 <span class="label label-lg label-light arrowed-right">{$user['_title']}</span>
                                 {/if}
                             </td>
                             <td>
-                                <span class="label {if condition="$user['_level'] eq 1"}label-info{elseif condition="$user['_level'] eq 2"/}label-grey{else/}label-light{/if} label-lg arrowed-right arrowed-in">
+                                <span class="label {if condition="$user['_level'] eq 1"}label-info{elseif condition="$user['_level'] eq 2"/}label-light{else/}label-light{/if} label-lg arrowed-right arrowed-in">
                                 {$user['name']}
                                 </span>
                             </td>

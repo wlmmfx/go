@@ -277,15 +277,6 @@ class System extends BaseBackend
         return json(['code' => 200, 'msg' => '操作成功']);
     }
 
-    public function clearRedisKey()
-    {
-        $cacheRes = messageRedis()->keys('TASK_QUEUE:*');
-        foreach ($cacheRes as $value) {
-            messageRedis()->del($value);
-        }
-        return json(['code' => 200, 'msg' => '操作成功']);
-    }
-
     /**
      * 消息队列列表
      */
@@ -315,5 +306,19 @@ class System extends BaseBackend
         $this->assign('messages',$tmpArr);
         return $this->fetch();
     }
+
+    /**
+     * Redis指定键删除
+     * @return \think\response\Json
+     */
+    public function clearRedisKey()
+    {
+        $cacheRes = messageRedis()->keys('TASK_QUEUE:*');
+        foreach ($cacheRes as $value) {
+            messageRedis()->del($value);
+        }
+        return json(['code' => 200, 'msg' => '操作成功']);
+    }
+
 
 }

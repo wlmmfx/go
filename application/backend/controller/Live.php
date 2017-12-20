@@ -542,7 +542,8 @@ class Live extends BaseBackend
      * 点播删除
      * @param $id
      */
-    public function vodDelete($id){
+    public function vodDelete($id)
+    {
         $res = $this->vod_db->del($id);
         if ($res["valid"]) {
             $desc = '删除分点播id : ' . $id . '成功';
@@ -1270,9 +1271,9 @@ class Live extends BaseBackend
         if ($this->request->isPost()) {
             $keyword = input('post.keyword');
             $condition = [
-                'stream_name' => ['like', '%'.$keyword.'%'],
+                'stream_name' => ['like', '%' . $keyword . '%'],
             ];
-            $streamList = Db::table('resty_stream_name')->where($condition)->paginate(14, false, [
+            $streamList = Db::table('resty_stream_name')->where($condition)->order('id desc')->paginate(14, false, [
                 'var_page' => 'page',
                 'query' => request()->param(),
             ]);
@@ -1293,14 +1294,14 @@ class Live extends BaseBackend
         if ($this->request->isPost()) {
             $keyword = input('post.keyword');
             $condition = [
-                'stream_name' => ['like', '%'.$keyword.'%'],
+                'stream_name' => ['like', '%' . $keyword . '%'],
             ];
             $config = [
                 'query' => request()->param(),
             ];
-            $recordList = Db::table('resty_push_flow_record')->where($condition)->order('id desc')->paginate(4, false,$config);
+            $recordList = Db::table('resty_push_flow_record')->where($condition)->order('id desc')->paginate(12, false, $config);
         } else {
-            $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(4);
+            $recordList = Db::table('resty_push_flow_record')->order('id desc')->paginate(12);
         }
         return $this->fetch('', [
             'lists' => $recordList
@@ -1312,7 +1313,6 @@ class Live extends BaseBackend
      */
     public function globalStreamBlackList()
     {
-//        halt($_SESSION);
         $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
         $redis = messageRedis();
         $res = $redis->keys($taskKey);
@@ -1329,6 +1329,39 @@ class Live extends BaseBackend
         array_multisort(array_column($tmpArr, 'create_time'), SORT_DESC, $tmpArr);
         $this->assign('lists', $tmpArr);
         return $this->fetch();
+    }
+
+    /**
+     * 禁止客户端推流
+     */
+    public function setForbidLiveStream()
+    {
+        $id = request()->get('id');
+        $streamInfo = Db::table('resty_stream_name')->where('id', $id)->find();
+        $appId = 1586740578218850;
+        $domainName = $streamInfo['domain_name'];
+        $appName = $streamInfo['app_name'];
+        $streamName = $streamInfo['stream_name'];
+        $resumeTime = '2027-11-30  09:15:00';
+
+        //签名密钥
+        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ResumeTime" . $resumeTime  . "StreamName" . $streamName . $appSecret;
+        //签名串，由签名算法sha1生成
+        $sign = strtoupper(sha1($str));
+        //请求资源访问路径以及请求参数，参数名必须为大写
+        $url = "https://www.tinywan.com/api/stream/setForbidLiveStream?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&ResumeTime=" . $resumeTime . "&StreamName=" . $streamName . "&Sign=" . $sign;
+        //CURL方式请求
+        $ch = curl_init() or die (curl_error());
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3600);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        //返回数据为JSON格式，进行转换为数组打印输出
+        return json(json_decode($response, true));
     }
 
 

@@ -37,6 +37,8 @@ return [
         //全局配置方式开启
         'layout_on'     =>  true,
         'layout_name'   =>  'layout',
+        //tablib标签库自定义方法
+        'taglib_pre_load'  => 'app\common\taglib\UntilTag'
     ],
 
 ];

@@ -101,12 +101,12 @@ class Stream extends Controller
             $StreamNameValidity = $redis->sIsMember('GLOBAL_STREAM_WHITE_LIST', $streamName);
             if ($StreamNameValidity == false || $StreamNameValidity == '') {
                 // 哈希列表
-                $redis->hMset('GLOBAL_STREAM_BLACK_LIST:'.time(), [
-                    'stream_name'=>$streamName,
-                    'client_ip'=>$clientIP,
-                    'domain_name'=>$domainName,
-                    'app_name'=>$appName,
-                    'create_time'=>$time
+                $redis->hMset('GLOBAL_STREAM_BLACK_LIST:' . time(), [
+                    'stream_name' => $streamName,
+                    'client_ip' => $clientIP,
+                    'domain_name' => $domainName,
+                    'app_name' => $appName,
+                    'create_time' => $time
                 ]);
                 try {
                     $forbid = Live::setAliForbidLiveStream($domainName, $appName, $streamName, prcToUtc('2036-12-03  09:15:00'));
@@ -128,16 +128,16 @@ class Stream extends Controller
                 Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
             }
             // notify_url 地址回调，添加到消息队列中去
-            if ($notifyUrl != false){
-                $msgRes = addCallbackTaskQueue($action,$notifyUrl,$streamId,$streamName);
-                Log::error('------添加到消息队列中去-----'.json_encode($msgRes));
+            if ($notifyUrl != false) {
+                $msgRes = addCallbackTaskQueue($action, $notifyUrl, $streamId, $streamName);
+                Log::error('------添加到消息队列中去-----' . json_encode($msgRes));
             }
             Log::debug('[' . getCurrentDate() . ']:' . '[1] 数据库表记录插入Id = ' . $tabRes);
         } elseif ($action == 'publish_done') {
             //结束推流事件
-            if ($notifyUrl != false){
-                $msgRes = addCallbackTaskQueue($action,$notifyUrl,$streamId,$streamName);
-                Log::error('------添加到消息队列中去-----'.json_encode($msgRes));
+            if ($notifyUrl != false) {
+                $msgRes = addCallbackTaskQueue($action, $notifyUrl, $streamId, $streamName);
+                Log::error('------添加到消息队列中去-----' . json_encode($msgRes));
             }
             //更新推流记录表
             $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
@@ -156,7 +156,8 @@ class Stream extends Controller
      * 1、推流到专门的录像服务器
      * 2、专门的录像服务器直接进行录像既可以
      */
-    public static function liveRecordHandle($streamName,$pushAddress){
+    public static function liveRecordHandle($streamName, $pushAddress)
+    {
         $redis = messageRedis();
         //这里的拉流地址要做处理的哦
         $recordServiceIP = 'live.tinywan.com';
@@ -168,7 +169,7 @@ class Stream extends Controller
 //        if ($sysStatus != 0) {
 //            Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()执行失败,返回状态码：' . $sysStatus."结果：".json_encode($sysStatus));
 //        }
-        Log::debug('[' . getCurrentDate() . ']:' . "系统函数exec()执行成功,返回状态码：结果：". json_encode($results));
+        Log::debug('[' . getCurrentDate() . ']:' . "系统函数exec()执行成功,返回状态码：结果：" . json_encode($results));
         return true;
     }
 
@@ -294,7 +295,7 @@ class Stream extends Controller
     }
 
     /**
-     * 创建推流地址
+     * 【正式一】创建推流地址
      * @return \think\response\Json
      */
     public function createPushAddress()
@@ -410,6 +411,73 @@ class Stream extends Controller
         return json($result);
     }
 
+
+    /**
+     * 【正式一】 剔流（禁止）直播流推送API
+     * 该接口可能能调用回调处理，通知客户端服务器和自己的UI服务器实时反映流的禁止近况
+     */
+    public function setForbidLiveStream()
+    {
+        $sign = input('get.Sign');
+        $appId = input('get.AppId');
+        $DomainName = input('get.DomainName');
+        $AppName = input('get.AppName');
+        $StreamName = input('get.StreamName');
+        $requestResumeTime = input('get.ResumeTime');
+        if (empty($sign) || empty($appId) || empty($DomainName) || empty($AppName) || empty($StreamName)) {
+            $result = [
+                'status_code' => 40601,
+                'msg' => 'The input parameter not supplied' . $sign . ':' . $appId . ":" . $DomainName . ":" . $AppName . ":" . $StreamName . ":" . $requestResumeTime,
+                'data' => null
+            ];
+            return json($result);
+        }
+        //接口签名验证
+        $checkSign = self::checkApiSign($appId, $_GET);
+        if ($checkSign != $sign) {
+            $result = [
+                'status_code' => 40302,
+                'msg' => 'Invalid signature or signature error',
+                'data' => null,
+                'checkSign' => $checkSign,
+                'sign' => $sign,
+            ];
+            return json($result);
+        }
+        $responseInfo = Live::setAliForbidLiveStream($DomainName, $AppName, $StreamName, prcToUtc($requestResumeTime));
+        if ($responseInfo == false) {
+            $result = [
+                'status_code' => 50013,
+                'msg' => 'Live API interface call failed',
+                'data' => $responseInfo
+            ];
+            return json($result);
+        }
+        // 修改数据库
+        $tableModel = Db::table('resty_stream_name')->where('stream_name', $StreamName)->update(['push_auth' => 1]);
+        if ($tableModel === false) {
+            $result = [
+                'status_code' => 50014,
+                'msg' => ' StreamGlobal database update  fail!'
+            ];
+            return json($result);
+        }
+        //修改Redis数据库,执行一个事务，事务原则，该流名称是该集合的成员条件成立的时候删除该成员从白名单中
+        $redis = messageRedis();
+        $res = $redis->multi()
+            ->sIsMember('GLOBAL_STREAM_WHITE_LIST', $StreamName)
+            ->sRem('GLOBAL_STREAM_WHITE_LIST', $StreamName)
+            ->exec();
+        $responseInfo['res'] = $res;
+        $result = [
+            'status_code' => 200,
+            'msg' => 'success',
+            'data' => $responseInfo
+        ];
+        return json($result);
+    }
+
+
     /**
      * 查询推流历史
      * @return \think\response\Json
@@ -461,7 +529,7 @@ class Stream extends Controller
         //请求参数
         $appId = 1586740578218850;
         $domainName = 'lives.tinywan.com';
-        $appName = 'live123';
+        $appName = 'live';
         //签名密钥
         $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
@@ -482,6 +550,36 @@ class Stream extends Controller
         return json(json_decode($response, true));
     }
 
+    public function testSetForbidLiveStream()
+    {
+        $appId = 1586740578218850;
+        $domainName = 'lives.tinywan.com';
+        $appName = 'live123';
+        $streamName = '8001513148989';
+        $resumeTime = '2027-11-30  09:15:00';
+        //签名密钥
+        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ResumeTime" . $resumeTime . "StreamName" . $streamName . $appSecret;
+        //签名串，由签名算法sha1生成
+        $sign = strtoupper(sha1($str));
+        //请求资源访问路径以及请求参数，参数名必须为大写
+        $url = "https://www.tinywan.com/api/stream/setForbidLiveStream?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&ResumeTime=" . $resumeTime . "&StreamName=" . $streamName . "&Sign=" . $sign;
+        //CURL方式请求
+        $ch = curl_init() or die (curl_error());
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3600);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        //返回数据为JSON格式，进行转换为数组打印输出
+        $res = json_decode($response, true);
+        if ($res['status_code'] != 200) return json(['code' => 500, 'msg' => $res['msg']]);
+        return json(['code' => 200, 'msg' => '操作成功']);
+    }
+
+
     /**
      * 回调测试
      * @return \think\response\Json
@@ -489,9 +587,9 @@ class Stream extends Controller
     public function testNotifyUrl()
     {
         $redis = messageRedis();
-        $redis->set("testNotifyUrl",json_encode($_GET));
+        $redis->set("testNotifyUrl", json_encode($_GET));
         $redis->incr("testNotifyUrlNums");
-        return json(['code'=>200]);
+        return json(['code' => 200]);
     }
 
     /**

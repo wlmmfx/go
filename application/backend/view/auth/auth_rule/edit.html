@@ -8,12 +8,6 @@
                         编辑栏目
                     </a>
                 </li>
-                <li >
-                    <a data-toggle="tab" href="#category-list">
-                        <i class="green icon-home bigger-110"></i>
-                        栏目列表
-                    </a>
-                </li>
             </ul>
 
             <div class="tab-content">
@@ -34,7 +28,7 @@
                                 <select name="pid" id="select">
                                     <option value="0">顶级栏目</option>
                                     {volist name="last_data" id="vo"}
-                                    <option {if condition="$old_data['pid']==$vo['id']"}selected{/if} value="{$vo['id']}">{$vo['_name']}</option>
+                                    <option {if condition="$old_data['pid']==$vo['id']"}selected{/if} value="{$vo['id']}">{$vo['name']}</option>
                                     {/volist}
                                 </select>
                             </div>
@@ -47,21 +41,13 @@
                                        class="col-xs-10 col-sm-5"/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 详细描述 </label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-3" placeholder="详细描述" name="remark" value="{$old_data['remark']}" class="col-xs-10 col-sm-5"/>
-                            </div>
-                        </div>
                         <div class="form-actions">
                             <input type="hidden" name="id" value="{:input('param.id')}">
                             <button type="submit" class="btn btn-success">确认</button>
                         </div>
                     </form>
                 </div>
-
-
             </div>
         </div>
     </div><!-- /span -->

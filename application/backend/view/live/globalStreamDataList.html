@@ -45,7 +45,8 @@
                 <div class="col-sm-4">
                     <form action="" method="post">
                         <div class="input-group">
-                            <input class="form-control" placeholder="请输入搜索内容..." name="keyword" type="text" id="form-field-mask-3">
+                            <input class="form-control" placeholder="请输入搜索内容..." name="keyword" type="text"
+                                   id="form-field-mask-3">
                             <span class="input-group-btn">
                             <button type="submit" class="btn btn-purple btn-sm">&nbsp;搜索&nbsp;<i
                                     class="icon-search icon-on-right bigger-110"></i>
@@ -78,17 +79,25 @@
                     <td>{$vo['create_time']}</td>
                     <td>{$vo['user_id']}</td>
                     <td>
-                        <a href="{:url('backend/category/subpage',['id'=>$vo['id']])}">
-                            <button class="btn btn-primary btn-xs">
-                                <i class="icon-folder-open"></i>详情
-                            </button>
 
-                        </a>
-                        <a href="{:url('backend/category/edit',['id'=>$vo['id']])}">
-                            <button class="btn btn-warning btn-xs">
+                        {switch name="vo.push_auth"}
+                        {case value="0"}
+                        <a href="javescript:vod(0);">
+                            <a class="btn btn-warning btn-xs setForbidLiveStream" data-id="{$vo['id']}">
                                 <i class="icon-lock"></i>禁止推流
-                            </button>
+                            </a>
                         </a>
+                        {/case}
+                        {case value="1"}
+                        <a href="javescript:vod(0);">
+                            <a class="btn btn-success btn-xs setForbidLiveStream" data-id="{$vo['id']}">
+                                <i class="icon-lock"></i>解除禁止
+                            </a>
+                        </a>
+                        {/case}
+                        {default /}
+                        未知错误
+                        {/switch}
                     </td>
                 </tr>
                 {/volist}
@@ -99,4 +108,40 @@
         <div>{$lists->render()}</div>
     </div><!-- /span -->
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function commonAjax($url, $data) {
+            $.ajax({
+                url: $url,
+                type: 'get',
+                data: $data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    if ($response.code == 200) {
+                        successShow($response.msg);
+                        window.loaction.reload();
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    failShow(e);
+                }
+            })
+        }
+
+        // 禁止推流
+        $('body').delegate('.setForbidLiveStream', 'click', function () {
+            var $url = "{:url('backend/live/setForbidLiveStream')}";
+            var $data = {
+                "id": $(this).data('id')
+            };
+            console.log($data);
+            commonAjax($url, $data);
+        });
+    });
+</script>
+
 

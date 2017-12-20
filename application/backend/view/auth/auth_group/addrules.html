@@ -1,3 +1,47 @@
+<style type="text/css">
+    /*input[type="radio"], input[type="checkbox"] {*/
+        /*margin-top: 2px;*/
+        /*width: 18px;*/
+        /*height: 18px;*/
+    /*}*/
+
+    input{
+          -webkit-appearance: none;
+          -moz-appearance: none;
+        appearance: none;
+    }
+
+    input[type="checkbox"]::-ms-check { display:none; }
+
+    .radio-checked {
+        width: 16px;
+        height: 16px;
+          /*-webkit-border-radius: 50%;*/
+          /*-moz-border-radius: 50%;*/
+        /*border-radius: 50%;*/
+        border: 1px solid #7483a5;
+        position: relative;
+        margin-left: 40px;
+        vertical-align: sub;
+    }
+    .radio-checked:after {
+        display: none;
+        z-index: 3;
+        color: #eee;
+    }
+    /*选中状态下，radio的样式*/
+    .radio-checked:checked:after {
+        display: block;
+        width: 16px;
+        height: 16px;
+        content: '';
+        background: url(__STATIC__/img/choose3.png) no-repeat center;
+        -webkit-background-size: 16px;
+        background-size: 16px;
+        position: absolute;
+    }
+
+</style>
 <div class="page-header">
     <h1>
         权限分配列表
@@ -12,17 +56,16 @@
         <form action="{:url('backend/auth.auth_group/addrules')}" method="post">
             <div class="widget-box">
                 <div class="widget-header">
-                    <h4>全部权限列表: {$groupTitle}</h4>
+                    <h4><i class="icon-user-md"></i>&nbsp;{$groupTitle}</h4>
                 </div>
 
-                <div class="widget-body"
-                     style="height: auto; padding-bottom: 50px; padding-right: 30px; padding-top: 20px;">
+                <div class="widget-body" style="height: auto; padding-bottom: 50px; padding-right: 30px; padding-top: 20px;">
                     {volist name='allRules' id='vo'}
-                    <p style="text-indent: {$vo['level']*20}px; padding-left:10px;padding-right: -40px; {if condition="
+                    <p style="text-indent: {$vo['level']*20}px; padding-left:10px;padding-right: -30px; {if condition="
                        $vo['level'] neq 1"}float:left;{else/}clear:both;{/if}">
-                    <input type="checkbox" id="{$vo['id']}" name="rules[]" value="{$vo['id']}" pid="{$vo['pid']}"
+                    <input type="checkbox" class="radio-checked" id="{$vo['id']}" name="rules[]" value="{$vo['id']}" pid="{$vo['pid']}"
                            level="{$vo['level']}" {if condition="$vo['access']" }checked="checked" {/if}>
-                    <span style="font-weight: bolder;font-size: 14px;">{$vo['title']}</span>
+                    <span style="font-size: 14px; line-height: 20px;">&nbsp;{$vo['title']}</span>
                     </p>
                     {/volist}
                 </div>
@@ -41,14 +84,14 @@
             $level = $(this).attr('level'); //获取当前按钮框值。1（表示项目），2（模块），3（操作）
             console.log($level);
             //如果选择 level=1 的话，则会选择它一下的所有checkbox
-            if ($level == 1) {
+            if ($level == 0) {
                 $str = '_';
                 $inputs = $('input[value*=' + $str + ']');  //这里是模糊匹配
                 console.log($inputs);
-                $(this).prop('checked') ? $inputs.prop('checked', true) : $inputs.removeAttr('checked');
+//                $(this).prop('checked') ? $inputs.prop('checked', true) : $inputs.removeAttr('checked');
             }
             // 如果选择模块的话，则它下面的方法也一起会被选定，思路：就是模块下面操作的的“pid”都和模块的“id”是相等的
-            else if ($level == 2) {
+            else if ($level == 1) {
                 $id = $(this).attr('id');
                 $inputs = $('input[pid = ' + $id + ']');
                 $(this).prop('checked') ? $inputs.prop('checked', true) : $inputs.removeAttr('checked');
@@ -60,7 +103,7 @@
                 }
             }
             //思路：如果当前的操作被选中的话，则获取它的pid，并且设置id(上级模块) = （操作）pid 模块也会被选中
-            else if ($level == 3) {
+            else if ($level == 2) {
                 //判断当前按钮是否被选中
                 if ($(this).prop('checked')) {
                     $pid = $(this).attr('pid');

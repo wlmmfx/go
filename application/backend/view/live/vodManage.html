@@ -1,9 +1,12 @@
-<style type="text/css">
-    .table th, .table td {
-        text-align: center;
-        vertical-align: middle!important;
-    }
-</style>
+<div class="page-header">
+    <h1>
+        视频控制台管理
+        <small>
+            <i class="icon-double-angle-right"></i>
+            动态表格分析列表
+        </small>
+    </h1>
+</div><!-- /.page-header -->
 <div class="row">
     <div class="col-sm-12">
         <div class="tabbable">
@@ -25,53 +28,56 @@
 
             <div class="tab-content">
                 <div id="tag-list" class="tab-pane in active">
-                    <table class="table table-border table-bordered table-bg">
-                        <thead>
-                        <tr class="text-c">
-                            <th>ID</th>
-                            <th>缩略图</th>
-                            <th>名称</th>
-                            <th>分类</th>
-                            <th>发布时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {foreach name='vods' key='key' item='vo'}
-                        <tr class="text-c" id="tag-{$vo['id']}">
-                            <td >{$vo["id"]}</td>
-                            <td >
-                                <img height="100" width="240" src="{$vo.image_url}" alt="{$vo['id']}">
-                            </td>
-                            <td >{$vo["name"]}</td>
-                            <td style="vertical-align: middle;">{$vo["cName"]}</td>
-                            <td style="vertical-align: middle;">{$vo["create_time"] | date="Y-m-d H:i:s",###}</td>
-                            <td style="vertical-align: middle;">
-                                <a href="{:url('live/Index/vodDetail',['id'=>$vo['id']])}" target="_blank">
-                                    <button class="btn btn-primary btn-xs">
-                                        <i class="icon-eye-open"></i> 预览
-                                    </button>
-                                </a>
-                                <a href="{:url('backend/live/vodEdit',['id'=>$vo['id']])}">
-                                    <button class="btn btn-warning btn-xs">
-                                        <i class="icon-edit"></i>编辑
-                                    </button>
-                                </a>
-                                <a href="{:url('backend/live/vodDelete',['id'=>$vo['id']])}">
-                                    <button class="btn btn-danger btn-xs">
-                                        <i class="icon-trash"></i>删除
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                        {/foreach}
-                        </tbody>
-                    </table>
-                    <div>{$vods->render()}</div>
+                    <div class="table-responsive">
+                        <table class="table table-border table-bordered table-bg">
+                            <thead>
+                            <tr class="text-c">
+                                <th>ID</th>
+                                <th>缩略图</th>
+                                <th>名称</th>
+                                <th>分类</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach name='vods' key='key' item='vo'}
+                            <tr class="text-c" id="tag-{$vo['id']}">
+                                <td>{$vo["id"]}</td>
+                                <td>
+                                    <img height="100" width="240" src="{$vo.image_url}" alt="{$vo['id']}">
+                                </td>
+                                <td>{$vo["name"]}</td>
+                                <td style="vertical-align: middle;">{$vo["cName"]}</td>
+                                <td style="vertical-align: middle;">{$vo["create_time"] | date="Y-m-d H:i:s",###}</td>
+                                <td style="vertical-align: middle;">
+                                    <a href="{:url('live/Index/vodDetail',['id'=>$vo['id']])}" target="_blank">
+                                        <button class="btn btn-primary btn-xs">
+                                            <i class="icon-eye-open"></i> 预览
+                                        </button>
+                                    </a>
+                                    <a href="{:url('backend/live/vodEdit',['id'=>$vo['id']])}">
+                                        <button class="btn btn-warning btn-xs">
+                                            <i class="icon-edit"></i>编辑
+                                        </button>
+                                    </a>
+                                    <a href="{:url('backend/live/vodDelete',['id'=>$vo['id']])}">
+                                        <button class="btn btn-danger btn-xs">
+                                            <i class="icon-trash"></i>删除
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div>{$vods->render()}</div>
+                    </div>
                 </div>
 
                 <div id="tag-add" class="tab-pane">
-                    <form action="{:url('/backend/live/vodManage')}" method="post" class="form-horizontal"  enctype="multipart/form-data" role="form">
+                    <form action="{:url('/backend/live/vodManage')}" method="post" class="form-horizontal"
+                          enctype="multipart/form-data" role="form">
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-11"> 视频名称 </label>
@@ -83,7 +89,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 播放地址(HLS) </label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                播放地址(HLS) </label>
 
                             <div class="col-sm-9">
                                 <input type="text" id="form-field-1" placeholder="目前只支持m3u8(HLS)和MP4格式" name="hls_url"
@@ -129,7 +136,7 @@
                             <div class="col-sm-9">
                                 <label class="middle">
                                     {volist name="tags" id="vo"}
-                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag" />
+                                    <input class="ace" type="checkbox" name="tag[]" value="{$vo['id']}" id="tag"/>
                                     <span class="lbl"> {$vo['name']}</span>
                                     {/volist}
                                 </label>
@@ -139,14 +146,16 @@
                             <label class="col-sm-3 control-label no-padding-right"> 视频内容 </label>
 
                             <div class="col-sm-9">
-                                <textarea name="content" id="content_data" style="width:1024px;height:500px;"></textarea>
+                                <textarea name="content" id="content_data"
+                                          style="width:auto;height:500px;"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"> 下载资料 </label>
 
                             <div class="col-sm-9">
-                                <textarea name="download_data" id="download_data" style="width:1024px;height:500px;"></textarea>
+                                <textarea name="download_data" id="download_data"
+                                          style="width:auto;height:500px;"></textarea>
                             </div>
                         </div>
 
@@ -173,7 +182,8 @@
 </div><!-- /row -->
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal" aria-hidden="true">
+<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,15 +198,16 @@
                 </h4>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-danger del-hander" >确定</a>
-                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+                <a type="button" class="btn btn-danger del-hander">确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal">取消</a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal" aria-hidden="true">
+<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -211,8 +222,8 @@
                 </h4>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-danger publish-hander" >确定</a>
-                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+                <a type="button" class="btn btn-danger publish-hander">确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal">取消</a>
             </div>
         </div>
     </div>
@@ -222,10 +233,10 @@
 </script>
 <script type="text/javascript" charset="utf-8">
     window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
-    var ue = UE.getEditor('content_data',{
+    var ue = UE.getEditor('content_data', {
         initialFrameWidth: 1100,   //初始化宽度
         initialFrameHeight: 500,   //初始化高度
-        serverUrl:"{:url('/backend/common/ueditorUpload')}"
+        serverUrl: "{:url('/backend/common/ueditorUpload')}"
     });
     var ueMin = UE.getEditor('download_data', {
         initialFrameWidth: 1100,   //初始化宽度
@@ -251,12 +262,12 @@
      * 发布
      * @param id
      */
-    function publishHanderModal(id,publish_status) {
+    function publishHanderModal(id, publish_status) {
         $tag_id = id;
         $publish_status = publish_status;
         $("#publishHanderModal").modal("show");
     }
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('body').delegate('.del-hander', 'click', function () {
             $("#delHanderModal").modal("hide");
             var $url = "{:url('backend/banner/del')}";
@@ -301,7 +312,7 @@
                 success: function ($response) {
                     console.log($response)
                     if ($response.code == 200) {
-                        $('#tag-' + $tag_id).css('background-color','#fff5d4');
+                        $('#tag-' + $tag_id).css('background-color', '#fff5d4');
                         successShow($response.msg);
                     } else {
                         failShow($response.msg);

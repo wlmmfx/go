@@ -61,10 +61,14 @@
         padding-top: 52px;
     }
 </style>
-<div class="page-content">
+
     <div class="page-header">
         <h1>
             视频编辑
+            <small>
+                <i class="icon-double-angle-right"></i>
+                动态表格分析列表
+            </small>
         </h1>
     </div>
     <div class="row">
@@ -187,170 +191,169 @@
 
         </div>
     </div>
-</div>
-<script type="text/javascript">
-    var $videoId = document.getElementById("live-stream");
-    var $startTimeId = document.getElementById("start-time");
-    var $endTimeId = document.getElementById("end-time");
-    var $newVideoNameId = document.getElementById("new-video-name");
+    <script type="text/javascript">
+        var $videoId = document.getElementById("live-stream");
+        var $startTimeId = document.getElementById("start-time");
+        var $endTimeId = document.getElementById("end-time");
+        var $newVideoNameId = document.getElementById("new-video-name");
 
-    // 获取开始时间
-    function getStartTime() {
-        $startTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-    }
-
-    /**
-     * 获取结束时间
-     */
-    function getEndTime() {
-        var $currentTimestamp = Date.parse(new Date());
-        $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-        $newVideoNameId.value = '剪切新视频' + $currentTimestamp;
-    }
-
-    /**
-     * 表单提交操作
-     */
-    $(document).ready(function () {
-        $("#cut-button").click(function () {
-            var $startTime = $("#start-time").val();
-            var $endTime = $("#end-time").val();
-            var $cutImageTime = $("#cut-image-time").val();
-            var $newVideoName = $("#new-video-name").val();
-            var $originVideoId = $("#origin-video-id").val();
-            //生成的视频ID
-            var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
-            console.log(getCurrentDateTime() + '$startTime' + $startTime + '$newVideoName' + $newVideoName + '----$originVideoId' + $originVideoId);
-            if ($originVideoId == '' || $originVideoId == undefined || $originVideoId == null) {
-                failShow("请选择一个视频进行编辑");
-                return false;
-            }
-
-            if ($startTime && $endTime && $newVideoName && $originVideoId && $cutImageTime && $newVideoId) {
-                successShow("即将开始剪切，完成后通知你，请稍后...");
-                first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime);
-            } else {
-                failShow("请求参数参数错误，请检查后提交。")
-                return false
-            }
-            event.preventDefault();
-        });
-
-        // 视频预览
-        $("#video-line-edit li").click(function () {
-            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
-            $("#live-stream_html5_api").load();
-            $("#origin-video-id").val($(this).data("id"));
-        });
-
-        // 素材预览
-        $("#upload-video li").click(function () {
-            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
-            $("#live-stream_html5_api").load();
-            $("#origin-video-id").val($(this).data("id"));
-        });
-    });
-
-    /**
-     * first_ajax_request
-     */
-    function first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime) {
-        console.log(getCurrentDateTime() + "first_ajax_request");
-        console.log(getCurrentDateTime() + "All Param : " + $startTime + "&&" + $endTime + "&&" + $newVideoId + "&&" + $newVideoName + "&&" + $originVideoId + "&&" + $cutImageTime);
-        var url = "{:url('backend/live/videoCutOperateByTaskId')}";
-        var data = {
-            "start_time": $startTime,
-            "end_time": $endTime,
-            "cut_image_time": $cutImageTime,
-            "new_video_id": $newVideoId,
-            "new_video_name": $newVideoName,
-            "origin_video_id": $originVideoId,
-        };
-        var success = function (data) {
-            console.log(getCurrentDateTime() + '-=-' + data.status);
-            console.log(getCurrentDateTime() + '-=-' + data.msg);
-            if (data.status == 200) {
-                //第一次ajax请求成功  访问视频状态
-                successShow("恭喜你,视频截切成功");
-                next_ajax_request($newVideoId, $newVideoName);
-            } else {
-                failShow("视频剪切异常，错误信息：" + data.msg);
-            }
-        };
-        $.post(url, data, success, 'json');
-    }
-
-    /**
-     * 视频剪切成功后重新加载视频列表
-     */
-    function next_ajax_request($newVideoId, $newVideoName) {
-        var url = "{:url('backend/live/videoCutResult')}";
-        var data = {
-            "new_video_id": $newVideoId,
-            "new_video_name": $newVideoName
-        };
-        var success = function (data) {
-            console.log("next_ajax_request == " + data);
-            if (data) {
-                //视频没有处理完成好
-                if (data.status == -1) {
-                    if (max_request_length < 100) {
-                        setTimeout('next_ajax_request($newVideoId,$newVideoName)', 5000);
-                    } else {
-                        failShow("请求超时...")
-                        return false;
-                    }
-                    max_request_length++;
-                } else if (data.status != 1) {
-                    failShow('操作失败,请重试');
-                    return false;
-                } else {
-                    //视频已经检测到
-                    successShow(data.desc + " 已经剪好,请在编辑列表点击播放预览");
-                    var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
-                    var $li = '<li data-file-name="' + data.fileName + '" data-id="' + data.id + '" data-live-id="' + data.liveId + '">' +
-                        '<div class="wrapper_player" style="background-image:' + $url + '">' +
-                        '<div class="video_player">' +
-                        '</div>' +
-                        '</div>' +
-                        '</li>';
-                    $("#video-line-edit").prepend($li);
-                    $("#video-line-edit").load();
-                }
-            } else {
-                failShow('请求错误');
-                return false;
-            }
-        };
-        $.post(url, data, success, 'json');
-    }
-</script>
-
-<script src="__COMMON__/videojs/videojs/video.js"></script>
-<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
-<script>
-    var options = {
-        width: 640,
-        height: 380
-    };
-    var player = videojs('live-stream', options);
-    player.addClass('vjs-matrix');
-
-    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
-//        console.warn('VIDEOJS player event: ', e.type);
-        if (e.type == "play") {
-            console.log('开始播放');
-        } else if (e.type == "playing") {
-            console.log('正在播放...');
-        } else if (e.type == "pause") {
-            console.log('暂停视频播放');
-        } else if (e.type == "firstplay") {
-            console.log('firstplay播放');
-        } else {
-            console.log('1111111111111');
+        // 获取开始时间
+        function getStartTime() {
+            $startTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
         }
-    });
 
-</script>
+        /**
+         * 获取结束时间
+         */
+        function getEndTime() {
+            var $currentTimestamp = Date.parse(new Date());
+            $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
+            $newVideoNameId.value = '剪切新视频' + $currentTimestamp;
+        }
+
+        /**
+         * 表单提交操作
+         */
+        $(document).ready(function () {
+            $("#cut-button").click(function () {
+                var $startTime = $("#start-time").val();
+                var $endTime = $("#end-time").val();
+                var $cutImageTime = $("#cut-image-time").val();
+                var $newVideoName = $("#new-video-name").val();
+                var $originVideoId = $("#origin-video-id").val();
+                //生成的视频ID
+                var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
+                console.log(getCurrentDateTime() + '$startTime' + $startTime + '$newVideoName' + $newVideoName + '----$originVideoId' + $originVideoId);
+                if ($originVideoId == '' || $originVideoId == undefined || $originVideoId == null) {
+                    failShow("请选择一个视频进行编辑");
+                    return false;
+                }
+
+                if ($startTime && $endTime && $newVideoName && $originVideoId && $cutImageTime && $newVideoId) {
+                    successShow("即将开始剪切，完成后通知你，请稍后...");
+                    first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime);
+                } else {
+                    failShow("请求参数参数错误，请检查后提交。")
+                    return false
+                }
+                event.preventDefault();
+            });
+
+            // 视频预览
+            $("#video-line-edit li").click(function () {
+                $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+                $("#live-stream_html5_api").load();
+                $("#origin-video-id").val($(this).data("id"));
+            });
+
+            // 素材预览
+            $("#upload-video li").click(function () {
+                $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+                $("#live-stream_html5_api").load();
+                $("#origin-video-id").val($(this).data("id"));
+            });
+        });
+
+        /**
+         * first_ajax_request
+         */
+        function first_ajax_request($startTime, $endTime, $newVideoId, $newVideoName, $originVideoId, $cutImageTime) {
+            console.log(getCurrentDateTime() + "first_ajax_request");
+            console.log(getCurrentDateTime() + "All Param : " + $startTime + "&&" + $endTime + "&&" + $newVideoId + "&&" + $newVideoName + "&&" + $originVideoId + "&&" + $cutImageTime);
+            var url = "{:url('backend/live/videoCutOperateByTaskId')}";
+            var data = {
+                "start_time": $startTime,
+                "end_time": $endTime,
+                "cut_image_time": $cutImageTime,
+                "new_video_id": $newVideoId,
+                "new_video_name": $newVideoName,
+                "origin_video_id": $originVideoId,
+            };
+            var success = function (data) {
+                console.log(getCurrentDateTime() + '-=-' + data.status);
+                console.log(getCurrentDateTime() + '-=-' + data.msg);
+                if (data.status == 200) {
+                    //第一次ajax请求成功  访问视频状态
+                    successShow("恭喜你,视频截切成功");
+                    next_ajax_request($newVideoId, $newVideoName);
+                } else {
+                    failShow("视频剪切异常，错误信息：" + data.msg);
+                }
+            };
+            $.post(url, data, success, 'json');
+        }
+
+        /**
+         * 视频剪切成功后重新加载视频列表
+         */
+        function next_ajax_request($newVideoId, $newVideoName) {
+            var url = "{:url('backend/live/videoCutResult')}";
+            var data = {
+                "new_video_id": $newVideoId,
+                "new_video_name": $newVideoName
+            };
+            var success = function (data) {
+                console.log("next_ajax_request == " + data);
+                if (data) {
+                    //视频没有处理完成好
+                    if (data.status == -1) {
+                        if (max_request_length < 100) {
+                            setTimeout('next_ajax_request($newVideoId,$newVideoName)', 5000);
+                        } else {
+                            failShow("请求超时...")
+                            return false;
+                        }
+                        max_request_length++;
+                    } else if (data.status != 1) {
+                        failShow('操作失败,请重试');
+                        return false;
+                    } else {
+                        //视频已经检测到
+                        successShow(data.desc + " 已经剪好,请在编辑列表点击播放预览");
+                        var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
+                        var $li = '<li data-file-name="' + data.fileName + '" data-id="' + data.id + '" data-live-id="' + data.liveId + '">' +
+                            '<div class="wrapper_player" style="background-image:' + $url + '">' +
+                            '<div class="video_player">' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>';
+                        $("#video-line-edit").prepend($li);
+                        $("#video-line-edit").load();
+                    }
+                } else {
+                    failShow('请求错误');
+                    return false;
+                }
+            };
+            $.post(url, data, success, 'json');
+        }
+    </script>
+
+    <script src="__COMMON__/videojs/videojs/video.js"></script>
+    <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
+    <script>
+        var options = {
+            width: 640,
+            height: 380
+        };
+        var player = videojs('live-stream', options);
+        player.addClass('vjs-matrix');
+
+        player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+            if (e.type == "play") {
+                console.log('开始播放');
+            } else if (e.type == "playing") {
+                console.log('正在播放...');
+            } else if (e.type == "pause") {
+                console.log('暂停视频播放');
+            } else if (e.type == "firstplay") {
+                console.log('firstplay播放');
+            } else {
+                console.log('1111111111111');
+            }
+        });
+
+    </script>
 
 

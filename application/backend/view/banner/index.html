@@ -1,9 +1,12 @@
-<style type="text/css">
-    .table th, .table td {
-        text-align: center;
-        vertical-align: middle!important;
-    }
-</style>
+<div class="page-header">
+    <h1>
+        轮播图管理
+        <small>
+            <i class="icon-double-angle-right"></i>
+            动态表格分析列表
+        </small>
+    </h1>
+</div><!-- /.page-header -->
 <div class="row">
     <div class="col-sm-12">
         <div class="tabbable">
@@ -25,118 +28,126 @@
 
             <div class="tab-content">
                 <div id="tag-list" class="tab-pane in active">
-                    <table class="table table-border table-bordered table-bg">
-                        <thead>
-                        <tr class="text-c">
-                            <th>ID</th>
-                            <th>缩略图</th>
-                            <th>连接</th>
-                            <th>描述</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {foreach name='banners' key='key' item='vo'}
-                        <tr class="text-c" id="tag-{$vo['id']}">
-                            <td style="vertical-align: middle;">{$vo["id"]}</td>
-                            <td style="vertical-align: middle;">
-                                <img height="100" width="240" src="{$Think.config.aliyun_oss.DOMAIN}{$vo['image_thumb']}" alt="{$vo['desc']}">
-                            </td>
-                            <td style="vertical-align: middle;">{$vo["link"]}</td>
-                            <td style="vertical-align: middle;">{$vo["desc"]}</td>
-                            <td style="vertical-align: middle;">
-                                <a href="{:url('backend/banner/edit',['id'=>$vo['id']])}">
-                                    <button class="btn btn-primary btn-xs">
-                                        <i class="icon-edit"></i>编辑
-                                    </button>
-                                </a>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr class="text-c">
+                                <th>ID</th>
+                                <th>缩略图</th>
+                                <th>连接</th>
+                                <th>描述</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach name='banners' key='key' item='vo'}
+                            <tr class="text-c" id="tag-{$vo['id']}">
+                                <td >{$vo["id"]}</td>
+                                <td>
+                                    <img
+                                            src="{$Think.config.aliyun_oss.DOMAIN}{$vo['image_thumb']}"
+                                            alt="{$vo['desc']}">
+                                </td>
+                                <td>{$vo["link"]}</td>
+                                <td>{$vo["desc"]}</td>
+                                <td>
+                                    <a href="{:url('backend/banner/edit',['id'=>$vo['id']])}">
+                                        <button class="btn btn-primary btn-xs">
+                                            <i class="icon-edit"></i>编辑
+                                        </button>
+                                    </a>
 
-                                {if condition="$vo.publish_status == 1 "}
-                                <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});" class="btn btn-warning btn-xs" >
-                                    <i class="icon-location-arrow"></i>取消发布
-                                </a>
-                                {else /}
-                                <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});" class="btn btn-info btn-xs" >
-                                    <i class="icon-location-arrow"></i>发布
-                                </a>
-                                {/if}
-                                <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs" >
-                                    <i class="icon-trash"></i>删除
-                                </a>
-                            </td>
-                        </tr>
-                        {/foreach}
-                        </tbody>
-                    </table>
-                    <div>{$banners->render()}</div>
-                </div>
+                                    {if condition="$vo.publish_status == 1 "}
+                                    <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});"
+                                       class="btn btn-warning btn-xs">
+                                        <i class="icon-location-arrow"></i>取消发布
+                                    </a>
+                                    {else /}
+                                    <a href="javascript:publishHanderModal({$vo['id']},{$vo['publish_status']});"
+                                       class="btn btn-info btn-xs">
+                                        <i class="icon-location-arrow"></i>发布
+                                    </a>
+                                    {/if}
+                                    <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs">
+                                        <i class="icon-trash"></i>删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                        <div>{$banners->render()}</div>
+                    </div>
+            </div>
 
 
-                <div id="tag-add" class="tab-pane">
-                    <form action="{:url('/backend/banner/store')}" method="post" class="form-horizontal"  enctype="multipart/form-data" role="form">
+            <div id="tag-add" class="tab-pane">
+                <form action="{:url('/backend/banner/store')}" method="post" class="form-horizontal"
+                      enctype="multipart/form-data" role="form">
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 连接地址 </label>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 连接地址 </label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-2" placeholder="请输入连接地址" name="link"
-                                       class="col-xs-10 col-sm-5"/>
-                            </div>
+                        <div class="col-sm-9">
+                            <input type="text" id="form-field-2" placeholder="请输入连接地址" name="link"
+                                   class="col-xs-10 col-sm-5"/>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 描述</label>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 描述</label>
 
-                            <div class="col-sm-9">
-                                <input type="text" id="form-field-1" placeholder="请输入描述信息" name="desc"
-                                       class="col-xs-10 col-sm-5"/>
-                            </div>
+                        <div class="col-sm-9">
+                            <input type="text" id="form-field-1" placeholder="请输入描述信息" name="desc"
+                                   class="col-xs-10 col-sm-5"/>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属栏目</label>
 
-                            <div class="col-sm-9">
-                                <select name="cid" id="cate_id">
-                                    {volist name="categorys" id="vo"}
-                                    <option value="{$vo['id']}">{$vo['name']}</option>
-                                    {/volist}
-                                </select>
-                            </div>
+                        <div class="col-sm-9">
+                            <select name="cid" id="cate_id">
+                                {volist name="categorys" id="vo"}
+                                <option value="{$vo['id']}">{$vo['name']}</option>
+                                {/volist}
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 轮播图</label>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 轮播图</label>
 
-                            <div class="col-sm-9">
-                                <input type="file" id="thumb" name="thumb" class="col-xs-10 col-sm-5"/>
-                            </div>
+                        <div class="col-sm-9">
+                            <input type="file" id="thumb" name="thumb" class="col-xs-10 col-sm-5"/>
                         </div>
+                    </div>
 
-                        <div class="form-actions center">
-                            <button type="submit" class="btn btn-success">提交</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-actions center">
+                        <button type="submit" class="btn btn-success">提交</button>
+                    </div>
+                </form>
+            </div>
 
-                <div id="dropdown1" class="tab-pane">
-                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo
-                        retro fanny pack lo-fi farm-to-table readymade.</p>
-                </div>
+            <div id="dropdown1" class="tab-pane">
+                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo
+                    retro fanny pack lo-fi farm-to-table readymade.</p>
+            </div>
 
-                <div id="dropdown2" class="tab-pane">
-                    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out
-                        master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan
-                        DIY, art party locavore wolf cliche high life echo park Austin.</p>
-                </div>
+            <div id="dropdown2" class="tab-pane">
+                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out
+                    master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan
+                    DIY, art party locavore wolf cliche high life echo park Austin.</p>
             </div>
         </div>
-    </div><!-- /span -->
+    </div>
+</div><!-- /span -->
 
 </div><!-- /row -->
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal" aria-hidden="true">
+<div class="modal fade" id="delHanderModal" tabindex="-1" role="dialog" aria-labelledby="delHanderModal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -151,15 +162,16 @@
                 </h4>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-danger del-hander" >确定</a>
-                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+                <a type="button" class="btn btn-danger del-hander">确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal">取消</a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal" aria-hidden="true">
+<div class="modal fade" id="publishHanderModal" tabindex="-1" role="dialog" aria-labelledby="publishHanderModal"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -174,8 +186,8 @@
                 </h4>
             </div>
             <div class="modal-footer">
-                <a type="button" class="btn btn-danger publish-hander" >确定</a>
-                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+                <a type="button" class="btn btn-danger publish-hander">确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal">取消</a>
             </div>
         </div>
     </div>
@@ -193,12 +205,12 @@
      * 发布
      * @param id
      */
-    function publishHanderModal(id,publish_status) {
+    function publishHanderModal(id, publish_status) {
         $tag_id = id;
         $publish_status = publish_status;
         $("#publishHanderModal").modal("show");
     }
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('body').delegate('.del-hander', 'click', function () {
             $("#delHanderModal").modal("hide");
             var $url = "{:url('backend/banner/del')}";
@@ -247,7 +259,7 @@
                 success: function ($response) {
                     console.log($response);
                     if ($response.code == 200) {
-                        $('#tag-' + $tag_id).css('background-color','#fff5d4');
+                        $('#tag-' + $tag_id).css('background-color', '#fff5d4');
                         successShow($response.msg);
                         $('#tab-content').load($tmpUrl).fadeIn('slow');
                     } else {

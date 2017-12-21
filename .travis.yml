@@ -11,5 +11,5 @@ before_script: composer require phpunit/phpunit
 script: phpunit Test.php
 # 添加一个名为after_success的钩子，并写入你需要执行部署操作的命令
 after_success:
-- ssh travis@139.224.239.21 -p www_klwdws1988 'cd /homw/www && git pull'
+- cd /homw/www && mkdir travis-org
 

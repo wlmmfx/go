@@ -1,5 +1,6 @@
 <?php
 //--------------------------------------------------common------------------------------------------------------------
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 /**
  * 根据IP地址获取城市信息
  * @param $ip
@@ -246,13 +247,68 @@ function is_device()
 }
 
 /**
- * 日期转换成几分钟前
+ * 【时间戳格式化】日期转换成几分钟前
  * @param $date
  * @return string
  */
 function date_to_time($date)
 {
     $timer = strtotime($date);
+    $diff = $_SERVER['REQUEST_TIME'] - $timer;
+    $day = floor($diff / 86400);
+    $free = $diff % 86400;
+    if ($day > 0) {
+        if (15 < $day && $day < 30) {
+            return "半个月前";
+        } elseif (30 <= $day && $day < 90) {
+            return "1个月前";
+        } elseif (90 <= $day && $day < 187) {
+            return "3个月前";
+        } elseif (187 <= $day && $day < 365) {
+            return "半年前";
+        } elseif (365 <= $day) {
+            return "1年前";
+        } else {
+            return $day . "天前";
+        }
+    } else {
+        if ($free > 0) {
+            $hour = floor($free / 3600);
+            $free = $free % 3600;
+            if ($hour > 0) {
+                return $hour . "小时前";
+            } else {
+                if ($free > 0) {
+                    $min = floor($free / 60);
+                    $free = $free % 60;
+                    if ($min > 0) {
+                        return $min . "分钟前";
+                    } else {
+                        if ($free > 0) {
+                            return $free . "秒前";
+                        } else {
+                            return '刚刚';
+                        }
+                    }
+                } else {
+                    return '刚刚';
+                }
+            }
+        } else {
+            return '刚刚';
+        }
+    }
+}
+
+/**
+ * 【具体时间格式化】日期转换成几分钟前
+ * eg：2017-09-09 16:02:28 -> 一个月之前
+ * @param $date
+ * @return string
+ */
+function format_date_to_time($date)
+{
+    $timer = strtotime(date('Y-m-d H:i:s',$date));
     $diff = $_SERVER['REQUEST_TIME'] - $timer;
     $day = floor($diff / 86400);
     $free = $diff % 86400;

@@ -70,7 +70,7 @@ class OpenAuth extends BaseFrontend
             // 记录session信息
             session('open_user_id', $checkUserInfo['id']);
             session('open_user_username', $checkUserInfo['account']);
-            $this->success("登录成功", '/');
+            return $this->redirect("/");
         } else {
             // 第六步，添加用户信息到数据库
             $insertData['account'] = $userJsonRes['login'];
@@ -91,9 +91,9 @@ class OpenAuth extends BaseFrontend
                 // 记录session信息
                 session('open_user_id', $userId);
                 session('open_user_username', $userJsonRes['login']);
-                $this->success("授权登录成功", '/');
+                return $this->redirect("/");
             } else {
-                $this->error("授权登录失败", "frontend/member/signin");
+                return $this->redirect("/");
             }
         }
     }

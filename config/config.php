@@ -3,7 +3,7 @@ return [
     'app_status' => 'office',    //home office  通过这里可以切换配置文件home.php 和office.php的配置文件
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
-    'app_debug' => false,
+    'app_debug' => true,
     // 开启应用Trace调试
     'app_trace' => false,
     'trace' => [
@@ -17,7 +17,7 @@ return [
     // 是否开启路由
     'url_route_on' => true,
     // 设置路由配置文件列表,必须指定呀！否则路由失败
-    'route_config_file' => ['frontend', 'backend', 'blog', 'live', 'api'],
+    'route_config_file' => ['frontend', 'backend', 'blog', 'live', 'api', 'business'],
     // 域名根，如thinkphp.cn
     'url_domain_root' => 'tinywan.com',
     // 是否强制使用路由

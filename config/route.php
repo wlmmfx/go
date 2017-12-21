@@ -75,11 +75,11 @@ return [
     // 后台路由配置
 //    "tinywan" => "backend/login/login",
     // 路由别名
-    '__alias__' => [
-        'user' => 'index/User',
-        'system' => 'backend/system',
-        'category' => 'backend/category',
-        'tag' => 'backend/tag',
-        'article' => 'backend/article',
-    ],
+//    '__alias__' => [
+//        'user' => 'index/User',
+//        'system' => 'backend/system',
+//        'category' => 'backend/category',
+//        'tag' => 'backend/tag',
+//        'article' => 'backend/article',
+//    ],
 ];

@@ -7,8 +7,8 @@ before_install:
 # 添加如下两行内容，Host后面的ip替换成你的部署服务器地址
 - chmod 600 ~/.ssh/id_rsa
 - echo -e "Host 139.224.239.21\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-before_script: composer require phpunit/phpunit
-script: phpunit Test.php
+#before_script: composer require phpunit/phpunit
+#script: phpunit Test.php
 # 添加一个名为after_success的钩子，并写入你需要执行部署操作的命令
 after_success:
 - cd /homw/www && mkdir travis-org

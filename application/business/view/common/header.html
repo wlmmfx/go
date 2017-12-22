@@ -8,6 +8,7 @@
     <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
     <link rel="stylesheet" href="__LAYUI__/css/layui.css">
     <link rel="stylesheet" href="__RES__/css/global.css">
+    <script src="__COMMON__/js/jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 
@@ -40,7 +41,7 @@
                 <a class="fly-nav-avatar" href="javascript:;">
                     <cite class="layui-hide-xs">{$userInfo.account}</cite>
                     <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：{$userInfo.account}"></i>
-                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP18</i>
                     <img src="{$userInfo.avatar}">
                 </a>
                 <dl class="layui-nav-child">
@@ -61,12 +62,12 @@
                 <a href="{:url('business/user/login')}">登入</a>
             </li>
             <li class="layui-nav-item">
-                <a href="reg.html">注册</a>
+                <a href="{:url('business/user/reg')}">注册</a>
             </li>
             <li class="layui-nav-item layui-hide-xs">
                 <a href="{:url('frontend/open_auth/github')}"
                    onclick="layer.msg('正在通过Github登入', {icon:16, shade: 0.1, time:0})" title="Github登入"
-                   class="iconfont icon-qq"></a>
+                   class="icon-github"></a>
             </li>
             <li class="layui-nav-item layui-hide-xs">
                 <a href="/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入"

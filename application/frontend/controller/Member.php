@@ -35,7 +35,6 @@ class Member extends BaseFrontend
         return $this->fetch();
     }
 
-
     /**
      * Frontend 注册
      * @return mixed
@@ -47,14 +46,17 @@ class Member extends BaseFrontend
             $res = $this->open_user_db->emailRegister(input("post."));
             if ($res['valid']) {
                 add_operation_log('注册成功');
-                $this->success($res['msg'], "frontend/index/index");
-                exit;
+                return $this->redirect("/");
             } else {
                 add_operation_log('注册失败');
-                $this->error($res['msg']);
-                exit;
+                return $this->error($res['msg']);
             }
         }
+        return $this->fetch();
+    }
+
+    public function qqLogin()
+    {
         return $this->fetch();
     }
 
@@ -65,7 +67,7 @@ class Member extends BaseFrontend
     public function emailRegisterUrlValid(Request $request)
     {
         if ($request->isGet()) {
-            $res = (new Admin())->emailRegisterUrlValid(input("get."), "frontend");
+            $res = $this->open_user_db->emailRegisterUrlValid(input("get."));
             if ($res["valid"]) {
                 //success 把目前的邮箱地址保存在session中
                 $this->success($res['msg'], "frontend/index/index");

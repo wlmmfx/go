@@ -99,6 +99,63 @@ class OpenAuth extends BaseFrontend
     }
 
     /**
+     * QQ 回调地址
+     */
+    public function qqRedirectUri()
+    {
+        //'code' => string '137b34c45d7282436d53'
+        $code = $this->request->get('code');
+        $client_id = "5e70ee2d904f655b0c31";
+        $client_secret = "d190c915d36b5feff7ceeb017ce35ab92e7cb38c";
+        $url1 = "https://github.com/login/oauth/access_token";
+        //第一步:取全局access_token
+        $postRes = curl_request($url1, [
+            "client_id" => $client_id,
+            "client_secret" => $client_secret,
+            "code" => $code,
+        ]);
+        //第三步:根据全局access_token和openid查询用户信息
+        $jsonRes = json_decode($postRes, true);
+        $access_token = $jsonRes["access_token"];
+        $userUrl = "https://api.github.com/user?access_token=" . $access_token;
+        $userInfo = curl_request($userUrl);
+        $userJsonRes = json_decode($userInfo, true);
+        //第五步，检查用户是否已经注册过
+        $condition['open_id'] = $userJsonRes['id'];
+        $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();
+        if ($checkUserInfo) {
+            // 记录session信息
+            session('open_user_id', $checkUserInfo['id']);
+            session('open_user_username', $checkUserInfo['account']);
+            return $this->redirect("/");
+        } else {
+            // 第六步，添加用户信息到数据库
+            $insertData['account'] = $userJsonRes['login'];
+            $insertData['open_id'] = $userJsonRes['id'];
+            $insertData['password'] = md5('123456');
+            $insertData['realname'] = $userJsonRes['name'];
+            $insertData['nickname'] = $userJsonRes['login'];
+            $insertData['avatar'] = $userJsonRes['avatar_url'];
+            $insertData['email'] = $userJsonRes['email'];
+            $insertData['company'] = $userJsonRes['company'];
+            $insertData['address'] = $userJsonRes['location'];
+            $insertData['site'] = $userJsonRes['blog'];
+            $insertData['blog'] = $userJsonRes['blog'];
+            $insertData['github'] = $userJsonRes['html_url'];
+            $insertData['create_time'] = date("Y-m-d H:i:s");;
+            $userId = Db::table('resty_open_user')->insertGetId($insertData);
+            if ($userId) {
+                // 记录session信息
+                session('open_user_id', $userId);
+                session('open_user_username', $userJsonRes['login']);
+                return $this->redirect("/");
+            } else {
+                return $this->redirect("/");
+            }
+        }
+    }
+
+    /**
      * Wechat 登录 https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
      */
     public function wechat()

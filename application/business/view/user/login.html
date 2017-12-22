@@ -8,38 +8,45 @@
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-form layui-form-pane">
-                        <form method="post">
+                        <form method="post" action="/frontend/member/signup">
                             <div class="layui-form-item">
                                 <label for="L_email" class="layui-form-label">邮箱</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="text" id="L_email" name="email" required lay-verify="required"
+                                           autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label for="L_pass" class="layui-form-label">密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="password" id="L_pass" name="pass" required lay-verify="required"
+                                           autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label for="L_vercode" class="layui-form-label">人类验证</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
+                                    <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
+                                           placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-mid">
-                                    <span style="color: #c00;">{{d.vercode}}</span>
+                                    <span style="color: #c00;">123456</span>
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <button class="layui-btn" lay-filter="*" lay-submit>立即登录</button>
+                                <button class="layui-btn" lay-filter="formDemo" lay-submit>立即登录</button>
                                 <span style="padding-left:20px;">
                   <a href="forget.html">忘记密码？</a>
                 </span>
                             </div>
                             <div class="layui-form-item fly-form-app">
                                 <span>或者使用社交账号登入</span>
-                                <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
-                                <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo" title="微博登入"></a>
+                                <a href="{:url('frontend/open_auth/github')}"
+                                   onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})"
+                                   class="iconfont icon-qq" title="QQ登入"></a>
+                                <a href="{:url('frontend/open_auth/github')}"
+                                   onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})"
+                                   class="iconfont icon-weibo" title="微博登入"></a>
                             </div>
                         </form>
                     </div>
@@ -48,4 +55,105 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        console.log('11111111');
+        layui.use(['layer', 'form'], function () {
+            var form = layui.form;
+            //监听表单提交事件
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+//        return false;
+//                var $url = "{:url('business/user/ajaxRegister')}";
+//                $.ajax({
+//                    type: 'POST',
+//                    url: $url,
+//                    data: data,
+//                    dataType: "json",
+//                    success: function ($data, status) {
+//                        console.table($data);
+//                    },
+//                    error: function ($data, status) {
+//                        alert(status);
+//                    }
+//                });
+            });
+        });
+    });
+
+</script>
+
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="填写QQ互联ID" data-redirecturi="填写域名回调地址" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        layui.use(['layer'], function () {
+            var layer = layui.layer
+            $ = layui.jquery;
+            var is_login = QC.Login.check();
+            if (is_login) {
+                var access_token = '';
+                var openid = '';
+                QC.Login.getMe(function (openId,accessToken)
+                {
+                    access_token = accessToken;
+                    openid = openId;
+                }
+            );
+                var paras = {oauth_consumer_key: '填写QQ互联ID'access_token: access_tokenopenid
+            :
+                openid
+            }
+                ;
+                QC.api('get_user_info'
+                paras
+            ).
+                success(function (s) {
+                    //成功回调，通过s.data获取OpenAPI的返回数据
+                    var param = {openid: openidusername
+                    :
+                    s.data.nicknameuserhead
+                    :
+                    s.data.figureurl_qq_2sex
+                    :
+                    s.data.gender
+                }
+                    ;
+                    $.post('{:url("index/login/loginqq")}'
+                    paramfunction(res)
+                    {
+                        if (res.code == 200) {
+                            QC.Login.signOut()//注销qq登陆
+                            layer.msg(res.msg
+                            {
+                                icon: 1
+                                anim: 6
+                                time: 1000
+                            }
+                        )
+                            ;
+                            var index = parent.layer.getframeIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        } else {
+                            layer.msg(res.msg
+                            {
+                                icon: 2
+                                anim: 6
+                                time: 1000
+                            }
+                        )
+                            ;
+                        }
+                    }
+                    )
+                    ;
+
+                    //alert("获取用户信息成功！当前用户昵称为："+s.data.nickname);
+                });
+
+            } else {
+                self.location.href = 'https://graph.qq.com/oauth2.0/authorize?client_id=填写QQ互联ID&response_type=token&scope=all&redirect_uri=' + encodeURIComponent(self.location.href);
+            }
+        });
+    });
+</script>
 

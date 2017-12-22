@@ -125,7 +125,6 @@ class Admin extends BaseModel
     }
 
     /**
-     * checkstr=NzU2Njg0MTc3QHFxLmNvbQ==&amp;auth_key=1499661824-0-0-0c3729355a38452f491584711b76e46d
      * 邮箱注册回调地址的有效性检测 emailRegisterUrlValid
      * @param $data
      * @return array

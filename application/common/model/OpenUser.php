@@ -60,9 +60,11 @@ class OpenUser extends BaseModel
         }
         // 3 插入数据库
         $insertData['account'] = 'Tinywan' . rand(1111, 9999);
-        $insertData['password'] = md5($data['email']);
+        $insertData['realname'] = $data['username'];
+        $insertData['password'] = md5($data['pass']);
         $insertData['email'] = $data['email'];
-        $insertData['create_time'] = time();;
+        $insertData['create_time'] = time();
+        $insertData['avatar'] = "https://avatars0.githubusercontent.com/u/25687708?v=4";
         $userId = Db::table('resty_open_user')->insertGetId($insertData);
         if ($userId) {
             session('open_user_id', $userId);
@@ -71,6 +73,33 @@ class OpenUser extends BaseModel
         // 4 放入邮件队列
         addEmailTaskQueue(2, $data['email'], 1);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
+    }
+
+    /**
+     * 邮箱注册验证
+     * @param $data
+     * @return array
+     */
+    public function emailRegisterUrlValid($data)
+    {
+        $email = base64_decode($data['checkstr']);
+        // 签名验证
+        $res = check_auth_key($email, $data['auth_key']);
+        // 1 邮箱过期时间
+        if (!$res["valid"]) return ['valid' => 0, 'msg' => $res["msg"]];
+        // 2 验证邮箱
+        $userInfo = $this->where('email', $email)->where('enable', 0)->find();
+        if (!$userInfo) return ['valid' => 0, 'msg' => "该账户已被激活或者该账户不存在"];
+        $saveRes = $this->save([
+            'enable' => 1  # 表示已经激活
+        ], [$this->pk => $userInfo['id']]);
+        if($saveRes){
+            // 4 记录session
+            session('open_user_id', $userInfo['id']);
+            session('open_user_username', $userInfo['username']);
+            return ['valid' => 1, 'msg' => "邮箱激活成功"];
+        }
+        return ['valid' => 0, 'msg' => "邮箱激活失败"];
     }
 
     /**

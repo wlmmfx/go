@@ -45,7 +45,6 @@ i{font-style: normal;}
 .icon-tuichu:before{content:"\e601"}
 .icon-shui:before{content:"\e602"}
 .icon-qq:before{content:"\e618"}
-.icon-github:before { content: "\e700"; }
 .icon-weibo:before{content:"\e617"}
 .icon-tupian:before{content:"\e608"}
 .icon-logo:before{content:"\e603"}
@@ -132,7 +131,7 @@ pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid 
 
 /* 图标 */
 .icon-touxiang{display: inline-block; font-size: 34px;}
-.icon-qq,.icon-github, .icon-weibo{font-size: 30px;}
+.icon-qq,.icon-weibo{font-size: 30px;}
 .icon-renzheng{position: relative; color: #FFB800;}
 .icon-kiss{font-size: 18px;}
 .icon-pinglun1{position: relative; top: 2px;}
@@ -396,7 +395,7 @@ body .fly-user-main{position: relative; min-height: 600px;}
 .fly-form-app{margin-top:30px;}
 .fly-form-app .iconfont{font-size:26px; padding: 0 5px;}
 .fly-form-app .icon-qq{color:#7CA9C9}
-.fly-form-app .icon-github{color:#7CA9C9}
+.fly-form-app {color:#7CA9C9}
 .fly-form-app .icon-weibo{color:#E6162D}
 
 .user-tab{margin:20px 0;}
@@ -451,7 +450,6 @@ body .fly-user-main{position: relative; min-height: 600px;}
 .app-bind li .iconfont{position: relative; top: 3px; margin-right: 5px; font-size:28px; }
 .app-bind .app-havebind{color:#333;}
 .app-bind .app-havebind .icon-qq{color:#7CA9C9}
-.app-bind .app-havebind .icon-github{color:#7CA9C9}
 .app-bind .app-havebind .icon-weibo{color:#E6162D}
 
 /* 案例 */
@@ -555,4 +553,15 @@ body .fly-user-main{position: relative; min-height: 600px;}
   .site-mobile .site-tree-mobile{display: none !important;}
   .site-mobile .fly-user-main>.layui-nav{left: 0;}
   .site-mobile .site-mobile-shade{content: ''; position: fixed; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,.9); z-index: 999;}
+}
+
+
+/*github图标*/
+.icon-github{
+  display: inline-block;
+  width:  32px;
+  height: 32px;
+  background: url("../images/github.png") no-repeat center;
+  -webkit-background-size: 32px;
+  background-size: 32px;
 }

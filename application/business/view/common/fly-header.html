@@ -4,15 +4,19 @@
             <img src="__RES__/images/logo9.png" width="50%" height="50%"  alt="layui">
         </a>
         <ul class="layui-nav fly-nav layui-hide-xs">
-            <li class="layui-nav-item layui-this">
-                <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+            <li class="layui-nav-item">
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #f39571;">&#xe756;</i> 火焰图</a>
             </li>
             <li class="layui-nav-item">
-                <a href="../case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #eadc77;">&#xe705;</i> 文档</a>
             </li>
             <li class="layui-nav-item">
-                <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+                <a href="/"><i class="layui-icon" style="font-size: 30px; color: #f8f8f8;">&#xe6ed;</i> 视频</a>
             </li>
+            <li class="layui-nav-item">
+                <a href="{:url('business/module_case/index')}"><i class="layui-icon" style="font-size: 30px; color: #2decc0;">&#xe735;</i> 案例</a>
+            </li>
+
         </ul>
 
         <ul class="layui-nav fly-nav-user">
@@ -22,7 +26,7 @@
                 <a class="fly-nav-avatar" href="javascript:;">
                     <cite class="layui-hide-xs">{$userInfo.account}</cite>
                     <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：{$userInfo.account}"></i>
-                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP18</i>
                     <img src="{$userInfo.avatar}">
                 </a>
                 <dl class="layui-nav-child">

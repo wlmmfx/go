@@ -1,0 +1,63 @@
+<#include "../../../_meta.html" />
+<title>行业增加</title>
+</head>
+<body>
+<article class="page-container">
+    <form class="layui-form" action="" id="dict_insert">
+        <div class="layui-form-item">
+            <label class="layui-form-label">行业名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="indName" autocomplete="off" placeholder="请输入名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">行业编码</label>
+            <div class="layui-input-block">
+                <input type="text" name="indCode" lay-verify="required" placeholder="请输入行业编码" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</article>
+
+<#include "../../../_footer.html" />
+<!--_footer 作为公共模版分离出去-->
+
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    layui.use('form', function () {
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        form.on('submit(demo1)', function (data) {
+            ajaxBC_post('${basePath}/admin/ind/save',
+                data.field,
+                function (data) {
+                    if (data.success > 0) {
+                        parent.layer.msg('操作成功!', {icon: 1, time: 1000}, function () {
+                            layer_close();
+                            parent.chongzai();
+                        });
+                    } else {
+                        parent.layer.msg('操作失败!', {icon: 1, time: 1000}, function () {
+                            layer_close();
+                            parent.chongzai();
+                        });
+                    }
+                })
+            return false;
+        });
+        return false;
+    });
+
+
+</script>
+</body>
+</html

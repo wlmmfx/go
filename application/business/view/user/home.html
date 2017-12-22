@@ -1,4 +1,13 @@
-<div class="fly-home fly-panel" style="background-image: url();">
+<style>
+    .fly-home{
+        min-width: 100%;
+        /*min-height: 100%;*/
+        background: url("__RES__/images/backage.png") no-repeat center;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+</style>
+<div class="fly-home fly-panel">
     <img src="{$user['avatar']}" alt="{$user['account']}">
     <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
     <h1>
@@ -6,8 +15,8 @@
         <i class="iconfont icon-nan"></i>
         <!-- <i class="iconfont icon-nv"></i>  -->
         <i class="layui-badge fly-badge-vip">VIP3</i>
-        <!--
         <span style="color:#c00;">（管理员）</span>
+        <!--
         <span style="color:#5FB878;">（社区之光）</span>
         <span>（该号已被封）</span>
         -->

@@ -267,7 +267,7 @@ class ThinkConsoleServer extends Command
         if ($email_scene == 1) { // frontend
             switch ($email_type) {
                 case 1:
-                    $link = "http://{$emailSendDomain}/frontend/login/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $link = "http://{$emailSendDomain}/frontend/member/emailRegisterUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = <<<html
                 您好！<p></p>
                 感谢您在Tinywan世界注册帐户！<p></p>
@@ -278,7 +278,7 @@ class ThinkConsoleServer extends Command
 html;
                     break;
                 case 2:
-                    $link = "http://{$emailSendDomain}/frontend/login/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
+                    $link = "http://{$emailSendDomain}/frontend/member/checkEmailUrlValid?checkstr=$checkStr&auth_key={$auth_key}";
                     $str = "请点击下面的链接重置您的密码：<p></p>" . $link;
                     break;
                 case 3:

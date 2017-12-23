@@ -14,8 +14,11 @@ namespace app\frontend\controller;
 
 use app\common\controller\BaseFrontend;
 use app\common\model\OpenUser;
+use function EasyWeChat\Payment\get_client_ip;
 use League\OAuth2\Client\Provider\Github;
+use qq\QQConnect;
 use think\Db;
+use think\Log;
 
 class OpenAuth extends BaseFrontend
 {
@@ -27,9 +30,7 @@ class OpenAuth extends BaseFrontend
         $this->_db = new OpenUser();
     }
 
-    /**
-     * Github 登录
-     */
+    // Github 登录
     public function github()
     {
         $github_url = "https://github.com/login/oauth/authorize";
@@ -41,12 +42,9 @@ class OpenAuth extends BaseFrontend
         header('location:' . $url);
     }
 
-    /**
-     * Github 回调地址
-     */
+    // Github 回调地址
     public function redirect_uri()
     {
-        //'code' => string '137b34c45d7282436d53'
         $code = $this->request->get('code');
         $client_id = "5e70ee2d904f655b0c31";
         $client_secret = "d190c915d36b5feff7ceeb017ce35ab92e7cb38c";
@@ -83,9 +81,12 @@ class OpenAuth extends BaseFrontend
             $insertData['company'] = $userJsonRes['company'];
             $insertData['address'] = $userJsonRes['location'];
             $insertData['site'] = $userJsonRes['blog'];
+            $insertData['ip'] = get_client_ip();
+            $insertData['type'] = 'GitHub';
+            $insertData['score'] = 10;
             $insertData['blog'] = $userJsonRes['blog'];
             $insertData['github'] = $userJsonRes['html_url'];
-            $insertData['create_time'] = date("Y-m-d H:i:s");;
+            $insertData['create_time'] = time();
             $userId = Db::table('resty_open_user')->insertGetId($insertData);
             if ($userId) {
                 // 记录session信息
@@ -98,56 +99,49 @@ class OpenAuth extends BaseFrontend
         }
     }
 
-    /**
-     * QQ 回调地址
-     */
+    // QQ 登录
+    public function qq()
+    {
+        $qqobj = new QQConnect();
+        return $qqobj->getAuthCode();
+    }
+
+    // QQ 回调地址
     public function qqRedirectUri()
     {
-        //'code' => string '137b34c45d7282436d53'
-        $code = $this->request->get('code');
-        $client_id = "5e70ee2d904f655b0c31";
-        $client_secret = "d190c915d36b5feff7ceeb017ce35ab92e7cb38c";
-        $url1 = "https://github.com/login/oauth/access_token";
-        //第一步:取全局access_token
-        $postRes = curl_request($url1, [
-            "client_id" => $client_id,
-            "client_secret" => $client_secret,
-            "code" => $code,
-        ]);
-        //第三步:根据全局access_token和openid查询用户信息
-        $jsonRes = json_decode($postRes, true);
-        $access_token = $jsonRes["access_token"];
-        $userUrl = "https://api.github.com/user?access_token=" . $access_token;
-        $userInfo = curl_request($userUrl);
+        $qqInstance = new QQConnect();
+        $qqInstance->setCallBackInfo();
+        $openId = $qqInstance->getOpenId();
+        $userInfo = $qqInstance->getUsrInfo();
         $userJsonRes = json_decode($userInfo, true);
-        //第五步，检查用户是否已经注册过
-        $condition['open_id'] = $userJsonRes['id'];
+        //检查用户是否已经注册过
+        $condition['open_id'] = $openId;
         $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();
+        // 该用户已经存在了
         if ($checkUserInfo) {
             // 记录session信息
             session('open_user_id', $checkUserInfo['id']);
             session('open_user_username', $checkUserInfo['account']);
             return $this->redirect("/");
         } else {
-            // 第六步，添加用户信息到数据库
-            $insertData['account'] = $userJsonRes['login'];
-            $insertData['open_id'] = $userJsonRes['id'];
+            //添加用户信息到数据库
+            $insertData['account'] = $userJsonRes['nickname'];
+            $insertData['open_id'] = $openId;
             $insertData['password'] = md5('123456');
-            $insertData['realname'] = $userJsonRes['name'];
-            $insertData['nickname'] = $userJsonRes['login'];
-            $insertData['avatar'] = $userJsonRes['avatar_url'];
-            $insertData['email'] = $userJsonRes['email'];
-            $insertData['company'] = $userJsonRes['company'];
-            $insertData['address'] = $userJsonRes['location'];
-            $insertData['site'] = $userJsonRes['blog'];
-            $insertData['blog'] = $userJsonRes['blog'];
-            $insertData['github'] = $userJsonRes['html_url'];
-            $insertData['create_time'] = date("Y-m-d H:i:s");;
+            $insertData['realname'] = $userJsonRes['nickname'];
+            $insertData['nickname'] = $userJsonRes['nickname'];
+            $insertData['avatar'] = $userJsonRes['figureurl_2'];
+            $insertData['company'] = $userJsonRes['province'];
+            $insertData['address'] = $userJsonRes['city'];
+            $insertData['type'] = 'QQ';
+            $insertData['score'] = 10;
+            $insertData['ip'] = get_client_ip();
+            $insertData['create_time'] = time();;
             $userId = Db::table('resty_open_user')->insertGetId($insertData);
             if ($userId) {
                 // 记录session信息
                 session('open_user_id', $userId);
-                session('open_user_username', $userJsonRes['login']);
+                session('open_user_username', $userJsonRes['nickname']);
                 return $this->redirect("/");
             } else {
                 return $this->redirect("/");
@@ -189,7 +183,7 @@ class OpenAuth extends BaseFrontend
         $oauth2 = getJson($oauth2Url);
         //第三步:根据全局access_token和openid查询用户信息
         $access_token = $token["access_token"];
-        if(empty($oauth2['openid'])) return $this->success("授权失败",'/');
+        if (empty($oauth2['openid'])) return $this->success("授权失败", '/');
         $openid = $oauth2['openid'];
         $get_user_info_url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=$access_token&openid=$openid&lang=zh_CN";
         $userJsonRes = getJson($get_user_info_url);
@@ -212,6 +206,8 @@ class OpenAuth extends BaseFrontend
             $insertData['avatar'] = $userJsonRes['headimgurl'];
             $insertData['company'] = $userJsonRes['city'];
             $insertData['address'] = $userJsonRes['city'];
+            $insertData['type'] = "QQ";
+            $insertData['ip'] = get_client_ip();
             $insertData['create_time'] = date("Y-m-d H:i:s");;
             $userId = Db::table('resty_open_user')->insertGetId($insertData);
             if ($userId) {

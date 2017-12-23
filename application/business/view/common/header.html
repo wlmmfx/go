@@ -41,7 +41,7 @@
                 <a class="fly-nav-avatar" href="javascript:;">
                     <cite class="layui-hide-xs">{$userInfo.account}</cite>
                     <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：{$userInfo.account}"></i>
-                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP18</i>
+                    <i class="layui-badge fly-badge-vip layui-hide-xs">VIP{$userInfo.score}</i>
                     <img src="{$userInfo.avatar}">
                 </a>
                 <dl class="layui-nav-child">
@@ -55,23 +55,23 @@
             </li>
             {else /}
             <!-- 未登入的状态 -->
-            <li class="layui-nav-item">
-                <a class="iconfont icon-touxiang layui-hide-xs" href="{:url('business/user/login')}"></a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="{:url('business/user/login')}">登入</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="{:url('business/user/reg')}">注册</a>
-            </li>
+            <!--<li class="layui-nav-item">-->
+                <!--<a class="iconfont icon-touxiang layui-hide-xs" href="{:url('business/user/login')}"></a>-->
+            <!--</li>-->
+            <!--<li class="layui-nav-item">-->
+                <!--<a href="{:url('business/user/login')}">登入</a>-->
+            <!--</li>-->
+            <!--<li class="layui-nav-item">-->
+                <!--<a href="{:url('business/user/reg')}">注册</a>-->
+            <!--</li>-->
             <li class="layui-nav-item layui-hide-xs">
                 <a href="{:url('frontend/open_auth/github')}"
                    onclick="layer.msg('正在通过Github登入', {icon:16, shade: 0.1, time:0})" title="Github登入"
                    class="icon-github"></a>
             </li>
             <li class="layui-nav-item layui-hide-xs">
-                <a href="/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入"
-                   class="iconfont icon-weibo"></a>
+                <a href="{:url('frontend/open_auth/qq')}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入"
+                   class="iconfont icon-qq"></a>
             </li>
             {/if}
 

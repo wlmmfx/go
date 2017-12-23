@@ -1,8 +1,8 @@
 <?php
-//--------------------------------------------------common------------------------------------------------------------
 /**
  * 根据IP地址获取城市信息
  * @param $ip
+ * @return bool
  */
 function get_city_by_ip($ip)
 {
@@ -27,6 +27,28 @@ function get_city_by_ip($ip)
     $res = json_decode(curl_exec($curl), true);
     if ($res['code'] != 0) return false;
     return $res['data'];
+}
+
+/**
+ * 获取等级
+ * @param $point
+ * @return mixed
+ */
+function get_level($point)
+{
+    $level = [
+        0 => ['max' => 1000, 'min' => 0, 'name' => '新手', 'level' => 1],
+        1 => ['max' => 10000, 'min' => 1000, 'name' => '小将', 'level' => 2],
+        2 => ['max' => 20000, 'min' => 10000, 'name' => '中将', 'level' => 3],
+        3 => ['max' => 50000, 'min' => 20000, 'name' => '上将', 'level' => 4],
+        4 => ['max' => 100000, 'min' => 50000, 'name' => '大将', 'level' => 5],
+        5 => ['max' => 999999999, 'min' => 100000, 'name' => '将军', 'level' => 6],
+    ];
+    foreach ($level as $value) {
+        if (($point >= $value['min']) && ($point < $value['max'])) {
+            return $value;
+        }
+    }
 }
 
 /**

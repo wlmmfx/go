@@ -11,6 +11,9 @@ namespace app\frontend\controller;
 use app\common\controller\BaseFrontend;
 use app\common\model\Admin;
 use app\common\model\OpenUser;
+use qq\QQConnect;
+use qq\web\Oauth;
+use qq\web\QC;
 use think\Db;
 use think\Log;
 use think\Request;
@@ -57,7 +60,8 @@ class Member extends BaseFrontend
 
     public function qqLogin()
     {
-        return $this->fetch();
+        $qqobj = new Oauth();
+        return $qqobj->qq_login();
     }
 
     /**
@@ -125,7 +129,7 @@ class Member extends BaseFrontend
             exit;
         }
         $code = rand(100000, 999999);
-        messageRedis()->setex("MOBILE:".$mobile,600,$code);
+        messageRedis()->setex("MOBILE:" . $mobile, 600, $code);
         //发送验证码操作
         $sendRes = addSMSTaskQueue($mobile, 1, $code);
         if ($sendRes) {

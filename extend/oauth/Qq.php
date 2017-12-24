@@ -7,45 +7,49 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/12/23 16:13
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Function: QQ第三方登录认证
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace qq;
-/**
- *  qq第三方登录认证
- */
-class QQConnect
+namespace oauth;
+
+class Qq
 {
+    const REQUEST_URL = 'https://graph.qq.com/oauth2.0/authorize';
+
+    const TOKEN_URL = 'https://graph.qq.com/oauth2.0/token';
+
     private static $data;
-    //APP ID
+
     private $app_id = "";
-    //APP KEY
+
     private $app_key = "";
-    //回调地址
+
     private $callBackUrl = "";
-    //Authorization Code
+
     private $code = "";
-    //access Token
+
     private $accessToken = "";
 
     private $openid = "";
 
     public function __construct()
     {
-        $this->app_id = "101452596";
-        $this->app_key = "751ef40924f54b59ca42064050f08292";
-        $this->callBackUrl = "https://www.tinywan.com/frontend/open_auth/qqRedirectUri";
+        $this->app_id = config('oauth.qq')['app_id'];
+        $this->app_key = config('oauth.qq')['app_key'];
+        $this->callBackUrl = config('oauth.qq')['call_back_url'];
         //检查用户数据
         if (empty(session('QC_userData'))) {
-            self::$data = array();
+            self::$data = [];
         } else {
             self::$data = session('QC_userData');
         }
     }
 
-    //获取Authorization Code
+    /**
+     * 获取Authorization Code
+     */
     public function getAuthCode()
     {
-        $url = "https://graph.qq.com/oauth2.0/authorize";
         $param['response_type'] = "code";
         $param['client_id'] = $this->app_id;
         $param['redirect_uri'] = $this->callBackUrl;
@@ -55,7 +59,7 @@ class QQConnect
         $param['state'] = $state;
         $param['scope'] = "get_user_info";
         $param = http_build_query($param, '', '&');
-        $url = $url . "?" . $param;
+        $url = self::REQUEST_URL . "?" . $param;
         header("Location:" . $url);
     }
 
@@ -65,14 +69,13 @@ class QQConnect
         if (!empty($this->accessToken)) {
             return $this->accessToken;
         } else {
-            $url = "https://graph.qq.com/oauth2.0/token";
             $param['grant_type'] = "authorization_code";
             $param['client_id'] = $this->app_id;
             $param['client_secret'] = $this->app_key;
             $param['code'] = $_GET['code'];
             $param['redirect_uri'] = $this->callBackUrl;
             $param = http_build_query($param, '', '&');
-            $url = $url . "?" . $param;
+            $url = self::TOKEN_URL . "?" . $param;
             return $this->getUrl($url);
         }
     }
@@ -118,7 +121,10 @@ class QQConnect
         }
     }
 
-    //获取信息
+    /**
+     * 获取用户信息
+     * @return mixed
+     */
     public function getUsrInfo()
     {
         $url = "https://graph.qq.com/user/get_user_info";
@@ -146,7 +152,6 @@ class QQConnect
         curl_close($ch);
         return $data;
     }
-
 
     //CURL POST
     private function postUrl($url, $post_data)

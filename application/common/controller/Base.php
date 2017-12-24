@@ -25,7 +25,7 @@ use think\Log;
 class Base extends Controller
 {
     // 缓存开关
-    protected $cache_switch = false;
+    protected $cache_switch = true;
     // 微信实例
     public static $easywechat_instance = false;
 

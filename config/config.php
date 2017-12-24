@@ -95,13 +95,15 @@ return [
         // 默认使用的缓存
         'default' => [
             // 驱动方式
-            'type' => 'File',
-            // 缓存保存目录
-            'path' => CACHE_PATH,
+            'type' => 'redis',
+            // 服务器地址
+            'host' => '172.19.230.35',
+            'port' => '63789',
+            'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
             // 缓存前缀
-            'prefix' => 'FileCache',
+            'prefix' => 'REDIS_CACHE:',
             // 缓存有效期 0表示永久缓存
-            'expire' => 0,
+            'expire' => 604800,
         ],
         // 文件缓存
         'file' => [

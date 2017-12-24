@@ -73,7 +73,7 @@ class Article extends BaseBackend
                 $data = input('post.');
                 $file = request()->file("thumb");
                 //开始一个缩略图，直接获取当前请求中的文件上传对象
-                $image = Image::open($file);
+//                $image = Image::open($file);
                 // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $file->rule("uniqid")->move(ROOT_PATH . 'public' . DS . 'uploads/article');
                 if ($info) {
@@ -83,28 +83,27 @@ class Article extends BaseBackend
                     $thumbName = 'thumb_' . $info->getFilename();
                     //获取文件名
                     $data['thumb'] = $thumbName;
-
                     /**
                      * 注意：这里定义的$ossbObject 目录路径为OSS 上存储的路径信息,可以自定义的，最好在配置文件中配置最好了
                      */
                     $ossbObject = 'uploads/article';
                     //  定义缩略图保存路径
-                    $thumbObjectPath = ROOT_PATH . 'public' . DS . 'uploads/article' . DS . $thumbName;
+//                    $thumbObjectPath = ROOT_PATH . 'public' . DS . 'uploads/article' . DS . $thumbName;
                     // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
-                    $image->thumb(240, 150)->save($thumbObjectPath);
+//                    $image->thumb(240, 150)->save($thumbObjectPath);
                     $localDirectory = $ossbObject . DS;
                     /**
                      * 给缩略图左上角添加水印并保存
                      */
-                    $logoPath = ROOT_PATH . 'public' . DS . 'uploads/water_logo.png';
-                    $image->water($logoPath,\think\Image::WATER_SOUTHEAST,50)->save($thumbObjectPath);
+//                    $logoPath = ROOT_PATH . 'public' . DS . 'uploads/water_logo.png';
+//                    $image->water($logoPath,\think\Image::WATER_SOUTHEAST,50)->save($thumbObjectPath);
                     /**
                      * 缩略图上传、原始图上传
                      */
                     try {
-                        $ossUploadRes = $oss->uploadDir($bucket, $ossbObject, $localDirectory);
+                        $oss->uploadDir($bucket, $ossbObject, $localDirectory);
                         $data['oss_upload_status'] = 1;
-                        $data['image_thumb'] = '/'.$ossbObject.DS.$thumbName;
+                        $data['image_thumb'] = '/'.$ossbObject.DS.$info->getFilename();
                         $data['image_origin'] = '/'.$ossbObject.DS.$info->getFilename();
                         // 遍历删除原图和缩略图
                         $this->rmdirs(ROOT_PATH . 'public' . DS . 'uploads/article');

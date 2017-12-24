@@ -559,8 +559,8 @@ body .fly-user-main{position: relative; min-height: 600px;}
 /*github图标*/
 .icon-github{
   display: inline-block;
-  width:  32px;
-  height: 32px;
+  width:  30px;
+  height: 30px;
   background: url("../images/github.png") no-repeat center;
   -webkit-background-size: 32px;
   background-size: 32px;

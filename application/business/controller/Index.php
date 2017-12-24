@@ -32,17 +32,20 @@ class Index extends BaseFrontend
             ->join('resty_user u', 'u.id = a.author_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
-            ->paginate(4);
+            ->cache("RESTY_ARTICLE")
+            ->limit(6)
+            ->select();
         $articlesList = Db::table("resty_article")
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
             ->join('resty_user u', 'u.id = a.author_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
-            ->paginate(8);
+            ->cache("RESTY_ARTICLE_LIST")
+            ->limit(8)
+            ->select();
         $this->assign('articles', $article);
         $this->assign('articlesList', $articlesList);
-        $this->assign('page', $article->render());
         return $this->fetch();
     }
 
@@ -53,57 +56,18 @@ class Index extends BaseFrontend
         if (empty($postId) || !is_numeric($postId)) {
             return json(['code' => 404]);
         }
-        $articleDetailCacheKey = 'resty_article_detail:' . $postId;
-        if ($this->cache_switch == true && redisCache()->has($articleDetailCacheKey) == true) {
-            $article = redisCache()->get($articleDetailCacheKey);
-        } else {
-            // 先删除，再查询缓存
-            redisCache()->rm($articleDetailCacheKey);
-            $article = Db::table("resty_article")
-                ->alias('a')
-                ->join('resty_category c', 'c.id = a.cate_id')
-                ->join('resty_user u', 'u.id = a.author_id')
-                ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
-                ->where('a.id', ':id')
-                ->bind(['id' => [$postId, \PDO::PARAM_INT]])
-                ->find();
-            // 使用Redis缓存操作
-            if ($this->cache_switch == true) redisCache()->set($articleDetailCacheKey, $article);
-            $article['DataSources'] = 'content from MySQL';
-        }
-        // 标签多条缓存
-        $articleTagKey = 'resty_tag_detail:' . $postId;
-        if ($this->cache_switch == true && redisCache()->has($articleTagKey)) {
-            $tags = redisCache()->get($articleTagKey);
-        } else {
-            redisCache()->rm($articleTagKey);
-            $tags = Db::table("resty_tag")
-                ->alias('t')
-                ->join("resty_article_tag at", "at.tag_id = t.id")
-                ->where("at.article_id", ':article_id')
-                ->bind(['article_id' => [$postId, \PDO::PARAM_INT]])
-                ->select();
-            // 多级缓存
-            $tmpTags = [];
-            foreach ($tags as $v) {
-                $tmpTags[] = [
-                    'id' => $v['id'],
-                    'name' => $v['name'],
-                    'article_id' => $v['article_id'],
-                    'tag_id' => $v['tag_id']
-                ];
-            }
-            if ($this->cache_switch == true) redisCache()->set($articleTagKey, $tmpTags);
-            $tags['DataSources'] = 'tags content from MySQL';
-        }
-        $commentInfos = $this->getCommentListByPostId($postId);
-        // 观看使用缓存
-        redisCache()->inc('views:'.$postId);
-        Db::table('resty_article')->where('id', ':id')->bind(['id' => [$postId, \PDO::PARAM_INT]])->cache(10)->setInc('views');
+        $article = Db::table("resty_article")
+            ->alias('a')
+            ->join('resty_category c', 'c.id = a.cate_id')
+            ->join('resty_user u', 'u.id = a.author_id')
+            ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
+            ->where('a.id', ':id')
+            ->bind(['id' => [$postId, \PDO::PARAM_INT]])
+            ->cache('RESTY_ARTICLE_DETAIL:'.$postId)
+            ->find();
+        // 更新缓存
+        Db::table('resty_article')->where('id', ':id')->bind(['id' => [$postId, \PDO::PARAM_INT]])->cache('RESTY_ARTICLE_DETAIL:'.$postId)->setInc('views');
         $this->assign('article', $article);
-        $this->assign('tags', $tags);
-        $this->assign('comments', $commentInfos);
-        $this->assign('commentCounts', count($commentInfos));
         return $this->fetch();
     }
 

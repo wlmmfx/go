@@ -25,14 +25,17 @@ class OpenUser extends BaseModel
      */
     public function store($data)
     {
-        $result = $this->save($data);
-        if (false === $result) {
-            // 验证失败 输出错误信息
-            return ['valid' => 0, 'msg' => $this->getError()];
-        }
-        session('open_user.id', $this->pk);
-        session('open_user.username', $result['account']);
-        return ['valid' => 1, 'msg' => "注册成功"];
+        return $this->insertGetId($data);
+    }
+
+    /**
+     * 通过$openId查看该用户是否存在
+     */
+    public function userIsExistByOpenId($openId)
+    {
+        $res = $this->where('open_id',$openId)->find();
+        if (!$res) return ['valid' => 0, 'msg' => "不存在"];
+        return ['valid' => 1, 'msg' => "存在"];
     }
 
     /**
@@ -93,7 +96,7 @@ class OpenUser extends BaseModel
         $saveRes = $this->save([
             'enable' => 1  # 表示已经激活
         ], [$this->pk => $userInfo['id']]);
-        if($saveRes){
+        if ($saveRes) {
             // 4 记录session
             session('open_user_id', $userInfo['id']);
             session('open_user_username', $userInfo['username']);

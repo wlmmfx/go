@@ -64,30 +64,6 @@
                         </div>
                     </li>
                     {/volist}
-                    <li>
-                        <a href="{:url('business/Index/detail',['id'=>$vo['id']])}" class="fly-avatar">
-                            <img src="{$Think.config.aliyun_oss.DOMAIN}{$vo.image_thumb}" onerror=this.src="__RES__/images/avatar/6.jpg" alt="{$vo.username}">
-                        </a>
-                        <h2>
-                            <a class="layui-badge">{$vo['c_name']}</a>
-                            <a href="{:url('business/Index/detail',['id'=>$vo['id']])}">{$vo.title}</a>
-                        </h2>
-                        <div class="fly-list-info">
-                            <p class="fly-case-desc">
-                                {$vo["desc"]|mb_substr=0,120}...
-                            </p>
-
-                            <a href="javascript:vod(0);" link>
-                                <cite>{$vo.username}</cite>
-                                <i class="iconfont icon-renzheng" title="认证信息：Github"></i>
-                                <i class="layui-badge fly-badge-vip">管理员</i>
-                            </a>
-                            <span>{$vo['create_time']|format_date_to_time}</span>
-
-                            <span class="fly-list-kiss layui-hide-xs" title="悬赏金币"><i class="iconfont icon-kiss"></i> {$vo['views']}</span>
-                            <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div style="text-align: center">

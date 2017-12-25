@@ -181,22 +181,22 @@
         })
     }
 
-    $(function () {
-        layui.use(['layer', 'form'], function () {
-            var form = layui.form;
-            var layer = layui.layer;
-            //监听表单提交事件
-            form.on('submit(registerForm)', function (data) {
-                layer.msg(JSON.stringify(data.field));
-//                return false;
-                ajaxBC_post("{:url('business/user/ajaxRegister')}",
-                    data.field,
-                    function ($data) {
-                        console.log($data);
-                    }
-                );
-            });
-        });
-    });
+//    $(function () {
+//        layui.use(['layer', 'form'], function () {
+//            var form = layui.form;
+//            var layer = layui.layer;
+//            //监听表单提交事件
+//            form.on('submit(registerForm)', function (data) {
+//                layer.msg(JSON.stringify(data.field));
+////                return false;
+//                ajaxBC_post("{:url('business/user/ajaxRegister')}",
+//                    data.field,
+//                    function ($data) {
+//                        console.log($data);
+//                    }
+//                );
+//            });
+//        });
+//    });
 
 </script>

@@ -30,8 +30,8 @@ class BaseFrontend extends Base
         // 用户信息统计
         $userInfo = Db::table('resty_open_user')
             ->where('id', session('open_user_id'))
-            ->cache('OPEN_USER_INFO')
             ->find();
+//        halt($userInfo);
         // 标签统计
         $tags = Db::table('resty_tag')
             ->alias('t')

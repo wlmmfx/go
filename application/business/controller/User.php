@@ -28,7 +28,7 @@ class User extends BaseFrontend
     // 我的主页
     public function home()
     {
-        $userId = session('open_user_id');
+        $userId = input('param.id');
         $userInfo = Db::table('resty_open_user')->where('id', $userId)->find();
         return $this->fetch('', [
             'user' => $userInfo

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="__LAYUI__/css/layui.css">
     <link rel="stylesheet" href="__RES__/css/global.css">
     <script src="__COMMON__/js/jquery/jquery-3.2.1.min.js"></script>
+    <script src="__COMMON__/js/jquery/jquery.cookie-1.4.1.min.js"></script>
 </head>
 <body>
 
@@ -48,7 +49,7 @@
                 <dl class="layui-nav-child">
                     <dd><a href="{:url('business/user/setting')}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
                     <dd><a href="{:url('business/user/message')}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-                    <dd><a href="{:url('business/user/home')}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    <dd><a href="{:url('business/user/home',['id'=>$userInfo.id])}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
                     </dd>
                     <hr style="margin: 5px 0;">
                     <dd><a href="{:url('business/user/logout')}" style="text-align: center;">退出</a></dd>

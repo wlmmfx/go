@@ -1,96 +1,7 @@
-﻿/**
- @Name: Tinywan 工作室
+/*
+ * Ajax_JYBC   V1.0.01
+ * Last Update for 任向阳  on 2017/11/23
  */
-
-layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports) {
-
-    var $ = layui.jquery
-        , layer = layui.layer
-        , form = layui.form;
-    //监听提交
-    form.on('submit(commentForm)', function (data) {
-        // layer.msg(JSON.stringify(data.field));
-        ajax_post("/business/Index/commentStore",
-            data.field,
-            function (response) {
-                if (response.code == 200) {
-                    layer.msg('操作成功', {
-                        icon: 1,
-                        time: 3000
-                    }, function () {
-                        // 1、显示新增评论
-                        // var $newli = "";
-                        // $newli = "<li data-id='111' class='jieda-daan'>"+
-                        //     +"<div class='detail-about detail-about-reply'>"+
-                        //     +"<a class='fly-avatar' href=''><img src='__RES__/images/avatar/7.jpg' alt=''></a>"+
-                        //     +"<div class='fly-detail-user'>"+
-                        //     +"<a href='' class='fly-link'> <cite>Tinywan123</cite><i class='layui-badge fly-badge-vip'>VIP3</i></a>"+
-                        //     +"</div>"+
-                        //     +"<div class='detail-hits'>"+
-                        //     +"<span>2017-11-30</span>"+
-                        //     +"</div>"+
-                        //     +"<i class='iconfont icon-caina' title='最佳答案'></i>"+
-                        //     +"</div>"+
-                        //     +"<div class='detail-body jieda-body photos'>"+
-                        //     +"<p>香菇那个蓝瘦，这是一条被采纳的回帖</p>"+
-                        //     +"</div>"+
-                        //     +"<div class='jieda-reply'><span class='jieda-zan zanok' type='zan'><i class='iconfont icon-zan'></i><em>66</em></span>"+
-                        //     +"<span type='reply'><i class='iconfont icon-svgmoban53'></i>回复</span>"+
-                        //     +"</div>"+
-                        //     +"</li>";
-                        // $("#jieda").prepend($newli);
-                        parent.location.reload(); // 父页面刷新
-                    });
-                } else {
-                    layer.msg('操作失败', {
-                        icon: 0,
-                        time: 3000
-                    }, function () {
-                        console.log(22222222222222222);
-                    });
-                }
-            },
-            function ($data) {
-                layer.msg("失败后的数据" + $data);
-            }
-        );
-        return false;
-    });
-
-    //点赞
-    $('body').on('click', '.jieda-zan', function () {
-        var $id = $(this).data('id');
-        var $userId = $(this).data('userid');
-        var $zanUserId = $(this).data('zanuserid');
-        if(!$.cookie('c-'+$id+'u-'+$userId)){
-            ajax_post("/business/Index/posterZan", {'id':$id,'user_id':$userId,'zan_user_id':$zanUserId},
-                function (response) {
-                    if (response.code == 200) {
-                        $.cookie('c-'+$id+'u-'+$userId,$id+'-'+$userId);//改变flag初始值，确保函数只执行一次
-                        layer.msg('恭喜，点赞成功', {
-                            icon: 1,
-                            time: 2000
-                        }, function () {
-                            parent.location.reload();
-                        });
-                    } else {
-                        layer.msg('很遗憾，点赞失败', {
-                            icon: 0,
-                            time: 3000
-                        }, function () {
-                            console.log(22222222222222222);
-                        });
-                    }
-                }
-            );
-        }else{
-            layer.msg('您已经点过赞了',{
-                icon: 0,
-                time: 2000
-            });
-        }
-    });
-});
 
 
 /**
@@ -111,7 +22,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
  * 1.防止重复提交(自动启用,但在同步加载模式下看不出效果);
  * 2.提示模式,参考tipType;
  */
-function ajax(url, config, func_suc, func_error, func_comp) {
+function ajaxBC(url, config, func_suc, func_error, func_comp) {
     //1.request url repeat judge
     if (!window.lstAjaxUrl) {
         window.lstAjaxUrl = {};
@@ -208,6 +119,7 @@ function ajax(url, config, func_suc, func_error, func_comp) {
 
 /**
  * 常用的POST请求封装
+ * create by 任向阳  on 2017/11/23
  * 参数说明:
  * 1.url(必填)
  * 2.data(选填,向后台传送的数据，是个数组，如：{id:1})
@@ -218,7 +130,7 @@ function ajax(url, config, func_suc, func_error, func_comp) {
  * 1.防止重复提交(自动启用,但在同步加载模式下看不出效果);
  * 2.提示模式,参考tipType;
  */
-function ajax_post(url, data, func_suc, func_error, func_comp) {
+function ajaxBC_post(url, data, func_suc, func_error, func_comp) {
     //1.request url repeat judge
     if (!window.lstAjaxUrl) {
         window.lstAjaxUrl = {};
@@ -308,4 +220,3 @@ function ajax_post(url, data, func_suc, func_error, func_comp) {
         }
     });
 }
-

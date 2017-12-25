@@ -16,30 +16,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
                 if (response.code == 200) {
                     layer.msg('操作成功', {
                         icon: 1,
-                        time: 3000
+                        time: 1000,
+                        shade: 0.3
                     }, function () {
-                        // 1、显示新增评论
-                        // var $newli = "";
-                        // $newli = "<li data-id='111' class='jieda-daan'>"+
-                        //     +"<div class='detail-about detail-about-reply'>"+
-                        //     +"<a class='fly-avatar' href=''><img src='__RES__/images/avatar/7.jpg' alt=''></a>"+
-                        //     +"<div class='fly-detail-user'>"+
-                        //     +"<a href='' class='fly-link'> <cite>Tinywan123</cite><i class='layui-badge fly-badge-vip'>VIP3</i></a>"+
-                        //     +"</div>"+
-                        //     +"<div class='detail-hits'>"+
-                        //     +"<span>2017-11-30</span>"+
-                        //     +"</div>"+
-                        //     +"<i class='iconfont icon-caina' title='最佳答案'></i>"+
-                        //     +"</div>"+
-                        //     +"<div class='detail-body jieda-body photos'>"+
-                        //     +"<p>香菇那个蓝瘦，这是一条被采纳的回帖</p>"+
-                        //     +"</div>"+
-                        //     +"<div class='jieda-reply'><span class='jieda-zan zanok' type='zan'><i class='iconfont icon-zan'></i><em>66</em></span>"+
-                        //     +"<span type='reply'><i class='iconfont icon-svgmoban53'></i>回复</span>"+
-                        //     +"</div>"+
-                        //     +"</li>";
-                        // $("#jieda").prepend($newli);
-                        parent.location.reload(); // 父页面刷新
+                        location.reload();
                     });
                 } else {
                     layer.msg('操作失败', {
@@ -69,9 +49,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
                         $.cookie('c-'+$id+'u-'+$userId,$id+'-'+$userId);//改变flag初始值，确保函数只执行一次
                         layer.msg('恭喜，点赞成功', {
                             icon: 1,
-                            time: 2000
+                            time: 2000,
+                            shade: 0.3
                         }, function () {
-                            parent.location.reload();
+                            location.reload();
                         });
                     } else {
                         layer.msg('很遗憾，点赞失败', {
@@ -86,9 +67,50 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
         }else{
             layer.msg('您已经点过赞了',{
                 icon: 0,
-                time: 2000
+                time: 2000,
+                shade: 0.3
             });
         }
+    });
+
+    // 删除评论
+    $('body').on('click', '.comment-del', function () {
+        var othis = $(this);
+        var $id = othis.data('id');
+        ajax_post("/business/Index/delComment", {'id':$id},
+            function (response) {
+                if (response.code == 200) {
+                    layer.msg('恭喜，删除成功', {
+                        icon: 1,
+                        time: 2000,
+                        shade: 0.3
+                    }, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('很遗憾，删除失败', {
+                        icon: 0,
+                        time: 3000
+                    }, function () {
+                        location.reload();
+                    });
+                }
+            }
+        );
+    });
+
+    //点击@
+    $('body').on('click', '.comment-reply', function(){
+        var othis = $(this), text = othis.text();
+        if(othis.attr('href') !== 'javascript:;'){
+            return;
+        }
+        // text = text.replace(/^@|（[\s\S]+?）/g, '');
+        layer.msg(text);
+        // othis.attr({
+        //     href: '/jump?username='+ text
+        //     ,target: '_blank'
+        // });
     });
 });
 

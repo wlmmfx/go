@@ -1950,7 +1950,7 @@ function MediaStreamRecorder(mediaStream, config) {
     }
 
     if (typeof MediaRecorder === 'undefined') {
-        throw 'Your browser does not supports Media Recorder API. Please try other modules e.g. WhammyRecorder or StereoAudioRecorder.';
+        throw 'Your browser does not supports Media Recorder API. Please try other mods e.g. WhammyRecorder or StereoAudioRecorder.';
     }
 
     config = config || {

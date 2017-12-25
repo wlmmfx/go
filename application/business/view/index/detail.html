@@ -119,11 +119,11 @@
                             {/if}
                             </em>
                         </span>
-                            <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
+                            <span type="reply" class="comment-reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
                             {if condition="$userInfo.id eq $vo.user_id"}
                             <div class="jieda-admin">
-                                <span type="edit">编辑</span>
-                                <span type="del">删除</span>
+                                <span type="edit" >编辑</span>
+                                <span type="del" data-id="{$vo['comment_id']}" class="comment-del">删除</span>
                             </div>
                             {/if}
                         </div>

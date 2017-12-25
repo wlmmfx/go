@@ -3467,7 +3467,7 @@ function getMouseXY(e) {
 
 (function(window, document, exports, undefined){
 
-/* build: `node build.js modules=text,serialization,parser,gradient,pattern,shadow,freedrawing,image_filters,serialization no-es5-compat minifier=uglifyjs` */
+/* build: `node build.js mods=text,serialization,parser,gradient,pattern,shadow,freedrawing,image_filters,serialization no-es5-compat minifier=uglifyjs` */
 /*! Fabric.js Copyright 2008-2014, Printio (Juriy Zaytsev, Maxim Chernyak) */
 
 var fabric = fabric || { version: "1.4.11" };

@@ -158,11 +158,29 @@ class Index extends BaseFrontend
             $id = input('post.id');
             $user_id = input('post.user_id');
             $zan_user_id = input('post.zan_user_id');
-            Db::table('resty_comment')->where('comment_id',$id)->setInc('zan');
-            $res = [
-                "code" => 200,
-                "msg" => $id,
-            ];
+            $res = Db::table('resty_comment')->where('comment_id',$id)->setInc('zan');
+            if(!$res){
+                $res = ["code" => 500, "msg" => 'fail'];
+                return json($res);
+            }
+            $res = ["code" => 200, "msg" => 'success'];
+            return json($res);
+        }
+    }
+
+    /**
+     * 删除评论
+     */
+    public function delComment()
+    {
+        if (request()->isPost()) {
+            $id = input('post.id');
+            $res = Db::table('resty_comment')->where('comment_id',$id)->delete();
+            if(!$res){
+                $res = ["code" => 500, "msg" => 'fail'];
+                return json($res);
+            }
+            $res = ["code" => 200, "msg" => 'success'];
             return json($res);
         }
     }

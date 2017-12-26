@@ -74,15 +74,14 @@
     <div class="col-sm-12">
         <div class="row"
              style="border: 1px dashed #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
-            <div class="col-sm-4">
-                <video id="live-stream" style="height: 100%; width: 100%;" class="video-js vjs-default-skin" controls
-                       autoplay>
+            <div class="col-sm-5">
+                <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
                     <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
                             type="video/mp4">
                 </video>
             </div><!-- /span -->
 
-            <div class="col-sm-8 ">
+            <div class="col-sm-7">
                 <div class="row" style="margin-left: 10px;">
                     <h5><i class="icon-facetime-video"></i> 视频素材</h5>
                     <hr>
@@ -285,6 +284,10 @@
 <script src="__COMMON__/videojs/videojs/video.js"></script>
 <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
+    var options = {
+        width: 640,
+        height: 380
+    };
     var player = videojs('live-stream', options);
     player.addClass('vjs-matrix');
 

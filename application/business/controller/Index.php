@@ -125,9 +125,6 @@ class Index extends BaseFrontend
             }
             $res = $this->comment_db->store($data);
             if ($res["valid"]) {
-                /**
-                 * 这里要返回的信息应该是新插入的数据显示哦
-                 */
                 $responseData = Db::table("resty_comment")
                     ->alias('c')
                     ->join('resty_open_user ou', 'c.user_id = ou.id')

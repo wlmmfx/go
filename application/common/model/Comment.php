@@ -38,7 +38,7 @@ class Comment extends BaseModel
      */
     public function store($data)
     {
-        $result = $this->validate(true)->save($data);
+        $result = $this->save($data);
         if (false === $result) {
             // 验证失败 输出错误信息
             return ['valid' => 0, 'msg' => $this->getError()];

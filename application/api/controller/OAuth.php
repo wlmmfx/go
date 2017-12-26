@@ -64,7 +64,7 @@ class OAuth extends BaseFrontend
             // 记录session信息
             session('open_user_id', $userJsonRes['id']);
             session('open_user_username', $userJsonRes['login']);
-            return $this->redirect("/");
+            return $this->redirect(session('OAUTH_REFFERER_URL'));
         } else {
             // 第六步，添加用户信息到数据库
             $insertData['account'] = $userJsonRes['login'];

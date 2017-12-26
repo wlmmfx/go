@@ -9,7 +9,13 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
         , form = layui.form;
     //监听提交
     form.on('submit(commentForm)', function (data) {
-        // layer.msg(JSON.stringify(data.field));
+        if (data.field.user_id == "" || data.field.user_id == null || data.field.user_id == undefined) {
+            layer.msg('请登录后发表评论', {
+                icon: 0,
+                time: 3000
+            });
+            return false;
+        }
         ajax_post("/business/Index/commentStore",
             data.field,
             function (response) {
@@ -20,6 +26,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
                         shade: 0.3
                     }, function () {
                         location.reload();
+                        // var index = layer.load(2, {time: 5 * 1000}); //又换了种风格，并且设定最长等待10秒
+                        // layer.close(index);
                     });
                 } else {
                     layer.msg('操作失败', {
@@ -42,11 +50,11 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
         var $id = $(this).data('id');
         var $userId = $(this).data('userid');
         var $zanUserId = $(this).data('zanuserid');
-        if(!$.cookie('c-'+$id+'u-'+$userId)){
-            ajax_post("/business/Index/posterZan", {'id':$id,'user_id':$userId,'zan_user_id':$zanUserId},
+        if (!$.cookie('c-' + $id + 'u-' + $userId)) {
+            ajax_post("/business/Index/posterZan", {'id': $id, 'user_id': $userId, 'zan_user_id': $zanUserId},
                 function (response) {
                     if (response.code == 200) {
-                        $.cookie('c-'+$id+'u-'+$userId,$id+'-'+$userId);//改变flag初始值，确保函数只执行一次
+                        $.cookie('c-' + $id + 'u-' + $userId, $id + '-' + $userId);//改变flag初始值，确保函数只执行一次
                         layer.msg('恭喜，点赞成功', {
                             icon: 1,
                             time: 2000,
@@ -64,8 +72,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
                     }
                 }
             );
-        }else{
-            layer.msg('您已经点过赞了',{
+        } else {
+            layer.msg('您已经点过赞了', {
                 icon: 0,
                 time: 2000,
                 shade: 0.3
@@ -77,7 +85,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
     $('body').on('click', '.comment-del', function () {
         var othis = $(this);
         var $id = othis.data('id');
-        ajax_post("/business/Index/delComment", {'id':$id},
+        ajax_post("/business/Index/delComment", {'id': $id},
             function (response) {
                 if (response.code == 200) {
                     layer.msg('恭喜，删除成功', {
@@ -100,9 +108,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
     });
 
     //点击@
-    $('body').on('click', '.comment-reply', function(){
+    $('body').on('click', '.comment-reply', function () {
         var othis = $(this), text = othis.text();
-        if(othis.attr('href') !== 'javascript:;'){
+        if (othis.attr('href') !== 'javascript:;') {
             return;
         }
         // text = text.replace(/^@|（[\s\S]+?）/g, '');

@@ -271,7 +271,7 @@ class Live extends BaseBackend
      */
     public function uploadVideoManage()
     {
-        $videos = db('stream_video_edit')->where('type', 2)->order('id desc')->paginate(6);
+        $videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('id desc')->paginate(6);
         $this->assign('videos', $videos);
         return $this->fetch();
     }

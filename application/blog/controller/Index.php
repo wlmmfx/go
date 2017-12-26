@@ -82,6 +82,7 @@ class Index extends BaseFrontend
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $this->assign('articles', $article);
+        $this->assign('articleCounts', Db::table("resty_article")->count());
         $this->assign('page', $article->render());
         return $this->fetch();
     }

@@ -32,6 +32,77 @@
         font-size: 18px;
     }
 
+    @media screen and (max-width: 750px) {
+
+        .fly-list li {
+            height: 340px !important;
+            border-bottom: 5px solid #F2F2F2;
+            position: relative;
+            height: 45px;
+            line-height: 22px;
+            padding: 15px 30px 15px 30px;
+        }
+        .fly-avatar {
+            position: relative;
+            top:0;
+            left:0;
+            height: 200px;
+            width: 100%;
+        }
+        .fly-avatar img {
+            display: block;
+            /*width: 23.4em;*/
+            /*height: 13em;*/
+            margin: auto;
+            text-shadow: 5px 5px 5px #FF0000;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            line-height: 1.42857;
+            padding: 4px;
+            transition: border 0.2s ease-in-out 0s;
+        }
+
+        .fly-list li h2 {
+            height: 30px;
+            font-size: 0;
+            line-height: 30px;
+        }
+
+        .fly-case-desc {
+            height: 90px;
+            line-height: 30px;
+            color: #666;
+            overflow: hidden;
+            font-size: 15px;
+            padding-bottom: 46px;
+            text-indent: 24px;
+            padding-top: 10px;
+            verflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            padding: 0;
+        }
+
+        .fly-list li h2 .layui-badge {
+            top: -10px;
+            height: 16px;
+            line-height: 16px;
+            padding: 0 5px;
+            margin-right: 10px;
+            font-size: 12px;
+            border: 1px solid #5FB878;
+            background: none;
+            color: #5FB878;
+        }
+        .fly-list li h2 a {
+            line-height: 40px;
+        }
+
+
+    }
+
 </style>
 <div class="layui-container">
     <div class="layui-row layui-col-space15">

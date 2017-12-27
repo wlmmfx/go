@@ -199,7 +199,7 @@ class Index extends BaseFrontend
         if (empty($arr)) return [];
         foreach ($arr as $cm) {
             $thisArr =& $result[];
-            $cm["children"] = $this->getCommentListByPostId($cm["post_id"], $cm["comment_id"], $thisArr);
+            $cm["children"] = $this->getCommentListByPostId($cm["article_id"], $cm["comment_id"], $thisArr);
             $thisArr = $cm;
         }
         return $result;
@@ -212,7 +212,7 @@ class Index extends BaseFrontend
     public function commentStore()
     {
         if (request()->isPost()) {
-            $data['post_id'] = input('post.post_id');
+            $data['article_id'] = input('post.post_id');
             $data['parent_id'] = input('post.parent_id');
             $data['user_id'] = input('post.user_id');
             $data['comment_content'] = input('post.comment_content');
@@ -231,7 +231,7 @@ class Index extends BaseFrontend
                     ->field('c.comment_id,c.user_id,c.article_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
                     ->where('c.comment_id', $res["id"])
                     ->find();
-                $responseData['num'] = count($this->getCommentListByPostId($data['post_id']));
+                $responseData['num'] = count($this->getCommentListByPostId($data['article_id']));
                 //格式化时间输出
                 $responseData['create_time'] = date('Y-m-d H:i:s', $responseData['create_time']);
                 $res = [
@@ -339,7 +339,7 @@ class Index extends BaseFrontend
 
     public function info($id)
     {
-        $data['post_id'] = 99;
+        $data['article_id'] = 99;
         $data['parent_id'] = 0;
         $data['user_id'] = 12;
         $data['comment_content'] = "Comment content" . rand(00000, 9999);

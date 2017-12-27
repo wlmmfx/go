@@ -131,7 +131,7 @@ class Index extends BaseFrontend
                     ->field('c.comment_id,c.user_id,c.article_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
                     ->where('c.comment_id', $res["id"])
                     ->find();
-                $responseData['num'] = count($this->getCommentListByPostId($data['post_id']));
+                $responseData['num'] = count($this->getCommentListByPostId($data['article_id']));
                 //格式化时间输出
                 $responseData['create_time'] = date('Y-m-d H:i:s', $responseData['create_time']);
                 $res = [

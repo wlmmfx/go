@@ -7,7 +7,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
     var $ = layui.jquery
         , layer = layui.layer
         , form = layui.form;
-    //监听提交
+    //提交评论
     form.on('submit(commentForm)', function (data) {
         if (data.field.user_id == "" || data.field.user_id == null || data.field.user_id == undefined) {
             layer.msg('请登录后发表评论', {
@@ -16,6 +16,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
             });
             return false;
         }
+
         ajax_post("/business/Index/commentStore",
             data.field,
             function (response) {

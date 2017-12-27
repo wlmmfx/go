@@ -92,7 +92,7 @@
                                                     </a>
                                                     回答于 {$sub.create_time|date="Y-m-d H:i:s",###} <span
                                                         class="pull-right">
-                                                    <a class="comment-reply" post_id="{$sub['post_id']}"
+                                                    <a class="comment-reply" post_id="{$sub['article_id']}"
                                                        comment_id="{$sub['comment_id']}"
                                                        replay_user_name="{$sub['account']}"
                                                        sub_parent_id="{$sub['parent_id']}" href="javascript:void(0);">
@@ -114,7 +114,7 @@
 
                                     <div class="media-action" >
                                         <a class="comment-reply" href="javascript:void(0);" replyswitch="off"
-                                           post_id="{$vo.post_id}" comment_id="{$vo.comment_id}"
+                                           post_id="{$vo.article_id}" comment_id="{$vo.comment_id}"
                                            replay_user_name="{$vo.account}">
                                             <i class="fa fa-reply"></i> 回复评论
                                         </a>
@@ -183,110 +183,21 @@
     SyntaxHighlighter.all();
 </script>
 <script type="text/javascript" charset="utf-8">
-    /**
-     * 常用的POST请求封装
-     * create by 任向阳  on 2017/11/23
-     * 参数说明:
-     * 1.url(必填)
-     * 2.data(选填,向后台传送的数据，是个数组，如：{id:1})
-     * 3.func_suc(选填):即ajax中的success
-     * 4.func_error(选填):即ajax中的error
-     * 5.func_comp(选填):即ajax中的complete
-     * 其他说明
-     * 1.防止重复提交(自动启用,但在同步加载模式下看不出效果);
-     * 2.提示模式,参考tipType;
-     */
-    function ajaxBC_post(url, data, func_suc, func_error, func_comp) {
-        //1.request url repeat judge
-        if (!window.lstAjaxUrl) {
-            window.lstAjaxUrl = {};
-        }
-        if (window.lstAjaxUrl[url]) {
-            console.log('ajax (url:' + url + ') submit repeat!');//重复提示在控制台
-            return;
-        } else {
-            window.lstAjaxUrl[url] = true;
-        }
-        //2.init necessary param
-        var config = config || {};
-        config.type = 'post';//默认为type=get
-        config.async = true;//默认为异步加载
-        config.cache = false;//默认禁用缓存
-        config.dataType = 'json';
-        config.contentType = 'application/x-www-form-urlencoded; charset=utf-8';
-        config.data = data || {};
-
-        config.tipType = config.tipType || 'console';//默认:'console',控制台提示;'layer',layer提示;其他方式看需求增加,仅在函数值无效时有效
-
-        var func_send;//before send,not in param
-
-        if (config.tipType === 'console') {
-            func_send = function () {
-            };
-            func_suc = func_suc || function (data) {
-                    console.log(data);
-                };
-            func_error = func_error || function () {
-                    console.log('error');
-                };
-            func_comp = func_comp || function () {
-                };
-        } else if (config.tipType === 'layer') {//需要layer支持
-            if (!window.lstLayerLoad) {
-                window.lstLayerLoad = {};
-            }
-            func_send = function () {
-                window.lstLayerLoad[url] = layer.msg('加载中,请稍后...', {time: 0});//layer.load(0, {shade: false,time:0}); //0代表加载的风格，支持0-2
-            };
-            var func_suc_init = func_suc || function (data) {
-                    if (data.success == 1) {
-                        layer.msg(data.message, {icon: 1});
-                    } else {
-                        layer.msg(data.message, {icon: 2});
-                    }
-                };
-            func_suc = function (data) {
-                layer.close(window.lstLayerLoad[url]);
-                func_suc_init(data);
-            };
-            var func_error_init = func_error || function () {
-                    layer.msg('请求失败,请稍后重试!', {icon: 2});
-                };
-            func_error = function () {
-                layer.close(window.lstLayerLoad[url]);
-                func_error_init();
-            };
-            func_comp = func_comp || function () {
-                };
-        } else {
-            console.log('nonsupport tipType.');
-            return;
-        }
-        //3.get param
-        $.ajax({
-            url: url,
-            type: config.type,
-            async: config.async,
-            cache: config.cache,
-            dataType: config.dataType,
-            contentType: config.contentType,
-            data: config.data,
-            beforeSend: function () {
-                func_send();
-            },
-            success: function (data) {
-                func_suc(data);
-            },
-            error: function () {
-                func_error();
-            },
-            complete: function () {
-                func_comp();
-                window.lstAjaxUrl[url] = false;//释放url锁
-            }
-        });
-    }
-
+    window.UEDITOR_HOME_URL = "__COMMON__/plugins/ueditor/";
+    var ue = UE.getEditor('comment_content', {
+        initialFrameWidth: 800,   //初始化宽度
+        initialFrameHeight: 200,   //初始化高度
+        serverUrl: "{:url('/frontend/index/saveinfo')}",
+        // 自定义工具栏目
+        toolbars: [[
+            'fullscreen', 'source', '|', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', '|',
+            'fontsize', '|',
+            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',
+            'link', 'unlink', '|',
+            'emotion', 'insertcode',
+        ]]
+    });
     var $ueInstance = UE.getEditor('comment_content');
     var $user_id = "{$userInfo.id}";
     $(function () {
@@ -320,7 +231,7 @@
                                 "<div class='media-content'>" +
                                 "<p>" + response.list.comment_content + "</p>" +
                                 "</div>" +
-                                "<div class='media-action'><a class='comment-reply' replyswitch='off' post_id='" + response.list.post_id + "' comment_id='" + response.list.comment_id + "' replay_user_name = '" + response.list.account + "'  href='javascript:void(0);'>" +
+                                "<div class='media-action'><a class='comment-reply' replyswitch='off' post_id='" + response.list.article_id + "' comment_id='" + response.list.comment_id + "' replay_user_name = '" + response.list.account + "'  href='javascript:void(0);'>" +
                                 "<i class='fa fa-reply'></i> 回复1</a> <span class='pull-right'> <a class='vote up' href='javascript:void(0);'  " +
                                 "data-type='answer' data-id='13110'data-toggle='tooltip' data-original-title='顶'><i class='fa fa-thumbs-o-up'></i> 0</a> " +
                                 "<a class='vote down' href='javascript:void(0);' data-type='answer' data-id='13110' data-toggle='tooltip' data-original-title='踩'> " +
@@ -336,7 +247,7 @@
                                 "<div class='media-left'> <a href='/user/32840'> <img class='media-object' src=" + response.list.avatar + " alt=" + response.list.account + "> </a> </div> " +
                                 "<div class='media-body'> " +
                                 "<div class='media-heading'><a href='/member/index/23123' rel='author'>" + response.list.account + "</a>回答于 " + response.list.create_time + "" +
-                                "<span class='pull-right'> <a class='comment-reply' post_id='" + response.list.post_id + "' comment_id='" + response.list.comment_id + "' replay_user_name = '" + response.list.account + "' sub_parent_id = '" + response.list.parent_id + "' href='javascript:void(0);'>" + " <i class='fa fa-reply'></i>回复2 </a> " +
+                                "<span class='pull-right'> <a class='comment-reply' post_id='" + response.list.article_id + "' comment_id='" + response.list.comment_id + "' replay_user_name = '" + response.list.account + "' sub_parent_id = '" + response.list.parent_id + "' href='javascript:void(0);'>" + " <i class='fa fa-reply'></i>回复2 </a> " +
                                 "</div>" +
                                 "<div class='media-content'><p> " + response.list.comment_content + "</p> </div> " +
                                 "</div> " +

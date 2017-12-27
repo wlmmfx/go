@@ -39,7 +39,7 @@ class Article extends BaseBackend
         $categorys = Arr::tree(db('category')->order('id desc')->select(), 'name', $fieldPri = 'id', $fieldPid = 'pid');
         $this->assign('articles', $articles);
         $this->assign('categorys', $categorys);
-        $this->assign('tags', db('tag')->where('deleted',0)->select());
+        $this->assign('tags', db('tag')->where('deleted', 0)->select());
         return $this->fetch();
     }
 
@@ -103,8 +103,8 @@ class Article extends BaseBackend
                     try {
                         $oss->uploadDir($bucket, $ossbObject, $localDirectory);
                         $data['oss_upload_status'] = 1;
-                        $data['image_thumb'] = '/'.$ossbObject.DS.$info->getFilename();
-                        $data['image_origin'] = '/'.$ossbObject.DS.$info->getFilename();
+                        $data['image_thumb'] = '/' . $ossbObject . DS . $info->getFilename();
+                        $data['image_origin'] = '/' . $ossbObject . DS . $info->getFilename();
                         // 遍历删除原图和缩略图
                         $this->rmdirs(ROOT_PATH . 'public' . DS . 'uploads/article');
                     } catch (OssException $e) {
@@ -130,7 +130,7 @@ class Article extends BaseBackend
      */
     public function edit()
     {
-        if(request()->isPost()){
+        if (request()->isPost()) {
             $data = input('post.');
             $res = Db::table('resty_article')->update($data);
             if ($res) {
@@ -142,8 +142,8 @@ class Article extends BaseBackend
             }
         }
         $id = input('param.id');
-        $result = Db::table('resty_article')->where('id',$id)->find();
-        $this->assign('article',$result);
+        $result = Db::table('resty_article')->where('id', $id)->find();
+        $this->assign('article', $result);
         return $this->fetch();
     }
 
@@ -181,7 +181,7 @@ class Article extends BaseBackend
                         $res = $oss->uploadFile($bucket, $object, $file);
                         if ($res['info']['http_code'] == 200) {
                             // 返回数据
-                            $url = config('aliyun_oss.DOMAIN'). $object;
+                            $url = config('aliyun_oss.DOMAIN') . $object;
                             Log::info("url == " . $url);
                             $result = json_encode(array(
                                 'url' => $url,

@@ -10,7 +10,7 @@
 namespace app\blog\controller;
 
 use app\common\controller\BaseFrontend;
-use app\common\model\Comment;
+use app\common\model\Comments;
 use think\Cache;
 use think\Db;
 use think\Debug;
@@ -30,7 +30,7 @@ class Index extends BaseFrontend
     public function _initialize()
     {
         parent::_initialize();
-        $this->comment_db = new Comment();
+        $this->comment_db = new Comments();
         $this->cache_switch = true;
     }
 
@@ -41,43 +41,11 @@ class Index extends BaseFrontend
      */
     public function index()
     {
-//        //开始做缓存
-//        $articleKey = 'resty_article';
-//        if ($this->cache_switch == true && redisCache()->has($articleKey) == true) {
-//            $article = redisCache()->get($articleKey);
-//            $article['DataSources'] = 'content from Cache';
-//        } else {
-//            $article = Db::table("resty_article")
-//                ->alias('a')
-//                ->join('resty_category c', 'c.id = a.cate_id')
-//                ->join('resty_user u', 'u.id = a.author_id')
-//                ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
-//                ->order("a.create_time desc,a.id desc")
-//                ->paginate(4);
-//            // 多级缓存
-//            $tmpArticle = [];
-//            foreach ($article as $v) {
-//                $tmpArticle[] = [
-//                    'id' => $v['id'],
-//                    'title' => $v['title'],
-//                    'views' => $v['views'],
-//                    'image_thumb' => $v['image_thumb'],
-//                    'desc' => $v['desc'],
-//                    'c_name' => $v['c_name'],
-//                    'username' => $v['username'],
-//                    'create_time' => $v['create_time'],
-//                    'content' => $v['content']
-//                ];
-//            }
-//            if ($this->cache_switch == true) redisCache()->set($articleKey, json_encode($tmpArticle));
-//            $article['DataSources'] = 'content from MySQL';
-//        }
-
         // 分页缓存做不了
         $article = Db::table("resty_article")
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
-            ->join('resty_user u', 'u.id = a.author_id')
+            ->join('resty_user u', 'u.id = a.admin_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
@@ -121,7 +89,7 @@ class Index extends BaseFrontend
             $article = Db::table("resty_article")
                 ->alias('a')
                 ->join('resty_category c', 'c.id = a.cate_id')
-                ->join('resty_user u', 'u.id = a.author_id')
+                ->join('resty_user u', 'u.id = a.admin_id')
                 ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
                 ->where('a.id', ':id')
                 ->bind(['id' => [$postId, \PDO::PARAM_INT]])
@@ -163,6 +131,7 @@ class Index extends BaseFrontend
         redisCache()->inc('views:'.$postId);
         Db::table('resty_article')->where('id', ':id')->bind(['id' => [$postId, \PDO::PARAM_INT]])->cache(10)->setInc('views');
         $this->assign('article', $article);
+        $this->assign('articleCounts', Db::table("resty_article")->count());
         $this->assign('tags', $tags);
         $this->assign('comments', $commentInfos);
         $this->assign('commentCounts', count($commentInfos));

@@ -1,0 +1,586 @@
+
+<!-- web访问 start -->
+<div id="carousel-example-generic_web" class="carousel" style="margin-bottom:0px;" data-ride="carousel">
+
+    <div class="home_banner">
+        <div class="carousel-inner" role="listbox"><!--style="width:100%;height:100%;"-->
+            <div class="quake-slider-images" id="template_inner">
+                {volist name='banners' id='vo'}
+                <a target="_blank" href="{$vo.link}">
+                    <img src="http://oss.tinywan.com/{$vo.image_origin}"/>
+                </a>
+                {/volist}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- web访问 end -->
+
+<div class="page_con" style="display:block;" id="having">
+
+    <div class=" bgcolor1  bddown_set">
+        <div class="Look_course">
+            <div class="container-fluid activities">
+
+                <div class="event_list clearfix slide secondtime" id="theme1">
+                    {volist name='vods' id='vo'}
+                    <div class="col-ls-5">
+                        <a href="vod/{$vo.id}.html"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:126px">
+                                    <img src="{$vo.image_url}"/>
+                                    <p class="img_span" style="margin-left: 0px;"><span>{$vo.name}</span><em class="forword">回顾</em></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class=" bgcolor1  bddown_set">
+        <div class="Look_course">
+            <div class="container-fluid activities">
+                <div class="section_title">
+                    <h2>最新视频 新鲜出炉</h2>
+                    <p>错过线下活动也不用后悔一年，第一时间看视频回顾，让你随时get满满的新技能</p>
+                </div>
+                <div class="event_list clearfix" id="theme2">
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1435"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-28/180114a6d9dd449328.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">Kubernetes 中国用户大会</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="fa fa-calendar"></i> 10-15 09:00 - 17:45
+                                        </span>
+                                        <span class="location ellipsis"><i class="fa fa-send-o"></i> 杭州</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/79">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/150409962643489359.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												才云</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1429"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-26/112046e2d421833475.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">第二届去哪儿大前端技术会议</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-14 13:30 - 17:30
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>北京</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/280">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/112354a64f44001371.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												YMFE</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1442"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-13/172046e5be94467431.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">成都活动｜10月14日Mobile Open Day</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-14 13:00 - 17:30
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>成都</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/46">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/1620215893ce513433.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												ThoughtWorks</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1455"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-10/1503208a4e30373102.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">酷家乐技术开放日—解密智能云设计</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-12 13:30 - 17:30
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>杭州</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/287">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/175358618fb6710155.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												酷家乐</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1478"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-12/125807f3b785529355.png?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">小蛮腰科技大会：全球移动开发者大会暨人工智能高峰论坛</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-12 09:00 - 12:00
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>广州</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/289">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/12591429005b814294.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												美国国际数据集团（IDG）</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1441"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-29/165325536ee7394630.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">区块链新地标：NEO全球开发者社区建设</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-09 14:30 - 17:30
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>上海</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/220">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/143318e15025360455.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												NEO智能经济</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1415"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-21/114101d915c3739568.jpeg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">INNOxNEO区块链开发夜 · 第四期｜全球区块链创新及技术社区发展现状</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>09-27 19:00 - 21:00
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>上海</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/220">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/143318e15025360455.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												NEO智能经济</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="/eventlist/detail/1331"
+                           target="_blank">
+                            <div class="li">
+                                <div class="event_cover" style="height:165px">
+                                    <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                    <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-05/164517d9462c495150.jpg?6.17.4"/>
+                                    <span class="img_span" style="margin-left: 0px;"></span>
+                                    <span class="play"></span>
+
+                                </div>
+                                <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                    <div class="name">Rancher Container Day 2017</div>
+                                    <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>09-27 09:00 - 17:30
+                                        </span>
+                                        <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>北京</span>
+                                    </div>
+
+                                    <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                        <a target="_blank" href="/member/organizer/28">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/0234274011fd655297.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												RancherLabs</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class=" bgcolor1  bddown_set">
+        <div class="Look_course">
+            <div class="container-fluid activities">
+                <div class="section_title" style="margin-top:0px;">
+                    <h2>热门峰会 火爆技术</h2>
+                    <p>什么技术最热门，什么技术最火爆，来这里一目了然，看技术圈的那些大事小事热门事。</p>
+                </div>
+                <div class="event_list clearfix" id="theme4">
+                    <ul>
+                        <a href="/eventlist?day=0"><li data="0">今天</li></a>
+                        <a href="/eventlist?day=1"><li class="choose" data="1">明天</li></a>
+                        <a href="/eventlist?day=7"><li class="choose" data="7">本周</li></a>
+                        <a href="/eventlist?day=6_7"><li class="choose" data="6_7">下周</li></a>
+                        <a href="/eventlist?day=30"><li class="choose" data="30">本月</li></a>
+                        <li class="" id="datetimepicker2">指定日期</li>
+                        <input type="hidden" class="input event_field_time_input" id="startTime" name="startTime" value="" data-date-format="yyyy-mm-dd" >
+                    </ul>
+                    <div class="choosedate">
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1431"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">2017 CBEC AI 中国人工智能发展应用峰会</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>12-19 09:00 - 20 18:00
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>上海</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/281">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/13200227a565297160.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												PWC丨聚想会</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1461"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-11/105529162e23758175.png?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">IAS2017互联网架构峰会</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>12-02 09:00 - 03 17:30
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>南京</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/63">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/15400553dc76009584.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												NJSD全球大会组委会</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1432"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-27/1329597a0639365515.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">第九届金融科技与支付创新2017年度盛会（IFPI）</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>11-16 09:00 - 17 18:00
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>上海</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/282">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/133555b1987e990155.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												决策者金融研究院</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1430"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-27/1247324dffa2926766.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">2017第6届全球软件案例研究峰会</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>11-09 09:00 - 12 18:00
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>北京</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/77">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/14531390bdef271226.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												麦思博</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1433"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-27/1417266a2df6623266.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">Red Hat Forum Beijing 2017</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>11-07 09:00 - 16:50
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>北京</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/283">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/1421139f27f3023130.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												Redhat</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1479"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-12/1415357b5f21462332.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">2017腾讯LIVE开发者大会</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>11-04 09:20 - 17:50
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>深圳</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/290">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/152741d29b75269472.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												腾讯前端IVWEB团队</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1496"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/10-17/115927fb2919901654.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">vFORUM 2017</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-26 09:00 - 27 12:00
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>北京</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/296">
+											<span class="location ellipsis" style="width:100%;background:url(__IMAGES__/195826293729910336.png) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												VMware</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3">
+                            <a href="/eventlist/detail/1440"
+                               target="_blank">
+                                <div class="li">
+                                    <div class="event_cover" style="height:165px">
+                                        <img class="left_img"    src="__PICTURE__/icon-pre-sale.png">
+                                        <img class="img_lazy" data-original="http://static.itdks.com/files/article/2017/09-29/15532880e451593970.jpg?6.17.4"/>
+                                        <span class="img_span"></span>
+                                    </div>
+                                    <div class="info" style="border:1px solid #dedede;margin-top:0px;border-top:0px;padding-left:12px;padding-bottom:12px;">
+                                        <div class="name">PostgreSQL 2017中国技术大会</div>
+                                        <div class="t_l">
+                                        <span class="time">
+                                            <i class="icon">&#xe61f;</i>10-20 09:00 - 21 18:00
+                                        </span>
+                                            <span class="location ellipsis">
+                                            <i class="icon">&#xe61e;</i>深圳</span>
+                                        </div>
+
+                                        <div class="t_l" style="border-top: 1px solid rgba(0,0,0,0.06);padding-top:6px;padding-left:6px;">
+                                            <a target="_blank" href="/member/organizer/10">
+											<span class="location ellipsis" style="width:100%;background:url(Images/1137200cc2c1009096.jpg) left center no-repeat;background-size:36px 18px;;padding-left:42px;margin-right:8px;">
+												PostgreSQL中文社区</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 明星大咖-->
+
+    <!-- 明星大咖 end-->
+
+    <!--推荐主办方-->
+
+</div>
+</div>
+<!--推荐主办方 end-->
+</div>
+<!--footer-->

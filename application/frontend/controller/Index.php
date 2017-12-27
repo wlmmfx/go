@@ -10,7 +10,7 @@
 namespace app\frontend\controller;
 
 use app\common\controller\BaseFrontend;
-use app\common\model\Comment;
+use app\common\model\Comments;
 use think\Cache;
 use think\Db;
 
@@ -31,7 +31,7 @@ class Index extends BaseFrontend
     public function _initialize()
     {
         parent::_initialize();
-        $this->comment_db = new Comment();
+        $this->comment_db = new Comments();
     }
 
     /**
@@ -44,15 +44,15 @@ class Index extends BaseFrontend
         $article = Db::table("resty_article")
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
-            ->join('resty_user u', 'u.id = a.author_id')
+            ->join('resty_user u', 'u.id = a.admin_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
             ->paginate(4);
         $comments = Db::table("resty_comment")
             ->alias('c')
             ->join('resty_open_user ou', 'c.user_id = ou.id')
-            ->join('resty_article a', 'a.id = c.post_id')
-            ->field('a.title,c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+            ->join('resty_article a', 'a.id = c.article_id')
+            ->field('a.title,c.comment_id,c.user_id,c.article_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
             ->order('c.create_time desc')
             ->limit(8)
             ->select();
@@ -86,7 +86,7 @@ class Index extends BaseFrontend
             ->alias('a')
             ->join('resty_article_tag at', 'a.id = at.article_id')
             ->join('resty_category c', 'c.id = a.cate_id')
-            ->join('resty_user u', 'u.id = a.author_id')
+            ->join('resty_user u', 'u.id = a.admin_id')
             ->field("a.title,a.create_time,a.update_time,a.id,a.views,c.name as c_name,u.username")
             ->where('at.tag_id', $tagId)
             ->order("a.create_time desc , a.id desc")
@@ -105,7 +105,7 @@ class Index extends BaseFrontend
             ->alias('a')
             ->join('resty_article_tag at', 'a.id = at.article_id')
             ->join('resty_category c', 'c.id = a.cate_id')
-            ->join('resty_user u', 'u.id = a.author_id')
+            ->join('resty_user u', 'u.id = a.admin_id')
             ->field("a.title,a.create_time,a.update_time,a.id,a.views,c.name as c_name,u.username")
             ->where('c.id', $catId)
             ->order("a.create_time desc , a.id desc")
@@ -134,7 +134,7 @@ class Index extends BaseFrontend
             $article = Db::table("resty_article")
                 ->alias('a')
                 ->join('resty_category c', 'c.id = a.cate_id')
-                ->join('resty_user u', 'u.id = a.author_id')
+                ->join('resty_user u', 'u.id = a.admin_id')
                 ->field("a.title,a.id,a.create_time,a.content,a.views,c.name as c_name,u.username")
                 ->where('a.id', $postId)
                 ->find();
@@ -191,8 +191,8 @@ class Index extends BaseFrontend
         $arr = Db::table("resty_comment")
             ->alias('c')
             ->join('resty_open_user ou', 'c.user_id = ou.id')
-            ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
-            ->where('c.post_id', $post_id)
+            ->field('c.comment_id,c.user_id,c.article_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+            ->where('c.article_id', $post_id)
             ->where('c.parent_id', $parent_id)
             ->order('c.create_time desc')
             ->select();
@@ -228,7 +228,7 @@ class Index extends BaseFrontend
                 $responseData = Db::table("resty_comment")
                     ->alias('c')
                     ->join('resty_open_user ou', 'c.user_id = ou.id')
-                    ->field('c.comment_id,c.user_id,c.post_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
+                    ->field('c.comment_id,c.user_id,c.article_id,c.parent_id,c.comment_content,c.parent_id,c.create_time,ou.account,ou.avatar')
                     ->where('c.comment_id', $res["id"])
                     ->find();
                 $responseData['num'] = count($this->getCommentListByPostId($data['post_id']));

@@ -370,4 +370,40 @@ html;
         return ['valid' => 1, 'msg' => "删除成功"];
     }
 
+    /**
+     * 文章模型关联
+     */
+
+    public function adminArticles()
+    {
+        return $this->hasMany('Article');
+    }
+
+    /**
+     * 获取用户所属的角色信息
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('Role', 'auth');
+    }
+
+    /**
+     * 获取用户发表的文章信息
+     */
+    public function articles()
+    {
+        return $this->hasMany('Article');
+    }
+
+    /**
+     * 获取所有针对用户的评论
+     */
+    public function comments()
+    {
+        return $this->morphMany('Comments', 'commentable',2);
+    }
+
+
+
+
 }

@@ -11,7 +11,7 @@
 
 namespace app\common\model;
 
-class Comment extends BaseModel
+class Comments extends BaseModel
 {
     protected $pk = "comment_id";
     protected $table = "resty_comment";
@@ -76,6 +76,25 @@ class Comment extends BaseModel
             }
         }
         return $tmp;
+    }
+
+    /**
+     * 获取评论对应的多态模型
+     */
+    public function comment()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * 获取评论对应的多态模型
+     */
+    public function commentable()
+    {
+        return $this->morphTo(null, [
+            '1' => 'Article',
+            '2' => 'Admin',
+        ]);
     }
 
 }

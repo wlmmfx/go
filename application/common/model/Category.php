@@ -105,4 +105,12 @@ class Category extends BaseModel
         if (false === $res) return ['valid' => 0, 'msg' => "删除失败"];
         return ['valid' => 1, 'msg' => "删除成功"];
     }
+
+    /**
+     * 获取分类下的所有文章信息
+     */
+    public function blogs()
+    {
+        return $this->hasMany('Article');
+    }
 }

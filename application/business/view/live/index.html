@@ -1,0 +1,146 @@
+<div class="layui-carousel  animated fadeInDown" data-anim="layui-anim-up" id="test10" lay-anim=""
+     lay-indicator="inside" lay-arrow="hover" style="width: 100%; height: 400px;">
+    <div carousel-item="">
+        <div class="layui-this">
+            <img width="100%" src="__RES__/images/1920x400-2.jpg">
+        </div>
+        <div class="">
+            <img width="100%" src="__RES__/images/1920x400-3.jpg">
+        </div>
+        <div class="">
+            <img width="100%" src="__RES__/images/1920x400-1.jpg">
+        </div>
+    </div>
+    <div class="layui-carousel-ind">
+        <ul>
+            <li class="layui-this"></li>
+            <li class=""></li>
+            <li class=""></li>
+            <li class=""></li>
+            <li class=""></li>
+        </ul>
+    </div>
+    <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+    <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+</div>
+
+
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md12">
+            <div class="layui-panal">
+                <div class="layui-panal-title">
+                    <span>最新产品</span>
+                </div>
+
+                <ul class="fly-case-list">
+                    <li data-id="123">
+                        <a class="fly-case-img" href="http://fly.layui.com/" target="_blank" >
+                            <img src="http://static.itdks.com/files/article/2017/09-28/180114a6d9dd449328.jpg?6.17.4" alt="Fly社区">
+                            <cite class="layui-btn layui-btn-primary layui-btn-small"><i class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe60c;</i> </cite>
+                        </a>
+                        <h2><a href="http://fly.layui.com/" target="_blank">Fly社区</a></h2>
+                        <p class="fly-case-desc">Fly 社区是 layui 的官方社区，全站的前端层面基于 Layui 风格编写，轻量而简洁，并且模版已经开源，可用于极简社区模板。</p>
+                        <div class="fly-case-info">
+                            <a href="../user/home.html" class="fly-case-user" target="_blank"><img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"></a>
+                            <p class="layui-elip" style="font-size: 12px;"><span style="color: #666;">贤心</span> 2017-11-30</p>
+                            <p>获得<a class="fly-case-nums fly-case-active" href="javascript:;" data-type="showPraise" style=" padding:0 5px; color: #01AAED;">666</a>个赞</p>
+                            <button class="layui-btn layui-btn-primary fly-case-active" data-type="praise">点赞</button>
+                            <!-- <button class="layui-btn  fly-case-active" data-type="praise">已赞</button> -->
+                        </div>
+                    </li>
+                    <li data-id="123">
+                        <a class="fly-case-img" href="http://fly.layui.com/" target="_blank" >
+                            <img src="http://static.itdks.com/files/article/2017/09-26/112046e2d421833475.jpg?6.17.4" alt="Fly社区">
+                            <cite class="layui-btn layui-btn-primary layui-btn-small">去围观</cite>
+                        </a>
+                        <h2><a href="http://fly.layui.com/" target="_blank">Fly社区</a></h2>
+                        <p class="fly-case-desc">Fly 社区是 layui 的官方社区，全站的前端层面基于 Layui 风格编写，轻量而简洁，并且模版已经开源，可用于极简社区模板。</p>
+                        <div class="fly-case-info">
+                            <a href="../user/home.html" class="fly-case-user" target="_blank"><img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"></a>
+                            <p class="layui-elip" style="font-size: 12px;"><span style="color: #666;">贤心</span> 2017-11-30</p>
+                            <p>获得<a class="fly-case-nums fly-case-active" href="javascript:;" data-type="showPraise" style=" padding:0 5px; color: #01AAED;">666</a>个赞</p>
+                            <button class="layui-btn  fly-case-active" data-type="praise">已赞</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__LAYUI__/layui.js"></script>
+<script>
+    $(function () {
+        layui.use(['carousel', 'form'], function () {
+            var carousel = layui.carousel
+                , form = layui.form;
+
+            //常规轮播
+            carousel.render({
+                elem: '#test1'
+                , arrow: 'always'
+            });
+
+            //改变下时间间隔、动画类型、高度
+            carousel.render({
+                elem: '#test2'
+                , interval: 1800
+                , anim: 'fade'
+                , height: '220px'
+            });
+
+            //设定各种参数
+            var ins3 = carousel.render({
+                elem: '#test3'
+            });
+            //图片轮播
+            carousel.render({
+                elem: '#test10'
+                , width: '100%'
+                , height: '400px'
+                , interval: 5000
+            });
+
+            //事件
+            carousel.on('change(test4)', function (res) {
+                console.log(res)
+            });
+
+            var $ = layui.$, active = {
+                set: function (othis) {
+                    var THIS = 'layui-bg-normal'
+                        , key = othis.data('key')
+                        , options = {};
+
+                    othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                    options[key] = othis.data('value');
+                    ins3.reload(options);
+                }
+            };
+
+            //监听开关
+            form.on('switch(autoplay)', function () {
+                ins3.reload({
+                    autoplay: this.checked
+                });
+            });
+
+            $('.demoSet').on('keyup', function () {
+                var value = this.value
+                    , options = {};
+                if (!/^\d+$/.test(value)) return;
+
+                options[this.name] = value;
+                ins3.reload(options);
+            });
+
+            //其它示例
+            $('.demoTest .layui-btn').on('click', function () {
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+    })
+</script>

@@ -258,7 +258,6 @@ class Stream extends Controller
      */
     protected static function checkApiSign($appId, $allParam)
     {
-        // appSecret = sha1('eb9a365a9d37a1354e13ddd7973d5e02409ef451'.$userModel->mobile.time());
         //根据appId查询否存在该用户
         $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         if (false == $userInfo) return false;
@@ -320,18 +319,18 @@ class Stream extends Controller
             }
         }
         $redis->lPush($clientKey, time());
-        $appId = input('get.AppId/d');
+        $appId = input('get.AppId/s');
         $sign = input('get.Sign/s');
         $domainName = input('get.DomainName/s');
         $appName = input('get.AppName/s');
         $expireTime = 900000;
         $authKeyStatus = 0;
         $autoStartRecord = 0;
-        if (empty($domainName) || empty($appId) || empty($appName)) {
+        if (empty($domainName) || empty($appId) || empty($appName)|| empty($sign)) {
             $result = [
                 'status_code' => 40601,
                 'msg' => 'The input parameter not supplied',
-                'data' => null
+                'data' => $domainName.'---'.$appId.'---'.$appName
             ];
             return json($result);
         }
@@ -342,8 +341,8 @@ class Stream extends Controller
                 'status_code' => 40302,
                 'msg' => 'Invalid signature or signature error',
                 'data' => [
-//                    'server' => $checkSign,
-//                    'sign' => $sign,
+                    'server' => $checkSign,
+                    'sign' => $sign,
                 ]
             ];
             return json($result);
@@ -527,11 +526,11 @@ class Stream extends Controller
     public function createTestAddress()
     {
         //请求参数
-        $appId = 1586740578218850;
+        $appId = 'wmsefqotxvntbziv';
         $domainName = 'lives.tinywan.com';
         $appName = 'live';
         //签名密钥
-        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
         $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
         //签名串，由签名算法sha1生成

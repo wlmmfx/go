@@ -4,13 +4,19 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2017/12/21 14:28
+ * |  DateTime: 2017/12/28 14:54
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
-use think\Route;
 
-// 定义路由规则 并设置60秒的缓存
-Route::get('/', 'business/Index/index');
-Route::get('hls', 'business/media/hls');
-//Route::get('p/:id', 'business/Index/detail', [], ['id' => '\d+']);
-Route::get('u/:id', 'business/user/home', [], ['id' => '\d+']);
+namespace app\business\controller;
+
+
+use app\common\controller\BaseFrontend;
+
+class Media extends BaseFrontend
+{
+    public function hls()
+    {
+        return $this->fetch();
+    }
+}

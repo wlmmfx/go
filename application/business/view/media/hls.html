@@ -1,0 +1,86 @@
+<link href="__COMMON__/videojs/videojs/video-js.css" rel="stylesheet">
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
+<div class="layui-container">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md12">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>HLS在线播放（仅供 https）</legend>
+            </fieldset>
+
+            <div class="layui-upload">
+                <input type="text" name="stream_address" id="stream_address" autocomplete="off" placeholder="注意不要含有空格" class="layui-input"><br>
+                <button type="button" class="layui-btn" id="form_button">播放</button>
+                <div class="layui-upload-list">
+                    <video id=example-video  class="video-js vjs-default-skin" controls>
+
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var default_hls_address = 'http://ivi.bupt.edu.cn/hls/cctv5hd.m3u8';
+    var options = {
+        width: 1170,
+        height: 620,
+        poster: "__COMMON__/videojs/image/video-background.jpg",
+        autoplay: true,
+        controls: true,
+        loop: true,
+        preload: 'auto',
+        sourceOrder: true,
+        sources: [{
+            src: default_hls_address,
+            type: 'application/x-mpegURL'
+        }, {
+            src: '//path/to/video.webm',
+            type: 'video/webm'
+        }],
+        techOrder: ['html5', 'flash'],
+        flash: {
+            swf: 'videojs/video-js.swf'
+        }
+    }
+    var player = videojs('example-video', options);
+    player.addClass('vjs-matrix');
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
+        }
+    });
+    $(function () {
+        $("#form_button").click(function () {
+            var msg = $("#msg");
+            stream_address = $('input[name="stream_address"] ').val();
+            console.log(stream_address);
+            if (stream_address == "") {
+                $('#stream_address ').css("border", "1px #ff0000 solid");
+                msg.text("请输入媒体流地址");
+                msg.addClass("warning");
+                return false;
+            } else {
+                $('#stream_address').css("border", "1px #ff00ff solid");
+                msg.text("error");
+                msg.removeClass("warning");
+            }
+            $('#stream_address_code ').html("\"" + stream_address + "\"");
+            player.src({
+                src: stream_address,
+                type: "application/x-mpegURL"
+            });
+        });
+    });
+    console.log(stream_address);
+</script>

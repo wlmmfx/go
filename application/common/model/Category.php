@@ -113,4 +113,13 @@ class Category extends BaseModel
     {
         return $this->hasMany('Article');
     }
+
+    /**
+     * 视频点播模型关联
+     */
+    public function categoryVods()
+    {
+        // Vod 模型相对于Category 模型的外键为cid
+        return $this->hasMany('Vod','cid','id');
+    }
 }

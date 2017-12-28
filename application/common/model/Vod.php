@@ -137,4 +137,12 @@ class Vod extends BaseModel
         }
         return $res;
     }
+
+    /**
+     * 获取视频的标签信息
+     */
+    public function tags()
+    {
+        return $this->hasMany('Tag');
+    }
 }

@@ -180,8 +180,17 @@ class Article extends BaseModel
     /**
      * 获取所有针对文章的评论
      */
-    public function comments()
+    public function commentsArticle()
     {
         return $this->morphMany('Comments', ['comment_type','comment_id'], 1);
+    }
+
+    /**
+     * 查询有评论数据的文章
+     * @return \think\model\relation\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('Comments');
     }
 }

@@ -51,6 +51,13 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
         var $id = $(this).data('id');
         var $userId = $(this).data('userid');
         var $zanUserId = $(this).data('zanuserid');
+        if ($zanUserId == "" || $zanUserId == null || $zanUserId == undefined) {
+            layer.msg('你还没有登录', {
+                icon: 0,
+                time: 3000
+            });
+            return false;
+        }
         if (!$.cookie('c-' + $id + 'u-' + $userId)) {
             ajax_post("/business/Index/posterZan", {'id': $id, 'user_id': $userId, 'zan_user_id': $zanUserId},
                 function (response) {

@@ -12,15 +12,18 @@
 
 namespace app\api\controller;
 
-use app\common\controller\BaseFrontend;
+use app\common\controller\Base;
 use app\common\model\OpenUser;
 use League\OAuth2\Client\Provider\Github;
 use oauth\Qq;
 use think\Db;
+use think\Exception;
 
-class OAuth extends BaseFrontend
+class OAuth extends Base
 {
-    const GITHUB_URL = 'https://github.com/login/oauth/authorize';
+    const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize';
+    const GITHUB_OAUTH_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
+    const GITHUB_USER_ACCESS_TOKEN_URL = 'https://api.github.com/user?access_token=';
 
     protected $_open_db;
 
@@ -35,36 +38,37 @@ class OAuth extends BaseFrontend
         halt(config('oauth.github')['client_id']);
     }
 
-    // Github 登录
+    // GitHub
     public function gitHub()
     {
-        $url = self::GITHUB_URL . "?client_id=" . config('oauth.github')['client_id'] . "&redirect_uri=" . config('oauth.github')['redirect_uri'];
+        $url = self::GITHUB_OAUTH_URL . "?client_id=" . config('oauth.github')['client_id'] . "&redirect_uri=" . config('oauth.github')['redirect_uri'];
         header('location:' . $url);
     }
 
-    // Github 回调地址
+    // GitHub 回调
     public function gitHubRedirectUri()
     {
-        $code = $this->request->get('code');
         //第一步:取全局access_token
-        $postRes = curl_request(config('oauth.github')['access_token_uri'], [
+        $postRes = curl_request(self::GITHUB_OAUTH_ACCESS_TOKEN_URL, [
             "client_id" => config('oauth.github')['client_id'],
             "client_secret" => config('oauth.github')['client_secret'],
-            "code" => $code,
+            "code" => input('get.code'),
         ]);
         //第三步:根据全局access_token和openid查询用户信息
         $jsonRes = json_decode($postRes, true);
-        $access_token = $jsonRes["access_token"];
-        $userUrl = "https://api.github.com/user?access_token=" . $access_token;
-        $userInfo = curl_request($userUrl);
+        if (empty($jsonRes['access_token'])) {
+            return $this->error('接口获取数据异常，请重新获取');
+        }
+        $userInfo = curl_request(self::GITHUB_USER_ACCESS_TOKEN_URL . $jsonRes["access_token"]);
         $userJsonRes = json_decode($userInfo, true);
         //第五步，检查用户是否已经注册过
-        $checkUserInfo = $this->_open_db->userIsExistByOpenId($userJsonRes['id']);
-        if ($checkUserInfo['valid']) {
+        $condition['open_id'] = $userJsonRes['id'];
+        $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();
+        if ($checkUserInfo) {
             // 记录session信息
-            session('open_user_id', $userJsonRes['id']);
-            session('open_user_username', $userJsonRes['login']);
-            return $this->redirect(session('OAUTH_REFFERER_URL'));
+            session('open_user_id', $checkUserInfo['id']);
+            session('open_user_username', $checkUserInfo['account']);
+            return $this->redirect("/");
         } else {
             // 第六步，添加用户信息到数据库
             $insertData['account'] = $userJsonRes['login'];
@@ -83,7 +87,7 @@ class OAuth extends BaseFrontend
             $insertData['blog'] = $userJsonRes['blog'];
             $insertData['github'] = $userJsonRes['html_url'];
             $insertData['create_time'] = time();
-            $userId = $this->_open_db->store($insertData);
+            $userId = Db::table('resty_open_user')->insertGetId($insertData);
             if ($userId) {
                 // 记录session信息
                 session('open_user_id', $userId);
@@ -95,14 +99,14 @@ class OAuth extends BaseFrontend
         }
     }
 
-    // QQ 登录
+    // QQ
     public function qq()
     {
         $qq = new Qq();
         return $qq->getAuthCode();
     }
 
-    // QQ 回调地址
+    // QQ 回调
     public function qqRedirectUri()
     {
         $qqInstance = new Qq();
@@ -141,14 +145,14 @@ class OAuth extends BaseFrontend
     }
 
     /**
-     * Wechat 登录 https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+     * Wechat
+     * https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
      */
     public function wechat()
     {
         //$scope = "snsapi_base";
         $scope = "snsapi_userinfo";
         $appid = 'wx94c43716d8a91f3f';
-//        $appid = 'wx8cdfa8abbc7433fa';
         /*基本授权 方法跳转地址*/
         $redirect_uri = urlencode('http://www.tinywan.com/frontend/open_auth/wechatRedirectUri');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
@@ -156,7 +160,7 @@ class OAuth extends BaseFrontend
     }
 
     /**
-     * Wechat回调地址
+     * WeChat 回调
      */
     public function wechatRedirectUri()
     {

@@ -69,14 +69,28 @@ return [
     // 全局请求缓存排除规则
     'request_cache_except' => [],
 
-    'log' => [
-        'type' => 'socket',
-        'host' => 'slog.tinywan.com',
-        //日志强制记录到配置的client_id
-        'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
-        //限制允许读取日志的client_id
-        'allow_client_ids' => ['tinywan123456'],
+    // +----------------------------------------------------------------------
+    // | 日志设置
+    // +----------------------------------------------------------------------
+
+    'log'                    => [
+        // 日志记录方式，内置 file socket 支持扩展
+        'type'  => 'File',
+        // 日志保存目录
+        'path'  => LOG_PATH,
+        // 日志记录级别
+        'level' => [],
     ],
+
+    // 使用 socket 远程打印日志
+//    'log' => [
+//        'type' => 'socket',
+//        'host' => 'slog.tinywan.com',
+//        //日志强制记录到配置的client_id
+//        'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
+//        //限制允许读取日志的client_id
+//        'allow_client_ids' => ['tinywan123456'],
+//    ],
 
     // 自定义日志格式
 //    'log' => [

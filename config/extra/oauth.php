@@ -11,7 +11,7 @@
 return [
     'github'=>[
         'client_id' => '5e70ee2d904f655b0c31',
-        'client_secret' => 'd190c915d36b5feff7ceeb017ce35ab92e7cb38c',
+        'client_secret' => 'f95da36c53cea839a346fd76c787adbe2c884caa',
         'redirect_uri' => 'https://www.tinywan.com/api/OAuth/gitHubRedirectUri',
         'access_token_uri' => 'https://github.com/login/oauth/access_token'
     ],

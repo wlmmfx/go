@@ -373,7 +373,6 @@ html;
     /**
      * 文章模型关联
      */
-
     public function adminArticles()
     {
         return $this->hasMany('Article');

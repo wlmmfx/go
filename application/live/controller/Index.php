@@ -39,10 +39,11 @@ class Index extends BaseFrontend
             ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
             ->order('v.create_time desc')
             ->limit(6)
+            ->cache('RESTY_VOD_LIVE_MODULE')
             ->select();
-        $this->assign('banners', db('banner')->where(['publish_status' => 1, 'deleted' => 0])->order('id desc')->select());
+        halt($vods);
+        $this->assign('banners', Db::table('resty_banner')->where(['publish_status' => 1, 'deleted' => 0])->order('id desc')->cache('RESTY_BANNER')->select());
         $this->assign('vods', $vods);
-//        halt($vods);
         return $this->fetch();
     }
 
@@ -69,8 +70,8 @@ class Index extends BaseFrontend
     public function detail()
     {
         $liveId = input('param.id');
-        $live = Db::table('resty_live')->where('id', $liveId)->find();
-        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->find();
+        $live = Db::table('resty_live')->where('id', $liveId)->cache('RESTY_LIVE:'.$liveId)->find();
+        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
         $this->assign('streamInfo', $streamInfo);
         $this->assign('live', $live);
         return $this->fetch();
@@ -82,7 +83,7 @@ class Index extends BaseFrontend
     public function vodDetail()
     {
         $liveId = input('param.id');
-        $live = Db::table('resty_vod')->where('id', $liveId)->find();
+        $live = Db::table('resty_vod')->where('id', $liveId)->cache('RESTY_VOD_DETAIL:'.$liveId)->find();
         $this->assign('vod', $live);
         return $this->fetch();
     }

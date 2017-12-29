@@ -635,6 +635,7 @@ class Live extends BaseBackend
      */
     public function videoConcat()
     {
+        Log::error('11111111111111');
         $Videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('createTime desc')->paginate(12);
         $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->paginate(12);
         $this->assign('videos', $Videos);

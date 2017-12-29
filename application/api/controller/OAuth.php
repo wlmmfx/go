@@ -87,6 +87,8 @@ class OAuth extends Base
             $insertData['blog'] = $userJsonRes['blog'];
             $insertData['github'] = $userJsonRes['html_url'];
             $insertData['create_time'] = time();
+            $insertData['app_id'] = get_rand_string();
+            $insertData['app_secret'] = get_rand_string(40);
             $userId = Db::table('resty_open_user')->insertGetId($insertData);
             if ($userId) {
                 // 记录session信息

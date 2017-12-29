@@ -139,11 +139,11 @@ class Live extends BaseBackend
     protected static function apiCreateAddress()
     {
         //请求参数
-        $appId = 1586740578218850;
+        $appId = 'wmsefqotxvntbziv';
         $domainName = 'lives.tinywan.com';
-        $appName = 'live123';
+        $appName = 'live';
         //签名密钥
-        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
         $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
         //签名串，由签名算法sha1生成

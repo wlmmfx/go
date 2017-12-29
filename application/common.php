@@ -30,6 +30,22 @@ function get_city_by_ip($ip)
 }
 
 /**
+ * 创建一个小写的随机字符串
+ * @param int $length 40
+ * @return string
+ */
+
+function get_rand_string($length = 16)
+{
+    $chars = "0123456789abcdefghijklmnopqrstuvwxyz9876543210ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $str = "";
+    for ($i = 0; $i < $length; $i++) {
+        $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+    }
+    return strtolower($str);
+}
+
+/**
  * 获取等级
  * @param $point
  * @return mixed
@@ -60,35 +76,6 @@ function ip_format($ip)
     return $res['country'] . '、' . $res['region'] . '、' . $res['city'] . '&nbsp;（' . $res['isp'] . '）';
 }
 
-/* * *************************
- * 生成随机字符串，可以自己扩展   //若想唯一，只需在开头加上用户id
- * $type可以为：upper(只生成大写字母)，lower(只生成小写字母)，number(只生成数字)
- * $len为长度，定义字符串长度
- * mark 2017/8/15
- * ************************** */
-function get_random($type, $len = 0)
-{
-    $new = '';
-    $string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';  //数据池
-    if ($type == 'upper') {
-        for ($i = 0; $i < $len; $i++) {
-            $new .= $string[mt_rand(36, 61)];
-        }
-        return $new;
-    }
-    if ($type == 'lower') {
-        for ($i = 0; $i < $len; $i++) {
-            $new .= $string[mt_rand(10, 35)];
-        }
-        return $new;
-    }
-    if ($type == 'number') {
-        for ($i = 0; $i < $len; $i++) {
-            $new .= $string[mt_rand(0, 9)];
-        }
-        return $new;
-    }
-}
 
 //计算该月有几天
 function getdaysInmonth($month, $year)

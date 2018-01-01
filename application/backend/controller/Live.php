@@ -180,6 +180,7 @@ class Live extends BaseBackend
             ->order("f.id desc")
             ->paginate(12);
         $videos = Db::table('resty_stream_video')->where('streamName', $streamName)->order('createTime desc')->paginate(12);
+//        halt($videos);
         return $this->fetch('', [
             'videos' => $videos,
             'live' => $live,

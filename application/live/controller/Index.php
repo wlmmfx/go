@@ -41,7 +41,6 @@ class Index extends BaseFrontend
             ->limit(6)
             ->cache('RESTY_VOD_LIVE_MODULE')
             ->select();
-        halt($vods);
         $this->assign('banners', Db::table('resty_banner')->where(['publish_status' => 1, 'deleted' => 0])->order('id desc')->cache('RESTY_BANNER')->select());
         $this->assign('vods', $vods);
         return $this->fetch();

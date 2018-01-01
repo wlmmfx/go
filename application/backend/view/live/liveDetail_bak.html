@@ -31,44 +31,6 @@
         background: #fff;
         filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
     }
-
-    .wrapper {
-        margin-left: -20px;
-        margin-right: -19px;
-        margin-bottom: -24px;
-        margin-top: -17px;
-    }
-
-    .wrapper_player {
-        height: 160px;
-        width: 180px;
-        padding-top: 54px;
-        padding-left: 60px;
-        background: #fff;
-    }
-
-    #video_player {
-        display: block;
-        width: 60px;
-        height: 60px;
-        position: absolute;
-        background-image: url(__COMMON__/images/play3.png);
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 60px 60px;
-    }
-
-    .wrapper_player:hover {
-        -webkit-filter: grayscale(70%);
-    }
-
-    #video_player:hover {
-        background-image: url(__COMMON__/images/play1.png);
-    }
-
-    .ace-thumbnails>li {
-        border: 1px solid #7cb4d8;
-    }
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -128,9 +90,9 @@
                                             <div class="widget-main no-padding">
                                                 <ul class="list-unstyled list-striped pricing-table-header">
                                                     <li>名称</li>
-                                                    <li>{$live['name']}</li>
+                                                    <li>{$live['name']} </li>
                                                     <li>开始/结束时间</li>
-                                                    <li>{$live['liveStartTime']} ~ {$live['liveEndTime']}</li>
+                                                    <li>{$live['liveStartTime']} ~ {$live['liveEndTime']} </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -146,31 +108,23 @@
                                                 <p></p>
                                                 <strong>推流地址:&nbsp;</strong>
                                                 <span class="rtmp-copy-url">{$streamInfo['push_address']}</span>&nbsp;&nbsp;&nbsp;
-                                                <span class="pink lighter copy-url-address"
-                                                      data-clipboard-text="{$streamInfo['push_address']}"
-                                                      style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['push_address']}" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
 
                                                 <div class="hr dotted"></div>
                                                 <strong>RTMP 播放地址:&nbsp;</strong>
                                                 <span class="rtmp-copy-url">{$streamInfo['rtmp_address']}</span>&nbsp;&nbsp;&nbsp;
-                                                <span class="pink lighter copy-url-address"
-                                                      data-clipboard-text="{$streamInfo['rtmp_address']}"
-                                                      style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['rtmp_address']}" style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
 
                                                 <div class="hr dotted"></div>
                                                 <strong>FLV 播放地址:&nbsp;</strong>
                                                 <span class="flv-copy-url">{$streamInfo['flv_address']}</span>&nbsp;&nbsp;&nbsp;
-                                                <span class="pink lighter copy-url-address"
-                                                      data-clipboard-text="{$streamInfo['flv_address']}"
-                                                      style="cursor:pointer;"><i
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['flv_address']}" style="cursor:pointer;"><i
                                                         class="icon-copy"></i>&nbsp;复制</span>
 
                                                 <div class="hr dotted"></div>
                                                 <strong>M3U8 播放地址:&nbsp;</strong>
                                                 <span class="hls-copy-url">{$streamInfo['m3u8_address']}</span>&nbsp;&nbsp;&nbsp;
-                                                <span class="pink lighter copy-url-address"
-                                                      data-clipboard-text="{$streamInfo['m3u8_address']}"
-                                                      style="cursor:pointer;"><i
+                                                <span class="pink lighter copy-url-address" data-clipboard-text="{$streamInfo['m3u8_address']}" style="cursor:pointer;"><i
                                                         class="icon-copy"></i>&nbsp;复制</span>
                                             </div>
                                         </div>
@@ -210,12 +164,6 @@
                                     <img alt="50x50"
                                          src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.id}/video/{$vo.path}"
                                          width="180" height="180">
-                                    <p>
-                                        <button class="btn">
-                                            <i class="icon-pencil align-top"></i>
-                                            Default
-                                        </button>
-                                    </p>
                                 </li>
                                 {/volist}
                             </ul>
@@ -232,24 +180,35 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
+                            <ul class="ace-thumbnails">
                                 {volist name="videos" id="vo"}
-                                <div class="col-sm-3 col-md-2">
-                                    <div class="thumbnail">
-                                        <img src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg"
-                                             alt="通用的占位符缩略图">
-                                        <div class="caption">
-                                            <p>
-                                                <a href="#" class="btn btn-sm btn-primary" role="button">
-                                                    按钮
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-default" role="button">
-                                                    按钮
-                                                </a>
-                                            </p>
+                                <li>
+                                    <a href="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.mp4"
+                                       target="_blank" title="Photo Title" data-rel="colorbox" class="cboxElement">
+                                        <img alt="50x50"
+                                             src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg"
+                                             width="180" height="180">
+                                        <div class="tags">
+                                <span class="label-holder">
+                                    <span class="label label-info">编号:{$vo['streamName']}</span>
+                                </span>
+
+                                            <span class="label-holder">
+                                    <span class="label label-danger">ID:{$vo['fileName']}</span>
+                                </span>
+
+                                            <span class="label-holder">
+                                    <span class="label label-success arrowed-in">开始时间:{$vo['fileTime']}</span>
+                                </span>
+
+                                            <span class="label-holder">
+                                    <span class="label label-warning arrowed-in">结束时间:{$vo['createTime']}</span>
+                                </span>
                                         </div>
-                                    </div>
-                                </div>
+                                    </a>
+                                </li>
                                 {/volist}
+                            </ul>
                         </div><!-- /.col -->
                         <p></p>
                         <div>{$videos->render()}</div>
@@ -566,21 +525,6 @@
 
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
-    var $liveId = null;
-    var $fileName = null;
-    var $videoVersion = 0;
-    function playModal(liveId, fileName, version) {
-        $("#video-container").children().remove();
-        $liveId = liveId;
-        $fileName = fileName;
-        $videoVersion = version;
-        $("#playModal").modal("show");
-        console.log("{$Think.config.aliyun_oss.DOMAIN}/data/" + $liveId + "/video/" + $fileName);
-        $("#video-container").html('<source id="source-container" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $liveId + '/video/' + $fileName + '.mp4" type="video/mp4">');
-        //你在动态赋值src后要加载这个视频文件即:
-        $("#video-container").load();
-    }
-
     //弹框复制
     var clipboard2 = new Clipboard('.copy-url-address');
     clipboard2.on('success', function (e) {

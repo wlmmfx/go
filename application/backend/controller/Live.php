@@ -1042,7 +1042,7 @@ class Live extends BaseBackend
 
     /**
      * -----------------------------------------------------------------合并--------------------------------------------
-     * 通过任务ID合并视频编辑
+     * 通过任务ID合并视频编辑,这里的配置信息是通过接口json去请求的
      * @return mixed
      */
     public function videoConcatOperateByTaskId()

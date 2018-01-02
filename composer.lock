@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "35333cbdc78a53a5a37bfea4e48368ee",
+    "content-hash": "00c17b831798dc85c85bad1c1ea25669",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -2386,37 +2386,43 @@
         },
         {
             "name": "react/cache",
-            "version": "v0.4.1",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/cache.git",
-                "reference": "558f614891341b1d817a8cdf9a358948ec49638f"
+                "reference": "75494f26b4ef089db9bf8c90b63c296246e099e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/reactphp/cache/558f614891341b1d817a8cdf9a358948ec49638f.zip",
-                "reference": "558f614891341b1d817a8cdf9a358948ec49638f",
+                "url": "https://files.phpcomposer.com/files/reactphp/cache/75494f26b4ef089db9bf8c90b63c296246e099e8.zip",
+                "reference": "75494f26b4ef089db9bf8c90b63c296246e099e8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "react/promise": "~2.0|~1.1"
             },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "React\\Cache\\": "src\\"
+                    "React\\Cache\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Async caching.",
+            "description": "Async, Promise-based cache interface for ReactPHP",
             "keywords": [
-                "cache"
+                "cache",
+                "caching",
+                "promise",
+                "reactphp"
             ],
-            "time": "2016-02-25T18:17:16+00:00"
+            "time": "2017-12-20T16:47:13+00:00"
         },
         {
             "name": "react/dns",
@@ -2554,16 +2560,16 @@
         },
         {
             "name": "react/promise-timer",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise-timer.git",
-                "reference": "3bc527fbd1201a193ab41c19b9a770d71a3514af"
+                "reference": "9b4cd9cbe7457e0d87fe8aa7ccceab8a2c830fbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/reactphp/promise-timer/3bc527fbd1201a193ab41c19b9a770d71a3514af.zip",
-                "reference": "3bc527fbd1201a193ab41c19b9a770d71a3514af",
+                "url": "https://files.phpcomposer.com/files/reactphp/promise-timer/9b4cd9cbe7457e0d87fe8aa7ccceab8a2c830fbd.zip",
+                "reference": "9b4cd9cbe7457e0d87fe8aa7ccceab8a2c830fbd",
                 "shasum": ""
             },
             "require": {
@@ -2572,7 +2578,7 @@
                 "react/promise": "~2.1|~1.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.0 || ^4.8"
+                "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
             },
             "type": "library",
             "autoload": {
@@ -2593,7 +2599,7 @@
                     "email": "christian@lueck.tv"
                 }
             ],
-            "description": "Trivial timeout implementation for Promises",
+            "description": "A trivial implementation of timeouts for Promises, built on top of ReactPHP.",
             "homepage": "https://github.com/react/promise-timer",
             "keywords": [
                 "async",
@@ -2603,20 +2609,20 @@
                 "timeout",
                 "timer"
             ],
-            "time": "2017-08-08T16:30:19+00:00"
+            "time": "2017-12-22T15:41:41+00:00"
         },
         {
             "name": "react/socket",
-            "version": "v0.8.6",
+            "version": "v0.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
-                "reference": "2e8660111d14df908a913a058bce4a1786de489f"
+                "reference": "49bca29df739f4e288ba2abfed9cac93de1bfff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/reactphp/socket/2e8660111d14df908a913a058bce4a1786de489f.zip",
-                "reference": "2e8660111d14df908a913a058bce4a1786de489f",
+                "url": "https://files.phpcomposer.com/files/reactphp/socket/49bca29df739f4e288ba2abfed9cac93de1bfff6.zip",
+                "reference": "49bca29df739f4e288ba2abfed9cac93de1bfff6",
                 "shasum": ""
             },
             "require": {
@@ -2650,20 +2656,20 @@
                 "reactphp",
                 "stream"
             ],
-            "time": "2017-11-18T16:47:56+00:00"
+            "time": "2017-12-24T11:28:59+00:00"
         },
         {
             "name": "react/stream",
-            "version": "v0.7.5",
+            "version": "v0.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stream.git",
-                "reference": "a41bbffdda5e3f4282012f8e346cef48ecb28b24"
+                "reference": "4e07a0014896cbbb73e2f2b2c28e86174b6e1d4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/reactphp/stream/a41bbffdda5e3f4282012f8e346cef48ecb28b24.zip",
-                "reference": "a41bbffdda5e3f4282012f8e346cef48ecb28b24",
+                "url": "https://files.phpcomposer.com/files/reactphp/stream/4e07a0014896cbbb73e2f2b2c28e86174b6e1d4d.zip",
+                "reference": "4e07a0014896cbbb73e2f2b2c28e86174b6e1d4d",
                 "shasum": ""
             },
             "require": {
@@ -2674,9 +2680,6 @@
             "require-dev": {
                 "clue/stream-filter": "~1.2",
                 "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
-            },
-            "suggest": {
-                "react/event-loop": "^0.4"
             },
             "type": "library",
             "autoload": {
@@ -2699,7 +2702,7 @@
                 "stream",
                 "writable"
             ],
-            "time": "2017-11-20T11:55:48+00:00"
+            "time": "2017-12-21T14:12:01+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -3597,16 +3600,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v5.0.13",
+            "version": "v5.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "29803c09c9e8d7385ab720d2c199c036ceedc4d3"
+                "reference": "3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/framework/29803c09c9e8d7385ab720d2c199c036ceedc4d3.zip",
-                "reference": "29803c09c9e8d7385ab720d2c199c036ceedc4d3",
+                "url": "https://files.phpcomposer.com/files/top-think/framework/3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706.zip",
+                "reference": "3d1bdfbc19a7e7fd323be1dd53c4bacbe7bfb706",
                 "shasum": ""
             },
             "require": {
@@ -3644,7 +3647,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2017-12-13T04:44:30+00:00"
+            "time": "2018-01-01T12:44:11+00:00"
         },
         {
             "name": "topthink/think-angular",
@@ -3990,6 +3993,43 @@
             ],
             "description": "sae support for thinkphp5",
             "time": "2016-10-08T10:53:21+00:00"
+        },
+        {
+            "name": "topthink/think-swoole",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-swoole.git",
+                "reference": "fb188e1fcb7e08906470db3b110af10ea7d28356"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/top-think/think-swoole/fb188e1fcb7e08906470db3b110af10ea7d28356.zip",
+                "reference": "fb188e1fcb7e08906470db3b110af10ea7d28356",
+                "shasum": ""
+            },
+            "require": {
+                "ext-swoole": ">=1.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\swoole\\": "src"
+                },
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "Swoole extend for thinkphp5",
+            "time": "2016-10-05T03:28:57+00:00"
         },
         {
             "name": "topthink/think-testing",

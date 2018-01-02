@@ -17,8 +17,35 @@ use think\Db;
 
 class Open extends Base
 {
-    public function index(){
-        return '11'.__FUNCTION__;
+
+
+    /**
+     * 【正式-已上线】
+     * 通过任务ID去编辑视频配置信息
+     * @return mixed
+     */
+    public function videoEditConf()
+    {
+        $sign = input('param.sign');
+        if (empty($sign)) {
+            $resJson = [
+                'code' => 500,
+                'msg' => 'fail',
+                'data' => null
+            ];
+        } else {
+            $findRes = Db::table('resty_stream_video_edit')->where('task_id', $sign)->find();
+            if(empty($findRes) || ($findRes == false)){
+                $resJson = ['code' => 500, 'msg' => 'success', 'data' => null];
+                return json($resJson);
+            }
+            $resJson = [
+                'code' => 200,
+                'msg' => 'success',
+                'data' => json_decode($findRes['edit_config'])
+            ];
+        }
+        return json($resJson);
     }
 
     public function createLicense($service_uuid, $expire_time, $private_key = 'amailive', $rand = 0, $uid = 0)
@@ -91,33 +118,6 @@ class Open extends Base
         }
     }
 
-    /**
-     * 自动安装配置文件
-     * @return mixed
-     */
-    public function videoEditConf()
-    {
-        $sign = input('param.sign');
-        if (empty($sign)) {
-            $resJson = [
-                'code' => 500,
-                'msg' => 'fail',
-                'data' => null
-            ];
-        } else {
-            $findRes = Db::table('resty_stream_video_edit')->where('task_id', $sign)->find();
-            if(empty($findRes) || ($findRes == false)){
-                $resJson = ['code' => 500, 'msg' => 'success', 'data' => null];
-                return json($resJson);
-            }
-            $resJson = [
-                'code' => 200,
-                'msg' => 'success',
-                'data' => json_decode($findRes['edit_config'])
-            ];
-        }
-        return json($resJson);
-    }
 
     /**
      * 播放验证

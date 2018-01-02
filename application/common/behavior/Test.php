@@ -16,16 +16,16 @@ class Test
 {
     public function appInit()
     {
-        echo 'app_init test 这里可以项目自动安装的处理<br/>';
+        echo '[多行为] app_init test 这里可以项目自动安装的处理<br/>';
     }
 
     public function appBegin()
     {
-        echo 'app_begin test<br/>';
+        echo '[多行为] app_begin test<br/>';
     }
 
     public function sayHello($request)
     {
-        echo 'say hello ' . $request->module() . '!<br/>';
+        echo '[多行为] say hello ' . $request->module() . '!<br/>';
     }
 }

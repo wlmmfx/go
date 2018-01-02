@@ -974,10 +974,10 @@ class Live extends BaseBackend
         #   根据LiveId获取视频信息
         $taskId = self::getVideoEditTaskId($origin_video_id);
         $editid = $new_video_id;
-        Log::info('[' . getCurrentDate() . ']:' . "[01] 视频剪切操作参数] $origin_video_id ： " . $origin_video_id);
+        Log::debug('[' . getCurrentDate() . ']:' . "[01] 视频剪切操作参数] $origin_video_id ： " . $origin_video_id);
         $origVideoInfo = $this->videoInfoByVideoId($origin_video_id);
         $liveId = $origVideoInfo['liveId'];
-        Log::info('[' . getCurrentDate() . ']:' . "[02] 视频剪切操作参数 ： " . json_encode($origVideoInfo));
+        Log::debug('[' . getCurrentDate() . ']:' . "[02] 视频剪切操作参数 ： " . json_encode($origVideoInfo));
         $version = $origVideoInfo['version'];
         $fileName = $origVideoInfo['fileName'];
         $shellScript = self::SHELL_SCRIPT_PATH . "check_oss_cut_task_id.sh";
@@ -995,11 +995,11 @@ class Live extends BaseBackend
         $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $new_video_name, $editConfig, 1);
         $cmdStr = "{$shellScript} {$taskId}";
         // 根据版本号拼接视频文件名
-        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作 Shell 脚本参数 ： " . $cmdStr);
+        Log::debug('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作 Shell 脚本参数 ： " . $cmdStr);
         exec("{$cmdStr}", $results, $sysStatus);
-        Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
+        Log::debug('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
         $shellResult = -1;
-        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 执行系统函数返回结果 results =  ' . $results[0]);
+        Log::debug('[' . getCurrentDate() . ']:' . '[04-2] 执行系统函数返回结果 results =  ' . $results[0]);
         #   如果命令执行错误，则exec 的第二个参数会返回shell 脚本的 echo 出的值，$results 返回结果为一个数组
         if (count($results) == 1) $shellResult = $results[0];
         #   ffmpeg 脚本是否执行成功
@@ -1016,10 +1016,10 @@ class Live extends BaseBackend
             $this->updateEditDataById($updateData, 1);
             return json(['status' => 500, 'msg' => $editMsg]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频剪切执行系统函数 Success , status = ' . $sysStatus);
+        Log::debug('[' . getCurrentDate() . ']:' . '[05] 视频剪切执行系统函数 Success , status = ' . $sysStatus);
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editid . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editid . '.jpg';
-        #   根据返回的状态码提示消息
+        # 根据返回的状态码提示消息
         $shellResult = $sysStatus;
         if (file_exists($resultVideoPathFile) && file_exists($resultImagePathFile)) {
             $editresultcode = $shellResult;
@@ -1034,7 +1034,7 @@ class Live extends BaseBackend
                 'editmsg' => $editMsg
             ];
             $this->updateEditDataById($updateData2, 1);
-            Log::info('[' . getCurrentDate() . ']:' . '[06] 视频剪切操作成功完成 , msg =' . $editMsg);
+            Log::debug('[' . getCurrentDate() . ']:' . '[06] 视频剪切操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
         return json(['code' => 500, 'msg' => $origVideoInfo], 500);

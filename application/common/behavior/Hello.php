@@ -16,6 +16,6 @@ class Hello
 {
     public function run()
     {
-        echo 'hello,world!<br/>';
+        echo '[单行为] app_init hello,world!<br/>';
     }
 }

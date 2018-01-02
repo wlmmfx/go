@@ -13,12 +13,18 @@
 return [
     // 应用初始化
     'app_init'     => [
+        //'\app\common\behavior\Hello',
+        //'\app\common\behavior\Test'
     ],
     // 应用开始
     'app_begin'    => [
+        //'\app\common\behavior\Test'
     ],
     // 模块初始化
     'module_init'  => [
+//        function($request){
+//            echo 'hello,'.$request->module().'!<br/>';
+//        },
     ],
     // 操作开始执行
     'action_begin' => [

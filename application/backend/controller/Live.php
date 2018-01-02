@@ -1029,7 +1029,6 @@ class Live extends BaseBackend
                 'id' => $insertId,
                 'state' => 1,
                 'duration' => self::getVideoDuration($resultVideoPathFile),
-                'duration' => 123,
                 'fileSize' => filesize($resultVideoPathFile),
                 'editresult' => $editresultcode,
                 'editmsg' => $editMsg
@@ -1109,8 +1108,7 @@ class Live extends BaseBackend
             $editMsg = $this->editResultMsg($shellResult);
             $updateData = [
                 'id' => $insertId,
-//                'duration' => self::getVideoDuration($resultVideoPathFile),
-                'duration' => 1231,
+                'duration' => self::getVideoDuration($resultVideoPathFile),
                 'fileSize' => filesize($resultVideoPathFile),
                 'editresult' => $editresultcode,
                 'editmsg' => $editMsg,

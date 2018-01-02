@@ -130,6 +130,11 @@
 </div>
 </div>
 <script type="text/javascript">
+    //声明全局变量，规定最大请求次数
+    var max_request_length = 0
+    var new_name = '';
+    var old_name = '';
+
     /**
      * 表单提交操作
      */
@@ -209,6 +214,7 @@
             $isCheckAll = true;
         }
     }
+
     /**
      * 第一次ajax请求  first_ajax_request4concat
      * @param video_list

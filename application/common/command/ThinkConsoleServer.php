@@ -63,7 +63,7 @@ class ThinkConsoleServer extends Command
                         if ($msgData['mobile_type'] == 1) {
                             $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg']]);
                         } elseif ($msgData['mobile_type'] == 2) {
-                            $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg'], 'number' => $msgData['live_id']]);
+                            $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg'], 'number' => rand(000000,999999)]);
                         } else {
                             $sendRes = send_dayu_sms($msgData['user_mobile'], self::getSmsType($msgData['mobile_type']), ['code' => $msgData['msg']]);
                         }
@@ -78,7 +78,7 @@ class ThinkConsoleServer extends Command
                         }
                         break;
                     case 2:
-                        $result = send_email_qq($msgData['user_email'], self::getEmailType($msgData['email_type']), self::getEmailTemplate($msgData['email_scene'], $msgData['email_type'], $msgData['user_email']));
+                        $result = send_email_qq($msgData['user_email'], self::getEmailTitle($msgData['email_title']), self::getEmailTemplate($msgData['email_scene'], $msgData['email_type'], $msgData['user_email'],$msgData['msg']));
                         if ($result['error'] == 0) {
                             self::redis()->hSet($value, 'status', 0);
                             self::redis()->lRem('TASK_QUEUE', $value, 2);
@@ -190,7 +190,7 @@ class ThinkConsoleServer extends Command
                         if ($msg['mobile_type'] == 1) {
                             $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
                         } elseif ($msg['mobile_type'] == 2) {
-                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg'], 'number' => $msg['live_id']]);
+                            $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg'], 'number' => rand(000000,999999)]);
                         } else {
                             $sendRes = send_dayu_sms($msg['user_mobile'], self::getSmsType($msg['mobile_type']), ['code' => $msg['msg']]);
                         }
@@ -200,7 +200,7 @@ class ThinkConsoleServer extends Command
                         }
                         break;
                     case 2:
-                        $result = send_email_qq($msg['user_email'], self::getEmailType($msg['email_type']), self::getEmailTemplate($msg['email_scene'], $msg['email_type'], $msg['user_email']));
+                        $result = send_email_qq($msg['user_email'], self::getEmailType($msg['email_type']), self::getEmailTemplate($msg['email_scene'], $msg['email_type'], $msg['user_email'],$msg['msg']));
                         if ($result['error'] == 0) {
                             Db::table('resty_task_list')->where('user_email', $msg['user_email'])->delete();
                         }
@@ -245,20 +245,40 @@ class ThinkConsoleServer extends Command
             '3' => '找回密码',
             '4' => '修改密码',
             '5' => '订阅 ',
+            '6' => '直播录制信息回调',
         ];
         return $msg[$email_type];
+    }
+
+    /**
+     * 获取邮件发送的标题
+     * @param $email_title
+     * @return mixed
+     */
+    protected static function getEmailTitle($email_title)
+    {
+        $msg = [
+            '1' => '新用户注册',
+            '2' => '账号激活',
+            '3' => '找回密码',
+            '4' => '修改密码',
+            '5' => '订阅 ',
+            '6' => '直播录制信息回调',
+            '7' => '系统消息',
+        ];
+        return $msg[$email_title];
     }
 
     /**
      * 获取邮件发送模板
      * 问题：发现这里修改后，如果php think send_mail 已经启动则修改内容不会生效
      * @param $email_scene
-     * @param $email_type
+     * @param $email_type  1.frontend 2.backend 3.api
      * @param $user_email
      * @return string
      * @static
      */
-    protected static function getEmailTemplate($email_scene, $email_type, $user_email)
+    protected static function getEmailTemplate($email_scene, $email_type, $user_email,$msg)
     {
         $emailSendDomain = config('email.EMAIL_SEND_DOMAIN');
         $emailUrlExpire = config('email.EMAIL_SEND_EXPIRE_TIME');
@@ -314,10 +334,27 @@ html;
                 default:
                     echo '0';
             }
-        } else { // other
+        }elseif ($email_scene == 3){
+            switch ($email_type) {
+                // 直播录制成功通知
+                case 1:
+                    $link = "http://oss.tinywan.com/".$msg;
+                    $str = "请点击链接查看录制视频：<p></p>" . $link;
+                    break;
+                // 回调
+                case 2:
+                    $rand = rand(00000, 99999);
+                    $str = <<<html
+                    "管理员发送给你的信息,有效验证码：<p></p>" $rand
+html;
+                    break;
+                default:
+                    echo '0';
+            }
+        }
+        else { // other
 
         }
-
         return $str;
     }
 

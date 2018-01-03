@@ -1093,29 +1093,30 @@ function addSMSTaskQueue($user_mobile, $mobile_type = 1, $msg, $live_id = '1227'
 
 /**
  * Redis任务邮件队列
+ * @param int $email_title
  * @param int $email_type
  * @param $user_email
  * @param int $email_scene
- * @param string $live_id
+ * @param string $msg
  * @return array|bool
  */
-function addEmailTaskQueue($email_type = 1, $user_email, $email_scene = 2, $live_id = '2020')
+function addEmailTaskQueue($email_title = 1,$email_type = 1, $user_email, $email_scene = 2,$msg='system email')
 {
     //注意：这里传递的每一个值务必都是真的
-    if (empty($user_email) || empty($user_email) || empty($email_scene) || empty($live_id)) {
+    if (empty($user_email) || empty($user_email) || empty($email_scene)) {
         return ["传递参数不合适"];
     }
     $taskKey = "TASK_LIST:" . time();
     $res = messageRedis()->hMset($taskKey, [
         'status' => 1,
         'task_type' => 2,
+        'email_title' => $email_title,
         'email_type' => $email_type,
         'user_email' => $user_email,
         'create_time' => getCurrentDate(),
         'email_status' => 0,
         'email_scene' => $email_scene,
-        'msg' => "邮件测试消息",
-        'live_id' => $live_id,
+        'msg' => $msg,
     ]);
     if (true === $res) {
         $resList = messageRedis()->rPush("TASK_QUEUE", $taskKey);

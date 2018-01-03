@@ -12,11 +12,11 @@
     }
 
     .wrapper_player {
-        height: 100px;
-        width: 180px;
-        padding-top: 20px;
-        padding-left: 60px;
-        border: 1px solid #000;
+        height: 70px;
+        width: 120px;
+        padding-top: 15px;
+        padding-left: 39px;
+        border: 1px solid #bdb1b1;
         -moz-box-shadow: 3px 3px 4px #000;
         -webkit-box-shadow: 3px 3px 4px #000;
         box-shadow: 3px 3px 4px #000;
@@ -26,13 +26,13 @@
 
     #video_player {
         display: block;
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         position: absolute;
         background-image: url(__COMMON__/images/play3.png);
         background-repeat: no-repeat;
         background-position: center center;
-        background-size: 60px 60px;
+        background-size: 40px 40px;
     }
 
     .wrapper_player:hover {
@@ -56,7 +56,7 @@
     <div class="col-xs-12">
         <div class="table-responsive">
             <div id="sample-table-2_wrapper" class="dataTables_wrapper" role="grid">
-                <div class="row" >
+                <div class="row">
                     <div class="col-sm-6">
                         访问人物
                     </div>
@@ -64,7 +64,8 @@
                         水电费水电费
                     </div>
                 </div>
-                <table class="table  table-bg" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                <table class="table  table-bg"
+                       style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
                     <thead>
                     <tr class="text-c">
                         <th class="center">
@@ -95,7 +96,7 @@
                         <td>
                             <a href="javascript:playModal('{$vo.liveId}','{$vo.fileName}','0');">
                                 <div class="wrapper_player"
-                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_70,w_120');">
                                     <div id="video_player">
                                     </div>
                                 </div>
@@ -111,23 +112,29 @@
                             <span class="badge label-success "><i class="icon-save"></i>&nbsp;已完成</span>
                             {/case}
                             {case value="2"}
-                            <span class="badge badge-yellow"><i class="icon-refresh icon-spin primary"></i>&nbsp;生成中</span>
+                            <span class="badge badge-yellow"><i
+                                    class="icon-refresh icon-spin primary"></i>&nbsp;生成中</span>
                             {/case}
                             {default /}
                             <span class="badge label-danger" title="{$vo.editmsg}"><i class="icon-warning-sign"></i>&nbsp;生成失败</span>
-                            <a href="javascript:reEditVideo('{$vo.task_id}');" class="btn btn-warning btn-xs" >
+                            <a href="javascript:reEditVideo('{$vo.task_id}');" class="btn btn-warning btn-xs">
                                 <i class="icon-refresh"></i> 重新生成
                             </a>
                             {/switch}
                         </td>
                         <td>{$vo.createTime}</td>
                         <td>
+                            <a href="javascript:videoPublish('{$vo.id}');" target="_blank">
+                                <button class="btn btn-warning btn-xs">
+                                    <i class="icon-eye-open"></i> 发布
+                                </button>
+                            </a>
                             <a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">
                                 <button class="btn btn-primary btn-xs">
                                     <i class="icon-eye-open"></i> 预览
                                 </button>
                             </a>
-                            <a href="javascript:delHanderModal('{$vo.id}');" class="btn btn-danger btn-xs" >
+                            <a href="javascript:delHanderModal('{$vo.id}');" class="btn btn-danger btn-xs">
                                 <i class="icon-trash bigger-130"></i>删除
                             </a>
                         </td>
@@ -153,20 +160,24 @@
 </div>
 
 
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="playModal" tabindex="-1" role="dialog" aria-labelledby="playModal" aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content ">
+<!-- 视频发布模态框（Modal） -->
+<div class="modal fade" id="videoPublishHanderModal" tabindex="-1" role="dialog" aria-labelledby="videoPublishHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h5 class="modal-title">预览播放</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
             </div>
             <div class="modal-body">
-                <div class="wrapper">
-                    <video width="100%" id="video-container" height="100%" controls autoplay>
-
-                    </video>
-                </div>
+                <h4>
+                    确定要删除吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger publish-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
             </div>
         </div>
     </div>
@@ -194,6 +205,14 @@
         $id = id;
         $("#delHanderModal").modal("show");
     }
+
+    /**
+     * 视频发布
+     */
+    function videoPublish(id) {
+        $id = id;
+        $("#videoPublishHanderModal").modal("show");
+    }
     // 重新操作
     function reEditVideo(task_id) {
         var url = "{:url('backend/live/videoReOperateByTaskId')}";
@@ -212,10 +231,44 @@
         };
         $.post(url, data, success, 'json');
     }
-    $(document).ready(function(){
+
+    $(document).ready(function () {
         $('body').delegate('.del-hander', 'click', function () {
             $("#delHanderModal").modal("hide");
             var $url = "{:url('backend/live/editVideoDel')}";
+            var $_data = {
+                'id': $id
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response);
+                    if ($response.code == 200) {
+                        $('#data-' + $id).remove();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+        /**
+         * 视频发布异步处理
+         * 说明：在这里可以发布到直播活动下面，或者发布到点播视频也可以的哦
+         */
+        $('body').delegate('.publish-hander', 'click', function () {
+            $("#videoPublishHanderModal").modal("hide");
+            var $url = "{:url('backend/live/videoPublishToLive')}";
             var $_data = {
                 'id': $id
             };

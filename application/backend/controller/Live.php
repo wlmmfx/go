@@ -17,6 +17,7 @@ use app\common\controller\BaseBackend;
 use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
+use Swoole\Table;
 use think\Db;
 use think\exception\HttpException;
 use think\Log;
@@ -272,7 +273,7 @@ class Live extends BaseBackend
      */
     public function uploadVideoManage()
     {
-        $videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('id desc')->paginate(6);
+        $videos = Db::table('resty_stream_video_edit')->whereNotIn('type', 3)->order('id desc')->paginate(6);
         $this->assign('videos', $videos);
         return $this->fetch();
     }
@@ -558,6 +559,7 @@ class Live extends BaseBackend
     }
 
     /**---------------------------------------------视频编辑开始-------------------------------------------------------*/
+    /**---------------------------------------------------------------------------------------------------------------*/
 
     /**
      * 初始化视频到resty_stream_video_edit表中
@@ -623,8 +625,8 @@ class Live extends BaseBackend
      */
     public function videoCut()
     {
-        $Videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('createTime desc')->paginate(12);
-        $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->paginate(12);
+        $Videos = Db::table('resty_stream_video_edit')->whereNotIn('type', 3)->order('createTime desc')->limit(8)->select();
+        $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->limit(8)->select();
         $this->assign('videos', $Videos);
         $this->assign('editVideos', $editVideos);
         return $this->fetch();
@@ -636,11 +638,8 @@ class Live extends BaseBackend
      */
     public function videoConcat()
     {
-        Log::error('11111111111111');
-        $Videos = Db::table('resty_stream_video_edit')->where('type', 2)->order('createTime desc')->paginate(12);
-        $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->paginate(12);
+        $Videos = Db::table('resty_stream_video_edit')->whereNotIn('type', 3)->order('createTime desc')->limit(8)->select();
         $this->assign('videos', $Videos);
-        $this->assign('editVideos', $editVideos);
         return $this->fetch();
     }
 
@@ -847,12 +846,12 @@ class Live extends BaseBackend
      * @param $eidittype
      * @return bool|int|string
      */
-    private function saveEditDataByTaskId($taskId, $editId, $pid = 0, $liveId, $new_video_name, $editConfig, $eidittype)
+    private function saveEditDataByTaskId($taskId, $editId, $pid = 0, $liveId,$streamName, $new_video_name, $editConfig, $eidittype)
     {
         $msg = "视频剪切(cut)操作";
         $data = [
             'liveId' => $liveId,
-            'streamName' => $liveId,
+            'streamName' => $streamName,
             'type' => 3,
             'state' => 0,
             'name' => $new_video_name,
@@ -955,6 +954,43 @@ class Live extends BaseBackend
     }
 
     /**
+     * 添加录制视频到素材列表
+     */
+    public function addVodToEditList()
+    {
+        if (request()->isPost()) {
+            $videoId = input('post.video_id');
+            $liveId = input('post.live_id');
+            $videoInfo = DB::table('resty_stream_video')->where('id', $videoId)->find();
+            //先查询是否已经添加
+            $isAdd = DB::table('resty_stream_video_edit')->where('fileName', $videoInfo['fileName'])->find();
+            if($isAdd){
+                $res = ['code' => 500, 'msg' => '该视频已经被添加，请不要重复添加'];
+                return json($res);
+            }
+            $videoData = [
+                'streamName' => $videoInfo['streamName'],
+                'liveId' => $videoInfo['streamName'],
+                'name' => $videoInfo['name'],
+                'type' => 1, // 1.录像 2.上传 3.编辑
+                'fileName' => $videoInfo['fileName'],
+                'fileTime' => getCurrentDate(),
+                'fileSize' => $videoInfo['fileSize'],
+                'duration' => $videoInfo['duration'],
+                'createTime' => getCurrentDate(),
+                'desc' => '视频录制同步',
+            ];
+            $insertRes = Db::table('resty_stream_video_edit')->insertGetId($videoData);
+            if ($insertRes === false) {
+                $res = ['code' => 500, 'msg' => '同步失败'];
+                return json($res);
+            }
+            $res = ['code' => 200, 'msg' => '同步成功'];
+            return json($res);
+        }
+    }
+
+    /**
      * -----------------------------------------------------------------剪切--------------------------------------------
      * 【新版视频v2.0】素材剪切编辑
      * @return mixed
@@ -977,6 +1013,7 @@ class Live extends BaseBackend
         Log::debug('[' . getCurrentDate() . ']:' . "[01] 视频剪切操作参数] $origin_video_id ： " . $origin_video_id);
         $origVideoInfo = $this->videoInfoByVideoId($origin_video_id);
         $liveId = $origVideoInfo['liveId'];
+        $streamName = $origVideoInfo['streamName'];
         Log::debug('[' . getCurrentDate() . ']:' . "[02] 视频剪切操作参数 ： " . json_encode($origVideoInfo));
         $version = $origVideoInfo['version'];
         $fileName = $origVideoInfo['fileName'];
@@ -992,7 +1029,7 @@ class Live extends BaseBackend
             'auto_slice' => 0
         ];
         $pid = $origVideoInfo['id'];
-        $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $new_video_name, $editConfig, 1);
+        $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $streamName,$new_video_name, $editConfig, 1);
         $cmdStr = "{$shellScript} {$taskId}";
         // 根据版本号拼接视频文件名
         Log::debug('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作 Shell 脚本参数 ： " . $cmdStr);
@@ -1045,7 +1082,8 @@ class Live extends BaseBackend
      * 通过任务ID合并视频编辑,这里的配置信息是通过接口json去请求的
      * @return mixed
      */
-    public function videoConcatOperateByTaskId()
+    public
+    function videoConcatOperateByTaskId()
     {
         if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
         $videoList = request()->post("video_list");
@@ -1060,6 +1098,7 @@ class Live extends BaseBackend
         for ($k = 0; $k < count($videoArr); $k++) {
             $videoInfo = $this->videoInfoByVideoId($videoArr[$k]);
             $liveId = $videoInfo['liveId'];
+            $streamName = $videoInfo['streamName'];
             $cmdStr = $cmdStr . $liveId . ',' . $videoInfo['fileName'] . ',';
         }
         $cmdStr = substr($cmdStr, 0, strlen($cmdStr) - 1);
@@ -1076,7 +1115,7 @@ class Live extends BaseBackend
             'auto_slice' => $auto_slice,
             'all_param' => $cmdStr
         ];
-        $insertId = $this->saveEditDataByTaskId($taskId, $editId, $pid, $liveId, $new_video_name, $edit_config, 2);
+        $insertId = $this->saveEditDataByTaskId($taskId, $editId, $pid, $liveId,$streamName,$new_video_name, $edit_config, 2);
         // [3] 执行系统函数，运行shell 脚本
         $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
         $cmdStr = "{$shell_script} {$taskId}";
@@ -1125,7 +1164,8 @@ class Live extends BaseBackend
      * 视频编辑失败，重新编辑
      * @return mixed
      */
-    public function videoReOperateByTaskId()
+    public
+    function videoReOperateByTaskId()
     {
         if (!request()->isAjax()) return json(['status' => 403, 'msg' => "非Ajax请求"]);
         $task_id = request()->post("task_id");
@@ -1192,7 +1232,8 @@ class Live extends BaseBackend
     /**
      * 【全局设置】
      */
-    public function settingsAll()
+    public
+    function settingsAll()
     {
         return $this->fetch();
     }
@@ -1201,7 +1242,8 @@ class Live extends BaseBackend
     /**
      * 【全局设置】回调设置
      */
-    public function settingsCallBack()
+    public
+    function settingsCallBack()
     {
         $data = input('post.');
         $data['event_type'] = json_encode($data['event_type']);
@@ -1213,7 +1255,8 @@ class Live extends BaseBackend
      * 视频上传完成 事件类型
      * 以后修改为switch结构语句
      */
-    public function fileUploadComplete()
+    public
+    function fileUploadComplete()
     {
         $res = [
             'EventTime' => '2017-03-20T07:49:17Z',
@@ -1235,7 +1278,8 @@ class Live extends BaseBackend
     /**
      * 【全局设置】水印管理
      */
-    public function waterMark()
+    public
+    function waterMark()
     {
 
     }
@@ -1243,7 +1287,8 @@ class Live extends BaseBackend
     /**
      * 【安全管理】
      */
-    public function safetyManage()
+    public
+    function safetyManage()
     {
         return $this->fetch();
     }
@@ -1251,7 +1296,8 @@ class Live extends BaseBackend
     /**
      * 【安全管理】URL鉴权
      */
-    public function urlAuth()
+    public
+    function urlAuth()
     {
 
     }
@@ -1259,7 +1305,8 @@ class Live extends BaseBackend
     /**
      * 【安全管理】播放鉴权
      */
-    public function playAuthentication()
+    public
+    function playAuthentication()
     {
 
     }
@@ -1268,7 +1315,8 @@ class Live extends BaseBackend
      * 阿里云直播模块
      * 全局推流名称列表
      */
-    public function globalStreamDataList()
+    public
+    function globalStreamDataList()
     {
         if ($this->request->isPost()) {
             $keyword = input('post.keyword');
@@ -1291,7 +1339,8 @@ class Live extends BaseBackend
      * 推流记录列表
      * @return mixed
      */
-    public function globalStreamRecordList()
+    public
+    function globalStreamRecordList()
     {
         if ($this->request->isPost()) {
             $keyword = input('post.keyword');
@@ -1313,7 +1362,8 @@ class Live extends BaseBackend
     /**
      * 推流黑名单列表
      */
-    public function globalStreamBlackList()
+    public
+    function globalStreamBlackList()
     {
         $taskKey = "GLOBAL_STREAM_BLACK_LIST:*";
         $redis = messageRedis();
@@ -1336,7 +1386,8 @@ class Live extends BaseBackend
     /**
      * 禁止客户端推流
      */
-    public function setForbidLiveStream()
+    public
+    function setForbidLiveStream()
     {
         $id = request()->get('id');
         $streamInfo = Db::table('resty_stream_name')->where('id', $id)->find();
@@ -1349,7 +1400,7 @@ class Live extends BaseBackend
         //签名密钥
         $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
-        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ResumeTime" . $resumeTime  . "StreamName" . $streamName . $appSecret;
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ResumeTime" . $resumeTime . "StreamName" . $streamName . $appSecret;
         //签名串，由签名算法sha1生成
         $sign = strtoupper(sha1($str));
         //请求资源访问路径以及请求参数，参数名必须为大写
@@ -1371,7 +1422,8 @@ class Live extends BaseBackend
      * -----------------------------------------媒体转码---------------------------------------------------------------
      * 【媒体转码】媒体转码管理
      */
-    public function mediaFormatSwitch()
+    public
+    function mediaFormatSwitch()
     {
         $editVideos = Db::table('resty_stream_video_edit')->where(['type' => 3, 'deleted' => 0])->order('createTime desc')->paginate(6);
         $this->assign('editVideos', $editVideos);
@@ -1381,7 +1433,8 @@ class Live extends BaseBackend
     /**
      * 通过FFmpeg 获取视频信息
      */
-    public function getVideoInfoByFFmpeg()
+    public
+    function getVideoInfoByFFmpeg()
     {
         $MP4Path = '/home/www/web/go-study-line/public/uploads/videos/201710002/video/59ef43871b3ee.mp4';
         $videoInfo = self::ffprobe()->format($MP4Path);
@@ -1393,7 +1446,8 @@ class Live extends BaseBackend
     /**
      * 通过FFmpeg 获取视频信息
      */
-    public function cutVideoByFFmpeg()
+    public
+    function cutVideoByFFmpeg()
     {
         $MP4Path = '/home/www/web/go-study-line/public/uploads/videos/Tinywan123.mp4';
         $video = self::ffmpeg()->open($MP4Path);
@@ -1406,7 +1460,8 @@ class Live extends BaseBackend
     /**
      * OSS 上传测试
      */
-    public function uploadDir()
+    public
+    function uploadDir()
     {
         $bucket = 'tinywan-create';
         Oss::createBucket($bucket);
@@ -1418,14 +1473,16 @@ class Live extends BaseBackend
         printf(__FUNCTION__ . ": completeMultipartUpload OK\n");
     }
 
-    public function getCityByIp()
+    public
+    function getCityByIp()
     {
         $ip = '115.192.189.173';
         $res = ip_format($ip);
         echo $res;
     }
 
-    public function copy()
+    public
+    function copy()
     {
         return $this->fetch();
     }

@@ -17,7 +17,45 @@ use think\Db;
 
 class Open extends Base
 {
+    /**
+     * 接口测试
+     */
+    public function test(){
+       halt(addEmailTaskQueue(6,1, '756684177@qq.com',3, "data/201710008/video/5a3cad60b2340.mp4"));
+    }
+    /**
+     * 【正式-已上线】
+     * 直播录像信息回调添加
+     */
+    public function createStreamVideo(){
+        $version = input("get.version");
+        $streamName = input("get.streamName");
+        $channelId = input("get.channelId");
+        $baseName = input("get.baseName");
+        $duration = input("get.duration");
+        $fileSize = input("get.fileSize");
+        $fileTime = input("get.fileTime");
 
+        $videoData = [
+            'streamName' => $streamName,
+            'liveId' => $channelId,
+            'name' => $baseName,
+            'fileName' => $baseName,
+            'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
+            'fileSize' => $fileSize,
+            'duration' => $duration,
+            'version' => $version,
+            'createTime' => getCurrentDate(),
+        ];
+        $res = Db::table('resty_stream_video')->insertGetId($videoData);
+        if($res){
+            // 加入消息队列
+            addEmailTaskQueue(6,1, '756684177@qq.com',3, "data/".$streamName."/video/".$baseName.".mp4");
+            exit('200:success');
+        }else{
+            exit('500:error');
+        }
+    }
 
     /**
      * 【正式-已上线】
@@ -78,45 +116,7 @@ class Open extends Base
         halt($redis->hGetAll('alipay'));
     }
 
-    /**
-     * 录像信息添加
-     */
-    public function createStreamVideo(){
-        $version = input("get.version");
-        $streamName = input("get.streamName");
-        $channelId = input("get.channelId");
-        $baseName = input("get.baseName");
-        $duration = input("get.duration");
-        $fileSize = input("get.fileSize");
-        $fileTime = input("get.fileTime");
 
-        $videoData = [
-            'streamName' => $streamName,
-            'liveId' => $channelId,
-            'name' => $baseName,
-            'fileName' => $baseName,
-            'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
-            'fileSize' => $fileSize,
-            'duration' => $duration,
-            'version' => $version,
-            'createTime' => date("Y-m-d H:i:s"),
-        ];
-        $res = Db::table('resty_stream_video')->insertGetId($videoData);
-        if($res){
-//            // 加入消息队列
-//            $taskData['task_type'] = 1;
-//            $taskData['status'] = 0;
-//            $taskData['mobile_type'] = 2;
-//            $taskData['user_mobile'] = 18170603953;
-//            $taskData['msg'] = "909090";
-//            $taskData['live_id'] = $streamName;
-//            // 加入邮件队列
-//            $this->addTaskList($taskData);
-            exit('200:success');
-        }else{
-            exit('500:error');
-        }
-    }
 
 
     /**

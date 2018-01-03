@@ -58,7 +58,7 @@ class OpenUser extends BaseModel
         $userInfoEnable = $this->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
         if ($userInfoEnable) {
             // 4 放入邮件队列
-            addEmailTaskQueue(2, $data['email'], 1);
+            addEmailTaskQueue(1,2, $data['email'], 1);
             return ['valid' => 1, 'msg' => "邮件重新发送成功，请立即验证邮箱:" . $data['email']];
         }
         // 3 插入数据库
@@ -74,7 +74,7 @@ class OpenUser extends BaseModel
             session('open_user_username', $insertData['account']);
         }
         // 4 放入邮件队列
-        addEmailTaskQueue(2, $data['email'], 1);
+        addEmailTaskQueue(1,2, $data['email'], 1);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 

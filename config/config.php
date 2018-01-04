@@ -5,7 +5,7 @@ return [
     'app_email' => '756684177@qq.com',
     'app_debug' => true,
     // 开启应用Trace调试
-    'app_trace' => false,
+    'app_trace' => true,
     'trace' => [
         // 内置Html Console 支持扩展
         'type' => 'console',

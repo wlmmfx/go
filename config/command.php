@@ -11,6 +11,7 @@
 
 return [
     'app\common\command\ThinkConsoleServer',
+    'app\common\command\DaemonDemo',
     'app\common\command\Test',
     'app\common\command\SwooleServer'
 ];

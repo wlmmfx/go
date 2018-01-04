@@ -5,7 +5,7 @@ return [
     'app_email' => '756684177@qq.com',
     'app_debug' => true,
     // 开启应用Trace调试
-    'app_trace' => true,
+    'app_trace' => false,
     'trace' => [
         // 内置Html Console 支持扩展
         'type' => 'console',
@@ -80,6 +80,8 @@ return [
         'path'  => LOG_PATH,
         // 日志记录级别
         'level' => [],
+        // error和sql日志单独记录
+        'apart_level'   =>  ['error','sql']
     ],
 
     // 使用 socket 远程打印日志

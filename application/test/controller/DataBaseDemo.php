@@ -201,4 +201,18 @@ class DataBaseDemo extends Controller
         $notNull = Db::table('resty_user')->whereNotNull('mobile')->select();
         halt($notNull);
     }
+
+    /**
+     * [1] 每个数据表就对应了一个业务模型对象
+     * [1] 每个数据表就对应了一个业务模型对象
+     * [1] 每个数据表就对应了一个业务模型对象
+     */
+    public function query01()
+    {
+        // 查询 mobile 为NULL的数据
+        $isNull = Db::table('resty_user')->whereNull('mobile')->select();
+        $notNull = Db::table('resty_user')->whereNotNull('mobile')->select();
+        halt($notNull);
+    }
+
 }

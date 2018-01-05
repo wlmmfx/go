@@ -10,15 +10,14 @@
 
 namespace app\api\controller;
 
-
 use aliyun\api\Live;
+use app\common\controller\BaseApi;
 use Curl\Curl;
-use think\Controller;
 use think\Db;
 use think\Log;
 use think\Request;
 
-class Stream extends Controller
+class Stream extends BaseApi
 {
 
     /**

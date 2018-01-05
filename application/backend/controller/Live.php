@@ -14,6 +14,8 @@ namespace app\backend\controller;
 
 use aliyun\oss\Oss;
 use app\common\controller\BaseBackend;
+use app\common\model\StreamVideo;
+use app\common\model\StreamVideoEdit;
 use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
@@ -649,7 +651,7 @@ class Live extends BaseBackend
      */
     public function videoEditList()
     {
-        $editVideos = Db::table('resty_stream_video_edit')->where(['type' => 3, 'deleted' => 0])->order('createTime desc')->paginate(6);
+        $editVideos = StreamVideoEdit::where(['type' => 3, 'deleted' => 0])->order('createTime desc')->paginate(6);
         $this->assign('editVideos', $editVideos);
         return $this->fetch();
     }
@@ -661,7 +663,7 @@ class Live extends BaseBackend
      */
     private function videoInfoByVideoId($id)
     {
-        $video = Db::table('resty_stream_video_edit')->where('id', $id)->find();
+        $video = StreamVideoEdit::where('id', $id)->find();
         $result['id'] = $video['id'];
         $result['liveId'] = $video['streamName'];
         $result['streamName'] = $video['streamName'];
@@ -871,13 +873,13 @@ class Live extends BaseBackend
         if ($eidittype == 2) $msg = "视频合并(concat)操作";
 
         try {
-            $insertId = Db::table('resty_stream_video_edit')->insertGetId($data);
-            Log::info('[' . self::formatDate(time()) . ']:' . "[06] {$msg} 记录保存记录成功 msg insertId = " . $insertId);
+            $res = StreamVideoEdit::create($data);
+            Log::info('[' . self::formatDate(time()) . ']:' . "[06] {$msg} 记录保存记录成功 msg insertId = " . json_encode($res->id));
         } catch (\Exception $e) {
-            Log::error('[' . self::formatDate(time()) . ']:' . "[06] {$msg} 记录保存记录失败 msg = " . $e->getMessage());
+            Log::error('[' . self::formatDate(time()) . ']:' . "[06] {$msg} 记录保存记录失败 msg = " . json_encode($e->getMessage()));
             return false;
         }
-        return $insertId;
+        return $res->id;
     }
 
     /**
@@ -891,10 +893,10 @@ class Live extends BaseBackend
         if ($eiditType == 2) $msg = "视频合并(concat)操作";
         if ($eiditType == 3) $msg = "视频重新编辑操作";
         try {
-            $insertId = Db::table('resty_stream_video_edit')->update($updateData);
-            Log::info('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录成功 msg insertId = " . $insertId);
+            $insertId = StreamVideoEdit::update($updateData);
+            Log::debug('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录成功 msg insertId = " . json_encode($insertId->id));
         } catch (\Exception $e) {
-            Log::error('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录失败 msg = " . $e->getMessage());
+            Log::error('[' . self::formatDate(time()) . ']:' . "[07] {$msg} 更新记录失败 msg = " . json_encode($e->getMessage()));
             return false;
         }
         return true;
@@ -949,7 +951,7 @@ class Live extends BaseBackend
      */
     private function videoInfoByEditId($editid)
     {
-        $videoInfo = Db::table('resty_stream_video_edit')->where('editid', $editid)->find();
+        $videoInfo = StreamVideoEdit::where('editid', $editid)->find();
         return $videoInfo;
     }
 
@@ -961,9 +963,9 @@ class Live extends BaseBackend
         if (request()->isPost()) {
             $videoId = input('post.video_id');
             $liveId = input('post.live_id');
-            $videoInfo = DB::table('resty_stream_video')->where('id', $videoId)->find();
+            $videoInfo = StreamVideo::where('id', $videoId)->find();
             //先查询是否已经添加
-            $isAdd = DB::table('resty_stream_video_edit')->where('fileName', $videoInfo['fileName'])->find();
+            $isAdd = StreamVideoEdit::where('fileName', $videoInfo['fileName'])->find();
             if($isAdd){
                 $res = ['code' => 500, 'msg' => '该视频已经被添加，请不要重复添加'];
                 return json($res);
@@ -1089,7 +1091,7 @@ class Live extends BaseBackend
         $videoList = request()->post("video_list");
         $new_video_id = request()->post("new_video_id");
         $new_video_name = request()->post("new_video_name");
-        Log::info(getCurrentDate() . '--------------------' . json_encode($videoList));
+        Log::debug(getCurrentDate() . '--------------------' . json_encode($videoList));
         $cmdStr = "";
         if ($videoList == "" || empty($new_video_id) || empty($new_video_name)) {
             return json(['status' => 403, 'msg' => "请求的参数不完整，请检查参数是否合适"]);
@@ -1119,12 +1121,12 @@ class Live extends BaseBackend
         // [3] 执行系统函数，运行shell 脚本
         $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
         $cmdStr = "{$shell_script} {$taskId}";
-        Log::info('[' . getCurrentDate() . ']:' . "[03] 视频合并操作Shell 脚本参数 ： " . $cmdStr);
+        Log::debug('[' . getCurrentDate() . ']:' . "[03] 视频合并操作Shell 脚本参数 ： " . $cmdStr);
         // [3] 执行系统函数，运行shell 脚本，$results 为一个数组
         exec("{$cmdStr}", $results, $sysStatus);
-        Log::info('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
+        Log::debug('[' . getCurrentDate() . ']:' . "[04-1] 执行系统函数返回状态码 sysStatus = " . $sysStatus);
         $shellResult = -1;
-        Log::info('[' . getCurrentDate() . ']:' . '[04-2] 视频合并系统函数执行返回结果 results =  ' . $results[0] ? $results[0] : 'unknown');
+        Log::debug('[' . getCurrentDate() . ']:' . '[04-2] 视频合并系统函数执行返回结果 results =  ' . $results[0] ? $results[0] : 'unknown');
         if (count($results) == 1) $shellResult = $results[0];
         #  [4] 系统函数执行失败
         if ($sysStatus != 0) {
@@ -1138,7 +1140,7 @@ class Live extends BaseBackend
             $this->updateEditDataById($updateData, 2);
             return json(['status' => 500, 'msg' => "shell error"]);
         }
-        Log::info('[' . getCurrentDate() . ']:' . '[05] 视频合并操作执行系统函数 Success , status = ' . $sysStatus);
+        Log::debug('[' . getCurrentDate() . ']:' . '[05] 视频合并操作执行系统函数 Success , status = ' . $sysStatus);
         $resultVideoPathFile = self::RESULT_FILE_PATH . $editId . '.mp4';
         $resultImagePathFile = self::RESULT_FILE_PATH . $editId . '.jpg';
         #   [5] 根据返回的状态码提示消息
@@ -1153,7 +1155,7 @@ class Live extends BaseBackend
                 'editmsg' => $editMsg,
             ];
             $this->updateEditDataById($updateData, 2);
-            Log::info('[' . getCurrentDate() . ']:' . '[06] 视频合并操作成功完成 , msg =' . $editMsg);
+            Log::debug('[' . getCurrentDate() . ']:' . '[06] 视频合并操作成功完成 , msg =' . $editMsg);
             return json(['status' => 200, 'msg' => $editMsg]);
         }
         return json(['status' => 200, 'msg' => null]);
@@ -1242,8 +1244,7 @@ class Live extends BaseBackend
     /**
      * 【全局设置】回调设置
      */
-    public
-    function settingsCallBack()
+    public function settingsCallBack()
     {
         $data = input('post.');
         $data['event_type'] = json_encode($data['event_type']);

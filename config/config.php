@@ -25,7 +25,7 @@ return [
     // 默认模块名
     'default_module' => 'blog',
     // 是否自动转换URL中的控制器和操作名
-    'url_convert' => false,
+    'url_convert' => true,
     'captcha' => [
         // 验证码字符集合
         'codeSet' => '12345',

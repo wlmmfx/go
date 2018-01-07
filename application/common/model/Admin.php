@@ -32,7 +32,6 @@ class Admin extends BaseModel
      */
     protected $table = "resty_user";
 
-
     /**
      * 登录验证
      * @param $data
@@ -91,10 +90,10 @@ class Admin extends BaseModel
         // 2 检测邮箱是否被注册
         $time = time();
         $passwordToken = md5($data['email'] . md5($data['password']) . $time); //创建用于激活识别码
-        $userInfo = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 1, 'email' => $data['email']])->find();
+        $userInfo = $this->where("enable=:enable and email=:email")->bind(['enable' => 1, 'email' => $data['email']])->find();
         if ($userInfo) return ['valid' => 0, 'msg' => "该邮箱已经被注册"];
         // 考虑URL地址失效问题，重新发送邮件
-        $userInfoEnable = Db::table('resty_user')->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
+        $userInfoEnable = $this->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
         if ($userInfoEnable) {
             // 4 放入邮件队列
             $taskData['task_type'] = 2;
@@ -120,7 +119,7 @@ class Admin extends BaseModel
         $taskData['email_type'] = 1;
         $taskData['email_scene'] = 2;
         $taskData['user_email'] = $data['email'];
-        Db::table('resty_task_list')->insert($taskData);
+        Db::table('resty_task_list')->save($taskData);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 

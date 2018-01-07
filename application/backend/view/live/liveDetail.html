@@ -95,19 +95,19 @@
                     </a>
                 </li>
 
-                <li>
-                    <a data-toggle="tab" href="#live-comment">
-                        <i class="red  icon-cogs bigger-110"></i>
-                        评论管理
-                    </a>
-                </li>
+                <!--<li>-->
+                    <!--<a data-toggle="tab" href="#live-comment">-->
+                        <!--<i class="red  icon-cogs bigger-110"></i>-->
+                        <!--评论管理-->
+                    <!--</a>-->
+                <!--</li>-->
 
-                <li>
-                    <a data-toggle="tab" href="#email-config">
-                        <i class="green  icon-envelope bigger-110"></i>
-                        观看控制
-                    </a>
-                </li>
+                <!--<li>-->
+                    <!--<a data-toggle="tab" href="#email-config">-->
+                        <!--<i class="green  icon-envelope bigger-110"></i>-->
+                        <!--观看控制-->
+                    <!--</a>-->
+                <!--</li>-->
             </ul>
 
             <div class="tab-content">
@@ -238,12 +238,14 @@
                                         <img src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg"
                                              alt="通用的占位符缩略图">
                                         <div class="caption">
+                                            <span>名称：{$vo.name}</span><br/>
+                                            <span>时长：{$vo.duration}</span>
                                             <p>
-                                                <a href="#" class="btn btn-sm btn-primary" role="button">
-                                                    按钮
+                                                <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}" class="btn btn-sm btn-success video-cut-button" role="button">
+                                                    剪辑
                                                 </a>
-                                                <a href="#" class="btn btn-sm btn-default" role="button">
-                                                    按钮
+                                                <a href="####" class="btn btn-sm btn-primary video-concat-button" role="button">
+                                                    合并
                                                 </a>
                                             </p>
                                         </div>
@@ -590,20 +592,6 @@
     clipboard2.on('error', function (e) {
         console.log(e);
     });
-    // Success before include CommonJS
-    function successShow($msg) {
-        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
-        $(".auth-msg").html($msg);
-        $("#authHanderModal").modal("show");
-    }
-
-    // Fail before include CommonJS
-    function failShow($msg) {
-        $(".modal-body").css("color", "red");
-        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
-        $(".auth-msg").html($msg);
-        $("#authHanderModal").modal("show");
-    }
 
     $(function () {
         var bar = $('.bar');
@@ -663,6 +651,35 @@
 //        $('#imageUploadModal').on('hide.bs.modal', function () {
 //            window.location.reload();
 //        });
+
+        // 视频编辑列表添加
+        $('body').delegate('.video-cut-button', 'click', function () {
+            var $url = "{:url('backend/live/addVodToEditList')}";
+            var $_data = {
+                'live_id': $(this).data('live-id'),
+                'video_id': $(this).data('id')
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    if ($response.code == 200) {
+                        successShow($response.msg);
+                        window.loaction.reload();
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
     });
 
 </script>

@@ -11,11 +11,14 @@
 namespace app\test\controller;
 
 
+use app\api\controller\Open;
 use app\common\controller\BaseFrontend;
 use app\common\model\Admin;
 use app\common\model\Article;
 use app\common\model\AuthGroup;
 use app\common\model\Category;
+use app\common\model\OpenUser;
+use app\common\model\User;
 use app\common\model\Vod;
 use think\Db;
 
@@ -303,10 +306,10 @@ class ModelDemo extends BaseFrontend
      */
     public function categoryRelationVod8()
     {
-        $user = Admin::get(178,'articles');
+        $user = Admin::get(178, 'articles');
 //        $data = $user->toArray();
         //如果要隐藏多个关联属性的话，可以使用下面的方式：
-        $data = $user->hidden(['password','deleted','password_time','articles'=>['keyword','oss_upload_status','cate_id']])->toArray();
+        $data = $user->hidden(['password', 'deleted', 'password_time', 'articles' => ['keyword', 'oss_upload_status', 'cate_id']])->toArray();
         dump($data);
     }
 
@@ -443,4 +446,232 @@ class ModelDemo extends BaseFrontend
             dump($comment);
         }
     }
+
+    /**
+     * --------------------------------------数据库和模型----------------------------------------------------------------
+     * -----------------------------------------------------------------------------------------------------------------
+     * 模型查询
+     */
+    public function modelDemo01()
+    {
+        // 查询操作
+        $user = User::get(178);
+        // 取值操作
+        echo $user->username;
+        echo $user->email;
+
+        // 设置操作
+        $user->city_id  = '2';
+        // 由于模型类实现了ArrayAccess接口，因此一样可以使用数组方式操作
+        $user['mobile']  = '123456';
+
+        // 更新操作
+        halt($user->getUserEmail());
+        halt($user->setUserEmail('756684177'));
+        halt($user->save());
+    }
+
+    /**
+     * 模型创建Create
+     */
+    public function curlDemo01()
+    {
+        $user = new User();
+        $user->email = '756682@qq.com';
+        $user->username = 'mode';
+        $user->password = md5('123456');
+        $user->loginip = request()->ip();
+        var_dump($user->save());
+        // 批量设置
+        var_dump($user->save([
+            'email'=>'56682@qq.com',
+            'username'=>'111',
+            'password'=>'111',
+            'loginip'=>request()->ip()
+        ]));
+    }
+
+    /**
+     * 静态方法创建数据
+     */
+    public function curlDemo02()
+    {
+        // create方法的返回值是User模型的对象实例，而save方法调用的时候本身就在对象实例里面。
+        $user = User::create([
+            'email'=>'56682@qq.com',
+            'username'=>'UserName'.rand(000,999),
+            'password'=>'111',
+            'loginip'=>request()->ip()
+        ]);
+        // 获取用户的主键数据
+        echo $user->id;
+    }
+
+    /**
+     * 模型读取Read
+     */
+    public function curlDemo03()
+    {
+        // Db类的find方法返回的是一个数组，模型类的get方法返回的是一个User模型对象实例
+        // 模型的读取操作一般使用静态方法读取即可，返回模型对象实例。
+        $user = User::get(178);
+        echo $user->id;
+        echo $user->username;
+
+        // 模型实现读取多个记录
+        $users = User::where('id', '>', 1)
+            ->limit(5)
+            ->select();
+        // 遍历读取用户数据
+        foreach ($users as $user) {
+            echo $user->id;
+            echo $user->username;
+        }
+
+        // 查询用户数据集
+        // 相当于 Db::table('user')->select([1,2,3]);
+        $users = User::all([178, 231, 232]);
+        foreach ($users as $user) {
+            echo $user->id;
+            echo $user->username;
+        }
+    }
+
+    /**
+     * 模型更新Update
+     * 【注意：】模型和Db更新方法的最大区别是模型的更新方法只会更新有变化的数据，没有变化的数据是不会更新到数据库的，如果所有数据都没变化，那么根本就不会去执行数据库的更新操作。
+     */
+    public function curlDemo04()
+    {
+        $user        = User::get(232);
+        $user->username  = 'topthink111';
+        $user->email = 'topthink@qq.com';
+        // save方法返回影响的记录数
+        var_dump($user->save());
+        //静态调用，而update方法返回的则是模型的对象实例。
+        $res = User::update([
+            'username'  => 'topthink222',
+            'email' => 'topthink@qq.com',
+        ],['id'=>233]);
+        var_dump($res);
+    }
+
+    /**
+     * 模型 删除Delete
+     * 【注意：】模型和Db更新方法的最大区别是模型的更新方法只会更新有变化的数据，没有变化的数据是不会更新到数据库的，如果所有数据都没变化，那么根本就不会去执行数据库的更新操作。
+     */
+    public function curlDemo05()
+    {
+        $user = User::get(233);
+        //var_dump($user->delete());
+
+        // 静态实现
+        //var_dump(User::destroy(232));
+
+        // 根据主键删除多个数据
+        //User::destroy([244, 243, 242]);
+
+        // 指定条件删除数据
+//        User::destroy([
+//            'password' => 111,
+//        ]);
+
+        // 使用闭包条件
+        User::destroy(function ($query) {
+            $query->where('id', '>', 0)
+                ->where('username', 111);
+        });
+    }
+
+    /**
+     * 使用查询构造器
+     */
+    public function curlDemo06()
+    {
+        $user = User::where('username', 'like', '%先生')
+            ->where('id', 'between', [1, 335])
+            ->order('id desc')
+            ->limit(3)
+            ->select();
+        halt($user);
+    }
+
+    /**
+     * 获取器和修改器
+     */
+    public function curlDemo07()
+    {
+        $user = OpenUser::get(67);
+        echo $user->create_time.PHP_EOL;
+        // 要获取原始数据的值
+        echo $user->getData('create_time').PHP_EOL;
+        echo $user->user_app;
+        echo $user->type;
+    }
+
+    /**
+     * 自动时间字段
+     */
+    public function curlDemo08()
+    {
+        $user = new OpenUser();
+        $user->open_id = '111111';
+        $user->account = '111111';
+        $user->avatar = '111111-avatar';
+        // 会自动写入create_time和update_time字段
+        var_dump($user->save());
+        // 更新用户数据
+        $user->account = 'topthink';
+        // 会自动更新update_time字段
+        $user->save();
+    }
+
+    /**
+     * 自动时间字段
+     */
+    public function curlDemo09()
+    {
+        $user = OpenUser::get(67);
+        // 追加额外的（获取器）属性
+        $data = $user->append(['level'], true)->toArray();
+        dump($data);
+    }
+
+    /**
+     * 第七章：模型高级用法-条件查询
+     */
+    public function curlDemo10()
+    {
+        $user = OpenUser::where(67)->find();
+        //dump($user);
+        // 调用动态查询方法
+        //var_dump(User::getByUpdateTime('1515138238'));
+
+        // 查询数据集
+        dump(OpenUser::where('id', '>', 0)->limit(10)->order('id desc')->select()->toArray());
+    }
+
+    /**
+     * 第七章：字段过滤
+     */
+    public function curlDemo11()
+    {
+        // 获取当前用户对象
+        $user = OpenUser::get(request()->session('open_user_id'));
+
+        // 获取当前用户对象
+        $user = User::get(request()->session('user_id'));
+
+        // 只允许更新用户的nickname和address数据
+        $user->allowField(['nickname', 'address'])
+            ->data(requst()->param(), true)
+            ->save();
+
+        // 如果仅仅是希望去除数据表之外的字段，可以使用，只允许更新数据表字段数据
+        $user->allowField(true)
+            ->data(requst()->param(), true)
+            ->save();
+    }
+
+
 }

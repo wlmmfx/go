@@ -80,6 +80,8 @@ return [
         'path'  => LOG_PATH,
         // 日志记录级别
         'level' => [],
+        // error和sql日志单独记录
+        'apart_level'   =>  ['error','sql']
     ],
 
     // 使用 socket 远程打印日志

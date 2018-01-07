@@ -37,11 +37,11 @@
     }
 
     .wrapper_player {
-        height: 100px;
-        width: 180px;
-        padding-top: 20px;
-        padding-left: 60px;
-        border: 1px solid #000;
+        height: 70px;
+        width: 120px;
+        padding-top: 15px;
+        padding-left: 39px;
+        border: 1px solid #bdb1b1;
         -moz-box-shadow: 3px 3px 4px #000;
         -webkit-box-shadow: 3px 3px 4px #000;
         box-shadow: 3px 3px 4px #000;
@@ -51,13 +51,13 @@
 
     #video_player {
         display: block;
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         position: absolute;
         background-image: url(__COMMON__/images/play3.png);
         background-repeat: no-repeat;
         background-position: center center;
-        background-size: 60px 60px;
+        background-size: 40px 40px;
     }
 
     .wrapper_player:hover {
@@ -105,7 +105,7 @@
                             <th>视频大小</th>
                             <th>视频时长</th>
                             <th>来源(全部)</th>
-                            <th>上传时间(降序)</th>
+                            <th>时间(降序)</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -116,7 +116,7 @@
                             <td>
                                 <a href="javascript:playModal('{$vo.streamName}','{$vo.fileName}','0');">
                                     <div class="wrapper_player"
-                                         style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                         style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_70,w_120');">
                                         <div id="video_player">
                                         </div>
                                     </div>
@@ -125,7 +125,24 @@
                             <td style="vertical-align: middle;">{$vo['streamName']}</td>
                             <td style="vertical-align: middle;">{$vo['fileSize']|trans_byte}</td>
                             <td style="vertical-align: middle;">{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
-                            <td style="vertical-align: middle;">上传</td>
+                            <td style="vertical-align: middle;">
+                                {switch name="vo.type"}
+                                {case value="1"}
+                                    录制同步
+                                {/case}
+                                {case value="2"}
+                                    上传
+                                {/case}
+                                {case value="3"}
+                                    编辑
+                                {/case}
+                                {case value="4"}
+                                    WebRTC录制
+                                {/case}
+                                {default /}
+                                未知来源
+                                {/switch}
+                            </td>
                             <td style="vertical-align: middle;">{$vo['createTime']}</td>
                             <td style="vertical-align: middle;">
                                 <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs">

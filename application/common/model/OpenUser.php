@@ -11,12 +11,176 @@
 
 namespace app\common\model;
 
-use think\Db;
-
 class OpenUser extends BaseModel
 {
     protected $pk = "id";
+
+    // 对应规则和上面的系统约定不符合：模型名（OpenUser）=》对应数据表（protected $table = 'resty_open_user';）
     protected $table = "resty_open_user"; //完整的表名
+
+    // 开启时间字段自动写入
+    protected $autoWriteTimestamp = true;
+
+    // 定义时间字段名
+    protected $createTime = 'create_time';
+
+    protected $updateTime = 'update_time';
+
+    // 数据自动完成
+    protected $insert = ['ip', 'score' => 10];
+
+    // 设置了模型的数据集返回类型
+    protected $resultSetType = 'collection';
+
+    // 追加额外的（获取器）属性
+    protected $append  = ['level'];
+
+    /**
+     * 模型事件
+     * 使用模型事件功能，就必须先给模型注册事件，我们建议在模型类的init方法中统一注册模型事件
+     * 修改器和自动完成可以做的事情，模型的事件方法都可以完成
+     */
+    protected static function init()
+    {
+        OpenUser::beforeInsert(function ($user) {
+            $user->ip = request()->ip();
+        });
+        OpenUser::beforeWrite(function ($user) {
+            $user->realname = 'ACCOUNT-'.$user->account;
+        });
+    }
+
+    /**
+     * 获取等级
+     * @param $value
+     * @param $data
+     * @return int
+     */
+    protected function getLevelAttr($value, $data)
+    {
+        $score = $data['score'];
+        if ($score < 100) {
+            $level = 1;
+        } elseif ($score < 500) {
+            $level = 2;
+        } elseif ($score < 2000) {
+            $level = 3;
+        } elseif ($score < 5000) {
+            $level = 4;
+        } else {
+            $level = 5;
+        }
+        return $level;
+    }
+
+    /**
+     * 定义模型的读取器,获取格式化后的时间
+     * @param $value
+     * @return false|string
+     * @example OpenUser::get(67)->create_time
+     */
+    protected function getCreateTimeAttr($value)
+    {
+        return date('Y-m-d H:i:s', $value);
+    }
+
+    /**
+     * 获取所属平台
+     * @param $value
+     * @return mixed
+     * <pre>
+     * $user = OpenUser::get(67);
+     * echo $user->type;
+     * <pre>
+     */
+    protected function getTypeAttr($value)
+    {
+        return $value;
+    }
+
+    /**
+     * 获取APP信息
+     * 如果你的获取器方法需要根据其它字段的值来组合，可以给获取器方法添加第二个参数
+     * @param $value
+     * @param $data
+     * @return string
+     * <pre>
+     * $user = OpenUser::get(67);
+     * echo $user->user_app;
+     * </pre>
+     */
+    protected function getUserAppAttr($value,$data)
+    {
+        return $data['app_id'] . ':' . $data['app_secret'];
+    }
+
+    /**
+     * 修改器
+     * @param $value
+     * @param $data
+     * @return string
+     */
+    protected function setScoreAttr($value,$data)
+    {
+        return $data['app_id'] . ':' . $data['app_secret'];
+    }
+
+    /**
+     * 注册一个新用户
+     * @param  array $data 用户注册信息
+     * @return integer|bool  注册成功返回主键，注册失败-返回false
+     */
+    public function register($data = [])
+    {
+        $result = $this->validate(true)->allowField(true)->save($data);
+        if ($result) {
+            return $this->getData('id');
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 用户登录认证
+     * @param  string  $username 用户名
+     * @param  string  $password 用户密码
+     * @return integer 登录成功-用户ID，登录失败-返回0或-1
+     */
+    public function loginCheck($username, $password)
+    {
+        $where['username'] = $username;
+        $where['status']   = 1;
+        /* 获取用户数据 */
+        $user = $this->where($where)->find();
+        if ($user) {
+            if (md5($password) != $user->password) {
+                $this->error = '密码错误';
+                return 0;
+            } else {
+                return $user->id;
+            }
+        } else {
+            $this->error = '用户不存在或被禁用';
+            return -1;
+        }
+    }
+
+    /**
+     * 获取用户信息
+     * @param  integer  $uid 用户主键
+     * @return array|integer 成功返回数组，失败-返回-1
+     */
+    public function userInfo($uid)
+    {
+        $user = $this->where('id', $uid)->field('id,username,email,mobile,status')->find();
+        if ($user && 1 == $user->status) {
+            // 返回用户数据
+            return $user->hidden('status')->toArray();
+        } else {
+            $this->error = '用户不存在或被禁用';
+            return -1;
+        }
+    }
 
     /**
      * 添加用户
@@ -58,7 +222,7 @@ class OpenUser extends BaseModel
         $userInfoEnable = $this->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
         if ($userInfoEnable) {
             // 4 放入邮件队列
-            addEmailTaskQueue(2, $data['email'], 1);
+            addEmailTaskQueue(1,2, $data['email'], 1);
             return ['valid' => 1, 'msg' => "邮件重新发送成功，请立即验证邮箱:" . $data['email']];
         }
         // 3 插入数据库
@@ -68,13 +232,13 @@ class OpenUser extends BaseModel
         $insertData['email'] = $data['email'];
         $insertData['create_time'] = time();
         $insertData['avatar'] = "https://avatars0.githubusercontent.com/u/25687708?v=4";
-        $userId = Db::table('resty_open_user')->insertGetId($insertData);
+        $userId = $this->insertGetId($insertData);
         if ($userId) {
             session('open_user_id', $userId);
             session('open_user_username', $insertData['account']);
         }
         // 4 放入邮件队列
-        addEmailTaskQueue(2, $data['email'], 1);
+        addEmailTaskQueue(1,2, $data['email'], 1);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 

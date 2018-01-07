@@ -1,35 +1,40 @@
 <?php
-/*
-  +------------------------------------------------------------------------+
-  | BaseRedis Class                                                      |
-  +------------------------------------------------------------------------+
-  | Copyright (c) 2015-2016 Amai Team (http://www.amailive.com/)       |
-  +------------------------------------------------------------------------+
-  Authors: Tinywan <ovecome.wan@gmail.com>
-  +------------------------------------------------------------------------+
-*/
+
+/** .-----------------------------------------------------------------------------------------------------------------
+ * |  Github: https://github.com/Tinywan
+ * |  Blog: http://www.cnblogs.com/Tinywan
+ * |-------------------------------------------------------------------------------------------------------------------
+ * |  Author: Tinywan(ShaoBo Wan)
+ * |  DateTime: 2018/1/4 14:00
+ * |  Mail: Overcome.wan@Gmail.com
+ * |  Fun: Redis单例模式
+ * |  单例模式元素:
+ * |    1.它们拥有一个保存类的实例的静态成员变量 $_instance
+ * |    2.它们必须拥有一个构造函数，并且必须被标记为 private
+ * |    3.它们拥有一个访问这个实例的公共的静态方法 instance()
+ * |    5.单例类不能再其它类中直接实例化，只能被其自身实例化。它不会创建实例副本，而是会向单例类内部存储的实例返回一个引用。
+ * '------------------------------------------------------------------------------------------------------------------*/
 
 namespace redis;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use think\Exception;
 
 class BaseRedis
 {
 
     /**
-     * 类对象实例数组,共有静态变量
+     * $_instance 必须声明为静态的私有变量
      * @var null
      */
     private static $_instance;
 
     /**
-     * 私有化构造函数，防止类外实例化
+     * 构造函数声明为private,防止直接创建对象
      * BaseRedis constructor.
      */
     private function __construct()
     {
-
+        echo 'I am Constructed';
     }
 
     /**
@@ -46,7 +51,6 @@ class BaseRedis
      * $redis->set('name','value');
      * </pre>
      */
-
     public static function instance()
     {
         try {
@@ -63,11 +67,20 @@ class BaseRedis
     }
 
     /**
-     * 保存Session实例
+     * 阻止用户复制对象实例
+     */
+    public function __clone()
+    {
+        // TODO: Implement __clone() method.
+        trigger_error('Clone is not allow' ,E_USER_ERROR);
+    }
+
+    /**
+     * 消息Redis实例
      * @return \Redis
      * @static
      * <pre>
-     * $redis = BaseRedis::SessionInstance();
+     * $redis = BaseRedis::message();
      * $redis->set('key', 'value');
      * </pre>
      */
@@ -100,5 +113,7 @@ class BaseRedis
             return false;
         }
     }
+
+
 
 }

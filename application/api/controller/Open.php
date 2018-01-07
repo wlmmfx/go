@@ -11,17 +11,52 @@
 
 namespace app\api\controller;
 
-use app\common\controller\Base;
+use app\common\controller\BaseApi;
+use app\common\model\StreamVideo;
+use app\common\model\StreamVideoEdit;
 use redis\BaseRedis;
 use think\Db;
 
-class Open extends Base
+class Open extends BaseApi
 {
+    /**
+     * 【正式-已上线】
+     * 直播录像信息回调添加
+     */
+    public function createStreamVideo()
+    {
+        $version = input("get.version");
+        $streamName = input("get.streamName");
+        $channelId = input("get.channelId");
+        $baseName = input("get.baseName");
+        $duration = input("get.duration");
+        $fileSize = input("get.fileSize");
+        $fileTime = input("get.fileTime");
 
+        $res = StreamVideo::create([
+            'streamName' => $streamName,
+            'liveId' => $channelId,
+            'name' => $baseName,
+            'fileName' => $baseName,
+            'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
+            'fileSize' => $fileSize,
+            'duration' => $duration,
+            'version' => $version,
+            'createTime' => getCurrentDate(),
+        ]);
+        if ($res) {
+            // 加入消息队列
+            addEmailTaskQueue(6, 1, '756684177@qq.com', 3, "data/" . $streamName . "/video/" . $baseName . ".mp4");
+            exit('200:success');
+        } else {
+            exit('500:error');
+        }
+    }
 
     /**
      * 【正式-已上线】
      * 通过任务ID去编辑视频配置信息
+     * Shell 脚本专用接口
      * @return mixed
      */
     public function videoEditConf()
@@ -34,8 +69,8 @@ class Open extends Base
                 'data' => null
             ];
         } else {
-            $findRes = Db::table('resty_stream_video_edit')->where('task_id', $sign)->find();
-            if(empty($findRes) || ($findRes == false)){
+            $findRes = StreamVideoEdit::where('task_id', $sign)->find();
+            if (empty($findRes) || ($findRes == false)) {
                 $resJson = ['code' => 500, 'msg' => 'success', 'data' => null];
                 return json($resJson);
             }
@@ -48,6 +83,15 @@ class Open extends Base
         return json($resJson);
     }
 
+    /**
+     * 创建 License
+     * @param $service_uuid
+     * @param $expire_time
+     * @param string $private_key
+     * @param int $rand
+     * @param int $uid
+     * @return string
+     */
     public function createLicense($service_uuid, $expire_time, $private_key = 'amailive', $rand = 0, $uid = 0)
     {
         $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime($expire_time . " minute ")));
@@ -57,72 +101,37 @@ class Open extends Base
     }
 
 
+    /**
+     * 通过Uuid穿点Licnese
+     * @return string|\think\response\Json
+     */
     public function getLicenseByUuid()
     {
         $service_uuid = input('get.service_uuid');
-        if(empty($service_uuid) || $service_uuid == '') return json('请求的参数不完整，请检查参数是否合适',400);
+        if (empty($service_uuid) || $service_uuid == '') return json('请求的参数不完整，请检查参数是否合适', 400);
         $expire_time = 720000;
-        return $this->createLicense($service_uuid,$expire_time);
+        return $this->createLicense($service_uuid, $expire_time);
     }
 
     /**
      * 支付宝回调地址
      */
-    public function AliPayRedirectUri(){
+    public function AliPayRedirectUri()
+    {
         $redis = BaseRedis::Instance();
         $redis->connect('127.0.0.1');
-        $redis->hMGet('alipay',[
-            'get'=>$_GET,
-            'post'=>$_POST,
+        $redis->hMGet('alipay', [
+            'get' => $_GET,
+            'post' => $_POST,
         ]);
         halt($redis->hGetAll('alipay'));
     }
 
     /**
-     * 录像信息添加
-     */
-    public function createStreamVideo(){
-        $version = input("get.version");
-        $streamName = input("get.streamName");
-        $channelId = input("get.channelId");
-        $baseName = input("get.baseName");
-        $duration = input("get.duration");
-        $fileSize = input("get.fileSize");
-        $fileTime = input("get.fileTime");
-
-        $videoData = [
-            'streamName' => $streamName,
-            'liveId' => $channelId,
-            'name' => $baseName,
-            'fileName' => $baseName,
-            'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
-            'fileSize' => $fileSize,
-            'duration' => $duration,
-            'version' => $version,
-            'createTime' => date("Y-m-d H:i:s"),
-        ];
-        $res = Db::table('resty_stream_video')->insertGetId($videoData);
-        if($res){
-//            // 加入消息队列
-//            $taskData['task_type'] = 1;
-//            $taskData['status'] = 0;
-//            $taskData['mobile_type'] = 2;
-//            $taskData['user_mobile'] = 18170603953;
-//            $taskData['msg'] = "909090";
-//            $taskData['live_id'] = $streamName;
-//            // 加入邮件队列
-//            $this->addTaskList($taskData);
-            exit('200:success');
-        }else{
-            exit('500:error');
-        }
-    }
-
-
-    /**
      * 播放验证
      */
-    public function playValidate(){
+    public function playValidate()
+    {
         $resJson = [
             'code' => 200,
             'msg' => 'success',
@@ -162,9 +171,9 @@ class Open extends Base
     {
         $result = send_email_qq('756684177@qq.com', '新用户注册', '11111111');
         $options = [
-            'var_jsonp_handler'     => 'callback',
+            'var_jsonp_handler' => 'callback',
             'default_jsonp_handler' => 'jsonpReturn',
-            'json_encode_param'     => JSON_PRETTY_PRINT,
+            'json_encode_param' => JSON_PRETTY_PRINT,
         ];
         return json($result)->options($options);
     }
@@ -196,7 +205,7 @@ class Open extends Base
         $headers = array();
         array_push($headers, "Authorization:APPCODE " . $appcode);
         //根据API的要求，定义相对应的Content-Type
-        array_push($headers, "Content-Type".":"."application/x-www-form-urlencoded; charset=UTF-8");
+        array_push($headers, "Content-Type" . ":" . "application/x-www-form-urlencoded; charset=UTF-8");
         $querys = "";
         $bodys = "userId=$userId&msgType=$msgType&msgContent=$msgContent&expireAfterSeconds=$expireAfterSeconds&terminalId=$terminalId&terminalType=$terminalType&justSendToOneClient=$justSendToOneClient";
         $url = $host . $path;
@@ -207,8 +216,7 @@ class Open extends Base
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_FAILONERROR, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        if (1 == strpos("$".$host, "https://"))
-        {
+        if (1 == strpos("$" . $host, "https://")) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         }
@@ -224,10 +232,10 @@ class Open extends Base
         $email_password = config('email.EMAIL_PASSWORD');
         $email_from_name = config('email.EMAIL_FROM_NAME');
         $email_host = config('email.EMAIL_SEND_DOMAIN');
-        $address= '756684177@qq.com';
+        $address = '756684177@qq.com';
         $subject = '弍萬邮件标题';
         $content = '测试邮件发送';
-        try{
+        try {
             //实例化PHPMailer核心类
             $phpmailer = new \PHPMailer();
 
@@ -271,7 +279,7 @@ class Open extends Base
             $phpmailer->IsHTML(true);
 
             //设置收件人邮箱地址 该方法有两个参数 第一个参数为收件人邮箱地址 第二参数为给该地址设置的昵称 不同的邮箱系统会自动进行处理变动 这里第二个参数的意义不大
-            $phpmailer->addAddress($address,'lsgo在线通知');
+            $phpmailer->addAddress($address, 'lsgo在线通知');
             // 设置邮件标题
             $phpmailer->Subject = $subject;
             // 设置邮件正文,这里最好修改为这个，不是boby
@@ -279,8 +287,18 @@ class Open extends Base
             $res = $phpmailer->Send();
             echo '1111111111111';
             var_dump($res);
-        }catch (\phpmailerException $e){
-            return "邮件发送失败：".$e->errorMessage();
+        } catch (\phpmailerException $e) {
+            return "邮件发送失败：" . $e->errorMessage();
         }
     }
+
+    /**
+     * 接口测试
+     */
+    public function test()
+    {
+        halt(addEmailTaskQueue(6, 1, '756684177@qq.com', 3, "data/201710008/video/5a3cad60b2340.mp4"));
+    }
+
+
 }

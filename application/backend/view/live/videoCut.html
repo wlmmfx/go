@@ -64,7 +64,7 @@
 
 <div class="page-header">
     <h1>
-        视频编辑
+        视频剪切
         <small>
             <i class="icon-double-angle-right"></i>
             动态表格分析列表
@@ -213,7 +213,7 @@
     function getEndTime() {
         var $currentTimestamp = Date.parse(new Date());
         $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
-        $newVideoNameId.value = '剪切新视频' + $currentTimestamp;
+        $newVideoNameId.value = '新剪切视频' + $currentTimestamp;
     }
 
     /**

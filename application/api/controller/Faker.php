@@ -11,6 +11,7 @@
 namespace app\api\controller;
 
 
+use app\common\model\Area;
 use Faker\Factory;
 use redis\BaseRedis;
 use think\Controller;
@@ -129,5 +130,14 @@ class Faker extends Controller
         halt($redis->lRange('L80001CommentsLate',0,10));
         $redis->set("USERNAME",'Tinywan');
         halt($redis);
+    }
+
+    /**
+     * 2312
+     */
+    public function area(){
+        $redis = Area::get(255);
+        halt($redis->toArray());
+
     }
 }

@@ -14,7 +14,7 @@ use think\Route;
 Route::rule('read/:id','api/User/read');
 //Route::rule(':version/user/:id','api/:version.User/read');
 //约束变量的规则进行路由匹配
-Route::rule(':version/faker/:sign/[:limit]','api/:version.Faker/read');
+//Route::rule(':version/faker/:sign/[:limit]','api/:version.Faker/read');
 
 //路由地址=>流地址路由 这里修改要和阿里云数据回调地址一样哦
 //Route::rule('api/createTestAddress','api/Stream/createTestAddress');

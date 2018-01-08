@@ -3,6 +3,7 @@
 namespace app\backend\controller\auth;
 
 use app\common\controller\BaseBackend;
+use app\common\model\AuthRule as AuthRuleModel;
 use houdunwang\arr\Arr;
 use think\Request;
 
@@ -21,9 +22,9 @@ class AuthRule extends BaseBackend
      *
      * @return \think\Response
      */
-    public function rulelist()
+    public function ruleList()
     {
-        $ruleInfo = db('auth_rule')->select();
+        $ruleInfo = AuthRuleModel::all();
         $res = Arr::tree($ruleInfo, 'title', $fieldPri = 'id', $fieldPid = 'pid');
         $this->assign('lists', $res);
         return $this->fetch();
@@ -122,7 +123,40 @@ class AuthRule extends BaseBackend
         }
     }
 
-    public function jquery(){
+    public function jquery()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 权限(后台菜单)显示/隐藏
+     */
+    public function authRuleState()
+    {
+        $id=input('x');
+        $statusone=Db::name('auth_rule')->where(array('id'=>$id))->value('status');//判断当前状态情况
+        if($statusone==1){
+            $statedata = array('status'=>0);
+            Db::name('auth_rule')->where(array('id'=>$id))->setField($statedata);
+            Cache::clear();
+            $this->success('状态禁止');
+        }else{
+            $statedata = array('status'=>1);
+            Db::name('auth_rule')->where(array('id'=>$id))->setField($statedata);
+            Cache::clear();
+            $this->success('状态开启');
+        }
+    }
+
+    /**
+     * 后台菜单管理
+     * @return mixed
+     */
+    public function menuList()
+    {
+        $ruleInfo = AuthRuleModel::all();
+        $res = Arr::tree($ruleInfo, 'title', $fieldPri = 'id', $fieldPid = 'pid');
+        $this->assign('lists', $res);
         return $this->fetch();
     }
 }

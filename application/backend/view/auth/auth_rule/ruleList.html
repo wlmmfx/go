@@ -66,11 +66,21 @@
                                 </span>
                             </td>
                             <td>{$user['type']}</td>
-                            <td>{$user['status']}</td>
+                            <td>
+                                {if condition="$user['status'] eq 1"}
+                                <a class="red display-btn" href="{:url('backend/auth.auth_rule/authRuleState')}" data-id="{$user.id}" title="已显示">
+                                    <div id="{$user.id}"><button class="btn btn-minier btn-yellow">显示</button></div>
+                                </a>
+                                {else/}
+                                <a class="red display-btn" href="{:url('backend/auth.auth_rule/authRuleState')}" data-id="{$user.id}" title="已隐藏">
+                                    <div id="{$user.id}"><button class="btn btn-minier btn-danger">隐藏</button></div>
+                                </a>
+                                {/if}
+                            </td>
                             <td>{$user['_level']}</td>
                             <td>{$user['condition']}</td>
                             <td>
-                                <a href="{:url('backend/auth.auth_rule/subpage',['id'=>$user['id']])}">
+                                <a href="{:url('backend/auth.auth_rule/subPage',['id'=>$user['id']])}">
                                     <button class="btn btn-success btn-xs">
                                         <i class="icon-plus"></i>添加子规则
                                     </button>

@@ -29,7 +29,7 @@ class Article extends BaseModel
 
     //自动完成 字段
     protected $auto = [
-        "author_id"
+        "admin_id"
     ];
 
     //插入的时候自动完成

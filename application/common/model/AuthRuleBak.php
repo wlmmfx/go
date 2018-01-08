@@ -18,24 +18,6 @@ class AuthRule extends BaseModel
     protected $table = "resty_auth_rule"; //完整的表名
 
     /**
-     * 获取所有父节点id(含自身)
-     * @param int $id 节点id
-     * @return array
-     */
-    public function getAdminParents($id = 0)
-    {
-        if (empty($id)) return [];
-        $lists = self::order('level desc,sort')->column('pid', 'id');
-        $ids = [];
-        while (isset($lists[$id]) && $lists[$id] != 0) {
-            $ids[] = $id;
-            $id = $lists[$id];
-        }
-        if (isset($lists[$id]) && $lists[$id] == 0) $ids[] = $id;
-        return array_reverse($ids);
-    }
-
-    /**
      * 需要改进
      * @return mixed
      */
@@ -166,4 +148,48 @@ class AuthRule extends BaseModel
         }
         return $tmp;
     }
+
+    /**
+     * 获取所有父节点id(含自身)
+     * @param int $id 节点id
+     * @return array
+     */
+    public function get_admin_parents($id = 0)
+    {
+        $id = $id ?: $this->get_url_id('', 1);
+        if (empty($id)) return [];
+        $lists = self::order('level desc,sort')->column('pid', 'id');
+        $ids = [];
+        while (isset($lists[$id]) && $lists[$id] != 0) {
+            $ids[] = $id;
+            $id = $lists[$id];
+        }
+        if (isset($lists[$id]) && $lists[$id] == 0) $ids[] = $id;
+        return array_reverse($ids);
+    }
+
+    /**
+     * 获取当前节点及父节点下菜单(仅显示状态)
+     * @param int $id 节点id
+     * @return array|mixed
+     */
+    public function get_admin_parent_menus(&$id)
+    {
+        $id = $this->get_url_id('', 1);
+        $pid = self::where('id', $id)->value('pid');
+        //取$pid下子菜单
+        $menus = self::where(array('status' => 1, 'pid' => $pid))->order('sort')->select();
+        return $menus;
+    }
+
+    /**
+     * 获取不需要验证的节点id
+     * @return array
+     */
+    public static function get_notcheck_ids()
+    {
+        $ids = self::where('notcheck', 1)->column('id');
+        return $ids;
+    }
+
 }

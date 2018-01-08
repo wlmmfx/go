@@ -74,13 +74,16 @@ class Auth
     //默认配置
     protected $config = array(
         'auth_on' => true,                      // 认证开关
-        'auth_type' => 2,                         // 认证方式，1为实时认证；2为登录认证。
+        'auth_type' => 1,                         // 认证方式，1为实时认证；2为登录认证。
         'auth_group' => 'auth_group',        // 用户组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-用户组关系表
         'auth_rule' => 'auth_rule',         // 权限规则表
         'auth_user' => 'user'             // 用户信息表
     );
 
+    /**
+     * Auth constructor.
+     */
     public function __construct()
     {
         $prefix = config('auth_config')['db_prefix'];
@@ -167,7 +170,7 @@ class Auth
      * @param integer $uid 用户id
      * @param integer $type
      */
-    protected function getAuthList($uid, $type)
+    public function getAuthList($uid, $type)
     {
         static $_authList = []; //保存用户验证通过的权限列表
         $t = implode(',', (array)$type);

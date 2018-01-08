@@ -76,7 +76,6 @@ function ip_format($ip)
     return $res['country'] . '、' . $res['region'] . '、' . $res['city'] . '&nbsp;（' . $res['isp'] . '）';
 }
 
-
 //计算该月有几天
 function getdaysInmonth($month, $year)
 {

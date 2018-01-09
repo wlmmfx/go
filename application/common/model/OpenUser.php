@@ -11,14 +11,18 @@
 
 namespace app\common\model;
 
+use traits\model\SoftDelete;
+
 class OpenUser extends BaseModel
 {
+    use SoftDelete;
+
     protected $pk = "id";
 
     // 对应规则和上面的系统约定不符合：模型名（OpenUser）=》对应数据表（protected $table = 'resty_open_user';）
     protected $table = "resty_open_user"; //完整的表名
 
-    // 开启时间字段自动写入
+    // 开启时间字段自动写入,建议数据表的所有时间字段统一使用autoWriteTimestamp属性规范时间类型
     protected $autoWriteTimestamp = true;
 
     // 定义时间字段名
@@ -33,7 +37,7 @@ class OpenUser extends BaseModel
     protected $resultSetType = 'collection';
 
     // 追加额外的（获取器）属性
-    protected $append  = ['level'];
+    protected $append = ['level'];
 
     /**
      * 模型事件
@@ -46,8 +50,18 @@ class OpenUser extends BaseModel
             $user->ip = request()->ip();
         });
         OpenUser::beforeWrite(function ($user) {
-            $user->realname = 'ACCOUNT-'.$user->account;
+            $user->realname = 'ACCOUNT-' . $user->account;
         });
+    }
+
+    /**
+     * 恢复被软删除的记录
+     * @param $id
+     * @return int
+     */
+    public function recycleRestore($id)
+    {
+        return $this->restore(['id' => $id]);
     }
 
     /**
@@ -109,7 +123,7 @@ class OpenUser extends BaseModel
      * echo $user->user_app;
      * </pre>
      */
-    protected function getUserAppAttr($value,$data)
+    protected function getUserAppAttr($value, $data)
     {
         return $data['app_id'] . ':' . $data['app_secret'];
     }
@@ -120,7 +134,17 @@ class OpenUser extends BaseModel
      * @param $data
      * @return string
      */
-    protected function setScoreAttr($value,$data)
+    protected function setScoreAttr($value, $data)
+    {
+        return $data['app_id'] . ':' . $data['app_secret'];
+    }
+
+    /**
+     * 修改器回收站恢复
+     * 注意：参数绑定，Post 数据也是可以接受的
+     * @return \think\response\Json
+     */
+    protected function setDeleteTimeAttr($value, $data)
     {
         return $data['app_id'] . ':' . $data['app_secret'];
     }
@@ -142,14 +166,14 @@ class OpenUser extends BaseModel
 
     /**
      * 用户登录认证
-     * @param  string  $username 用户名
-     * @param  string  $password 用户密码
+     * @param  string $username 用户名
+     * @param  string $password 用户密码
      * @return integer 登录成功-用户ID，登录失败-返回0或-1
      */
     public function loginCheck($username, $password)
     {
         $where['username'] = $username;
-        $where['status']   = 1;
+        $where['status'] = 1;
         /* 获取用户数据 */
         $user = $this->where($where)->find();
         if ($user) {
@@ -167,7 +191,7 @@ class OpenUser extends BaseModel
 
     /**
      * 获取用户信息
-     * @param  integer  $uid 用户主键
+     * @param  integer $uid 用户主键
      * @return array|integer 成功返回数组，失败-返回-1
      */
     public function userInfo($uid)
@@ -197,7 +221,7 @@ class OpenUser extends BaseModel
      */
     public function userIsExistByOpenId($openId)
     {
-        $res = $this->where('open_id',$openId)->find();
+        $res = $this->where('open_id', $openId)->find();
         if (!$res) return ['valid' => 0, 'msg' => "不存在"];
         return ['valid' => 1, 'msg' => "存在"];
     }
@@ -222,7 +246,7 @@ class OpenUser extends BaseModel
         $userInfoEnable = $this->where("enable=:enable and email=:email")->bind(['enable' => 0, 'email' => $data['email']])->find();
         if ($userInfoEnable) {
             // 4 放入邮件队列
-            addEmailTaskQueue(1,2, $data['email'], 1);
+            addEmailTaskQueue(1, 2, $data['email'], 1);
             return ['valid' => 1, 'msg' => "邮件重新发送成功，请立即验证邮箱:" . $data['email']];
         }
         // 3 插入数据库
@@ -238,7 +262,7 @@ class OpenUser extends BaseModel
             session('open_user_username', $insertData['account']);
         }
         // 4 放入邮件队列
-        addEmailTaskQueue(1,2, $data['email'], 1);
+        addEmailTaskQueue(1, 2, $data['email'], 1);
         return ['valid' => 1, 'msg' => $data['email'] . "注册成功，请立即验证邮箱<br/>邮件发送至: " . $data['email']];
     }
 
@@ -337,4 +361,6 @@ class OpenUser extends BaseModel
         $sign = strtoupper(sha1($finalStr));
         return $sign;
     }
+
+
 }

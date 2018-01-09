@@ -3,6 +3,7 @@
 namespace app\backend\controller;
 
 use app\common\controller\BaseBackendController;
+use app\common\model\Logs;
 use think\Config;
 use think\Db;
 use think\Log;
@@ -166,7 +167,7 @@ class SystemController extends BaseBackendController
      */
     public function actionLog()
     {
-        $logs = Db::name("logs")->order('id desc')->paginate(20);
+        $logs = Logs::where(1)->order('id desc')->paginate(12);
         $this->assign('logs', $logs);
         $this->assign('sub_title', "日志文件");
         return $this->fetch();

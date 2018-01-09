@@ -41,16 +41,6 @@ class LiveController extends BaseBackendController
     }
 
     /**
-     * 当我们访问了一个不存在的操作方法，就会触发空操作检查
-     * @param $method
-     * @return string
-     */
-//    public function _empty($method)
-//    {
-//        return '当前操作名:'.$method;
-//    }
-
-    /**
      * 测试请求缓存
      * @return string
      */
@@ -627,11 +617,12 @@ class LiveController extends BaseBackendController
      */
     public function videoCut()
     {
-        $Videos = Db::table('resty_stream_video_edit')->whereNotIn('type', 3)->order('createTime desc')->limit(8)->select();
-        $editVideos = Db::table('resty_stream_video_edit')->where('type', 3)->order('createTime desc')->limit(8)->select();
-        $this->assign('videos', $Videos);
-        $this->assign('editVideos', $editVideos);
-        return $this->fetch();
+        $videos = StreamVideoEdit::whereNotIn('type', 3)->order('createTime desc')->limit(8)->select();
+        $editVideos = StreamVideoEdit::where('type', 3)->order('createTime desc')->limit(8)->select();
+        return $this->fetch('',[
+            'videos'=>$videos,
+            'editVideos'=>$editVideos
+        ]);
     }
 
     /**
@@ -665,7 +656,7 @@ class LiveController extends BaseBackendController
     {
         $video = StreamVideoEdit::where('id', $id)->find();
         $result['id'] = $video['id'];
-        $result['liveId'] = $video['streamName'];
+        $result['liveId'] = $video['liveId'];
         $result['streamName'] = $video['streamName'];
         $result['name'] = $video["name"];
         $result['fileName'] = $video["fileName"];
@@ -920,6 +911,7 @@ class LiveController extends BaseBackendController
         } else {
             $videoid = $videoInfo["id"];
             $liveId = $videoInfo["liveId"];
+            $streamName = $videoInfo["streamName"];
             $pid = $videoInfo["pid"];
             $desc = $videoInfo["name"];
             $fileName = $videoInfo["fileName"];
@@ -934,6 +926,7 @@ class LiveController extends BaseBackendController
                 'status' => 1,
                 'playpath' => $playpath,
                 'id' => $videoid,
+                'streamName' => $streamName,
                 'liveId' => $liveId,
                 'fileName' => $fileName,
                 'pid' => $pid,
@@ -972,7 +965,7 @@ class LiveController extends BaseBackendController
             }
             $videoData = [
                 'streamName' => $videoInfo['streamName'],
-                'liveId' => $videoInfo['streamName'],
+                'liveId' => $liveId,
                 'name' => $videoInfo['name'],
                 'type' => 1, // 1.录像 2.上传 3.编辑
                 'fileName' => $videoInfo['fileName'],
@@ -982,7 +975,7 @@ class LiveController extends BaseBackendController
                 'createTime' => getCurrentDate(),
                 'desc' => '视频录制同步',
             ];
-            $insertRes = Db::table('resty_stream_video_edit')->insertGetId($videoData);
+            $insertRes = StreamVideoEdit::create($videoData);
             if ($insertRes === false) {
                 $res = ['code' => 500, 'msg' => '同步失败'];
                 return json($res);
@@ -1021,7 +1014,7 @@ class LiveController extends BaseBackendController
         $fileName = $origVideoInfo['fileName'];
         $shellScript = self::SHELL_SCRIPT_PATH . "check_oss_cut_task_id.sh";
         $editConfig = [
-            'live_id' => $liveId,
+            'live_id' => $streamName,
             'origin_video_name' => $fileName,
             'start_time' => $starttime,
             'end_time' => $endtime,
@@ -1101,7 +1094,7 @@ class LiveController extends BaseBackendController
             $videoInfo = $this->videoInfoByVideoId($videoArr[$k]);
             $liveId = $videoInfo['liveId'];
             $streamName = $videoInfo['streamName'];
-            $cmdStr = $cmdStr . $liveId . ',' . $videoInfo['fileName'] . ',';
+            $cmdStr = $cmdStr . $streamName . ',' . $videoInfo['fileName'] . ',';
         }
         $cmdStr = substr($cmdStr, 0, strlen($cmdStr) - 1);
         # 自动切片
@@ -1112,7 +1105,7 @@ class LiveController extends BaseBackendController
         $pid = "-1";
         $editId = $new_video_id;
         $edit_config = [
-            'live_id' => $liveId,
+            'live_id' => $streamName,
             'new_video_id' => $new_video_id,
             'auto_slice' => $auto_slice,
             'all_param' => $cmdStr
@@ -1160,6 +1153,26 @@ class LiveController extends BaseBackendController
         }
         return json(['status' => 200, 'msg' => null]);
     }
+
+    /**
+     * -----------------------------------------------------------------发布--------------------------------------------
+     * 通过任视频ID把视频源发布到对应的活动当中去
+     * @return mixed
+     */
+    public function videoPublishToLive()
+    {
+        if ($this->request->isAjax()) {
+            $id = input('post.id');
+            $res = StreamVideoEdit::where('id', $id)->field('id,streamName,liveId')->find();
+            return json($res);
+//            if ($res) {
+//                return json(['code' => 200, 'msg' => '删除成功']);
+//            }
+//            return json(['code' => 500, 'msg' => "删除失败"]);
+        }
+        return json(['code' => 401, 'msg' => "Not Forbidden"]);
+    }
+
 
     /**
      * -----------------------------------------------------------------重新编辑----------------------------------------
@@ -1387,19 +1400,17 @@ class LiveController extends BaseBackendController
     /**
      * 禁止客户端推流
      */
-    public
-    function setForbidLiveStream()
+    public function setForbidLiveStream()
     {
         $id = request()->get('id');
         $streamInfo = Db::table('resty_stream_name')->where('id', $id)->find();
-        $appId = 1586740578218850;
         $domainName = $streamInfo['domain_name'];
         $appName = $streamInfo['app_name'];
         $streamName = $streamInfo['stream_name'];
         $resumeTime = '2027-11-30  09:15:00';
-
+        $appId = 'wmsefqotxvntbziv';
         //签名密钥
-        $appSecret = '35a41ca4b15fbdd68f9b35dc19709bc83561ebd7';
+        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
         $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ResumeTime" . $resumeTime . "StreamName" . $streamName . $appSecret;
         //签名串，由签名算法sha1生成

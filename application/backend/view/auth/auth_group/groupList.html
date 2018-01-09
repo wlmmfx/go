@@ -44,25 +44,21 @@
                             <td>{$user['title']}</td>
                             <td>
                                 {if condition="$user['status'] eq 1"}
-                                <button class="btn btn-xs btn-yellow set" value="{$user['id']}"><i class="icon-eye-open"></i>启用</button>
+                                <a class="btn btn-xs btn-yellow set" value="{$user['id']}"><i class="icon-eye-open"></i>启用</a>
                                 {else /}
-                                <button class="btn btn-xs btn-warning set" value="{$user['id']}"><i class="icon-eye-close"></i>禁用</button>
+                                <a class="btn btn-xs btn-warning set" value="{$user['id']}"><i class="icon-eye-close"></i>禁用</a>
                                 {/if}
                             </td>
                             <td>
-                                <a href="{:url('backend/auth.auth_group/addRules',['id'=>$user['id']])}">
-                                    <button class="btn btn-xs btn-warning">
-                                        <i class="icon-edit"></i>配置权限
-                                    </button>
+                                <a href="{:url('backend/auth.auth_group/addRules',['id'=>$user['id']])}" title="配置权限">
+                                    <i class="icon-cog bigger-125"></i>
                                 </a>
-                                <a href="{:url('backend/auth.auth_group/edit',['id'=>$user['id']])}">
-                                    <button class="btn btn-xs btn-primary">
-                                        <i class="icon-edit"></i>编辑
-                                    </button>
+                                <a href="{:url('backend/auth.auth_group/edit',['id'=>$user['id']])}" title="编辑">
+                                        <i class="icon-edit bigger-125"></i>
                                 </a>
-                                <button class="btn btn-xs btn-danger" onclick="group_del({$user['id']})">
-                                    <i class="icon-trash"></i>删除
-                                </button>
+                                <a href="javascript:group_del({$user['id']});" title="删除">
+                                    <i class="icon-trash bigger-125"></i>
+                                </a>
 
                             </td>
                         </tr>

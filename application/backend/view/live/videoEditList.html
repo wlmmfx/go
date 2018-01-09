@@ -94,9 +94,9 @@
                             </label>
                         </td>
                         <td>
-                            <a href="javascript:playModal('{$vo.liveId}','{$vo.fileName}','0');">
+                            <a href="javascript:playModal('{$vo.streamName}','{$vo.fileName}','0');">
                                 <div class="wrapper_player"
-                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_70,w_120');">
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.streamName}/video/{$vo.fileName}.jpg?x-oss-process=image/resize,m_fixed,h_70,w_120');">
                                     <div id="video_player">
                                     </div>
                                 </div>
@@ -129,11 +129,11 @@
                                     <i class="icon-eye-open"></i> 发布
                                 </button>
                             </a>
-                            <a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">
-                                <button class="btn btn-primary btn-xs">
-                                    <i class="icon-eye-open"></i> 预览
-                                </button>
-                            </a>
+                            <!--<a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">-->
+                                <!--<button class="btn btn-primary btn-xs">-->
+                                    <!--<i class="icon-eye-open"></i> 预览-->
+                                <!--</button>-->
+                            <!--</a>-->
                             <a href="javascript:delHanderModal('{$vo.id}');" class="btn btn-danger btn-xs">
                                 <i class="icon-trash bigger-130"></i>删除
                             </a>
@@ -281,12 +281,6 @@
                 //服务器成功响应处理函数
                 success: function ($response) {
                     console.log($response);
-                    if ($response.code == 200) {
-                        $('#data-' + $id).remove();
-                        successShow($response.msg);
-                    } else {
-                        failShow($response.msg);
-                    }
                 },
                 //服务器响应失败处理函数
                 error: function (data, status, e) {

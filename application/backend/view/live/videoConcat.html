@@ -90,9 +90,9 @@
                             <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
                         </li>
                         {volist name="videos" id="vo"}
-                        <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
+                        <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}" data-stream-name="{$vo.streamName}">
                             <div class="wrapper_player"
-                                 style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                 style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.streamName}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
                                 <div class="video_player">
                                 </div>
                                 <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
@@ -167,7 +167,7 @@
 
         // 视频预览
         $("#video-line-edit li").click(function () {
-            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("streamName") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
             $("#live-stream_html5_api").load();
             $("#origin-video-id").val($(this).data("id"));
 
@@ -176,12 +176,12 @@
         var $currentTimestamp = Date.parse(new Date());
         // 素材预览
         $("#upload-video li").click(function () {
-            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("streamName") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
             $("#live-stream_html5_api").load();
             $("#origin-video-id").val($(this).data("id"));
             console.log('-------视频预览---------' + $(this).data("id"));
             var $li = '<li id="data-' + $(this).data("id") + '">' +
-                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.jpg" width="220" height="160">' +
+                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("streamName") + '/video/' + $(this).data("fileName") + '.jpg" width="220" height="160">' +
                 '<span class="lbl" data-id=' + $(this).data("id") + ' id="remove-video-li"><i class="icon-trash bigger"></i></span>&nbsp;' +
                 '<label>' +
                 '<input name="concat-checkbox" type="checkbox" class="ace" value=' + $(this).data("id") + '>' +
@@ -268,7 +268,7 @@
                 } else {
                     //视频已经检测到
                     successShow(data.desc + "视频合并已完成,请在编辑列表点击播放预览");
-                    var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
+                    var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.streamName + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
                     var $li = '<li data-file-name="' + data.fileName + '" data-id="' + data.id + '" data-live-id="' + data.liveId + '">' +
                         '<div class="wrapper_player" style="background-image:' + $url + '">' +
                         '<div class="video_player">' +

@@ -1,6 +1,6 @@
 <div class="page-header">
     <h1>
-        OAuth平台用户信息
+        回收站
         <small>
             <i class="icon-double-angle-right"></i>
             动态表格分析列表
@@ -13,7 +13,6 @@
             <div class="row">
                 <div class="col-sm-8">
                     <div class="btn-group">
-                        <a  href="{:url('backend/open_user/recycleData')}" class="btn btn-sm btn-danger"><i class="icon-trash"></i>回收站</a>
                         <button class="btn btn-sm btn-yellow">平台</button>
 
                         <button data-toggle="dropdown" class="btn btn-sm btn-yellow dropdown-toggle">
@@ -81,8 +80,11 @@
                         {$vo['type']}
                     </td>
                     <td style="vertical-align: middle;">
-                        <a href="javascript:delHanderModal({$vo.id});" class="btn btn-danger btn-xs">
-                            <i class="icon-trash"></i>软删除
+                        <a href="javascript:runHanderModal({$vo.id});" class="btn btn-primary btn-xs">
+                            <i class="icon-reply"></i>恢复
+                        </a>
+                        <a href="#" class="btn btn-default btn-xs">
+                            <i class="icon-trash"></i>彻底删除
                         </a>
                     </td>
                 </tr>
@@ -96,6 +98,11 @@
 
 <script type="text/javascript">
     var $id;
+    function runHanderModal(id) {
+        $id = id;
+        $("#runHanderModal").modal("show");
+    }
+
     function delHanderModal(id) {
         $id = id;
         $("#delHanderModal").modal("show");
@@ -103,7 +110,38 @@
     $(document).ready(function () {
         $('body').delegate('.del-hander', 'click', function () {
             $("#delHanderModal").modal("hide");
-            var $url = "{:url('backend/open_user/softDelete')}";
+            var $url = "{:url('backend/open_user/hardDelete')}";
+            var $_data = {
+                'id': $id
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+                        successShow($response.msg);
+                        $('#data-' + $id).remove();
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+        /**
+         * 回收站数据恢复
+         */
+        $('body').delegate('.run-hander', 'click', function () {
+            $("#runHanderModal").modal("hide");
+            var $url = "{:url('backend/open_user/recycleRestore')}";
             var $_data = {
                 'id': $id
             };

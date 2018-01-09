@@ -80,7 +80,6 @@
                 <thead>
                 <tr>
                     <th>推流地址</th>
-                    <th>推流名称</th>
                     <th>推流时间</th>
                     <th>推流地域</th>
                     <th>操作&nbsp;&nbsp;&nbsp;&nbsp;
@@ -98,7 +97,6 @@
                               data-clipboard-text="rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
                               style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
                     </td>
-                    <td>{$vo['stream_name']}</td>
                     <td>
                         起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
                         止:&nbsp;{empty name="$vo['stop_time']"}

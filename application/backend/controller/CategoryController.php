@@ -8,6 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
+
 namespace app\backend\controller;
 
 use app\common\controller\BaseBackendController;
@@ -25,7 +26,7 @@ class CategoryController extends BaseBackendController
     public function index()
     {
         $res = $this->db->getAll();
-        $this->assign('sub_title',"栏目列表");
+        $this->assign('sub_title', "栏目列表");
         return $this->fetch('index', [
             'categorys' => $res
         ]);
@@ -49,9 +50,10 @@ class CategoryController extends BaseBackendController
     }
 
     /**
+     *
      * 添加子集栏目
      */
-    public function subPage()
+    public function subPage($id=0)
     {
         if (request()->isPost()) {
             $res = $this->db->store(input('post.'));
@@ -63,7 +65,7 @@ class CategoryController extends BaseBackendController
                 exit;
             }
         }
-        $id = input('param.id');
+        if (empty($id) || $id == 0) return $this->error('参数不能为空');
         $sub = $this->db->where('id', $id)->find();
 
         $res = $this->db->getAll();
@@ -78,8 +80,8 @@ class CategoryController extends BaseBackendController
      */
     public function edit()
     {
-        $this->assign('sub_title',"栏目编辑");
-        if(request()->isPost()){
+        $this->assign('sub_title', "栏目编辑");
+        if (request()->isPost()) {
             $res = $this->db->edit(input('post.'));
             if ($res["valid"]) {
                 $this->success($res["msg"], "backend/category/index");
@@ -92,15 +94,16 @@ class CategoryController extends BaseBackendController
         $id = input('param.id');
         $oldData = $this->db->find($id);
         $lastData = $this->db->getEditCategory($id);
-        $this->assign('old_data',$oldData);
-        $this->assign('last_data',$lastData);
+        $this->assign('old_data', $oldData);
+        $this->assign('last_data', $lastData);
         return $this->fetch();
     }
 
     /**
      * 删除栏目
      */
-    public function del(){
+    public function del()
+    {
         $id = input('param.id');
         $res = $this->db->del($id);
         if ($res["valid"]) {

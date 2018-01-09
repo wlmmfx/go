@@ -4,18 +4,16 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2017/12/21 14:13
+ * |  DateTime: 2018/1/5 13:27
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\business\controller;
+namespace app\common\controller;
 
 
-use app\common\controller\BaseFrontendController;
+use think\Controller;
 
-class ModuleCase extends BaseFrontendController
+class BaseApiController extends Controller
 {
-    public function index(){
-        return $this->fetch();
-    }
+
 }

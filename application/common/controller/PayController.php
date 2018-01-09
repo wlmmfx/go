@@ -4,18 +4,15 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  DateTime: 2017/9/21 10:28
+ * |  DateTime: 2017/9/21 10:27
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
 
-namespace app\frontend\controller;
+namespace app\common\controller;
 
 
-use app\common\controller\BaseFrontendController;
-
-class Product extends BaseFrontendController
+class PayController extends BaseController
 {
-
 
 }

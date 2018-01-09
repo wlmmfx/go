@@ -4,18 +4,26 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  DateTime: 2017/9/21 10:28
+ * |  DateTime: 2017/11/7 10:08
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
 
-namespace app\frontend\controller;
+namespace app\backend\controller;
 
 
-use app\common\controller\BaseFrontendController;
-
-class Product extends BaseFrontendController
+class TraitTestController
 {
+    use \traits\controller\Jump;
 
+    /**
+     * 现在我们可以直接使用\traits\controller\Jump中定义的方法
+     * 包括success/error/result/redirect
+     * @return string
+     */
+    public function hello()
+    {
+        return 'hello';
+    }
 
 }

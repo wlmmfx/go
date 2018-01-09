@@ -4,7 +4,7 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2017/12/21 14:13
+ * |  DateTime: 2017/12/28 14:54
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
@@ -13,9 +13,10 @@ namespace app\business\controller;
 
 use app\common\controller\BaseFrontendController;
 
-class ModuleCase extends BaseFrontendController
+class MediaController extends BaseFrontendController
 {
-    public function index(){
+    public function hls()
+    {
         return $this->fetch();
     }
 }

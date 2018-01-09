@@ -12,5 +12,5 @@ use think\Route;
 // 定义路由规则 并设置60秒的缓存
 Route::get('/', 'business/Index/index');
 Route::get('hls', 'business/media/hls');
-//Route::get('p/:id', 'business/Index/detail', [], ['id' => '\d+']);
+Route::get('p/:id', 'business/Index/detail', [], ['id' => '\d+']);
 Route::get('u/:id', 'business/user/home', [], ['id' => '\d+']);

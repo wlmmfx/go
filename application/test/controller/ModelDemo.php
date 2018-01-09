@@ -11,8 +11,8 @@
 namespace app\test\controller;
 
 
-use app\api\controller\Open;
-use app\common\controller\BaseFrontend;
+use app\api\controller\OpenController;
+use app\common\controller\BaseFrontendController;
 use app\common\model\Admin;
 use app\common\model\Article;
 use app\common\model\AuthGroup;
@@ -22,7 +22,7 @@ use app\common\model\User;
 use app\common\model\Vod;
 use think\Db;
 
-class ModelDemo extends BaseFrontend
+class ModelDemo extends BaseFrontendController
 {
 
     /**

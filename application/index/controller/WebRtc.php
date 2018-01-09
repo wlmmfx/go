@@ -12,13 +12,13 @@ namespace app\index\controller;
 
 
 use aliyun\oss\Oss;
-use app\common\controller\BaseFrontend;
+use app\common\controller\BaseFrontendController;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use think\Db;
 use think\Log;
 
-class WebRtc extends BaseFrontend
+class WebRtc extends BaseFrontendController
 {
     public function index()
     {

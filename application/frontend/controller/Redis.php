@@ -12,13 +12,13 @@
 namespace app\frontend\controller;
 
 
-use app\common\controller\BaseFrontend;
+use app\common\controller\BaseFrontendController;
 use Ehann\RediSearch\Fields\NumericField;
 use Ehann\RediSearch\Fields\TextField;
 use Ehann\RediSearch\Index;
 use Ehann\Tests\RediSearch\Fields\NumericFieldTest;
 
-class Redis extends BaseFrontend
+class Redis extends BaseFrontendController
 {
     public function demo1()
     {

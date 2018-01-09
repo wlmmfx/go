@@ -4,18 +4,19 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------
  * |  Author: Tinywan(SHaoBo Wan)
- * |  DateTime: 2017/9/21 10:28
+ * |  DateTime: 2017/9/21 10:31
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm.
  * '-------------------------------------------------------------------*/
 
-namespace app\frontend\controller;
+namespace app\backend\controller;
 
 
-use app\common\controller\BaseFrontendController;
+use app\common\controller\BaseBackendController;
 
-class Product extends BaseFrontendController
+class ShopController extends BaseBackendController
 {
-
-
+    public function index(){
+        return 'shop';
+    }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "00c17b831798dc85c85bad1c1ea25669",
+    "content-hash": "ae7cabf1687020dcf0e7949c14e107eb",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -4231,6 +4231,49 @@
                 "event-loop"
             ],
             "time": "2017-12-06T04:17:52+00:00"
+        },
+        {
+            "name": "xiaosier/libweibo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xiaosier/libweibo.git",
+                "reference": "d85d8fdd0b44731bce4ceab747b75d20bf8a12fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/xiaosier/libweibo/d85d8fdd0b44731bce4ceab747b75d20bf8a12fc.zip",
+                "reference": "d85d8fdd0b44731bce4ceab747b75d20bf8a12fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "saetv2.ex.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lazypeople",
+                    "email": "hfutming@gmail.com",
+                    "homepage": "http://lazy.changes.com.cn",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP sdk for Weibo open platform",
+            "homepage": "http://github.com/xiaosier/libweibo",
+            "keywords": [
+                "sdk",
+                "weibo"
+            ],
+            "time": "2017-07-14T12:15:43+00:00"
         }
     ],
     "packages-dev": [
@@ -4268,6 +4311,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "xiaosier/libweibo": 20,
         "eaglewu/swoole-ide-helper": 20
     },
     "prefer-stable": false,

@@ -57,7 +57,7 @@ class OAuthController extends BaseApiController
             return $this->redirect("/");
         } else {
             // 第六步，添加用户信息到数据库,使用模型静态方法创建数据
-            $userId = OpenUser::create([
+            $user = OpenUser::create([
                 'account' => $userJsonRes['login'],
                 'open_id' => $userJsonRes['id'],
                 'password' => md5('123456'),
@@ -74,9 +74,9 @@ class OAuthController extends BaseApiController
                 'app_id' => get_rand_string(),
                 'app_secret' => get_rand_string(40),
             ]);
-            if ($userId) {
+            if ($user) {
                 // 记录session信息
-                session('open_user_id', $userId);
+                session('open_user_id', $user->id);
                 session('open_user_username', $userJsonRes['login']);
                 return $this->redirect("/");
             } else {
@@ -107,7 +107,7 @@ class OAuthController extends BaseApiController
             session('open_user_username', $checkUserInfo['account']);
             return $this->redirect("/");
         } else {
-            $userId = OpenUser::create([
+            $user = OpenUser::create([
                 'account' => $userJsonRes['nickname'],
                 'open_id' => $openId,
                 'password' => md5('123456'),
@@ -119,9 +119,65 @@ class OAuthController extends BaseApiController
                 'app_id' => get_rand_string(),
                 'app_secret' => get_rand_string(40),
             ]);
-            if ($userId) {
-                session('open_user_id', $userId);
+            if ($user) {
+                session('open_user_id', $user->id);
                 session('open_user_username', $userJsonRes['nickname']);
+                return $this->redirect("/");
+            } else {
+                return $this->redirect("/");
+            }
+        }
+    }
+
+    // 微博登录
+    public function weiBo()
+    {
+        $obj = new \SaeTOAuthV2(config('oauth.weibo')['app_key'], config('oauth.weibo')['app_secret']);
+        $codeUrl = $obj->getAuthorizeURL(config('oauth.weibo')['call_back_url']);
+        header('location:' . $codeUrl);
+    }
+
+    // 微博回调
+    public function weiBoRedirectUri()
+    {
+        $code = input('get.code');
+        $obj = new \SaeTOAuthV2(config('oauth.weibo')['app_key'], config('oauth.weibo')['app_secret']);
+        $keys = [
+            'code' => $code,
+            'redirect_uri' => config('oauth.weibo')['call_back_url'],
+        ];
+        $token = $obj->getAccessToken('code', $keys);
+        session('WEIBO_ACCESS_TOKEN', $token);
+        setcookie('weibojs_' . $obj->client_id, http_build_query($token));
+        $client = new \SaeTClientV2(config('oauth.weibo')['app_key'], config('oauth.weibo')['app_secret'], $token['access_token']);
+        $getUid = $client->get_uid();
+        // 微博sdk方法获取用户的信息
+        $userInfo = $client->show_user_by_id($getUid['uid']);
+        // 入库了
+        $condition['open_id'] = $userInfo['id'];
+        $checkUserInfo = OpenUser::where($condition)->find();
+        if ($checkUserInfo) {
+            session('open_user_id', $checkUserInfo['id']);
+            session('open_user_username', $checkUserInfo['account']);
+            return $this->redirect("/");
+        } else {
+            $user = OpenUser::create([
+                'account' => $userInfo['name'],
+                'open_id' => $userInfo['id'],
+                'password' => md5('123456'),
+                'realname' => $userInfo['screen_name'],
+                'nickname' => $userInfo['screen_name'],
+                'avatar' => $userInfo['avatar_large'],
+                'company' => $userInfo['province'],
+                'address' => $userInfo['location'],
+                'site' => $userInfo['profile_url'],
+                'type' => '微博',
+                'app_id' => get_rand_string(),
+                'app_secret' => get_rand_string(40),
+            ]);
+            if ($user) {
+                session('open_user_id', $user->id);
+                session('open_user_username', $userInfo['name']);
                 return $this->redirect("/");
             } else {
                 return $this->redirect("/");

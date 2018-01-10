@@ -31,7 +31,7 @@
         "topthink/think-sae": "^1.0",
         "topthink/think-worker": "^1.0",
         "topthink/think-queue": "^1.0",
-        "topthink/think-testing": "^1.0",
+        "topthink/think-testing": "1.*",
         "topthink/think-helper": "^1.0",
         "php-ffmpeg/php-ffmpeg": "^0.9.3",
         "phpmailer/phpmailer": "~5.2",
@@ -52,7 +52,8 @@
         "php-curl-class/php-curl-class": "^8.0",
         "tinywan/easy-live": "^0.01.0",
         "clue/redis-react": "2.1",
-        "topthink/think-swoole": "^1.0"
+        "topthink/think-swoole": "^1.0",
+        "xiaosier/libweibo": "dev-master"
     },
     "autoload": {
         "psr-4": {

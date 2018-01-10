@@ -20,4 +20,9 @@ return [
         'app_key' => '751ef40924f54b59ca42064050f08292',
         'call_back_url' => 'https://www.tinywan.com/api/OAuth/qqRedirectUri'
     ],
+    'weibo'=>[
+        'app_key' => '3276577970',
+        'app_secret' => 'f20cd816fef2c7621b3b6c376297f331',
+        'call_back_url' => 'https://www.tinywan.com/api/OAuth/weiBoRedirectUri'
+    ],
 ];

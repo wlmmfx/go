@@ -73,11 +73,12 @@ class Live
     {
         $Action = 'ForbidLiveStream';
         $LiveStreamType = 'publisher';
-        $access_key_id =  config('aliyun_api.ACCESSKEYID');
+        $accessKeyId =  config('aliyun_api.ACCESSKEYID');
         $cdn_server_address = 'https://cdn.aliyuncs.com';
-        $parameters = ["Format" => "JSON",
+        $parameters = [
+            "Format" => "JSON",
             "Version" => "2014-11-11",
-            "AccessKeyId" => $access_key_id,
+            "AccessKeyId" => $accessKeyId,
             "SignatureVersion" => "1.0",
             "SignatureMethod" => "HMAC-SHA1",
             "SignatureNonce" => self::uuid(),
@@ -96,6 +97,46 @@ class Live
         //拼接url
         $url = $cdn_server_address . "/?" . http_build_query($parameters);
         $responseResult = json_decode(file_get_contents($url), true);
+        return $responseResult;
+    }
+
+    /**
+     * 恢复直播流推送
+     * Help documentation：https://help.aliyun.com/document_detail/35414.html
+     * Action：ResumeLiveStream
+     * @param $DomainName
+     * @param $AppName
+     * @param $StreamName
+     * @return array
+     */
+    public static function setAliResumeLiveStream($DomainName, $AppName, $StreamName)
+    {
+        $Action = 'ResumeLiveStream';
+        $LiveStreamType = 'publisher';
+        $accessKeyId = config('aliyun_api.ACCESSKEYID');
+        $cdn_server_address = 'https://cdn.aliyuncs.com';
+        $parameters = [
+            "Format" => "JSON",
+            "Version" => "2014-11-11",
+            "AccessKeyId" => $accessKeyId,
+            "SignatureVersion" => "1.0",
+            "SignatureMethod" => "HMAC-SHA1",
+            "SignatureNonce" => self::uuid(),
+            "TimeStamp" => gmdate('c'),
+        ];
+        //这几个参数应该是输入的 这里写死了
+        $parameters['Action'] = $Action;
+        $parameters['DomainName'] = $DomainName;
+        $parameters['AppName'] = $AppName;
+        $parameters['StreamName'] = $StreamName;
+        $parameters['LiveStreamType'] = $LiveStreamType;
+
+        //添加签名信息
+        $parameters['Signature'] = self::getSign($parameters);
+        //拼接url
+        $url = $cdn_server_address . "/?" . http_build_query($parameters);
+        $responseResult = json_decode(file_get_contents($url), true);
+        if (empty($responseResult)) return false;
         return $responseResult;
     }
 

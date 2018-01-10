@@ -1,6 +1,6 @@
 <div class="page-header">
     <h1>
-        推流详情
+        流数据
         <small>
             <i class="icon-double-angle-right"></i>
             动态表格分析列表
@@ -79,7 +79,6 @@
                     <td>{$vo['create_time']}</td>
                     <td>{$vo['user_id']}</td>
                     <td>
-
                         {switch name="vo.push_auth"}
                         {case value="0"}
                         <a href="javescript:vod(0);">
@@ -90,7 +89,7 @@
                         {/case}
                         {case value="1"}
                         <a href="javescript:vod(0);">
-                            <a class="btn btn-success btn-xs setForbidLiveStream" data-id="{$vo['id']}">
+                            <a class="btn btn-success btn-xs setResumeLiveStream" data-id="{$vo['id']}">
                                 <i class="icon-lock"></i>解除禁止
                             </a>
                         </a>
@@ -118,9 +117,10 @@
                 dataType: "json",
                 //服务器成功响应处理函数
                 success: function ($response) {
+                    console.table($response);
                     if ($response.code == 200) {
                         successShow($response.msg);
-                        window.loaction.reload();
+                        window.location.reload();
                     } else {
                         failShow($response.msg);
                     }
@@ -135,6 +135,16 @@
         // 禁止推流
         $('body').delegate('.setForbidLiveStream', 'click', function () {
             var $url = "{:url('backend/live/setForbidLiveStream')}";
+            var $data = {
+                "id": $(this).data('id')
+            };
+            console.log($data);
+            commonAjax($url, $data);
+        });
+
+        // 恢复推流
+        $('body').delegate('.setResumeLiveStream', 'click', function () {
+            var $url = "{:url('backend/live/setResumeLiveStream')}";
             var $data = {
                 "id": $(this).data('id')
             };

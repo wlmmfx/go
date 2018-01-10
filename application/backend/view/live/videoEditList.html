@@ -12,9 +12,9 @@
     }
 
     .wrapper_player {
-        height: 70px;
+        height: 80px;
         width: 120px;
-        padding-top: 15px;
+        padding-top: 20px;
         padding-left: 39px;
         border: 1px solid #bdb1b1;
         -moz-box-shadow: 3px 3px 4px #000;
@@ -74,13 +74,10 @@
                                 <span class="lbl"></span>
                             </label>
                         </th>
+                        <th>预览观看</th>
                         <th>视频资源信息</th>
-                        <th>任务ID</th>
-                        <th>名称</th>
-                        <th>大小</th>
-                        <th>时长</th>
-                        <th>状态(全部)</th>
                         <th>编辑时间(降序)</th>
+                        <th>状态(全部)</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -102,10 +99,13 @@
                                 </div>
                             </a>
                         </td>
-                        <td>{$vo.task_id}</td>
-                        <td>{$vo.name}</td>
-                        <td>{$vo.fileSize|trans_byte}</td>
-                        <td>{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
+                        <td>
+                            <strong>{$vo.name}</strong><br>
+                            任务ID：{$vo.task_id}<br>
+                            视频时长：{$vo['duration']|gmstrftime="%H:%M:%S",###}<br>
+                            视频大小：{$vo.fileSize|trans_byte}<br>
+                        </td>
+                        <td>{$vo.createTime}</td>
                         <td>
                             {switch name="vo.editresult"}
                             {case value="1"}
@@ -122,11 +122,15 @@
                             </a>
                             {/switch}
                         </td>
-                        <td>{$vo.createTime}</td>
                         <td>
                             <a href="javascript:videoPublish('{$vo.id}');" target="_blank">
                                 <button class="btn btn-warning btn-xs">
                                     <i class="icon-eye-open"></i> 发布
+                                </button>
+                            </a>
+                            <a href="javascript:videoPublish('{$vo.id}');" target="_blank">
+                                <button class="btn btn-primary btn-xs">
+                                    <i class="icon-eye-open"></i> 另行发布
                                 </button>
                             </a>
                             <!--<a href="{:url('live/Index/detail',['id'=>$vo['liveId']])}" target="_blank">-->
@@ -172,7 +176,7 @@
             </div>
             <div class="modal-body">
                 <h4>
-                    确定要删除吗？
+                    确定要发布该视频吗？
                 </h4>
             </div>
             <div class="modal-footer">

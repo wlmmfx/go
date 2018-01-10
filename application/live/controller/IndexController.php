@@ -12,9 +12,8 @@
 namespace app\live\controller;
 
 use app\common\controller\BaseFrontendController;
-use app\common\model\Admin;
-use app\common\model\Article;
-use app\common\model\AuthGroup;
+use app\common\model\Live;
+use app\common\model\StreamName;
 use think\Db;
 
 class IndexController extends BaseFrontendController
@@ -66,14 +65,38 @@ class IndexController extends BaseFrontendController
     /**
      * 活动详情
      */
-    public function detail()
+    public function detail($id)
     {
-        $liveId = input('param.id');
-        $live = Db::table('resty_live')->where('id', $liveId)->cache('RESTY_LIVE:'.$liveId)->find();
-        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
-        $this->assign('streamInfo', $streamInfo);
-        $this->assign('live', $live);
-        return $this->fetch();
+        $live = Db::name('live')->alias('l')
+            ->join('resty_file f', "f.live_id = l.id")
+            ->where('l.id',$id)
+            ->field('l.id,l.name,l.liveStartTime,l.liveEndTime,l.stream_name,l.stream_id,l.isLive,l.autoPlay,f.path')
+            ->cache('LIVE_RESTY_LIVE_DETAIL:'.$id)
+            ->find();
+        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
+        return $this->fetch('',[
+            'streamInfo'=>$streamInfo,
+            'live'=>$live
+        ]);
+    }
+
+    /**
+     * https://www.tinywan.com/live/Index/detail3/id/201710016.html
+     * @param $id
+     * @return mixed
+     */
+    public function detail3($id)
+    {
+        $live = Db::name('live')->alias('l')
+            ->join('resty_file f', "f.live_id = l.id")
+            ->where('l.id',$id)
+            ->field('l.id,l.name,l.liveStartTime,l.liveEndTime,l.stream_name,l.stream_id,l.isLive,l.autoPlay,f.path')
+            ->find();
+        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
+        return $this->fetch('',[
+            'streamInfo'=>$streamInfo,
+            'live'=>$live
+        ]);
     }
 
     /**

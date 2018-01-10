@@ -94,6 +94,7 @@ class OpenUserController extends BaseBackendController
             ->field('id,open_id,account,realname,nickname,avatar,ip,company,address,create_time,type,score')
             ->order('create_time desc')
             ->paginate(10);
+        $this->assign('empty','<h2><span class="empty">回收站暂时没有数据</span></h2>');
         $this->assign('page', $user);
         return $this->fetch();
     }

@@ -12,8 +12,10 @@ namespace app\api\controller;
 
 use aliyun\api\Live;
 use app\common\controller\BaseApiController;
+use app\common\model\StreamName;
 use Curl\Curl;
 use think\Db;
+use think\helper\Str;
 use think\Log;
 use think\Request;
 
@@ -442,6 +444,7 @@ class StreamController extends BaseApiController
             ];
             return json($result);
         }
+        //接口兼容
         $responseInfo = Live::setAliForbidLiveStream($DomainName, $AppName, $StreamName, prcToUtc($requestResumeTime));
         if ($responseInfo == false) {
             $result = [
@@ -452,7 +455,10 @@ class StreamController extends BaseApiController
             return json($result);
         }
         // 修改数据库
-        $tableModel = Db::table('resty_stream_name')->where('stream_name', $StreamName)->update(['push_auth' => 1]);
+//        $tableModel = Db::table('resty_stream_name')->where('stream_name', $StreamName)->update(['push_auth' => 1]);
+        $tableModel = StreamName::update([
+            'push_auth' => 1
+        ],['stream_name'=>$StreamName]);
         if ($tableModel === false) {
             $result = [
                 'status_code' => 50014,
@@ -466,6 +472,69 @@ class StreamController extends BaseApiController
             ->sIsMember('GLOBAL_STREAM_WHITE_LIST', $StreamName)
             ->sRem('GLOBAL_STREAM_WHITE_LIST', $StreamName)
             ->exec();
+        $responseInfo['res'] = $res;
+        $result = [
+            'status_code' => 200,
+            'msg' => 'success',
+            'data' => $responseInfo
+        ];
+        return json($result);
+    }
+
+    /**
+     * 【正式二】 恢复直播流推送
+     * 该接口可能能调用回调处理，通知客户端服务器和自己的UI服务器实时反映流的禁止近况
+     */
+    public function setResumeLiveStream()
+    {
+        $sign = input('get.Sign');
+        $appId = input('get.AppId');
+        $DomainName = input('get.DomainName');
+        $AppName = input('get.AppName');
+        $StreamName = input('get.StreamName');
+        $requestResumeTime = input('get.ResumeTime');
+        if (empty($sign) || empty($appId) || empty($DomainName) || empty($AppName) || empty($StreamName)) {
+            $result = [
+                'status_code' => 40601,
+                'msg' => 'The input parameter not supplied' . $sign . ':' . $appId . ":" . $DomainName . ":" . $AppName . ":" . $StreamName . ":" . $requestResumeTime,
+                'data' => null
+            ];
+            return json($result);
+        }
+        //接口签名验证
+        $checkSign = self::checkApiSign($appId, $_GET);
+        if ($checkSign != $sign) {
+            $result = [
+                'status_code' => 40302,
+                'msg' => 'Invalid signature or signature error',
+                'data' => null,
+                'checkSign' => $checkSign,
+                'sign' => $sign,
+            ];
+            return json($result);
+        }
+        //接口兼容
+        $responseInfo = Live::setAliResumeLiveStream($DomainName, $AppName, $StreamName);
+        if ($responseInfo == false) {
+            $result = [
+                'status_code' => 50013,
+                'msg' => 'Live API interface call failed',
+                'data' => $responseInfo
+            ];
+            return json($result);
+        }
+        // 修改数据库
+        $tableModel = Db::table('resty_stream_name')->where('stream_name', $StreamName)->update(['push_auth' => 0]);
+        if ($tableModel === false) {
+            $result = [
+                'status_code' => 50014,
+                'msg' => ' StreamGlobal database update  fail!'
+            ];
+            return json($result);
+        }
+        //修改Redis数据库,$streamName添加到白名单中
+        $redis = messageRedis();
+        $res = $redis->sAdd('GLOBAL_STREAM_WHITE_LIST', $StreamName);
         $responseInfo['res'] = $res;
         $result = [
             'status_code' => 200,
@@ -576,7 +645,6 @@ class StreamController extends BaseApiController
         if ($res['status_code'] != 200) return json(['code' => 500, 'msg' => $res['msg']]);
         return json(['code' => 200, 'msg' => '操作成功']);
     }
-
 
     /**
      * 回调测试

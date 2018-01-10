@@ -534,21 +534,6 @@
     clipboard2.on('error', function (e) {
         console.log(e);
     });
-    // Success before include CommonJS
-    function successShow($msg) {
-        $("#auth-image").attr('src', '__COMMON__/images/success.svg');
-        $(".auth-msg").html($msg);
-        $("#authHanderModal").modal("show");
-    }
-
-    // Fail before include CommonJS
-    function failShow($msg) {
-        $(".modal-body").css("color", "red");
-        $("#auth-image").attr('src', '__COMMON__/images/error.svg');
-        $(".auth-msg").html($msg);
-        $("#authHanderModal").modal("show");
-    }
-
     $(function () {
         var bar = $('.bar');
         var percent = $('.percent');

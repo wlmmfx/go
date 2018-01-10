@@ -57,7 +57,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {volist name='page' id='vo'}
+                {volist name='page' id='vo' empty="$empty"}
                 <tr class="gradeX" id="data-{$vo.id}">
                     <td>
                         <img src="{$vo['avatar']}"

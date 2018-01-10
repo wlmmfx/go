@@ -14,6 +14,8 @@ namespace app\backend\controller;
 
 use aliyun\oss\Oss;
 use app\common\controller\BaseBackendController;
+use app\common\model\Live;
+use app\common\model\StreamName;
 use app\common\model\StreamVideo;
 use app\common\model\StreamVideoEdit;
 use \FFMpeg\Coordinate\TimeCode;
@@ -22,6 +24,7 @@ use OSS\Core\OssException;
 use Swoole\Table;
 use think\Db;
 use think\exception\HttpException;
+use think\helper\Str;
 use think\Log;
 use think\Request;
 
@@ -162,17 +165,17 @@ class LiveController extends BaseBackendController
     {
         $liveId = input('param.id');
         $streamName = input('param.streamName');
-        $live = Db::table("resty_live")->where('id', $liveId)->find();
+        $live = Live::where('id', $liveId)->cache('RESTY_LIVE_DETAIL:'.$liveId)->find();
         // 获取接口信息
-        $streamInfo = Db::table('resty_stream_name')->where('id', $live['stream_id'])->find();
-        $lives = Db::table("resty_live")
+        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
+        $lives = Db::name("live")
             ->alias('l')
             ->join('resty_file f', 'f.live_id = l.id')
             ->where('l.id', $liveId)
             ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,f.path")
             ->order("f.id desc")
             ->paginate(12);
-        $videos = Db::table('resty_stream_video')->where('streamName', $streamName)->order('createTime desc')->paginate(12);
+        $videos = StreamVideo::where(['liveId'=>$liveId])->order('createTime desc')->paginate(12);
 //        halt($videos);
         return $this->fetch('', [
             'videos' => $videos,
@@ -619,9 +622,9 @@ class LiveController extends BaseBackendController
     {
         $videos = StreamVideoEdit::whereNotIn('type', 3)->order('createTime desc')->limit(8)->select();
         $editVideos = StreamVideoEdit::where('type', 3)->order('createTime desc')->limit(8)->select();
-        return $this->fetch('',[
-            'videos'=>$videos,
-            'editVideos'=>$editVideos
+        return $this->fetch('', [
+            'videos' => $videos,
+            'editVideos' => $editVideos
         ]);
     }
 
@@ -839,7 +842,7 @@ class LiveController extends BaseBackendController
      * @param $eidittype
      * @return bool|int|string
      */
-    private function saveEditDataByTaskId($taskId, $editId, $pid = 0, $liveId,$streamName, $new_video_name, $editConfig, $eidittype)
+    private function saveEditDataByTaskId($taskId, $editId, $pid = 0, $liveId, $streamName, $new_video_name, $editConfig, $eidittype)
     {
         $msg = "视频剪切(cut)操作";
         $data = [
@@ -959,7 +962,7 @@ class LiveController extends BaseBackendController
             $videoInfo = StreamVideo::where('id', $videoId)->find();
             //先查询是否已经添加
             $isAdd = StreamVideoEdit::where('fileName', $videoInfo['fileName'])->find();
-            if($isAdd){
+            if ($isAdd) {
                 $res = ['code' => 500, 'msg' => '该视频已经被添加，请不要重复添加'];
                 return json($res);
             }
@@ -1024,7 +1027,7 @@ class LiveController extends BaseBackendController
             'auto_slice' => 0
         ];
         $pid = $origVideoInfo['id'];
-        $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $streamName,$new_video_name, $editConfig, 1);
+        $insertId = $this->saveEditDataByTaskId($taskId, $editid, $pid, $liveId, $streamName, $new_video_name, $editConfig, 1);
         $cmdStr = "{$shellScript} {$taskId}";
         // 根据版本号拼接视频文件名
         Log::debug('[' . getCurrentDate() . ']:' . "[03] 视频剪切操作 Shell 脚本参数 ： " . $cmdStr);
@@ -1110,7 +1113,7 @@ class LiveController extends BaseBackendController
             'auto_slice' => $auto_slice,
             'all_param' => $cmdStr
         ];
-        $insertId = $this->saveEditDataByTaskId($taskId, $editId, $pid, $liveId,$streamName,$new_video_name, $edit_config, 2);
+        $insertId = $this->saveEditDataByTaskId($taskId, $editId, $pid, $liveId, $streamName, $new_video_name, $edit_config, 2);
         // [3] 执行系统函数，运行shell 脚本
         $shell_script = self::SHELL_SCRIPT_PATH . "check_oss_concat_mv_task_id.sh";
         $cmdStr = "{$shell_script} {$taskId}";
@@ -1163,12 +1166,22 @@ class LiveController extends BaseBackendController
     {
         if ($this->request->isAjax()) {
             $id = input('post.id');
-            $res = StreamVideoEdit::where('id', $id)->field('id,streamName,liveId')->find();
-            return json($res);
-//            if ($res) {
-//                return json(['code' => 200, 'msg' => '删除成功']);
-//            }
-//            return json(['code' => 500, 'msg' => "删除失败"]);
+            $editInfo = StreamVideoEdit::where(['id'=>$id])->find();
+            $res = StreamVideo::create([
+                'streamName' => $editInfo->streamName,
+                'liveId' => $editInfo->liveId,
+                'name' => $editInfo->name,
+                'fileName' => $editInfo->fileName,
+                'fileTime' => $editInfo->fileTime,
+                'fileSize' => $editInfo->fileSize,
+                'duration' => $editInfo->duration,
+                'version' => 2,
+                'createTime' => getCurrentDate(),
+            ]);
+            if ($res) {
+                return json(['code' => 200, 'msg' => '删除成功']);
+            }
+            return json(['code' => 500, 'msg' => "删除失败"]);
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }
@@ -1337,12 +1350,12 @@ class LiveController extends BaseBackendController
             $condition = [
                 'stream_name' => ['like', '%' . $keyword . '%'],
             ];
-            $streamList = Db::table('resty_stream_name')->where($condition)->order('id desc')->paginate(14, false, [
+            $streamList = Db::table('resty_stream_name')->where($condition)->order('id desc')->paginate(12, false, [
                 'var_page' => 'page',
                 'query' => request()->param(),
             ]);
         } else {
-            $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(14);
+            $streamList = StreamName::where('id','<',1)->order('id desc')->paginate(12);
         }
         return $this->fetch('', [
             'lists' => $streamList
@@ -1426,7 +1439,42 @@ class LiveController extends BaseBackendController
         $response = curl_exec($ch);
         curl_close($ch);
         //返回数据为JSON格式，进行转换为数组打印输出
-        return json(json_decode($response, true));
+        $res = json_decode($response, true);
+        if ($res['status_code'] != 200) return json(['code' => 500, 'msg' => $res['msg']]);
+        return json(['code' => 200, 'msg' => '操作成功']);
+    }
+
+    /**
+     * 恢复直播流推送
+     */
+    public function setResumeLiveStream()
+    {
+        $id = request()->get('id');
+        $streamInfo = Db::table('resty_stream_name')->where('id', $id)->find();
+        $domainName = $streamInfo['domain_name'];
+        $appName = $streamInfo['app_name'];
+        $streamName = $streamInfo['stream_name'];
+        $appId = 'wmsefqotxvntbziv';
+        //签名密钥
+        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
+        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "StreamName" . $streamName . $appSecret;
+        //签名串，由签名算法sha1生成
+        $sign = strtoupper(sha1($str));
+        //请求资源访问路径以及请求参数，参数名必须为大写
+        $url = "https://www.tinywan.com/api/stream/setResumeLiveStream?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&StreamName=" . $streamName . "&Sign=" . $sign;
+        //CURL方式请求
+        $ch = curl_init() or die (curl_error());
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3600);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        //返回数据为JSON格式，进行转换为数组打印输出
+        $res = json_decode($response, true);
+        if ($res['status_code'] != 200) return json(['code' => 500, 'msg' => $res['msg']]);
+        return json(['code' => 200, 'msg' => '操作成功']);
     }
 
 

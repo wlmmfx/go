@@ -12,6 +12,7 @@
 namespace app\api\controller;
 
 use app\common\controller\BaseApiController;
+use app\common\model\Live;
 use app\common\model\StreamVideo;
 use app\common\model\StreamVideoEdit;
 use redis\BaseRedis;
@@ -22,25 +23,32 @@ class OpenController extends BaseApiController
     /**
      * 【正式-已上线】
      * 直播录像信息回调添加
+     * type:
+     * 1：直播录制
+     * 2：编辑
+     * 3：上传
      */
     public function createStreamVideo()
     {
         $version = input("get.version");
         $streamName = input("get.streamName");
-        $channelId = input("get.channelId");
         $baseName = input("get.baseName");
         $duration = input("get.duration");
         $fileSize = input("get.fileSize");
         $fileTime = input("get.fileTime");
 
+        //获取liveId
+        $live = Live::where('stream_name',$streamName)->field('id,stream_id,stream_name')->find();
         $res = StreamVideo::create([
             'streamName' => $streamName,
-            'liveId' => $channelId,
+            'liveId' => $live->id,
             'name' => $baseName,
             'fileName' => $baseName,
             'fileTime' => strftime("%Y-%m-%d %X", $fileTime),
             'fileSize' => $fileSize,
             'duration' => $duration,
+            'type' => 1,
+            'state' => 1,
             'version' => $version,
             'createTime' => getCurrentDate(),
         ]);

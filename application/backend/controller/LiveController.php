@@ -1355,7 +1355,7 @@ class LiveController extends BaseBackendController
                 'query' => request()->param(),
             ]);
         } else {
-            $streamList = StreamName::where('id','<',1)->order('id desc')->paginate(12);
+            $streamList = Db::table('resty_stream_name')->order('id desc')->paginate(12);
         }
         return $this->fetch('', [
             'lists' => $streamList

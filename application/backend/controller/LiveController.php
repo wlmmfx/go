@@ -113,7 +113,7 @@ class LiveController extends BaseBackendController
     {
         if (request()->isPost()) {
             $data = input('post.');
-            $apiData = self::apiCreateAddress();
+            $apiData = self::apiCreateAddress($data['service_provider']);
             if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败");
             $data['stream_id'] = $apiData['data']['streamId'];
             $data['stream_name'] = $apiData['data']['streamName'];
@@ -132,20 +132,25 @@ class LiveController extends BaseBackendController
      * 通过接口创建推流地址
      * @return \think\response\Json
      */
-    protected static function apiCreateAddress()
+    protected static function apiCreateAddress($serviceProvider = 1)
     {
         //请求参数
-        $appId = 'wmsefqotxvntbziv';
+        $appId = 'rawdsb9ldp855h7r';
         $domainName = 'lives.tinywan.com';
         $appName = 'live';
         //签名密钥
-        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
+        $appSecret = 'pvxyij6wdalr694u7dq3zqlvhlf55ytldoa49ij2';
+        //服务商
+        if ($serviceProvider = 1) {
+            $domainName = 'live.tinywan.com';
+        }
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
-        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ServiceProvider" . $serviceProvider . $appSecret;
         //签名串，由签名算法sha1生成
         $sign = strtoupper(sha1($str));
         //请求资源访问路径以及请求参数，参数名必须为大写
-        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
+        //$url = "https://www.tinywan.com/api/stream/createPushAddressOpen?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
+        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&ServiceProvider=" . $serviceProvider . "&Sign=" . $sign;
         //CURL方式请求
         $ch = curl_init() or die (curl_error());
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -165,9 +170,9 @@ class LiveController extends BaseBackendController
     {
         $liveId = input('param.id');
         $streamName = input('param.streamName');
-        $live = Live::where('id', $liveId)->cache('RESTY_LIVE_DETAIL:'.$liveId)->find();
+        $live = Live::where('id', $liveId)->cache('RESTY_LIVE_DETAIL:' . $liveId)->find();
         // 获取接口信息
-        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
+        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:' . $live['stream_id'])->find();
         $lives = Db::name("live")
             ->alias('l')
             ->join('resty_file f', 'f.live_id = l.id')
@@ -175,7 +180,7 @@ class LiveController extends BaseBackendController
             ->field("l.id,l.liveStartTime,l.name,l.createTime,l.liveEndTime,f.path")
             ->order("f.id desc")
             ->paginate(12);
-        $videos = StreamVideo::where(['liveId'=>$liveId])->order('createTime desc')->paginate(12);
+        $videos = StreamVideo::where(['liveId' => $liveId])->order('createTime desc')->paginate(12);
 //        halt($videos);
         return $this->fetch('', [
             'videos' => $videos,
@@ -1166,7 +1171,7 @@ class LiveController extends BaseBackendController
     {
         if ($this->request->isAjax()) {
             $id = input('post.id');
-            $editInfo = StreamVideoEdit::where(['id'=>$id])->find();
+            $editInfo = StreamVideoEdit::where(['id' => $id])->find();
             $res = StreamVideo::create([
                 'streamName' => $editInfo->streamName,
                 'liveId' => $editInfo->liveId,

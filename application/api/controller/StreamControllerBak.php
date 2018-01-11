@@ -15,7 +15,6 @@ use app\common\controller\BaseApiController;
 use app\common\model\OpenUser;
 use app\common\model\StreamName;
 use Curl\Curl;
-use live\LiveStream;
 use think\Db;
 use think\Log;
 use think\Request;
@@ -41,6 +40,7 @@ class StreamController extends BaseApiController
         return $curl;
     }
 
+
     /**
      * 获取一个签名
      * @param $allParam
@@ -65,7 +65,16 @@ class StreamController extends BaseApiController
 
     /**
      * 直播回调URL
-     * @return \think\response\Json
+     * {
+     * "action":"publish",
+     * "ip":"113.215.160.43",
+     * "id":"8001513150121",
+     * "app":"lives.tinywan.com",
+     * "appname":"live",
+     * "time":"1513228146",
+     * "usrargs":"vhost=lives.tinywan.com&alilive_streamidv2=p011135161073.eu13_31375_108971977_1513228145425",
+     * "node":"eu13"
+     * }
      */
     public function pushCallbackUrl()
     {
@@ -146,9 +155,6 @@ class StreamController extends BaseApiController
      * 思路：
      * 1、推流到专门的录像服务器
      * 2、专门的录像服务器直接进行录像既可以
-     * @param $streamName
-     * @param $pushAddress
-     * @return bool
      */
     public static function liveRecordHandle($streamName, $pushAddress)
     {
@@ -160,6 +166,9 @@ class StreamController extends BaseApiController
         Log::notice($cmdStr);
         // $sysStatus = 0 success ;
         system("{$cmdStr}", $results);
+//        if ($sysStatus != 0) {
+//            Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()执行失败,返回状态码：' . $sysStatus."结果：".json_encode($sysStatus));
+//        }
         Log::debug('[' . getCurrentDate() . ']:' . "系统函数exec()执行成功,返回状态码：结果：" . json_encode($results));
         return true;
     }
@@ -250,7 +259,7 @@ class StreamController extends BaseApiController
     protected static function checkApiSign($appId, $allParam)
     {
         //根据appId查询否存在该用户
-        $userInfo = OpenUser::where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
+        $userInfo = Db::table("resty_open_user")->where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         if (false == $userInfo) return false;
         $appSecret = $userInfo['app_secret'];  //$appSecret = sha1('http://sewise.www.com/');
         //去除最后的签名
@@ -278,18 +287,17 @@ class StreamController extends BaseApiController
      * 通过APPId获取Uid
      * @static
      */
-    protected static function getUidByAppId($appId)
+    public static function getUidByAppId($appId)
     {
         $userInfo = OpenUser::where('app_id', ':app_id')->bind(['app_id' => $appId])->find();
         return $userInfo['id'];
     }
 
     /**
-     * ===========================================直播流接口=========================================================
      * 【正式一】创建推流地址
      * @return \think\response\Json
      */
-    public function createPushAddress123()
+    public function createPushAddress()
     {
         //限制频繁的创建攻击
         $redis = messageRedis();
@@ -315,7 +323,6 @@ class StreamController extends BaseApiController
         $sign = input('get.Sign/s');
         $domainName = input('get.DomainName/s');
         $appName = input('get.AppName/s');
-        $serviceProvider = input('get.ServiceProvider/s','1');//服务器提供商
         $expireTime = 900000;
         $authKeyStatus = 0;
         $autoStartRecord = 0;
@@ -341,7 +348,7 @@ class StreamController extends BaseApiController
             return json($result);
         }
 
-        $streamINfo = Live::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus,$serviceProvider);
+        $streamINfo = Live::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus);
         $insertData = [
             'user_id' => self::getUidByAppId($appId),
             'domain_name' => $streamINfo['domainName'],
@@ -402,124 +409,6 @@ class StreamController extends BaseApiController
         ];
         return json($result);
     }
-
-    /**
-     *
-     * @return \think\response\Json
-     */
-    public function createPushAddress()
-    {
-        //限制频繁的创建攻击
-        $redis = messageRedis();
-        $clientIP = $_SERVER['REMOTE_ADDR'];
-        $clientKey = "REQUEST_RATE_LIMIT:{$clientIP}";
-        $listClientIpLen = $redis->llen($clientKey);
-        if ($listClientIpLen > 30) {
-            $clientIPexpireTime = $redis->lIndex($clientKey, -1); //获取最后一个索引文件
-            if (time() - $clientIPexpireTime < 60) {
-                $result = [
-                    'status_code' => 40301,
-                    'msg' => 'Request exceeded limit,Please try again in 60 seconds',
-                    'data' => null
-                ];
-                return json($result);
-            } else {
-                $redis->lPush($clientKey, time());
-                $redis->lTrim($clientKey, 0, 3);
-            }
-        }
-        $redis->lPush($clientKey, time());
-        $appId = input('get.AppId/s');
-        $sign = input('get.Sign/s');
-        $domainName = input('get.DomainName/s');
-        $appName = input('get.AppName/s');
-        $serviceProvider = input('get.ServiceProvider/s','1');//服务器提供商
-        $expireTime = 900000;
-        $authKeyStatus = 0;
-        $autoStartRecord = 0;
-        if (empty($domainName) || empty($appId) || empty($appName)|| empty($sign)) {
-            $result = [
-                'status_code' => 40601,
-                'msg' => 'The input parameter not supplied',
-                'data' => $domainName.'---'.$appId.'---'.$appName
-            ];
-            return json($result);
-        }
-        //接口签名验证
-        $checkSign = self::checkApiSign($appId, $this->request->get());
-        if ($checkSign != $sign) {
-            $result = [
-                'status_code' => 40302,
-                'msg' => 'Invalid signature or signature error',
-                'data' => [
-                    'server' => $checkSign,
-                    'sign' => $sign,
-                ]
-            ];
-            return json($result);
-        }
-
-        $streamINfo = LiveStream::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus,$serviceProvider);
-        $insertData = [
-            'user_id' => self::getUidByAppId($appId),
-            'domain_name' => $streamINfo['domainName'],
-            'app_name' => $streamINfo['appName'],
-            'stream_name' => $streamINfo['streamName'],
-            'push_flow_address' => $streamINfo['push_flow_address'],
-            'play_rtmp_address' => $streamINfo['play_rtmp_address'],
-            'play_flv_address' => $streamINfo['play_flv_address'],
-            'play_m3u8_address' => $streamINfo['play_m3u8_address'],
-            'expire_time' => $streamINfo['expireTime'],
-            'create_time' => $streamINfo['createTime'],
-        ];
-        $insertRes = StreamName::create($insertData);
-        if (!$insertRes) {
-            $result = [
-                'status_code' => 500,
-                'msg' => '数据库发生异常，请稍后访问'
-            ];
-            return json($result);
-        }
-        $streamINfo['streamId'] = $insertRes->id;
-        #全局流数据
-        $recordServiceIP = '10.117.19.148';  //内网使用拉流
-        $recordServiceOuterIP = '78.43.78.78';  //外网使用查看是否有流信息
-        $redis->del('GLOBAL_STREAM_DATA:' . $streamINfo['streamName']);//初始化
-        $redis->hMset('GLOBAL_STREAM_DATA:' . $streamINfo['streamName'], [
-            'domainName' => $domainName,
-            'appName' => $appName,
-            'streamId' => $insertRes->id,
-            'streamName' => $streamINfo['streamName'],
-            'push_address' => $streamINfo['push_flow_address'],
-            'rtmp_address' => $streamINfo['play_rtmp_address'],
-            'currentLocation' => 'createStream',
-            'createStream' => true,
-            'createStreamTime' => getCurrentDate(),
-            'startStream' => 0,
-            'stopStream' => 0,
-            'startRecord' => $autoStartRecord,
-            'authKeyStatus' => $authKeyStatus,
-            'stopRecord' => 0,
-            'autoStartRecord' => $autoStartRecord,
-            'autoStopRecord' => 0,
-            'recordServiceIP' => $recordServiceIP,
-            'recordServiceOuterIP' => $recordServiceOuterIP, //查看当前流状态
-            'outerIP' => $streamINfo['domainName'],
-            'innerIP' => $streamINfo['domainName'],
-            'recordStatus' => 'STOPPING',
-            'node_ip' => $streamINfo['domainName'] . "|" . $recordServiceIP,
-            'notify_url' => ""
-        ]);
-        // 全局流白名单
-        $redis->sAdd('GLOBAL_STREAM_WHITE_LIST', $streamINfo['streamName']);
-        $result = [
-            'status_code' => 200,
-            'msg' => 'success',
-            'data' => $streamINfo
-        ];
-        return json($result);
-    }
-
 
 
     /**
@@ -704,20 +593,17 @@ class StreamController extends BaseApiController
     public function createTestAddress()
     {
         //请求参数
-        $appId = 'rawdsb9ldp855h7r';
+        $appId = 'wmsefqotxvntbziv';
         $domainName = 'lives.tinywan.com';
         $appName = 'live';
         //签名密钥
-        $appSecret = 'pvxyij6wdalr694u7dq3zqlvhlf55ytldoa49ij2';
-        //服务商
-        $serviceProvider = '2';
+        $appSecret = 'tzwcd7a0x9hozlzx3e2hkebaceoknscfaxhiuo2s';
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
-        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ServiceProvider" . $serviceProvider . $appSecret;
+        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
         //签名串，由签名算法sha1生成
         $sign = strtoupper(sha1($str));
         //请求资源访问路径以及请求参数，参数名必须为大写
-        //$url = "https://www.tinywan.com/api/stream/createPushAddressOpen?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
-        $url = "https://www.tinywan.com/api/stream/createPushAddressOpen?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&ServiceProvider=" . $serviceProvider . "&Sign=" . $sign;
+        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
         //CURL方式请求
         $ch = curl_init() or die (curl_error());
         curl_setopt($ch, CURLOPT_URL, $url);

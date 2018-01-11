@@ -22,7 +22,7 @@ class Live extends BaseModel
      */
     public function store($data)
     {
-        $result = $this->validate(true)->save($data);
+        $result = $this->validate(true)->allowField(true)->save($data);
         if (false === $result) {
             return ['valid' => 0, 'msg' => $this->getError()];
         }

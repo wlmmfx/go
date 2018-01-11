@@ -23,7 +23,18 @@
     font-style: normal !important;
     min-height: inherit !important;
     min-height: auto !important;
-    font-size: 13px !important
+    font-size: 14px !important;
+}
+
+.syntaxhighlighter {
+    width: 100% !important;
+    margin: .3em 0 .3em 0 !important;
+    position: relative !important;
+    overflow: auto !important;
+    background-color: #f5f5f5 !important;
+    /*border: 1px solid #ccc !important;*/
+    border-radius: 1px !important;
+    border-collapse: separate !important
 }
 
 /*.syntaxhighlighter {*/
@@ -34,20 +45,9 @@
     /*background-color: #f5f5f5 !important;*/
     /*border: 1px solid #ccc !important;*/
     /*border-radius: 4px !important;*/
-    /*border-collapse: separate !important*/
+    /*border-collapse: separate !important;*/
+    /*word-break: break-all;*/
 /*}*/
-
-.syntaxhighlighter {
-    width: 100% !important;
-    margin: .3em 0 .3em 0 !important;
-    position: relative !important;
-    overflow: auto !important;
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ccc !important;
-    border-radius: 4px !important;
-    border-collapse: separate !important;
-    word-break: break-all;
-}
 
 .syntaxhighlighter.source {
     overflow: hidden !important

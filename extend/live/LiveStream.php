@@ -15,23 +15,30 @@ namespace live;
 
 class LiveStream
 {
+    private $name;
+    private $description;
+    private $publishUrls;
+    private $playUrls;
+    private $status;
+    private $lastModified;
+
     /**
      * 流创建地址
      * @param $domainName
      * @param $appName
      * @param $expireTime
      * @param $authKeyStatus
-     * @param $serviceProvider
+     * @param $serviceProvider 1：Tinywan私有云，2：阿里云，3：七牛云，4：腾讯云，5：华为云，6：美团云
      * @return array|null
      */
     public static function createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus, $serviceProvider)
     {
         switch ($serviceProvider) {
             case 1:
-                $responseInfo = TinywanLive::createPushFlowAddress($sourceName = 'live.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 'lives.tinywan.com');
+                $responseInfo = PrivateCloudLive::createPushFlowAddress($sourceName = 'live.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 'live.tinywan.com');
                 break;
             case 2:
-                $responseInfo = AliLive::createPushFlowAddress($sourceName = 'stream.tinywan.com',$domainName, $appName, $expireTime, $authKeyStatus);
+                $responseInfo = AliLive::createPushFlowAddress($sourceName = 'stream.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus);
                 break;
             case 3:
                 $responseInfo = QiNiuLive::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus);
@@ -154,5 +161,59 @@ class LiveStream
         return $result;
     }
 
+    /**
+     * 根据流名称获取直播流信息
+     */
+    public static function getLiveStreamNameStatus($streamName)
+    {
+        $url = "https://live.tinywan.com/stat";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $outputs = self::FromXml($output);
+        // 单个
+        if ($outputs['server']['application'][0]['live']['nclients'] == 0) {
+            $totalInfo['status'] = 0;
+            $totalInfo['message'] = '没有打流';
+            return $totalInfo;
+        }
+        $streamInfo = $outputs['server']['application'][0]['live']['stream'];
+        if (in_array($streamName, $streamInfo)) {
+            $totalInfo['status'] = 1;
+            $totalInfo['message'] = '正在打流';
+            if ($streamInfo['name'] == $streamName) {
+                $totalInfo['dataList']['name'] = $streamInfo['name'];
+                $totalInfo['dataList']['bw_in'] = $streamInfo['bw_in'];
+                $totalInfo['dataList']['bw_out'] = $streamInfo['bw_out'];
+            }
+        } else {
+            $totalInfo['status'] = 0;
+            $totalInfo['message'] = '没有打流';
+            $totalInfo['dataList']['name'] = $streamName;
+            $totalInfo['dataList']['bw_in'] = 0;
+            $totalInfo['dataList']['bw_out'] = 0;
+        }
+        return $totalInfo;
+    }
 
+    /**
+     * XML格式转换
+     * @param $xml
+     * @return mixed
+     */
+    public static function FromXml($xml)
+    {
+        if (!$xml) {
+            $totalInfo['status'] = 0;
+            $totalInfo['message'] = '没有打流';
+            $totalInfo['dataList'] = null;
+            return $totalInfo;
+        }
+        //将XML转为array
+        $values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return $values;
+    }
 }

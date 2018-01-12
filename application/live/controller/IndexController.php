@@ -14,6 +14,7 @@ namespace app\live\controller;
 use app\common\controller\BaseFrontendController;
 use app\common\model\Live;
 use app\common\model\StreamName;
+use live\LiveStream;
 use think\Db;
 
 class IndexController extends BaseFrontendController
@@ -45,6 +46,24 @@ class IndexController extends BaseFrontendController
         return $this->fetch();
     }
 
+    /**
+     * @return mixed
+     */
+    public function videoJsIndex()
+    {
+        $id = 201710028;
+        $live = Db::name('live')->alias('l')
+            ->join('resty_file f', "f.live_id = l.id")
+            ->where('l.id', $id)
+            ->field('l.id,l.name,l.liveStartTime,l.liveEndTime,l.stream_name,l.stream_id,l.isLive,l.autoPlay,f.path')
+            ->find();
+        $streamInfo = StreamName::where('id', $live['stream_id'])->find();
+        return $this->fetch('', [
+            'streamInfo' => $streamInfo,
+            'live' => $live
+        ]);
+    }
+
 
     /**
      * 事件列表
@@ -69,14 +88,15 @@ class IndexController extends BaseFrontendController
     {
         $live = Db::name('live')->alias('l')
             ->join('resty_file f', "f.live_id = l.id")
-            ->where('l.id',$id)
+            ->where('l.id', $id)
             ->field('l.id,l.name,l.liveStartTime,l.liveEndTime,l.stream_name,l.stream_id,l.isLive,l.autoPlay,f.path')
-            ->cache('LIVE_RESTY_LIVE_DETAIL:'.$id)
             ->find();
-        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
-        return $this->fetch('',[
-            'streamInfo'=>$streamInfo,
-            'live'=>$live
+        $streamInfo = StreamName::where('id', $live['stream_id'])->find();
+        $liveStatus = LiveStream::getLiveStreamNameStatus($streamInfo['stream_name'])['status'];
+        return $this->fetch('', [
+            'streamInfo' => $streamInfo,
+            'live' => $live,
+            'liveStatus' => $liveStatus
         ]);
     }
 
@@ -87,15 +107,18 @@ class IndexController extends BaseFrontendController
      */
     public function detail3($id)
     {
+        $streamName = 8001515731713;
+        $totalInfo = LiveStream::getLiveStreamNameStatus($streamName)['status'];
+        halt($totalInfo);
         $live = Db::name('live')->alias('l')
             ->join('resty_file f', "f.live_id = l.id")
-            ->where('l.id',$id)
+            ->where('l.id', $id)
             ->field('l.id,l.name,l.liveStartTime,l.liveEndTime,l.stream_name,l.stream_id,l.isLive,l.autoPlay,f.path')
             ->find();
-        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:'.$live['stream_id'])->find();
-        return $this->fetch('',[
-            'streamInfo'=>$streamInfo,
-            'live'=>$live
+        $streamInfo = StreamName::where('id', $live['stream_id'])->cache('RESTY_STREAM_NAME:' . $live['stream_id'])->find();
+        return $this->fetch('', [
+            'streamInfo' => $streamInfo,
+            'live' => $live
         ]);
     }
 
@@ -105,9 +128,8 @@ class IndexController extends BaseFrontendController
     public function vodDetail()
     {
         $liveId = input('param.id');
-        $live = Db::table('resty_vod')->where('id', $liveId)->cache('RESTY_VOD_DETAIL:'.$liveId)->find();
+        $live = Db::table('resty_vod')->where('id', $liveId)->cache('RESTY_VOD_DETAIL:' . $liveId)->find();
         $this->assign('vod', $live);
         return $this->fetch();
     }
-
 }

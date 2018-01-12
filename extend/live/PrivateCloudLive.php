@@ -7,13 +7,13 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/1/11 19:57
  * |  Mail: Overcome.wan@Gmail.com
- * |  Mail: Tinywan 专用服务器直播接口
+ * |  Mail: Tinywan 私有云 专用服务器直播接口
  * '------------------------------------------------------------------------------------------------------------------*/
 
 namespace live;
 
 
-class TinywanLive
+class PrivateCloudLive
 {
     /**
      * Tinywan专用 流创建地址
@@ -76,15 +76,19 @@ class TinywanLive
      */
     protected  static function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime, $cdn)
     {
-        $auth_key = 'tinywan123';
+        $authKey = self::getAuthKey($appName,$streamName,$expireTime);
+        $rand = 0;
+        $uid = 0;
         $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime($startTime . "+" . $expireTime . " minute ")));
-        $rtmp_auth_md5 = md5("/" . $appName . "/" . $streamName . "-" . $timestatmp . "-0-0-" . $auth_key);
-        $hls_auth_md5 = md5("/" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp . "-0-0-" . $auth_key);
+        $rtmp_auth_md5 = md5("/" . $appName . "/" . $streamName . "-" . $timestatmp . "-".$rand."-".$uid."-" . $authKey);
+        $hls_auth_md5 = md5("/" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey);
+        $flv_auth_md5 = md5("/" . $appName . "/" . $streamName . ".flv-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey);
 
-        $authUrl['push_flow_address'] = "rtmp://$sourceName/$appName/$streamName?vhost=$domainName&auth_key=" . $timestatmp . "-0-0-" . $rtmp_auth_md5;
-        $authUrl['play_rtmp_address'] = "rtmp://$domainName/$appName/$streamName?auth_key=" . $timestatmp . "-0-0-" . $rtmp_auth_md5;
-        $authUrl['play_m3u8_address'] = "http://$cdn/$appName/$streamName.m3u8?auth_key=" . $timestatmp . "-0-0-" . $hls_auth_md5;
-        $authUrl['hash_value'] = 'startTime = ' . $startTime . ' expireTime = ' . $expireTime . ' timestatmp = ' . $timestatmp . "uri = /" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp . "-0-0-" . $auth_key;
+        $authUrl['push_flow_address'] = "rtmp://$sourceName/$appName/$streamName?vhost=$domainName&auth_key=" . $timestatmp . "-".$rand."-".$uid."-" . $rtmp_auth_md5;
+        $authUrl['play_rtmp_address'] = "rtmp://$domainName/$appName/$streamName?auth_key=" . $timestatmp .  "-".$rand."-".$uid."-" . $rtmp_auth_md5;
+        $authUrl['play_m3u8_address'] = "http://$cdn/$appName/$streamName.m3u8?auth_key=" . $timestatmp .  "-".$rand."-".$uid."-" . $hls_auth_md5;
+        $authUrl['play_flv_address'] = "http://$cdn/$appName/$streamName.flv?auth_key=" . $timestatmp .  "-".$rand."-".$uid."-" . $flv_auth_md5;
+        $authUrl['hash_value'] = 'startTime = ' . $startTime . ' expireTime = ' . $expireTime . ' timestatmp = ' . $timestatmp . "uri = /" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey;
         return $authUrl;
     }
 
@@ -94,7 +98,8 @@ class TinywanLive
     protected static function getAuthKey($appName, $streamName, $expireTime)
     {
         $redis = messageRedis();
-        $private_key = $redis->get("private_key");
+        //$private_key = $redis->get("private_key");
+        $private_key = "Tinywan123";
         $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime("+" . $expireTime . "minute")));
         $uri = "/" . $appName . '/' . $streamName;
         $rand = 0;

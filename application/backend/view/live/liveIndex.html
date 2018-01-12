@@ -7,6 +7,15 @@
         </small>
     </h1>
 </div><!-- /.page-header -->
+<div class="alert alert-info">
+    <button type="button" class="close" data-dismiss="alert">
+        <i class="icon-remove"></i>
+    </button>
+    <strong>基于多服务商的直播方案</strong>
+
+    私有云出现故障，将会导致整个视频直播产品瘫痪，以下需求解决多服务商：接入另一家直播云服务商，提高服务可用性。如此一来，既可做为容灾，也可做流量切换。
+    <br>
+</div>
 <div class="row">
     <div class="col-sm-12">
         <div class="tabbable">
@@ -105,19 +114,32 @@
                             <div class="col-sm-9">
                                 <label>
                                     <input name="service_provider" type="radio" class="ace" checked="checked" value="1">
-                                    <span class="lbl"> 默认</span>
+                                    <span class="lbl"> 私有云</span>
                                 </label>
                                 <label>
                                     <input name="service_provider" type="radio" class="ace"  value="2">
                                     <span class="lbl"> 阿里云</span>
                                 </label>
                                 <label>
-                                    <input name="service_provider" type="radio" class="ace"  value="3">
+                                    <input name="service_provider" type="radio" class="ace"  value="3" disabled>
                                     <span class="lbl"> 腾讯云</span>
                                 </label>
                                 <label>
-                                    <input name="service_provider" type="radio" class="ace"  value="4">
+                                    <input name="service_provider" type="radio" class="ace"  value="4" disabled>
                                     <span class="lbl"> 七牛云</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 鉴权配置</label>
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="auth_key_status" type="radio" class="ace" checked="checked" value="0">
+                                    <span class="lbl"> 不鉴权</span>
+                                </label>
+                                <label>
+                                    <input name="auth_key_status" type="radio" class="ace"  value="1">
+                                    <span class="lbl"> 鉴权</span>
                                 </label>
                             </div>
                         </div>

@@ -433,10 +433,10 @@ class StreamController extends BaseApiController
         $sign = input('get.Sign/s');
         $domainName = input('get.DomainName/s');
         $appName = input('get.AppName/s');
-        $serviceProvider = input('get.ServiceProvider/s','1');//服务器提供商
-        $expireTime = 900000;
-        $authKeyStatus = 0;
-        $autoStartRecord = 0;
+        $serviceProvider = input('get.ServiceProvider/s',1);//服务器提供商
+        $authKeyStatus = input('get.AuthKeyStatus/d',0);//是否鉴权
+        $expireTime = input('get.ExpireTime/d',9000000);//过期时间
+        $autoStartRecord = input('get.AutoStartRecord/d',0);//是否自动录像
         if (empty($domainName) || empty($appId) || empty($appName)|| empty($sign)) {
             $result = [
                 'status_code' => 40601,
@@ -519,8 +519,6 @@ class StreamController extends BaseApiController
         ];
         return json($result);
     }
-
-
 
     /**
      * 【正式一】 剔流（禁止）直播流推送API
@@ -787,6 +785,12 @@ class StreamController extends BaseApiController
     public function tinywanPackage()
     {
         Log::error("111111111111");
+    }
+
+    public function tinywanNotifyUrl()
+    {
+        $redis = messageRedis();
+        $redis->set("tinywanNotifyUrl", json_encode($_GET));
     }
 
 }

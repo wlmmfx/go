@@ -113,8 +113,8 @@ class LiveController extends BaseBackendController
     {
         if (request()->isPost()) {
             $data = input('post.');
-            $apiData = self::apiCreateAddress($data['service_provider']);
-            if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败");
+            $apiData = self::apiCreateAddress($data['service_provider'], $data['auth_key_status']);
+            if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败".json_encode($apiData));
             $data['stream_id'] = $apiData['data']['streamId'];
             $data['stream_name'] = $apiData['data']['streamName'];
             $res = $this->db->store($data);
@@ -130,9 +130,12 @@ class LiveController extends BaseBackendController
 
     /**
      * 通过接口创建推流地址
-     * @return \think\response\Json
+     * @param int $serviceProvider
+     * @param int $authKeyStatus
+     * @return mixed
+     * @static
      */
-    protected static function apiCreateAddress($serviceProvider = 1)
+    protected static function apiCreateAddress($serviceProvider, $authKeyStatus)
     {
         //请求参数
         $appId = 'rawdsb9ldp855h7r';
@@ -140,17 +143,17 @@ class LiveController extends BaseBackendController
         $appName = 'live';
         //签名密钥
         $appSecret = 'pvxyij6wdalr694u7dq3zqlvhlf55ytldoa49ij2';
-        //服务商
-        if ($serviceProvider = 1) {
+        // 服务，这里要做兼容性处理
+        if ($serviceProvider == 1) {
             $domainName = 'live.tinywan.com';
         }
         //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
-        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . "ServiceProvider" . $serviceProvider . $appSecret;
+        $str = "AppId" . $appId . "AppName" . $appName . "AuthKeyStatus" . $authKeyStatus . "DomainName" . $domainName . "ServiceProvider" . $serviceProvider . $appSecret;
         //签名串，由签名算法sha1生成
         $sign = strtoupper(sha1($str));
         //请求资源访问路径以及请求参数，参数名必须为大写
         //$url = "https://www.tinywan.com/api/stream/createPushAddressOpen?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
-        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&ServiceProvider=" . $serviceProvider . "&Sign=" . $sign;
+        $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&AuthKeyStatus=" . $authKeyStatus . "&DomainName=" . $domainName . "&ServiceProvider=" . $serviceProvider . "&Sign=" . $sign;
         //CURL方式请求
         $ch = curl_init() or die (curl_error());
         curl_setopt($ch, CURLOPT_URL, $url);

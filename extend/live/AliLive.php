@@ -23,12 +23,12 @@ class AliLive
      * @param $authKeyStatus
      * @return array
      */
-    public static function createPushFlowAddress($sourceName,$domainName, $appName, $expireTime, $authKeyStatus = 0)
+    public static function createPushFlowAddress($sourceName, $domainName, $appName, $expireTime, $authKeyStatus = 0)
     {
         $streamName = '800' . time();
         $startTime = date('Y-m-d H:i:s', time());
         if ($authKeyStatus == 1) {
-            $domainName = config('aliyun_api.ALI_AUTH_DOMAIN');
+            $domainName = 'livecdn.tinywan.com';
             $authUrl = self::getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime);
             $responseResult = [
                 'domainName' => $domainName,
@@ -72,7 +72,7 @@ class AliLive
     {
         $Action = 'ForbidLiveStream';
         $LiveStreamType = 'publisher';
-        $accessKeyId =  config('aliyun_api.ACCESSKEYID');
+        $accessKeyId = config('aliyun_api.ACCESSKEYID');
         $cdn_server_address = 'https://cdn.aliyuncs.com';
         $parameters = [
             "Format" => "JSON",
@@ -174,6 +174,7 @@ class AliLive
 
     /**
      * 获取鉴权签名字符串
+     * 注意：鉴权KEY $auth_key 这里的值必须和生成鉴权URL的保持一致
      * @param $sourceName
      * @param $domainName
      * @param $appName
@@ -182,16 +183,19 @@ class AliLive
      * @param $expireTime
      * @return mixed
      */
-    public function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime)
+    public static function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime)
     {
-        $auth_key = config('aliyun_api.ALI_AUTH_PRIVATEKEY');
+        // 鉴权KEY
+        $auth_key = 'Tinywan123';
         $auth_timestatmp = strtotime(date('Y-m-d H:i:s', strtotime($startTime . "+" . $expireTime . " minute ")));
         $rtmp_auth_md5 = md5("/" . $appName . "/" . $streamName . "-" . $auth_timestatmp . "-0-0-" . $auth_key);
         $hls_auth_md5 = md5("/" . $appName . "/" . $streamName . ".m3u8-" . $auth_timestatmp . "-0-0-" . $auth_key);
+        $flv_auth_md5 = md5("/" . $appName . "/" . $streamName . ".flv-" . $auth_timestatmp . "-0-0-" . $auth_key);
 
         $authUrl['push_flow_address'] = "rtmp://$sourceName/$appName/$streamName?vhost=$domainName&auth_key=" . $auth_timestatmp . "-0-0-" . $rtmp_auth_md5;
         $authUrl['play_rtmp_address'] = "rtmp://$domainName/$appName/$streamName?auth_key=" . $auth_timestatmp . "-0-0-" . $rtmp_auth_md5;
         $authUrl['play_m3u8_address'] = "http://$domainName/$appName/$streamName.m3u8?auth_key=" . $auth_timestatmp . "-0-0-" . $hls_auth_md5;
+        $authUrl['play_flv_address'] = "http://$domainName/$appName/$streamName.flv?auth_key=" . $auth_timestatmp . "-0-0-" . $flv_auth_md5;
         return $authUrl;
     }
 

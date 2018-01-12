@@ -184,20 +184,7 @@
 <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.2.0/aliplayer-min.js"></script>
 <div class="detail_title" meeetImg="http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4">
     <div class="detail_title_left">
-        <p class="detail_title_main"><span>{$live.name}</span>
-            <span>
-
-                {switch name="liveStatus"}
-                    {case value="1"}
-                    正在直播
-                    {/case}
-                    {case value="0"}
-                    即将开始
-                    {/case}
-                    {default /}
-                    未知错误
-                    {/switch}
-            </span>
+        <p class="detail_title_main"><span>{$live.name}</span><span>正在直播</span>
         <div class="clear"></div>
         </p>
         <div class="detail_title_timer">
@@ -212,8 +199,10 @@
     <div class="clear"></div>
 </div>
 <div class="detail_part1">
-    <div style="width: 100%;height:600px; background-color: #892E65; position: relative; background-image: url('http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}')">
-        <div class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
+    <div style="width: 100%;height:600px; position: relative; background-image: 'http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}'">
+        <video id="live-stream" class="video-js" playsinline controls preload="auto" poster="http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}" data-setup='{}'>
+            <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4" type="application/x-mpegURL">
+        </video>
     </div>
 </div>
 <!-- 中部 -->
@@ -268,58 +257,78 @@
 
 </div>
 <!--content end-->
-
-<div class="meetingInfourl" style="display:none">/order/show?targetId=1431&amp;targetType=meeting</div>
-<input type="hidden" class="member" value="0">
-
+<link href="__COMMON__/videojs/videojs/video-js.css" rel="stylesheet">
+<link href="__COMMON__/videojs/Skins/YouTouBe.css"  rel="stylesheet">
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
-    var $liveStatus = 0;
-    var $defaultSource = "https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4";
-    $liveStatus = "{$liveStatus}";
-    console.log("status == " + $liveStatus);
-    if ($liveStatus == 1) {
-        var $m3u8Source = "{$streamInfo.play_m3u8_address}";
-        $defaultSource = $m3u8Source.replace('http', 'https');
-    }
-    ;
-    console.log($defaultSource);
-    var player = new Aliplayer({
-            id: "J_prismPlayer",
-            autoplay: false,
-            isLive: false,
-            playsinline: true,
-            width: "100%",
-            height: "600px",
-            controlBarVisibility: "always",
-            useH5Prism: false,
-            useFlashPrism: false,
-            cover: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}",
-            source: $defaultSource,
-            skinLayout: [{
-                "name": "controlBar",
-                "align": "blabs",
-                "x": 0,
-                "y": 0,
-                "children": [{"name": "snapshot", "align": "tr", "x": 20, "y": 25},
-                    {"name": "streamButton", "align": "tr", "x": 20, "y": 23},
-                    {"name": "playButton", "align": "tl", "x": 15, "y": 26},
-                    {"name": "fullScreenButton", "align": "tr", "x": 20, "y": 25},
-                    {"name": "volume", "align": "tr", "x": 20, "y": 25}]
-            },
-                {"name": "bigPlayButton", "align": "blabs", "x": 30, "y": 80},
-                {
-                    "name": "fullControlBar",
-                    "align": "tlabs",
-                    "x": 0,
-                    "y": 0,
-                    "children": [{"name": "fullTitle", "align": "tl", "x": 25, "y": 6},
-                        {"name": "fullNormalScreenButton", "align": "tr", "x": 24, "y": 13},
-                        {"name": "fullZoom", "align": "cc"},
-                        {"name": "fullTimeDisplay", "align": "tr", "x": 10, "y": 12}]
-                }]
-        }, function (player) {
-            console.log("播放器创建了。");
+    var $m3u8Source = "{$streamInfo.play_m3u8_address}";
+    var $m3u8SourceHttps = $m3u8Source.replace('http', 'https');
+    var options = {
+        width: 1240,
+        height: 600
+    };
+    var player = videojs('live-stream', options);
+    var source = document.getElementById('live-stream');
+    source.setAttribute('src',$m3u8SourceHttps);
+    player.load();
+    player.play();
+
+    player.addClass('vjs-matrix');
+
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+//        if(e.type == "play"){
+//            console.log('开始播放');
+//        }else if(e.type == "playing"){
+//            console.log('正在播放...');
+//        }else if(e.type == "pause"){
+//            console.log('暂停视频播放');
+//        }else if(e.type == "firstplay"){
+//            console.log('firstplay播放');
+//        }else{
+//            console.log('1111111111111');
+//        }
+    });
+    player.one('canplay', function() {
+        console.log('player11111111111111');
+    });
+    console.log("暂停播放测哦错"+player.pause());
+    console.log("暂停播放测哦错"+player.currentTime());
+    /**
+     * 获取状态
+     * state值：1.playing播放中 2.paused停止 3.idle空闲 4. completed结束
+     */
+    $('.player-status').click(function () {
+        var state = player.getState();
+        console.log(state);
+        var msg;
+        switch (state){
+            case 'buffering':
+                msg = '加载中...';
+                break;
+            case 'playing':
+                msg = '播放中...';
+                break;
+            case 'paused':
+                msg = '暂停';
+                break;
+            case 'idle':
+                msg = '停止';
+                break;
+            case 'completed':
+                msg = '结束';
+                break;
         }
-    );
-</script>
+        alert(msg);
+    });
+    //停止
+    $('.player-stop').click(function () {
+        player.pause();
+    });
+    //播放
+    $('.player-play').click(function () {
+        console.log('11111111'+ player.currentTime());
+    });
+
 </script>

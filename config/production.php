@@ -6,24 +6,24 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/9/2 8:12
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: 生产场景配置
+ * |  Function: 开发场景配置
  * '-------------------------------------------------------------------*/
 return [
-    "app_address" => "home",
-    "app_tel" => "13669361192",
+    "app_address" => "正式环境",
+    "web_home" => "www.tinywan.com",
     "database" => [
         // 数据库类型
         'type' => 'mysql',
         // 数据库连接DSN配置
         'dsn' => '',
         // 服务器地址
-        'hostname' => '127.0.0.1',
+        'hostname' => 'rdshcnvt1o401vaib374.mysql.rds.aliyuncs.com',
         // 数据库名
-        'database' => 'thinkphp5',
+        'database' => 'resty',
         // 数据库用户名
-        'username' => 'root',
+        'username' => 'tinywan_resty',
         // 数据库密码
-        'password' => '',
+        'password' => 'tinywan_resty_123456',
         // 数据库连接端口
         'hostport' => '',
         // 数据库连接参数

@@ -1,4 +1,5 @@
 database.php
+production.php
 *.xml
 *.log
 runtime/*

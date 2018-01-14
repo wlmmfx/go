@@ -74,7 +74,7 @@ class PrivateCloudLive
      * @param $cdn
      * @return mixed
      */
-    protected  static function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime, $cdn)
+    public static function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime, $cdn)
     {
         $authKey = self::getAuthKey($appName,$streamName,$expireTime);
         $rand = 0;

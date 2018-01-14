@@ -69,10 +69,15 @@ class BaseRedis
     /**
      * 阻止用户复制对象实例
      */
-    public function __clone()
+    private function __clone()
     {
         // TODO: Implement __clone() method.
         trigger_error('Clone is not allow' ,E_USER_ERROR);
+    }
+
+    private function __wakeup()
+    {
+        // TODO: Implement __wakeup() method.
     }
 
     /**

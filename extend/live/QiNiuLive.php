@@ -13,7 +13,7 @@
 namespace live;
 
 
-class QiNiuLive
+class QiNiuLive implements Live
 {
     /**
      * 创建一个推流地址
@@ -23,41 +23,9 @@ class QiNiuLive
      * @param $authKeyStatus
      * @return array
      */
-    public static function createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus)
+    public static function createPushFlowAddress($sourceName, $domainName, $appName, $expireTime, $authKeyStatus, $cdn)
     {
-        $sourceName = config('aliyun_api.CENTER_STREAM_ADDRESS');
-        $streamName = '800' . time();
-        $startTime = date('Y-m-d H:i:s', time());
-        if ($authKeyStatus == 1) {
-            $domainName = config('aliyun_api.ALI_AUTH_DOMAIN');
-            $authUrl = self::getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime);
-            $responseResult = [
-                'domainName' => $domainName,
-                'appName' => $appName,
-                'streamName' => $streamName,
-                'push_address' => $authUrl['push_flow_address'],
-                'rtmp_address' => $authUrl['play_rtmp_address'],
-                'flv_address' => $authUrl['play_flv_address'],
-                'm3u8_address' => $authUrl['play_m3u8_address'],
-                'startTime' => $startTime,
-                'expireTime' => $expireTime,
-                'createTime' => getCurrentDate()
-            ];
-            return $responseResult;
-        }
-        $authentication_url = self::getOpenPushUrl($sourceName, $domainName, $appName, $streamName);
-        $responseResult = [
-            'domainName' => $domainName,
-            'appName' => $appName,
-            'streamName' => $streamName,
-            'push_address' => $authentication_url,
-            'rtmp_address' => "rtmp://$domainName/$appName/$streamName",
-            'flv_address' => "http://$domainName/$appName/$streamName.flv",
-            'm3u8_address' => "http://$domainName/$appName/$streamName.m3u8",
-            'expireTime' => $expireTime,
-            'createTime' => getCurrentDate()
-        ];
-        return $responseResult;
+
     }
 
     /**
@@ -70,33 +38,7 @@ class QiNiuLive
      */
     public static function setAliForbidLiveStream($DomainName, $AppName, $StreamName, $ResumeTime)
     {
-        $Action = 'ForbidLiveStream';
-        $LiveStreamType = 'publisher';
-        $accessKeyId =  config('aliyun_api.ACCESSKEYID');
-        $cdn_server_address = 'https://cdn.aliyuncs.com';
-        $parameters = [
-            "Format" => "JSON",
-            "Version" => "2014-11-11",
-            "AccessKeyId" => $accessKeyId,
-            "SignatureVersion" => "1.0",
-            "SignatureMethod" => "HMAC-SHA1",
-            "SignatureNonce" => self::uuid(),
-            "TimeStamp" => gmdate('c'),
-        ];
-        //这几个参数应该是输入的 这里写死了
-        $parameters['Action'] = $Action;
-        $parameters['DomainName'] = $DomainName;
-        $parameters['AppName'] = $AppName;
-        $parameters['StreamName'] = $StreamName;
-        $parameters['LiveStreamType'] = $LiveStreamType;
-        $parameters['ResumeTime'] = $ResumeTime;
 
-        //添加签名信息
-        $parameters['Signature'] = self::getSign($parameters);
-        //拼接url
-        $url = $cdn_server_address . "/?" . http_build_query($parameters);
-        $responseResult = json_decode(file_get_contents($url), true);
-        return $responseResult;
     }
 
     /**

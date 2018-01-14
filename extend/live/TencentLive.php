@@ -13,7 +13,7 @@
 namespace live;
 
 
-class TencentLive
+class TencentLive implements Live
 {
     /**
      * 创建一个推流地址
@@ -23,7 +23,7 @@ class TencentLive
      * @param $authKeyStatus
      * @return array
      */
-    public static function createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus)
+    public static function createPushFlowAddress($sourceName, $domainName, $appName, $expireTime, $authKeyStatus, $cdn)
     {
         $sourceName = config('aliyun_api.CENTER_STREAM_ADDRESS');
         $streamName = '800' . time();

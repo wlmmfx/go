@@ -414,9 +414,10 @@ class StreamController extends BaseApiController
         $clientIP = $_SERVER['REMOTE_ADDR'];
         $clientKey = "REQUEST_RATE_LIMIT:{$clientIP}";
         $listClientIpLen = $redis->llen($clientKey);
+
         if ($listClientIpLen > 30) {
             $clientIPexpireTime = $redis->lIndex($clientKey, -1); //获取最后一个索引文件
-            if (time() - $clientIPexpireTime < 60) {
+            if (time() - $clientIPexpireTime < 600) {
                 $result = [
                     'status_code' => 40301,
                     'msg' => 'Request exceeded limit,Please try again in 60 seconds',
@@ -428,6 +429,7 @@ class StreamController extends BaseApiController
                 $redis->lTrim($clientKey, 0, 3);
             }
         }
+
         $redis->lPush($clientKey, time());
         $appId = input('get.AppId/s');
         $sign = input('get.Sign/s');

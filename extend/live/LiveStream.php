@@ -38,13 +38,13 @@ class LiveStream
                 $responseInfo = PrivateCloudLive::createPushFlowAddress($sourceName = 'live.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 'live.tinywan.com');
                 break;
             case 2:
-                $responseInfo = AliLive::createPushFlowAddress($sourceName = 'stream.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus);
+                $responseInfo = AliLive::createPushFlowAddress($sourceName = 'stream.tinywan.com', $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 'live.tinywan.com');
                 break;
             case 3:
-                $responseInfo = QiNiuLive::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus);
+                $responseInfo = QiNiuLive::createPushFlowAddress($sourceName = 1, $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 1);
                 break;
             case 4:
-                $responseInfo = TencentLive::createPushFlowAddress($domainName, $appName, $expireTime, $authKeyStatus);
+                $responseInfo = TencentLive::createPushFlowAddress($sourceName = 1, $domainName, $appName, $expireTime, $authKeyStatus, $cdn = 1);
                 break;
             default:
                 $responseInfo = 123;

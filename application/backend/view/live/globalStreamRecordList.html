@@ -82,6 +82,7 @@
                     <th>推流地址</th>
                     <th>推流时间</th>
                     <th>推流地域</th>
+                    <th>服务商</th>
                     <th>操作&nbsp;&nbsp;&nbsp;&nbsp;
                         <button onclick="fresh()" class="btn btn-xs">
                             <i class="icon-refresh bigger-110"></i>
@@ -92,10 +93,32 @@
                 <tbody>
                 {volist name='lists' id='vo'}
                 <tr class="gradeX">
-                    <td>rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
+                    <td>
+                        {switch name="vo.type"}
+                        {case value="1"}
+                        rtmp://live.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
+                        <span class="pink smaller lighter copy-url"
+                              data-clipboard-text="rtmp://live.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
+                              style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+                        {/case}
+                        {case value="2"}
+
+                        rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}&nbsp;&nbsp;&nbsp;
                         <span class="pink smaller lighter copy-url"
                               data-clipboard-text="rtmp://stream.tinywan.com/{$vo['app_name']}/{$vo['stream_name']}?vhost={$vo['domain_name']}"
                               style="cursor:pointer;"><i class="icon-copy"></i>&nbsp;复制</span>
+
+                        {/case}
+                        {case value="3"}
+                        七牛云
+                        {/case}
+                        {case value="4"}
+                        腾讯云
+                        {/case}
+                        {default /}
+                        未知错误
+                        {/switch}
+
                     </td>
                     <td>
                         起:&nbsp;&nbsp;{$vo['start_time']|date="Y-m-d H:i:s",###}<br/>
@@ -106,6 +129,24 @@
                         {/empty}
                     </td>
                     <td>{$vo['client_ip']|ip_format}</td>
+                    <td>
+                        {switch name="vo.type"}
+                        {case value="1"}
+                        <span class="badge badge-pink">私有云</span>
+                        {/case}
+                        {case value="2"}
+                            <span class="badge badge-info">阿里云</span>
+                        {/case}
+                        {case value="3"}
+                            七牛云
+                        {/case}
+                        {case value="4"}
+                            腾讯云
+                        {/case}
+                        {default /}
+                            未知错误
+                        {/switch}
+                    </td>
                     <td>
                         <a href="javascript:liveAddressModal('{$vo.domain_name}','{$vo.app_name}','{$vo.stream_name}');">
                             <button class="btn btn-primary btn-xs">

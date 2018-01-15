@@ -64,11 +64,13 @@ class StreamController extends BaseApiController
     }
 
     /**
-     * 直播回调URL
-     * @return \think\response\Json
+     * 阿里云直播回调URL
+     * @return int
      */
-    public function pushCallbackUrl()
+    public function aLiPushCallbackUrl()
     {
+        $redis = messageRedis();
+        $redis->set("AlipushCallbackUrl",json_encode($_GET));
         $request = self::request();
         $action = $request->get('action');
         $clientIP = $request->get('ip');
@@ -78,6 +80,7 @@ class StreamController extends BaseApiController
         $time = $request->get('time');
         $usrargs = $request->get('usrargs');
         $node = $request->get('node');
+        $type = 2;
         if (empty($action) || empty($streamName)) {
             $this->redirect("https://www.tinywan.com/", 302);
         }
@@ -97,7 +100,8 @@ class StreamController extends BaseApiController
                     'client_ip' => $clientIP,
                     'domain_name' => $domainName,
                     'app_name' => $appName,
-                    'create_time' => $time
+                    'create_time' => $time,
+                    'type' => $type
                 ]);
                 try {
                     $forbid = Live::setAliForbidLiveStream($domainName, $appName, $streamName, prcToUtc('2036-12-03  09:15:00'));
@@ -107,7 +111,7 @@ class StreamController extends BaseApiController
                 }
                 return json([0]);
             }
-            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = '321312');
+            $tabRes = self::addPushFlowRecord($type,$streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = '321312');
             // 是否需要拉流
             $rtmp_address = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'rtmp_address');
 //            self::liveRecordHandle($streamName,$pushAddress);
@@ -131,14 +135,96 @@ class StreamController extends BaseApiController
                 Log::error('------添加到消息队列中去-----' . json_encode($msgRes));
             }
             //更新推流记录表
-            $tabRes = self::addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
+            $tabRes = self::addPushFlowRecord($type,$streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
             Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 结果 = ' . json_encode($tabRes));
             //-------------------------------------notify_url地址回调---------------------------------------------------
             $notifyUrl = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'notify_url');
         } else {
             Log::error('[' . getCurrentDate() . ']:' . $streamName . ':未知推流消息事件,Error：\n');
         }
-        return json([0]);
+        return 200;
+    }
+
+    /**
+     * 私有云直播回调URL
+     * @return int
+     */
+    public function privatePushCallbackUrl()
+    {
+        $redis = messageRedis();
+        $redis->set("AlipushCallbackUrl",json_encode($_GET));
+        $request = self::request();
+        $action = $request->get('action');
+        $clientIP = $request->get('ip');
+        $domainName = $request->get('app');
+        $appName = $request->get('appname');
+        $streamName = $request->get('id');
+        $time = $request->get('time');
+        $usrargs = $request->get('usrargs');
+        $node = $request->get('node');
+        $type = 1;
+        if (empty($action) || empty($streamName)) {
+            $this->redirect("https://www.tinywan.com/", 302);
+        }
+        $curl = self::curl();
+        $redis = messageRedis();
+        //推流限制
+        $recordServiceIP = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'recordServiceIP');
+        $notifyUrl = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'notify_url');
+        $streamId = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'streamId');
+        if ($action == 'publish') {
+            //推流有效性检测
+            $StreamNameValidity = $redis->sIsMember('GLOBAL_STREAM_WHITE_LIST', $streamName);
+            if ($StreamNameValidity == false || $StreamNameValidity == '') {
+                // 哈希列表
+                $redis->hMset('GLOBAL_STREAM_BLACK_LIST:' . time(), [
+                    'stream_name' => $streamName,
+                    'client_ip' => $clientIP,
+                    'domain_name' => $domainName,
+                    'app_name' => $appName,
+                    'create_time' => $time,
+                    'type' => $type
+                ]);
+                try {
+                    $forbid = Live::setAliForbidLiveStream($domainName, $appName, $streamName, prcToUtc('2036-12-03  09:15:00'));
+                    Log::debug('[' . getCurrentDate() . ']:' . $streamName . '禁止直播流成功,Response：' . json_encode($forbid));
+                } catch (\Exception $e) {
+                    Log::error('[' . getCurrentDate() . ']:' . $streamName . '禁止直播流失败,Error：' . json_encode($e->getMessage()));
+                }
+                return json([0]);
+            }
+            $tabRes = self::addPushFlowRecord($type,$streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = '321312');
+            // 是否需要拉流
+            $rtmp_address = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'rtmp_address');
+//            self::liveRecordHandle($streamName,$pushAddress);
+            //-----------------------------使用FFmpeg推送流到指定的流媒体服务器上去（录像服务器）-----------------------------
+            $recordServiceIP = 'live.tinywan.com';
+            $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $rtmp_address . "\t -c copy  -f flv rtmp://{$recordServiceIP}/record/" . $streamName;
+            system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
+            if ($sysStatus != 0) {
+                Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
+            }
+            // notify_url 地址回调，添加到消息队列中去
+            if ($notifyUrl != false) {
+                $msgRes = addCallbackTaskQueue($action, $notifyUrl, $streamId, $streamName);
+                Log::error('------添加到消息队列中去-----' . json_encode($msgRes));
+            }
+            Log::debug('[' . getCurrentDate() . ']:' . '[1] 数据库表记录插入Id = ' . $tabRes);
+        } elseif ($action == 'publish_done') {
+            //结束推流事件
+            if ($notifyUrl != false) {
+                $msgRes = addCallbackTaskQueue($action, $notifyUrl, $streamId, $streamName);
+                Log::error('------添加到消息队列中去-----' . json_encode($msgRes));
+            }
+            //更新推流记录表
+            $tabRes = self::addPushFlowRecord($type,$streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str = "dssssssss");
+            Log::debug('[' . getCurrentDate() . ']:' . '[2] 数据库表记录更新 结果 = ' . json_encode($tabRes));
+            //-------------------------------------notify_url地址回调---------------------------------------------------
+            $notifyUrl = $redis->hGet('GLOBAL_STREAM_DATA:' . $streamName, 'notify_url');
+        } else {
+            Log::error('[' . getCurrentDate() . ']:' . $streamName . ':未知推流消息事件,Error：\n');
+        }
+        return 200;
     }
 
     /**
@@ -176,7 +262,7 @@ class StreamController extends BaseApiController
      * @param $action_str
      * @return \think\response\Json
      */
-    public static function addPushFlowRecord($streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str)
+    public static function addPushFlowRecord($type,$streamName, $clientIP, $action, $domainName, $appName, $time, $usrargs, $node, $action_str)
     {
         $redis = messageRedis();
         if ($action == 'publish') {
@@ -191,6 +277,7 @@ class StreamController extends BaseApiController
                 'node' => $node,
                 'curl' => $action_str,
                 'sign' => 1,
+                'type' => $type,
                 'create_time' => getCurrentDate()
             ];
             try {
@@ -206,6 +293,7 @@ class StreamController extends BaseApiController
                     'startRecord' => 0,
                     'startRecordTime' => null,
                     'stopRecord' => 0,
+                    'type' => $type,
                     'stopRecordTime' => null,
                     'autoStopRecord' => 0,
                 ]);
@@ -794,5 +882,20 @@ class StreamController extends BaseApiController
         $redis = messageRedis();
         $redis->set("tinywanNotifyUrl", json_encode($_GET));
     }
+
+    /**
+     * Lua脚本测试
+     * 如果保存成功，请返回 200
+     */
+    public function luaHttpRequest()
+    {
+//        halt('luaHttpRequest');/
+        $redis = messageRedis();
+        $redis->set("LuaHttpRequest", json_encode($_GET));
+        return 200;
+    }
+
+
+
 
 }

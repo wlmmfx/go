@@ -41,7 +41,7 @@ return [
      */
     'oauth' => [
         'scopes'   => ['snsapi_userinfo'],
-        'callback' => 'https://www.tinywan.com/frontend/we_chat/oauth_callback',
+        'callback' => 'https://www.tinywan.com/tianchi/Index/oauthCallback',
     ],
     /**
      * 微信支付

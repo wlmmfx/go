@@ -13,6 +13,7 @@ namespace app\tianchi\controller;
 
 
 use app\api\controller\OAuthController;
+use EasyWeChat\Factory;
 use think\Controller;
 
 class IndexController extends Controller
@@ -69,16 +70,39 @@ class IndexController extends Controller
     }
 
     /**
-     *
-     * @return mixed
+     * 首页 需要授权才能访问的页面
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index()
     {
-//        if(!is_wechet()) return "请用微信登陆";
-        $currentUri = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        halt($currentUri);
-        OAuthController::weChatRedirect();
+        $app = Factory::officialAccount(config('easywechat'));
+        $oauth = $app->oauth;
+        // 未登录
+        if (empty(session('wechat_user'))) {
+            session('target_url',$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].DIRECTORY_SEPARATOR.$_SERVER['REQUEST_URI']);
+            return $oauth->redirect();
+        }
+
+        // 已经登录过
+        $user = json_decode(session('wechat_user'),true);
+        halt($user);
         return $this->fetch();
+    }
+
+    public function oauthCallback()
+    {
+        $app = Factory::officialAccount(config('easywechat'));
+        $oauth = $app->oauth;
+        // 获取 OAuth 授权结果用户信息
+        $user = $oauth->user();
+        session('wechat_user',$user);
+        $targetUrl = empty(session('target_url')) ? '/' : session('target_url');
+        header('location:' . $targetUrl); // 跳转到 user/profile
+    }
+
+    public function sessionTest()
+    {
+        halt(session('wechat_user_tinywan'));
     }
 
     /**

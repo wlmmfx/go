@@ -127,7 +127,7 @@ class Vod extends BaseModel
         DB::startTrans();
         try{
             $res1 = $this->where('id',$id)->delete();
-            $res2 = Db::table('resty_vod_tag')->where('vod_id',$id)->delete();
+            $res2 = VodTag::where('vod_id',$id)->delete();
             // 提交事务
             Db::commit();
             $res =  ['valid' => 1, 'msg' => "删除成功"];

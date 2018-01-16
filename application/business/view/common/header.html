@@ -82,6 +82,12 @@
                 <a href="{:url('api/OAuth/qq')}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入"
                    class="iconfont icon-qq"></a>
             </li>
+
+            <li class="layui-nav-item layui-hide-xs">
+                <a href="{:url('api/OAuth/weChat')}"
+                   onclick="layer.msg('正在通过微信登入', {icon:16, shade: 0.2, time:0})" title="微信登入"
+                   class="iconfont icon-wechat"></a>
+            </li>
             {/if}
 
         </ul>

@@ -565,3 +565,13 @@ body .fly-user-main{position: relative; min-height: 600px;}
   -webkit-background-size: 32px;
   background-size: 32px;
 }
+
+/*github图标*/
+.icon-wechat{
+  display: inline-block;
+  width:  30px;
+  height: 30px;
+  background: url("../images/wechat.png") no-repeat center;
+  -webkit-background-size: 32px;
+  background-size: 32px;
+}

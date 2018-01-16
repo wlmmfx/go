@@ -29,6 +29,7 @@ function get_city_by_ip($ip)
     return $res['data'];
 }
 
+
 /**
  * 创建一个小写的随机字符串
  * @param int $length 40
@@ -315,7 +316,7 @@ function date_to_time($date)
  */
 function format_date_to_time($date)
 {
-    $timer = strtotime(date('Y-m-d H:i:s',$date));
+    $timer = strtotime(date('Y-m-d H:i:s', $date));
     $diff = $_SERVER['REQUEST_TIME'] - $timer;
     $day = floor($diff / 86400);
     $free = $diff % 86400;
@@ -1099,7 +1100,7 @@ function addSMSTaskQueue($user_mobile, $mobile_type = 1, $msg, $live_id = '1227'
  * @param string $msg
  * @return array|bool
  */
-function addEmailTaskQueue($email_title = 1,$email_type = 1, $user_email, $email_scene = 2,$msg='system email')
+function addEmailTaskQueue($email_title = 1, $email_type = 1, $user_email, $email_scene = 2, $msg = 'system email')
 {
     //注意：这里传递的每一个值务必都是真的
     if (empty($user_email) || empty($user_email) || empty($email_scene)) {

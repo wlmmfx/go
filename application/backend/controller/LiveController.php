@@ -22,6 +22,7 @@ use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
 use Swoole\Table;
+use think\Cache;
 use think\Db;
 use think\exception\HttpException;
 use think\helper\Str;
@@ -491,6 +492,7 @@ class LiveController extends BaseBackendController
             // 验证表单数据
             $res = $this->vod_db->store($data);
             if ($res["valid"]) {
+                Cache::rm('RESTY_VOD_LIVE_MODULE');
                 $this->success($res["msg"], "backend/live/vodManage");
                 exit;
             } else {
@@ -520,6 +522,9 @@ class LiveController extends BaseBackendController
             $data = input('post.');
             $res = $this->vod_db->edit($data);
             if ($res["valid"]) {
+                // 修改成功，清除缓存
+                Cache::rm('RESTY_VOD_DETAIL:' . $data['id']);
+                Cache::rm('RESTY_VOD_LIVE_MODULE');
                 $this->success($res["msg"], "backend/live/vodManage");
                 exit;
             } else {
@@ -551,6 +556,8 @@ class LiveController extends BaseBackendController
     {
         $res = $this->vod_db->del($id);
         if ($res["valid"]) {
+            Cache::rm('RESTY_VOD_DETAIL:' . $id);
+            Cache::rm('RESTY_VOD_LIVE_MODULE');
             $desc = '删除分点播id : ' . $id . '成功';
             add_operation_log($desc);
             return $this->success($res["msg"], "backend/live/vodManage");

@@ -129,7 +129,7 @@ class OAuthController extends BaseApiController
         }
     }
 
-    // 微博登录
+    // 微博
     public function weiBo()
     {
         $obj = new \SaeTOAuthV2(config('oauth.weibo')['app_key'], config('oauth.weibo')['app_secret']);
@@ -189,21 +189,19 @@ class OAuthController extends BaseApiController
      * Wechat
      * https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
      */
-    public function wechat()
+    public function weChat()
     {
         //$scope = "snsapi_base";
         $scope = "snsapi_userinfo";
         $appid = 'wx94c43716d8a91f3f';
         /*基本授权 方法跳转地址*/
-        $redirect_uri = urlencode('http://www.tinywan.com/frontend/open_auth/wechatRedirectUri');
+        $redirect_uri = urlencode('https://www.tinywan.com/api/OAuth/weChatRedirectUri');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
         header('location:' . $url);
     }
 
-    /**
-     * WeChat 回调
-     */
-    public function wechatRedirectUri()
+    //  WeChat 回调
+    public function weChatRedirectUri()
     {
 //        $appid = 'wx8cdfa8abbc7433fa';
         $appid = 'wx94c43716d8a91f3f';
@@ -226,12 +224,12 @@ class OAuthController extends BaseApiController
         //打印用户信息
         //第五步，检查用户是否已经注册过
         $condition['open_id'] = $userJsonRes['openid'];
-        $checkUserInfo = Db::table('resty_open_user')->where($condition)->find();
+        $checkUserInfo = OpenUser::where($condition)->find();
         if ($checkUserInfo) {
             // 记录session信息
             session('open_user_id', $checkUserInfo['id']);
             session('open_user_username', $checkUserInfo['account']);
-            $this->success("登录成功", '/');
+            return $this->redirect("/tianchi/Index/index");
         } else {
             // 第六步，添加用户信息到数据库
             $insertData['account'] = $userJsonRes['nickname'];
@@ -242,19 +240,32 @@ class OAuthController extends BaseApiController
             $insertData['avatar'] = $userJsonRes['headimgurl'];
             $insertData['company'] = $userJsonRes['city'];
             $insertData['address'] = $userJsonRes['city'];
-            $insertData['type'] = "QQ";
-            $insertData['ip'] = get_client_ip();
-            $insertData['create_time'] = date("Y-m-d H:i:s");;
-            $userId = Db::table('resty_open_user')->insertGetId($insertData);
-            if ($userId) {
-                // 记录session信息
-                session('open_user_id', $userId);
+            $insertData['type'] = "微信";
+            $insertData['create_time'] = getCurrentDate();
+            $insertData['app_id'] = get_rand_string();
+            $insertData['app_secret'] = get_rand_string(40);
+
+            $user = OpenUser::create($insertData);
+            if ($user) {
+                session('open_user_id', $user->id);
                 session('open_user_username', $userJsonRes['nickname']);
-                $this->success("授权登录成功", '/');
+                return $this->redirect("/");
             } else {
-                $this->error("授权登录失败", "frontend/member/signin");
+                return $this->redirect("/");
             }
         }
+    }
+
+    /**
+     * 指定跳转
+     */
+    public static function weChatRedirect($redirectUri)
+    {
+        $scope = "snsapi_userinfo";
+        $appid = 'wx94c43716d8a91f3f';
+        $redirect_uri = urlencode($redirectUri);
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $appid . "&redirect_uri=" . $redirect_uri . "&response_type=code&scope=${scope}&state=1234#wechat_redirect";
+        header('location:' . $url);
     }
 
     /**

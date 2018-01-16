@@ -25,4 +25,9 @@ return [
         'app_secret' => 'f20cd816fef2c7621b3b6c376297f331',
         'call_back_url' => 'https://www.tinywan.com/api/OAuth/weiBoRedirectUri'
     ],
+    'weichat'=>[
+        'app_key' => '3276577970',
+        'app_secret' => 'f20cd816fef2c7621b3b6c376297f331',
+        'call_back_url' => 'https://www.tinywan.com/api/OAuth/weiBoRedirectUri'
+    ]
 ];

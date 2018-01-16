@@ -127,8 +127,8 @@ class IndexController extends BaseFrontendController
      */
     public function vodDetail()
     {
-        $liveId = input('param.id');
-        $live = Db::table('resty_vod')->where('id', $liveId)->cache('RESTY_VOD_DETAIL:' . $liveId)->find();
+        $vodId= input('param.id');
+        $live = Db::table('resty_vod')->where('id', $vodId)->cache('RESTY_VOD_DETAIL:' . $vodId)->find();
         $this->assign('vod', $live);
         return $this->fetch();
     }

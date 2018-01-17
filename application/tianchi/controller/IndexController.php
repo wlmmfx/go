@@ -251,8 +251,7 @@ class IndexController extends Controller
         $customerInfo = CarCustomer::where(['c_tel'=>$userInfo->mobile])->find();
         $streamInfo = StreamName::where(['id'=>$customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
         //【2】如果号码为空，则不允许观看直播的
-        $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo['stream_name'])['status'];
-        halt($liveStatus);
+        $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
         $this->assign('userInfo', $userInfo);
         $this->assign('streamInfo', $streamInfo);
         $this->assign('liveStatus', $liveStatus);

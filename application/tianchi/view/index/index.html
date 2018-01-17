@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" id="viewport" content="target-densitydpi=device-dpi,width=750, maximum-scale=0.5">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" type="text/css" href="__LIB__/swiper/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/public.css" />
+
+    <script type="text/javascript" src="__JS__/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="__LIB__/swiper/js/swiper.jquery.min.js"></script>
+    <script type="text/javascript" src="__JS__/resetDPR.js"></script>
+    <script type="text/javascript" src="__JS__/public.js"></script>
+    <title>首页</title>
 </head>
+
 <body>
-<h1>TianCHi index.html</h1>
+<section class="main-content">
+    <!-- 焦点图 -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <a href="">
+                    <img src="__IMG__/0001.jpg" alt="">
+                </a>
+            </div>
+            <div class="swiper-slide">
+                <a href="">
+                    <img src="__IMG__/0002.png" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+<section class="content_index">
+    <div class="content_list">
+        <div class="live">
+            <a href="{:url('tianchi/Index/live')}">
+                <h3>在线直播<small>Live Online</small></h3>
+            </a>
+        </div>
+        <div class="person">
+            <a href="{:url('tianchi/Index/personCenter',['id'=>$userId])}">
+                <h3>个人中心<small>Personal Center</small></h3>
+            </a>
+        </div>
+    </div>
+</section>
+
 </body>
 </html>

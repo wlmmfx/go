@@ -200,6 +200,72 @@ class LiveStream
     }
 
     /**
+     * 获取录像直播视频状态
+     * @param $streamName
+     * @return mixed
+     * @static
+     */
+    public static function getRecordLiveStreamNameStatus($streamName)
+    {
+        $url = "https://live.tinywan.com/stat";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $outputs = self::FromXml($output);
+        // 单个
+        if ($outputs['server']['application'][3]['live']['nclients'] == 0) {
+            $totalInfo['status'] = 0;
+            $totalInfo['message'] = '没有打流';
+            return $totalInfo;
+        }
+        $streamInfo = $outputs['server']['application'][3]['live']['stream'];
+        // 一个流
+        if (array_key_exists('name',$streamInfo) == 1) {
+            if ($streamInfo['name'] == $streamName) {
+                $totalInfo['status'] = 1;
+                $totalInfo['message'] = '正在打流';
+                $totalInfo['dataList']['name'] = $streamInfo['name'];
+                $totalInfo['dataList']['bw_in'] = $streamInfo['bw_in'];
+                $totalInfo['dataList']['bw_out'] = $streamInfo['bw_out'];
+            } else {
+                $totalInfo['status'] = 0;
+                $totalInfo['message'] = '没有打流';
+                $totalInfo['dataList']['name'] = $streamName;
+                $totalInfo['dataList']['bw_in'] = 0;
+                $totalInfo['dataList']['bw_out'] = 0;
+            }
+        } else { // 多个流
+            $streamNameArr = array();
+            //存放所有的设备号到一个数组中
+            foreach ($streamInfo as $key => $val) {
+                $streamNameArr[] = $val['name'];
+            }
+            //判断该设备是否在这个数组中，真：获取这个设备的所有打流信息
+            if (in_array($streamName, $streamNameArr)) {
+                $totalInfo['status'] = 1;
+                $totalInfo['message'] = '正在打流';
+                foreach ($streamInfo as $val) {
+                    if ($val['name'] == $streamName) {
+                        $totalInfo['dataList']['name'] = $val['name'];
+                        $totalInfo['dataList']['bw_in'] = $val['bw_in'];
+                        $totalInfo['dataList']['bw_out'] = $val['bw_out'];
+                    }
+                }
+            } else {
+                $totalInfo['status'] = 0;
+                $totalInfo['message'] = '没有打流';
+                $totalInfo['dataList']['name'] = $streamName;
+                $totalInfo['dataList']['bw_in'] = 0;
+                $totalInfo['dataList']['bw_out'] = 0;
+            }
+        }
+        return $totalInfo;
+    }
+
+    /**
      * XML格式转换
      * @param $xml
      * @return mixed

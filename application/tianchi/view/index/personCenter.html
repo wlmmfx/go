@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport" content="target-densitydpi=device-dpi,width=750, maximum-scale=0.5">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" type="text/css" href="__LIB__/swiper/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/public.css"/>
+
+    <script type="text/javascript" src="__JS__/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="__LIB__/swiper/js/swiper.jquery.min.js"></script>
+    <script type="text/javascript" src="__JS__/resetDPR.js"></script>
+    <script type="text/javascript" src="__JS__/public.js"></script>
+    <title>个人中心</title>
+</head>
+
+<body>
+<section class="live_bc live_odd">
+    <section class="live_content">
+        <div class="live_header">
+            <a class="return" href="{:url('tianchi/Index/index')}"></a>
+            <div class="live_bar psbg">
+                <a class="play_bar psh">
+                    <img src="{$userInfo.avatar}"/>
+                </a>
+                <!--<span class="leaguer">会员</span>-->
+            </div>
+            <a class="personbg setup" href=""></a>
+        </div>
+    </section>
+    <section class="information">
+        <ul class="information_list">
+            <li>
+                <div class="p_left">
+                    <span class="name"></span>姓名
+                </div>
+                <div class="p_right flex_c">
+                    {$userInfo.account}
+                </div>
+            </li>
+            <li>
+                <div class="p_left">
+                    <span class="phone_nub"></span>手机号
+                </div>
+                <div class="p_right flex_c">
+                    {if condition="$userInfo.mobile eq ''"}
+                    <a href="{:url('tianchi/Index/mobileBind',['id'=>$userInfo->id])}">立即绑定</a>
+                    {else /}
+                    {$userInfo.mobile}
+                    {/if}
+                </div>
+            </li>
+            <li>
+                <div class="p_left">
+                    <span class="carnub"></span>车牌号
+                </div>
+                <div class="p_right flex_c">
+                    {$userInfo.account}
+                </div>
+            </li>
+        </ul>
+        <div class="loin">
+            <div class="btn btn_logon">
+                <a href="{:url('tianchi/Index/logout')}">
+                    注销
+                </a>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+
+</html>

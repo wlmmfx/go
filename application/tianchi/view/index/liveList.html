@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport" content="target-densitydpi=device-dpi,width=750, maximum-scale=0.5">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" type="text/css" href="__LIB__/swiper/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/public.css" />
+
+    <script type="text/javascript" src="__JS__/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="__LIB__/swiper/js/swiper.jquery.min.js"></script>
+    <script type="text/javascript" src="__JS__/resetDPR.js"></script>
+    <script type="text/javascript" src="__JS__/public.js"></script>
+    <title>我的回顾列表</title>
+</head>
+
+<body>
+<section class="live_bc">
+    <section class="live_content">
+        <div class="live_header">
+            <a class="return" href="index.html"></a>
+            <a class="live_bar">
+                <img src="__IMG__/l_03.jpg" alt="">
+                <span class="play_bar"></span>
+            </a>
+            <a class="personbg news_move" href="new.html">
+                <span class="red"></span>
+            </a>
+            <a class="personbg" href="personcenter.html"></a>
+        </div>
+    </section>
+    <section class="list_live">
+        <section class="live_li">
+            <section class="nav_p">
+                <div class="nav live_nav">
+                    <h3>
+                        <span></span>公开视频
+                    </h3>
+                </div>
+            </section>
+            <section class="live_list">
+                <div class="live_lists live_listdd">
+                    <div class="no_video no_videodd">
+                        <span></span>
+                        暂时还没有视频
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <div class="img_f"><img src="__IMG__/folt.png"></div>
+                                <div class="flex_c center_ll">
+                                    <p class="store_name">大厅前台接待</p>
+                                    <p class="schedule">正在直播中…</p>
+                                </div>
+                                <div class="floatright">
+                                    <span class="live_logo">LIVE</span>
+                                    <div class="watch">
+                                        <span></span>124562
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+        <section class="live_li live_l">
+            <section class="nav_p">
+                <div class="nav live_nav">
+                    <h3>
+                        <span></span>私有视频
+                    </h3>
+                </div>
+            </section>
+            <section class="live_list">
+                <div class="live_lists live_listed">
+                    <div class="no_video">
+                        <span></span>
+                        暂时还没有视频
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <div class="img_f"><img src="__IMG__/folt.png"></div>
+                                <div class="flex_c center_ll">
+                                    <p class="store_name">大厅前台接待</p>
+                                    <p class="schedule">正在直播中…</p>
+                                </div>
+                                <div class="floatright">
+                                    <span class="live_logo">LIVE</span>
+                                    <div class="watch">
+                                        <span></span>124562
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+    </section>
+</section>
+<footer class="footer">
+    <a class="btn btn_sucess" href="loginchoose.html">
+        登录了解更多
+    </a>
+</footer>
+<script>
+    $(document).ready(function()
+    {
+        var ul_length=$('.live_listed').children('ul');
+
+        if(ul_length.has('li').length==0)
+        {
+            $('.live_listed').css({"height":"350px","background":"#eeeeee"})
+            $('.no_video').show();
+        }
+        else
+        {
+            $('.live_listed').css({"height":"auto","background":"#ffffff"})
+            $('.no_video').hide();
+        }
+
+        var ul_lengdd=$('.live_listdd').children('ul');
+
+        if(ul_lengdd.has('li').length==0)
+        {
+            $('.live_listdd').css({"height":"350px","background":"#eeeeee"})
+            $('.no_videodd').show();
+        }
+        else
+        {
+            $('.live_listdd').css({"height":"auto","background":"#ffffff"})
+            $('.no_videodd').hide();
+        }
+    });
+</script>
+</body>
+
+</html>

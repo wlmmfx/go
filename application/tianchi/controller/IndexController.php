@@ -241,6 +241,9 @@ class IndexController extends Controller
 
     /**
      * 直播页面
+     * 不允许观看
+     * 1、4S店客户基本信息没有
+     * 2、手机号码没有绑定
      */
     public function live()
     {
@@ -248,12 +251,21 @@ class IndexController extends Controller
         // 【1】获取用户id
         $userId = session("tianchi_wechat_user");
         $userInfo = OpenUser::where(['id'=>$userId])->field('account,mobile,avatar,address')->find();
+        // 【2】获取4S店客户信息表
         $customerInfo = CarCustomer::where(['c_tel'=>$userInfo->mobile])->find();
+        if(empty($customerInfo) || $customerInfo == null){
+            return "你还没有在4S店登记过自己的信息吧！登记后才可以观看哦！";
+        }
+        //【3】如何客户4S店客户的基本信息没有登记，则该客户不可以观看直播哦
         $streamInfo = StreamName::where(['id'=>$customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
-        //【2】如果号码为空，则不允许观看直播的
+        if(empty($customerInfo) || $customerInfo == null){
+            return "你的车还没有开始维修呢！只支持观看自己的修车信息";
+        }
+        //【4】如果号码为空，则不允许观看直播的,一定要判断的
         $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
         $this->assign('userInfo', $userInfo);
         $this->assign('streamInfo', $streamInfo);
+        $this->assign('customerInfo', $customerInfo);
         $this->assign('liveStatus', $liveStatus);
         return $this->fetch();
     }
@@ -287,13 +299,12 @@ class IndexController extends Controller
     {
         // 【1】获取车牌号 ,进行（车牌识别API）
         // 注意：这里的图片必须是在服务器本地，才可转换的哦，所以要使用OSS下载车辆牌照照片
-        $str = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao002.jpg';
+        $str = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao003.jpg';
         $base64Str = self::base64EncodeImage($str);
         $base64StrFotmat = explode(',', $base64Str)[1];
         $res = self::getNumberPlate($base64StrFotmat);
         if ($res['status'] != 0) return $res['msg'];
         $carCode = $res['result']['number'];
-
         // 【2】根据车牌号获取客户新
         //$carCode = "川A88888";
         $customer = CarCustomer::where(['num_plate' => $carCode])->find();
@@ -307,14 +318,13 @@ class IndexController extends Controller
         // 【4】开始推流，这里要做转换的
         $streamInfo = StreamName::get($customer->stream_id);
         //$deviceStreamAddr = "rtsp://192.168.18.240:554/onvif/live/1";
-        $inputStreamAddr = "rtmp://lives.tinywan.com/live/8001515726144";
+        $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
         $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
         system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
-        halt($sysStatus);
         if ($sysStatus != 0) {
             Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
         }
-        halt($streamInfo);
+        halt($customer);
     }
 
     /**

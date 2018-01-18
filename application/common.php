@@ -1050,6 +1050,44 @@ function send_dayu_sms($tel, $type, $data)
 }
 
 /**
+ * 阿里大于发送模板
+ * @param $tel   电话号码，如：13669361192
+ * @param $type  发送模板类型，如：live
+ * @param $data  模板发送的数据，如：["number" => '89', 'code' => "888888"]
+ * @return mixed
+ */
+function send_ali_sms($tel, $type, $data)
+{
+    $dayu_template = 'template_' . $type; //template_register
+    $signname = config("sms")['dayu'][$dayu_template]["sign_name"];
+    $templatecode = config("sms")['dayu'][$dayu_template]["code"];
+    $config = [
+        'app_key' => config("sms")['dayu']['app_key'], //阿里大于APPKEY
+        'app_secret' => config("sms")['dayu']['app_secret'] //阿里大于secretKey
+    ];
+    $client = new \Flc\Alidayu\Client(new \Flc\Alidayu\App($config));
+    $req = new \Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend();
+    $req->setRecNum("{$tel}");
+    switch ($type) {
+        case 'register':
+            $req->setSmsParam('{"code":"' . $data['code'] . '"}');
+            break;
+        case 'live':
+            $req->setSmsParam('{"number":"' . $data['number'] . '","code":"' . $data['code'] . '"}');
+            break;
+        case 'identity':
+            $req->setSmsParam('{"name":"' . $data['name'] . '"}');
+            break;
+        default:
+            $req->setSmsParam('{"code":"' . $data['code'] . '","product":"' . $data['product'] . '"}');
+    }
+    $req->setSmsFreeSignName("{$signname}");
+    $req->setSmsTemplateCode("{$templatecode}");
+    $resp = $client->execute($req);
+    return $resp;
+}
+
+/**
  * 消息Redis
  * @return \Redis
  * @static

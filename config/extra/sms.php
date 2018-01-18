@@ -11,15 +11,15 @@ return [
         'app_key'=>'23651008',
         'app_secret'=>'add0ef8c1f119bd0d09e305fb78fabd0',
         'template_register' => [
-            'sign_name'=>'万物联网',
-            'code'=>'SMS_82985023'
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_121965052'
         ],
         'template_live' => [
-            'sign_name'=>'万物联网',
-            'code'=>'SMS_83115011'
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_82985023'
         ],
         'template_identity' => [
-            'sign_name'=>'万物联网',
+            'sign_name'=>'Tinywan工作室',
             'code'=>'SMS_50285067'
         ]
     ]

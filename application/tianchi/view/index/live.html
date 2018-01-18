@@ -27,14 +27,19 @@
             <div class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
         </div>
     </section>
-    <!--<section class="flex news">-->
-        <!--<div class="new">-->
-            <!--最新资讯-->
-        <!--</div>-->
-        <!--<div class="flex_c new_active">-->
-            <!--本店最新活动-->
-        <!--</div>-->
-    <!--</section>-->
+    <section class="flex news">
+        <div class="new">
+            {if condition="$liveStatus eq 1"}
+            正在直播
+            {else /}
+            敬请等待
+            {/if}
+        </div>
+        <div class="flex_c new_active">
+            客户 ：{$customerInfo->c_name}&nbsp;&nbsp;&nbsp;&nbsp;
+            车牌号：{$customerInfo->num_plate}
+        </div>
+    </section>
 </section>
 </body>
 </html>

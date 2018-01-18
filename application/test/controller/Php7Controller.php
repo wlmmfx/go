@@ -12,7 +12,9 @@
 namespace app\test\controller;
 
 
-class Php7
+use think\Controller;
+
+class Php7Controller extends Controller
 {
 
     /**
@@ -108,5 +110,39 @@ class Php7
         }
         echo 11111111111;
     }
+
+    /**
+     * @return false|object
+     */
+    public function sendAliSms()
+    {
+        $code = rand(100000, 999999);
+        $sendRes = send_dayu_sms('18993807053', "register", ['code' => $code]);
+        if (isset($sendRes->result->success) && ($sendRes->result->success == true)) {
+            $res = [
+                "code" => 200,
+                "msg" => "验证码发送成功"
+            ];
+        } else {
+            $res = [
+                "code" => 500,
+                "msg" => "验证码发送失败"
+            ];
+        }
+        return json($res);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

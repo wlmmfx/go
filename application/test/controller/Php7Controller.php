@@ -12,6 +12,7 @@
 namespace app\test\controller;
 
 
+use baidu\sdk\AipOcr;
 use think\Controller;
 
 class Php7Controller extends Controller
@@ -130,6 +131,110 @@ class Php7Controller extends Controller
             ];
         }
         return json($res);
+    }
+
+    /**
+     * ============================================================百度 OCr=============================================
+     * 百度 OCr 通用文字识别
+     * @return string
+     */
+    public function baiDuOcr01()
+    {
+        $APP_ID = '10715277';
+        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
+        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+        $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ocr0004.png');
+
+        // 如果有可选参数
+        $options = array();
+        $options["language_type"] = "CHN_ENG";
+        $options["detect_direction"] = "true";
+        $options["detect_language"] = "true";
+        $options["probability"] = "true";
+
+        // 带参数调用通用文字识别, 图片参数为本地图片
+        $res = $client->basicGeneral($image,$options);
+        $str = "";
+        foreach ($res['words_result'] as $key => $val) {
+            $str .= $val['words'] . "</br>";
+        }
+        return $str;
+    }
+
+    /**
+     * 【通用文字识别（高精度版）】
+     * 用户向服务请求识别某张图中的所有文字，相对于通用文字识别该产品精度更高，但是识别耗时会稍长。
+     * 注意：图片不能够太大，否则会提示找不到文件，所以针对于长文章，在这里要做的就是限制图片大小
+     * @return string
+     */
+    public function baiDuOcr02()
+    {
+        $APP_ID = '10715277';
+        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
+        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+        $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ocr0007.png');
+
+        // 调用通用文字识别（高精度版）
+        //halt($client->basicAccurate($image));
+
+        // 如果有可选参数
+        $options = array();
+        $options["detect_direction"] = "true";
+        $options["probability"] = "true";
+
+        // 带参数调用通用文字识别（高精度版）
+        $res = $client->basicAccurate($image,$options);
+        $str = "";
+        foreach ($res['words_result'] as $key => $val) {
+            $str .= $val['words'] . "</br>";
+        }
+        return $str;
+    }
+
+    /**
+     * 【远程url图片】
+     * 这里使用OSS存储图片格式
+     * @return string
+     */
+    public function baiDuOcr03()
+    {
+        $APP_ID = '10715277';
+        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
+        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+        $url = "http://oss.tinywan.com/uploads/article/ocr0002.png";
+
+        // 调用通用文字识别（含位置信息版）, 图片参数为远程url图片
+        $res = $client->generalUrl($url);
+        $str = "";
+        foreach ($res['words_result'] as $key => $val) {
+            $str .= $val['words'] . "</br>";
+        }
+        return $str;
+    }
+
+    /**
+     * 【车牌识别】
+     * 识别机动车车牌，并返回签发地和号牌
+     * @return string
+     */
+    public function baiDuOcr04()
+    {
+        $APP_ID = '10715277';
+        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
+        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+
+        $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao003.jpg');
+        // 调用车牌识别
+        $res = $client->licensePlate($image);
+        $resArr = [
+            '颜色'=>$res['words_result']['color'],
+            '车牌号'=>$res['words_result']['number'],
+        ];
+        return json($resArr);
     }
 }
 

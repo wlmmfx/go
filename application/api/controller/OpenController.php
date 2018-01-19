@@ -30,7 +30,7 @@ class OpenController extends BaseApiController
      */
     public function createStreamVideo()
     {
-        $version = input("get.version");
+        $version = input("get.version",1);
         $streamName = input("get.streamName");
         $baseName = input("get.baseName");
         $duration = input("get.duration");
@@ -39,9 +39,14 @@ class OpenController extends BaseApiController
 
         //获取liveId
         $live = Live::where('stream_name',$streamName)->field('id,stream_id,stream_name')->find();
+        // 2018-1-19 非活动的录像视频不能够成功，如果liveId 为空，则liveId 等于流名称
+        $liveId = $streamName;
+        if($live){
+            $liveId = $live->id;
+        }
         $res = StreamVideo::create([
             'streamName' => $streamName,
-            'liveId' => $live->id,
+            'liveId' => $liveId,
             'name' => $baseName,
             'fileName' => $baseName,
             'fileTime' => strftime("%Y-%m-%d %X", $fileTime),

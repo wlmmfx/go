@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.2.0/skins/default/aliplayer-min.css"/>
     <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.2.0/aliplayer-min.js"></script>
-    <title>{$customerInfo.c_name} 车辆维修直播间</title>
+    <title>历史回顾播放</title>
     <style type="text/css">
         .live_l {
             margin-top: 520px;
@@ -32,68 +32,12 @@
             <div class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
         </div>
     </section>
-    <section class="flex news">
-        <div class="new">
-            {if condition="$liveStatus eq 1"}
-            正在直播
-            {else /}
-            敬请等待
-            {/if}
-        </div>
-        <div class="flex_c new_active">
-            客户 ：{$customerInfo->c_name}&nbsp;&nbsp;&nbsp;&nbsp;
-            车牌号：{$customerInfo->num_plate}
-        </div>
-    </section>
-    <section class="live_li live_l">
-        <section class="nav_p">
-            <div class="nav live_nav">
-                <h3>
-                    <span></span>历史回顾视频
-                </h3>
-            </div>
-        </section>
-        <section class="live_list">
-            <div class="live_lists live_listed">
-                <div class="no_video">
-                    <span></span>
-                    暂时还没有视频
-                </div>
-                <ul>
-                    {volist name='VodList' id='vo'}
-                    <li>
-                        <a href="{:url('tianchi/Index/liveVodList',['id'=>$vo.id])}">
-                            <div class="img_f"><img src="http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$vo['streamName']}/video/{$vo['fileName']}.jpg"></div>
-                            <div class="flex_c center_ll">
-                                <p class="store_name">视频时长：{$vo['duration']|gmstrftime="%H:%M:%S",###}</p>
-                                <p class="schedule">时间:{$vo['createTime']}</p>
-                            </div>
-                            <div class="floatright">
-                                <span class="live_logo">回顾</span>
-                            </div>
-                        </a>
-                    </li>
-                    {/volist}
-                </ul>
-            </div>
-        </section>
-    </section>
 </section>
 </body>
 </html>
 <script>
-    var $mobile = 0;
-    var $defaultSource = "https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4";
-    var $liveStatus = "{$liveStatus}";
-    $mobile = "{$userInfo->mobile}";
 
-    if ($liveStatus == 1) {
-        var $m3u8Source = "{$streamInfo.play_m3u8_address}";
-        $defaultSource = $m3u8Source.replace('http', 'https');
-    }
-    ;
-    console.log("$liveStatus == " + $liveStatus);
-    console.log("mobile == " + $mobile);
+    var $defaultSource = "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$videoInfo.streamName}/video/{$videoInfo.fileName}.mp4";
     console.log($defaultSource);
     var player = new Aliplayer({
             id: "J_prismPlayer",
@@ -105,7 +49,7 @@
             controlBarVisibility: "always",
             useH5Prism: false,
             useFlashPrism: false,
-            cover: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com//uploads/article/5a52cfe82b1df1.png",
+            cover: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$videoInfo.streamName}/video/{$videoInfo.fileName}.jpg",
             source: $defaultSource,
             skinLayout: [{
                 "name": "controlBar",

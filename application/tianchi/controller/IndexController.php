@@ -12,16 +12,17 @@
 namespace app\tianchi\controller;
 
 
+use app\common\controller\BaseController;
 use app\common\model\CarCustomer;
-use app\common\model\Logs;
 use app\common\model\OpenUser;
 use app\common\model\StreamName;
+use app\common\model\StreamVideo;
 use EasyWeChat\Factory;
 use live\LiveStream;
-use think\Controller;
-use think\Log;
+use think\Db;
+use think\Image;
 
-class IndexController extends Controller
+class IndexController extends BaseController
 {
     /**
      * 根据OpenId 获取推流信息
@@ -250,31 +251,38 @@ class IndexController extends Controller
         //如果手机号码为空，则不予许观看直播
         // 【1】获取用户id
         $userId = session("tianchi_wechat_user");
-        $userInfo = OpenUser::where(['id'=>$userId])->field('account,mobile,avatar,address')->find();
-        // 【2】获取4S店客户信息表
-        $customerInfo = CarCustomer::where(['c_tel'=>$userInfo->mobile])->find();
-        if(empty($customerInfo) || $customerInfo == null){
+        $userInfo = OpenUser::where(['id' => $userId])->field('account,mobile,avatar,address')->find();
+        if ($userInfo)
+            // 【2】获取4S店客户信息表
+            $customerInfo = CarCustomer::where(['c_tel' => $userInfo->mobile])->find();
+        if (empty($customerInfo) || $customerInfo == null) {
             return "你还没有在4S店登记过自己的信息吧！登记后才可以观看哦！";
         }
         //【3】如何客户4S店客户的基本信息没有登记，则该客户不可以观看直播哦
-        $streamInfo = StreamName::where(['id'=>$customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
-        if(empty($customerInfo) || $customerInfo == null){
+        $streamInfo = StreamName::where(['id' => $customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
+        if (empty($customerInfo) || $customerInfo == null) {
             return "你的车还没有开始维修呢！只支持观看自己的修车信息";
         }
         //【4】如果号码为空，则不允许观看直播的,一定要判断的
         $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
+        // 历史回顾列表
+        $liveVodList = Db::name('stream_video')->where(['streamName' => $streamInfo->stream_name])->field('id,streamName,fileName,fileSize,createTime,duration')->select();
         $this->assign('userInfo', $userInfo);
         $this->assign('streamInfo', $streamInfo);
         $this->assign('customerInfo', $customerInfo);
+        $this->assign('VodList', $liveVodList);
         $this->assign('liveStatus', $liveStatus);
         return $this->fetch();
     }
 
     /**
-     * 我的直播列表
+     * 我的直播回顾列表
      */
-    public function liveList()
+    public function liveVodList()
     {
+        $id = input('param.id');
+        $videoInfo = StreamVideo::where(['id' => $id])->field('streamName,fileName,createTime,duration')->find();
+        $this->assign('videoInfo', $videoInfo);
         return $this->fetch();
     }
 
@@ -289,6 +297,34 @@ class IndexController extends Controller
     }
 
     /**
+     * kill FFmpeg 推流
+     */
+    public function killAllFFmpeg()
+    {
+        $id = input('param.id');
+        $customerInfo = CarCustomer::get($id);
+        if ($customerInfo == null) {
+            $res = [
+                'code' => 500,
+                'msg' => $id." 该用户不存在"
+            ];
+            return json($res);
+        }
+        $shellCmd = "ps -aux | grep " . $customerInfo->stream_name . "\t | grep -v grep | cut -c 9-15 | xargs kill -s 9";
+        system("{$shellCmd} > /dev/null 2>&1", $sysStatus);
+        if ($sysStatus != 0) {
+            $res = ['code' => 500, 'msg' => "Shell 命令执行失败"];
+            return json($res);
+        }
+        $res = [
+            'code' => 200,
+            'msg' => "执行OK"
+        ];
+        return json($res);
+    }
+
+
+    /**
      * 维修开始
      * 【1】车辆入库获取车牌号信息，
      * 【2】用户信息绑定
@@ -299,7 +335,13 @@ class IndexController extends Controller
     {
         // 【1】获取车牌号 ,进行（车牌识别API）
         // 注意：这里的图片必须是在服务器本地，才可转换的哦，所以要使用OSS下载车辆牌照照片
-        $str = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao003.jpg';
+        $str = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . '5a61c7cfcaead.jpg';
+        $thumbStr = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'thumb_12312.jpg';
+        // 图片缩放
+        $image = Image::open($str);
+        // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+        $res = $image->thumb(720, 720, Image::THUMB_CENTER)->save($thumbStr);
+        halt($res);
         $base64Str = self::base64EncodeImage($str);
         $base64StrFotmat = explode(',', $base64Str)[1];
         $res = self::getNumberPlate($base64StrFotmat);
@@ -308,23 +350,88 @@ class IndexController extends Controller
         // 【2】根据车牌号获取客户新
         //$carCode = "川A88888";
         $customer = CarCustomer::where(['num_plate' => $carCode])->find();
-        // 【3】生成推流地址
-        if (!$customer->stream_id) {
-            $stream = self::apiCreateAddress();
-            $customer->stream_id = $stream['data']['streamId'];
-            $customer->stream_name = $stream['data']['streamName'];
-            if ($customer->save() == false) return "更新数据失败";
-        }
+
         // 【4】开始推流，这里要做转换的
         $streamInfo = StreamName::get($customer->stream_id);
         //$deviceStreamAddr = "rtsp://192.168.18.240:554/onvif/live/1";
-        $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
-        $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
-        system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
-        if ($sysStatus != 0) {
-            Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
-        }
+        //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
+        //$action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
+        //system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
+        //if ($sysStatus != 0) {
+        //    Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
+        //}
         halt($customer);
+    }
+
+    public function uploadImage()
+    {
+        return $this->fetch();
+    }
+
+    public function uploadImageFrom()
+    {
+        if (request()->isPost()) {
+            $file = request()->file("chepai_file");
+            if ($file) {
+                $id = input('param.id');
+                $savePath = ROOT_PATH . 'public' . DS . 'tmp';
+                $info = $file->rule("uniqid")->move($savePath);
+                if ($info) {
+                    // 成功上传后 获取车牌号
+                    $originImg = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $info->getSaveName();
+                    $thumbImg = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'thumb_' . $info->getSaveName();
+                    // 图片缩放
+                    $image = Image::open($originImg);
+                    // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+                    $image->thumb(720, 720, Image::THUMB_CENTER)->save($thumbImg);
+                    $base64Str = self::base64EncodeImage($thumbImg);
+                    $base64StrFotmat = explode(',', $base64Str)[1];
+                    $res = self::getNumberPlate($base64StrFotmat);
+                    if ($res['status'] != 0) {
+                        $res = ['code' => 500, 'msg' => $res['msg']];
+                        return json($res);
+                    }
+                    $carCode = $res['result']['number'];
+                    // 获取客户信息表
+                    $customer = CarCustomer::where(['num_plate' => $carCode])->find();
+                    if ($customer == null || empty($customer)) {
+                        $res = ['code' => 500, 'msg' => "客户信息不存在，请填写完整信息后在进行车牌识别，谢谢！"];
+                        return json($res);
+                    }
+                    // 【4】开始推流，这里要做转换的
+                    $streamInfo = StreamName::get($customer->stream_id);
+                    // 摄像头流地址
+                    $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
+                    $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
+                    system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
+                    if ($sysStatus != 0) {
+                        $res = ['code' => 500, 'msg' => "摄像头拉流失败，系统执行函数system()没有成功,返回状态码"];
+                        return json($res);
+                    }
+                    //$this->rmdirs($originImg);
+                    $res = [
+                        'code' => 200,
+                        'msg' => "OK",
+                        'data' => [
+                            'c_id' => $customer->c_no,
+                            'c_name' => $customer->c_name,
+                            'c_tel' => $customer->c_tel,
+                            'address' => $customer->unit,
+                            'carCode' => $carCode,
+                            'play_m3u8_address' => $streamInfo->play_m3u8_address,
+                            'image_path' => 'thumb_' . $info->getSaveName()
+                        ]
+                    ];
+                } else {
+                    $res = [
+                        'code' => 500,
+                        'msg' => $file->getError()
+                    ];
+                }
+                return json($res);
+            }
+            return json(['code' => 500, 'msg' => "upload file name error"]);
+        }
     }
 
     /**

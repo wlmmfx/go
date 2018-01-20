@@ -301,26 +301,30 @@ class IndexController extends BaseController
      */
     public function killAllFFmpeg()
     {
-        $id = input('param.id');
-        $customerInfo = CarCustomer::get($id);
-        if ($customerInfo == null) {
+        if (request()->isAjax()) {
+            $id = input('param.id');
+            if (empty($id)) return 'id is null';
+            $customerInfo = CarCustomer::get($id);
+            if ($customerInfo == null) {
+                $res = [
+                    'code' => 500,
+                    'msg' => $id . " 该用户不存在"
+                ];
+                return json($res);
+            }
+            $shellCmd = "ps -aux | grep " . $customerInfo->stream_name . "\t | grep -v grep | cut -c 9-15 | xargs kill -s 9";
+            system("{$shellCmd} > /dev/null 2>&1", $sysStatus);
+            if ($sysStatus != 0) {
+                $res = ['code' => 500, 'msg' => "Shell 命令执行失败"];
+                return json($res);
+            }
             $res = [
-                'code' => 500,
-                'msg' => $id." 该用户不存在"
+                'code' => 200,
+                'msg' => "执行成功"
             ];
             return json($res);
         }
-        $shellCmd = "ps -aux | grep " . $customerInfo->stream_name . "\t | grep -v grep | cut -c 9-15 | xargs kill -s 9";
-        system("{$shellCmd} > /dev/null 2>&1", $sysStatus);
-        if ($sysStatus != 0) {
-            $res = ['code' => 500, 'msg' => "Shell 命令执行失败"];
-            return json($res);
-        }
-        $res = [
-            'code' => 200,
-            'msg' => "执行OK"
-        ];
-        return json($res);
+        return json(['403']);
     }
 
 
@@ -388,6 +392,8 @@ class IndexController extends BaseController
                     $base64StrFotmat = explode(',', $base64Str)[1];
                     $res = self::getNumberPlate($base64StrFotmat);
                     if ($res['status'] != 0) {
+                        unlink($originImg);
+                        unlink($thumbImg);
                         $res = ['code' => 500, 'msg' => $res['msg']];
                         return json($res);
                     }
@@ -395,12 +401,15 @@ class IndexController extends BaseController
                     // 获取客户信息表
                     $customer = CarCustomer::where(['num_plate' => $carCode])->find();
                     if ($customer == null || empty($customer)) {
+                        unlink($originImg);
+                        unlink($thumbImg);
                         $res = ['code' => 500, 'msg' => "客户信息不存在，请填写完整信息后在进行车牌识别，谢谢！"];
                         return json($res);
                     }
                     // 【4】开始推流，这里要做转换的
                     $streamInfo = StreamName::get($customer->stream_id);
-                    // 摄像头流地址
+                    // 摄像头流地址,如果是本地流，判断是否有流
+                    //$liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
                     $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
                     $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
@@ -408,7 +417,7 @@ class IndexController extends BaseController
                         $res = ['code' => 500, 'msg' => "摄像头拉流失败，系统执行函数system()没有成功,返回状态码"];
                         return json($res);
                     }
-                    //$this->rmdirs($originImg);
+                    unlink($originImg);
                     $res = [
                         'code' => 200,
                         'msg' => "OK",
@@ -432,6 +441,56 @@ class IndexController extends BaseController
             }
             return json(['code' => 500, 'msg' => "upload file name error"]);
         }
+        return json(['code' => 403, 'msg' => "forbbide"]);
+    }
+
+    /**
+     * 车辆客户信息表
+     */
+    public function customerList()
+    {
+        $custInfo = Db::name('car_customer')->select();
+        foreach ($custInfo as $vale) {
+            $lists[] = [
+                'c_no' => $vale['c_no'],
+                'c_name' => $vale['c_name'],
+                'c_tel' => $vale['c_tel'],
+                'unit' => $vale['unit'],
+                'num_plate' => $vale['num_plate'],
+                'live_status' => LiveStream::getRecordLiveStreamNameStatus($vale['stream_name'])['status']
+            ];
+        }
+        $this->assign('lists', $lists);
+        return $this->fetch();
+    }
+
+    /**
+     * 添加客户信息
+     */
+    public function addCustomer()
+    {
+        if (request()->isPost()) {
+            $res = input('post.');
+            // 【3】生成推流地址
+            $stream = self::apiCreateAddress();
+            if ($stream == false) {
+                return $this->error("获取推流信息错误");
+            }
+            $user = CarCustomer::create([
+                'c_name' => $res['c_name'],
+                'c_tel' => $res['c_tel'],
+                'num_plate' => $res['num_plate'],
+                'unit' => $res['unit'],
+                'stream_id' => $stream['data']['streamId'],
+                'stream_name' => $stream['data']['streamName'],
+            ]);
+            if ($user) {
+                return $this->success("成功");
+            } else {
+                return $this->error("失败");
+            }
+        }
+        return $this->fetch();
     }
 
     /**

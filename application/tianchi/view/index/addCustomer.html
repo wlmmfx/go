@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆智能识别系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
+    <style>
+        body{
+            padding-top: 90px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <a class="navbar-brand" href="#">车辆维修直播系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{:url('tianchi/Index/customerList')}" class="btn btn-dark">客户列表</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{:url('tianchi/Index/addCustomer')}" class="btn btn-dark">添加客户</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{:url('tianchi/Index/uploadImage')}" class="btn btn-dark">车辆识别</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" >
+    <h4>新增客户基本信息</h4>
+    <hr>
+    <form method="post" action="{:url('/tianchi/Index/addCustomer')}" >
+        <div class="form-group">
+            <label for="c_name">姓名:</label>
+            <input type="text" placeholder="贰萬" name="c_name" class="form-control" id="c_name" required="required" >
+        </div>
+        <div class="form-group">
+            <label for="c_tel">电话:</label>
+            <input type="text" placeholder="13669361192"  class="form-control" name="c_tel" id="c_tel" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" required="required" >
+        </div>
+        <div class="form-group">
+            <label for="num_plate">车牌号:</label>
+            <input type="text" placeholder="陕A00000"  class="form-control" name="num_plate" id="num_plate" pattern="^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$" required="required" >
+        </div>
+        <div class="form-group">
+            <label for="unit">地址:</label>
+            <input type="text" placeholder="浙江省、杭州市、西湖区、电子商务产业园"  class="form-control" name="unit" id="unit" pattern="([^\x00-\xff]|[A-Za-z0-9_])+" required="required" >
+        </div>
+        <button type="submit" class="btn btn-info">提交</button>
+        <a href="https://www.tinywan.com/tc/read" class="btn btn-dark">返回</a>
+    </form>
+</div>
+
+</body>
+</html>

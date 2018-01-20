@@ -146,6 +146,17 @@ class StreamController extends BaseApiController
     }
 
     /**
+     * 百度直播回调URL
+     * @return int
+     */
+    public function baiDuPushCallBackUrl()
+    {
+        $redis = messageRedis();
+        $redis->set("baiDuPushCallBackUrl",json_encode($_GET));
+        return 200;
+    }
+
+    /**
      * 私有云直播回调URL
      * @return int
      */

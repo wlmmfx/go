@@ -36,19 +36,16 @@
 </nav>
 
 <div class="container" style="margin-top: 5px;">
-    <h4>客户信息列表</h4>
-    <p></p>
     <div class="row">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <caption>客户信息列表</caption>
-                <thead>
+                <thead class="thead-light">
                 <tr>
                     <th>客户编号</th>
                     <th>姓名</th>
                     <th>电话</th>
                     <th>车牌号</th>
-                    <th>单位地址</th>
                     <th>直播状态</th>
                     <th>操作</th>
                 </tr>
@@ -60,7 +57,6 @@
                     <td>{$user['c_name']}</td>
                     <td>{$user['c_tel']}</td>
                     <td>{$user['num_plate']}</td>
-                    <td>{$user['unit']}</td>
                     <td>
                         {switch name="user['live_status']"}
                         {case value="0"}

@@ -275,6 +275,35 @@ class IndexController extends BaseController
         return $this->fetch();
     }
 
+    public function live2()
+    {
+        //如果手机号码为空，则不予许观看直播
+        // 【1】获取用户id
+        $userId = session("tianchi_wechat_user");
+        $userInfo = OpenUser::where(['id' => $userId])->field('account,mobile,avatar,address')->find();
+        if ($userInfo)
+            // 【2】获取4S店客户信息表
+            $customerInfo = CarCustomer::where(['c_tel' => $userInfo->mobile])->find();
+        if (empty($customerInfo) || $customerInfo == null) {
+            return "你还没有在4S店登记过自己的信息吧！登记后才可以观看哦！";
+        }
+        //【3】如何客户4S店客户的基本信息没有登记，则该客户不可以观看直播哦
+        $streamInfo = StreamName::where(['id' => $customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
+        if (empty($customerInfo) || $customerInfo == null) {
+            return "你的车还没有开始维修呢！只支持观看自己的修车信息";
+        }
+        //【4】如果号码为空，则不允许观看直播的,一定要判断的
+        $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
+        // 历史回顾列表
+        $liveVodList = Db::name('stream_video')->where(['streamName' => $streamInfo->stream_name])->field('id,streamName,fileName,fileSize,createTime,duration')->select();
+        $this->assign('userInfo', $userInfo);
+        $this->assign('streamInfo', $streamInfo);
+        $this->assign('customerInfo', $customerInfo);
+        $this->assign('VodList', $liveVodList);
+        $this->assign('liveStatus', $liveStatus);
+        return $this->fetch();
+    }
+
     /**
      * 我的直播回顾列表
      */
@@ -410,7 +439,7 @@ class IndexController extends BaseController
                     $streamInfo = StreamName::get($customer->stream_id);
                     // 摄像头流地址,如果是本地流，判断是否有流
                     //$liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
-                    $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
+                    $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
                     $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
                     if ($sysStatus != 0) {

@@ -15,6 +15,11 @@
     <script type="text/javascript" src="__JS__/resetDPR.js"></script>
     <script type="text/javascript" src="__JS__/public.js"></script>
 
+    <link href="__COMMON__/videojs/videojs/video-js.css" rel="stylesheet">
+    <link rel="stylesheet" href="__COMMON__/videojs/Skins/YouTouBe.css">
+    <script src="__COMMON__/videojs/videojs/video.js"></script>
+    <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
+
     <link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.2.0/skins/default/aliplayer-min.css"/>
     <script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.2.0/aliplayer-min.js"></script>
     <title>{$customerInfo.c_name} 车辆维修直播间</title>
@@ -29,7 +34,13 @@
 <section class="live_bc">
     <section class="live_content">
         <div class="live_header">
-            <div class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
+            <video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered"
+                   controls autoplay preload="auto"
+                   poster="videodemo.png"
+                   data-setup='{"example_option":true}'>
+                <source src="http://image.amailive.com/data/L05026/video/1515571721150/index.m3u8"
+                        type="application/x-mpegURL">
+            </video>
         </div>
     </section>
     <section class="flex news">
@@ -81,56 +92,29 @@
 </section>
 </body>
 </html>
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
-    var $mobile = 0;
-    var $defaultSource = "https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4";
-    var $liveStatus = "{$liveStatus}";
-    $mobile = "{$userInfo->mobile}";
+    var options = {
+        width: 640,
+        height: 380
+    };
+    var player = videojs('live-stream', options);
+    player.addClass('vjs-matrix');
 
-    if ($liveStatus == 1) {
-        var $m3u8Source = "{$streamInfo.play_m3u8_address}";
-        $defaultSource = $m3u8Source.replace('http', 'https');
-    }
-    ;
-    console.log("$liveStatus == " + $liveStatus);
-    console.log("mobile == " + $mobile);
-    console.log($defaultSource);
-    var player = new Aliplayer({
-            id: "J_prismPlayer",
-            autoplay: true,
-            isLive: true,
-            playsinline: true,
-            width: "100%",
-            height: "380px",
-            controlBarVisibility: "always",
-            useH5Prism: false,
-            useFlashPrism: false,
-            cover: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com//uploads/article/5a52cfe82b1df1.png",
-            source: $defaultSource,
-            skinLayout: [{
-                "name": "controlBar",
-                "align": "blabs",
-                "x": 0,
-                "y": 0,
-                "children": [
-                    {"name": "streamButton", "align": "tr", "x": 20, "y": 23},
-                    {"name": "playButton", "align": "tl", "x": 15, "y": 26},
-                    {"name": "fullScreenButton", "align": "tr", "x": 20, "y": 25},
-                    {"name": "volume", "align": "tr", "x": 20, "y": 25}]
-            },
-                {"name": "bigPlayButton", "align": "blabs", "x": 30, "y": 80},
-                {
-                    "name": "fullControlBar",
-                    "align": "tlabs",
-                    "x": 0,
-                    "y": 0,
-                    "children": [{"name": "fullTitle", "align": "tl", "x": 25, "y": 6},
-                        {"name": "fullNormalScreenButton", "align": "tr", "x": 24, "y": 13},
-                        {"name": "fullZoom", "align": "cc"},
-                        {"name": "fullTimeDisplay", "align": "tr", "x": 10, "y": 12}]
-                }]
-        }, function (player) {
-            console.log("播放器创建了。");
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
         }
-    );
+    });
+
 </script>

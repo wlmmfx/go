@@ -6,7 +6,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
 
     var $ = layui.jquery
         , layer = layui.layer
-        , form = layui.form;
+        , form = layui.form
+        , upload = layui.upload;
     //提交评论
     form.on('submit(commentForm)', function (data) {
         if (data.field.user_id == "" || data.field.user_id == null || data.field.user_id == undefined) {
@@ -127,6 +128,30 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
         //     href: '/jump?username='+ text
         //     ,target: '_blank'
         // });
+    });
+
+    //执行实例
+    var uploadInst = upload.render({
+        elem: '.upload-img' //绑定元素
+        ,url: "{:url('/business/common/upload')}" //上传接口
+        ,done: function(res){
+            //上传完毕回调
+            if(res.code == 2) {
+                $('#demo1').attr('src',res.src);
+                $('#upload-thumb').append('<input type="hidden" name="thumb" value="'+ res.id +'">');
+            } else {
+                layer.msg(res.msg);
+            }
+        }
+        ,error: function(){
+            //请求异常回调
+            //演示失败状态，并实现重传
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+            demoText.find('.demo-reload').on('click', function(){
+                uploadInst.upload();
+            });
+        }
     });
 });
 

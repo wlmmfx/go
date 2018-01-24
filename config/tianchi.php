@@ -13,4 +13,3 @@ use think\Route;
 Route::rule('tc/main', 'tianchi/Index/uploadImage');
 Route::rule('tc/wechat', 'tianchi/Index/index');
 Route::rule('tc/read', 'tianchi/Index/customerList');
-Route::rule('tc/create', 'tianchi/Index/addCustomer');

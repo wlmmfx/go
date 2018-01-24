@@ -22,7 +22,7 @@ class WechatController extends BaseController
     public function userPlayLists()
     {
         $curlReq = curl_request('http://music.163.com/api/search/get/',[
-            's'=>'成都',
+            's'=>'欢乐颂2',
             'limit'=>'10',
             'type'=>'1',
             'offset'=>'0',
@@ -81,4 +81,5 @@ class WechatController extends BaseController
         ];
         return json($res);
     }
+
 }

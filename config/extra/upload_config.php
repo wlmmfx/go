@@ -6,24 +6,17 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/1/26 10:53
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: Redis配置
+ * |  Function: 上传文件配置
  * '------------------------------------------------------------------------------------------------------------------*/
- return [
-    'message'=>[
-        'host' => '127.0.0.1',
-        'port' => '63789',
-        'auth' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
-        'select' => 0,
-        'expire' => '7200',
-        'timeout' => '0'
+return [
+    'web'=>[
+        'size' => '9437184', // 9M 上传文件最大字节大小
+        'ext' => 'jpg,png,gif,jpeg', // 允许上传的文件后缀
+        'type' => 'file' // 允许上传的文件类型
     ],
-    'session'=>[
-     'host' => '127.0.0.1',
-     'port' => '63790',
-     'auth' => '',
-     'select' => 0,
-     'expire' => '7200',
-     'timeout' => '0'
-    ],
- ];
-
+    'live'=>[
+        'size' => '800',
+        'ext' => 'mp4,flv,ts',
+        'type' => 'jpg,png,gif,mp4,zip,jpeg'
+    ]
+];

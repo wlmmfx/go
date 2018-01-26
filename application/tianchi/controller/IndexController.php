@@ -408,7 +408,8 @@ class IndexController extends BaseController
             if ($file) {
                 $id = input('param.id');
                 $savePath = ROOT_PATH . 'public' . DS . 'tmp';
-                $info = $file->rule("uniqid")->move($savePath);
+                // 增加服务端图片验证
+                $info = $file->validate(['size'=>config('upload_config')['web']['size']*1024,'ext'=>config('upload_config')['web']['ext']])->rule("uniqid")->move($savePath);
                 if ($info) {
                     // 成功上传后 获取车牌号
                     $originImg = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $info->getSaveName();

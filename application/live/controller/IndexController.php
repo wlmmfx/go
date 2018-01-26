@@ -96,6 +96,7 @@ class IndexController extends BaseFrontendController
         return $this->fetch('', [
             'streamInfo' => $streamInfo,
             'live' => $live,
+            'title' => $live['name'],
             'liveStatus' => $liveStatus
         ]);
     }
@@ -127,9 +128,11 @@ class IndexController extends BaseFrontendController
      */
     public function vodDetail()
     {
-        $vodId= input('param.id');
+        $vodId = input('param.id');
         $live = Db::table('resty_vod')->where('id', $vodId)->cache('RESTY_VOD_DETAIL:' . $vodId)->find();
-        $this->assign('vod', $live);
-        return $this->fetch();
+        return $this->fetch('', [
+            'vod' => $live,
+            'title' => $live['name']
+        ]);
     }
 }

@@ -52,11 +52,19 @@ class Article extends BaseModel
 
     }
 
-    protected function setAuthorIdAttr()
+    /**
+     * 自动插入admin_id ,设置器
+     * @return mixed
+     */
+    protected function setAdminIdAttr()
     {
         return session('admin.admin_id');
     }
 
+    /**
+     *
+     * @return false|\PDOStatement|string|\think\Collection
+     */
     public function getAll(){
         return Db::table("resty_article")
             ->alias('a')

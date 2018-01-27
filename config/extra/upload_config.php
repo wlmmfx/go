@@ -4,12 +4,19 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2017/12/21 14:28
+ * |  DateTime: 2018/1/26 10:53
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Function: 上传文件配置
  * '------------------------------------------------------------------------------------------------------------------*/
-use think\Route;
-
-// 定义路由规则 并设置60秒的缓存
-Route::rule('tc/main', 'tianchi/Index/uploadImage');
-Route::rule('tc/wechat', 'tianchi/Index/index');
-Route::rule('tc/read', 'tianchi/Index/customerList');
+return [
+    'web'=>[
+        'size' => '9437184', // 9M 上传文件最大字节大小
+        'ext' => 'jpg,png,gif,jpeg', // 允许上传的文件后缀
+        'type' => 'file' // 允许上传的文件类型
+    ],
+    'live'=>[
+        'size' => '800',
+        'ext' => 'mp4,flv,ts',
+        'type' => 'jpg,png,gif,mp4,zip,jpeg'
+    ]
+];

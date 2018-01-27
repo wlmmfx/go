@@ -2,7 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" type="text/css" href="__CSS__/bootstrap.min.css">
-    <title>{$Think.config.webinfo.WEBNAME}</title>
+    <title>
+        {present name="title"}
+            {$title}
+        {else /}
+            {$Think.config.webinfo.WEBNAME}
+        {/present}
+    </title>
     <meta name="description" content="{$Think.config.webinfo.DISCRIPTION}"/>
     <meta name="keyword" content="{$Think.config.webinfo.KEYWORDS}">
     <link rel="shortcut icon" href="__COMMON__/favicon01.ico" mce_href="__COMMON__/favicon.ico" type="image/x-icon">

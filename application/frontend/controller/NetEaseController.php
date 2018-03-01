@@ -15,6 +15,7 @@ namespace app\frontend\controller;
 use app\common\controller\BaseFrontendController;
 use netease\YunXinIM;
 use think\Db;
+use think\Log;
 
 class NetEaseController extends BaseFrontendController
 {
@@ -38,8 +39,8 @@ class NetEaseController extends BaseFrontendController
         $data = Db::name('open_user')->field('id accid,account,nickname name,avatar icon')->where('delete_time is NULL and id=' . $userId)->find();
         $token = md5($data['accid'] . 'tinywan123456');
         // 写入到云信服务器
-        $accid = 'Tinywan_' . rand(000, 999) . $data['accid'];
-        $name = $data['name'] . rand(000, 999);
+        $accid = 'Tinywan_' . $data['accid'];
+        $name = $data['name'];
         $icon = $data['icon'];
         $info = $this->_instance->createAccId($accid, $name, '{}', $icon, $token);
         return $info;
@@ -211,6 +212,77 @@ class NetEaseController extends BaseFrontendController
     }
 
     /**
+     * Im 登陆操作
+     * 操作管理：
+     * 1、用户登陆
+     * 2、登陆成功返回token
+     */
+    public function imLoginOption()
+    {
+        if (!request()->isPost()) return json(['code' => 500, 'msg' => '非法访问']);
+        // 1、获取数据
+        $account = input('post.username');
+//        $account = '本来想做个好人的';
+        $password = input('post.password');
+//        $password = 123456;
+        $data = [
+            'username' => $account,
+            'password' => $password,
+        ];
+        $redis = messageRedis();
+        $redis->set("imLoginOption", json_encode($data));
+
+        // 2、登陆是否成功。根据用户名获取用户信息，同时判断用户名是否合法
+        $dbRes = Db::name('open_user')
+            ->field('id,account,nickname,avatar,email,mobile')
+            ->where("account=:account and password=:password")
+            ->bind(['account' => [$account, \PDO::PARAM_STR], 'password' => [md5($password), \PDO::PARAM_STR]])
+            ->find();
+        if (!$dbRes) return "登陆失败";
+        // 3、通信ID是否已经注册。如果没有则先调用云信进行注册，这里通过【获取用户名片】是否成功为判断依据
+        $accId = 'Tinywan_' . $dbRes['id'];
+        $token = md5($dbRes['id'] . 'tinywan123456');
+        $userInfo = $this->_instance->getUinfoss(array($accId));
+        if ($userInfo['code'] == 200) {
+            $jsonData = [
+                'neteaseAccid' => $accId,
+                'mail' => $dbRes['email'],
+                'phone' => $dbRes['mobile'],
+                'nickName' => $userInfo['uinfos'][0]['name'],
+                'sex' => $userInfo['uinfos'][0]['gender'],
+                'avatar' => $userInfo['uinfos'][0]['icon'],
+                'username' => $userInfo['uinfos'][0]['name'],
+                'neteaseToken' => $token,
+                'from' => "用户名名片",
+            ];
+            // 4、注册通信ID
+        } else {
+            $name = $dbRes['nickname'];
+            $icon = $dbRes['avatar'];
+            // 创建通信ID时的token为指定，不是网易云返回的token
+            $res = $this->_instance->createAccId($accId, $name, '{}', $icon, $token);
+            if ($res['code'] == 200) {
+                $jsonData = [
+                    'neteaseAccid' => $accId,
+                    'mail' => $dbRes['email'],
+                    'phone' => $dbRes['mobile'],
+                    'nickName' => $name,
+                    'sex' => 1,
+                    'avatar' => $icon,
+                    'username' => $name,
+                    'neteaseToken' => $token,
+                    'from' => "新注册通信ID"
+                ];
+            } else {
+                Log::error(getCurrentDate() . ' 注册通信ID失败');
+                return json(['code' => 200, 'msg' => '注册通信ID失败']);
+            }
+        }
+
+        return json(['code' => 200, 'data' => $jsonData]);
+    }
+
+    /**
      * IM 添加好友 Tinywan_52 请求 Tinywan_60 为自己的好友
      * @return mixed
      */
@@ -239,7 +311,7 @@ class NetEaseController extends BaseFrontendController
     public function imGetFriend()
     {
         $accId = 'Tinywan_' . 52;
-        $res = $this->_instance->getFriend($accId,$createTime='1443599631111');
+        $res = $this->_instance->getFriend($accId, $createTime = '1443599631111');
         halt($res);
     }
 
@@ -269,7 +341,21 @@ class NetEaseController extends BaseFrontendController
      */
     public function test()
     {
-        $userId = 60;
+//        $account = '那个谁';
+//        $password = 123456;
+//
+//        $res = Db::name('open_user')
+//            ->field('id accid,account,nickname name')
+//            ->where("account=:account and password=:password")
+//            ->bind(['account' => [$account, \PDO::PARAM_STR], 'password' => [md5($password), \PDO::PARAM_STR]])
+//            ->find();
+//        $token = md5($res['accid'] . 'tinywan123456');
+//        // 写入到云信服务器
+//        $accId = 'Tinywan_' . $res['accid'];
+//        echo $token;
+//        echo $accId;
+//        halt($res);
+        $userId = 61;
         $data = Db::name('open_user')->field('id accid,account,nickname name,avatar icon')->where('delete_time is NULL and id=' . $userId)->find();
         $token = md5($data['accid'] . 'tinywan123456');
         // 写入到云信服务器
@@ -277,6 +363,7 @@ class NetEaseController extends BaseFrontendController
         $name = $data['name'];
         $icon = $data['icon'];
         $res = $this->_instance->createAccId($accid, $name, '{}', $icon, $token);
+        halt($res);
         if ($res['code'] != 200) exit("创建失败");
         halt($res['info']);
     }

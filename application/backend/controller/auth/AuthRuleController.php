@@ -46,7 +46,7 @@ class AuthRuleController extends BaseBackendController
             if ($pLevel) $data['level'] = $pLevel['level'] + 1;
             $res = db('auth_rule')->insert($data);
             if ($res) {
-                $this->success('success', "backend/auth.auth_rule/rulelist");
+                $this->success('success', "backend/auth.auth_rule/ruleList");
                 exit;
             } else {
                 $this->error('fail');

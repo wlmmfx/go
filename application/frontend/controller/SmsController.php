@@ -13,7 +13,7 @@ use Overtrue\EasySms\EasySms;
 use Overtrue\EasySms\Strategies\OrderStrategy;
 use think\Controller;
 
-class Sms extends Controller
+class SmsController extends Controller
 {
     /**
      * [0] 单条短信测试
@@ -22,7 +22,7 @@ class Sms extends Controller
     public function init()
     {
         $ac = "1001@";
-        $authkey = "2312";
+        $authkey = "6BCF5B3CCC3E6";
         $cgid = 6;
         $mobile_code1 = rand(100000, 999999);
         $mobile_code2 = rand(100000, 999999);
@@ -39,9 +39,10 @@ class Sms extends Controller
         三三信息中心";
         $content= urlencode($str);
         $mobile = '13669361192';
-        $url = "http://127.0.0.1/OpenPlatform/OpenApi?action=sendOnce&ac=$ac&authkey=$authkey&cgid=$cgid&c=$content&m=$mobile";
+        $url = "http://12321312/OpenPlatform/OpenApi?action=sendOnce&ac=$ac&authkey=$authkey&cgid=$cgid&c=$content&m=$mobile";
         $xml = get_uri($url);
         $result = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        halt($result);
         /**
          * 发送成功
          */

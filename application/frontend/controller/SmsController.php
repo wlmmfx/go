@@ -21,8 +21,8 @@ class SmsController extends Controller
      */
     public function init()
     {
-        $ac = "1001@";
-        $authkey = "6BCF5B3CCC3E6";
+        $ac = "1001@800106660005";
+        $authkey = "6BCF5B3CCC3E6E84DA34AFA911E7648F";
         $cgid = 6;
         $mobile_code1 = rand(100000, 999999);
         $mobile_code2 = rand(100000, 999999);
@@ -39,7 +39,7 @@ class SmsController extends Controller
         三三信息中心";
         $content= urlencode($str);
         $mobile = '13669361192';
-        $url = "http://12321312/OpenPlatform/OpenApi?action=sendOnce&ac=$ac&authkey=$authkey&cgid=$cgid&c=$content&m=$mobile";
+        $url = "http://http.duanxin.cm/OpenPlatform/OpenApi?action=sendOnce&ac=$ac&authkey=$authkey&cgid=$cgid&c=$content&m=$mobile";
         $xml = get_uri($url);
         $result = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
         halt($result);

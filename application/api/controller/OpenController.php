@@ -30,7 +30,7 @@ class OpenController extends BaseApiController
      */
     public function createStreamVideo()
     {
-        $version = input("get.version",1);
+        $version = input("get.version", 1);
         $streamName = input("get.streamName");
         $baseName = input("get.baseName");
         $duration = input("get.duration");
@@ -38,10 +38,10 @@ class OpenController extends BaseApiController
         $fileTime = input("get.fileTime");
 
         //获取liveId
-        $live = Live::where('stream_name',$streamName)->field('id,stream_id,stream_name')->find();
+        $live = Live::where('stream_name', $streamName)->field('id,stream_id,stream_name')->find();
         // 2018-1-19 非活动的录像视频不能够成功，如果liveId 为空，则liveId 等于流名称
         $liveId = $streamName;
-        if($live){
+        if ($live) {
             $liveId = $live->id;
         }
         $res = StreamVideo::create([
@@ -303,6 +303,28 @@ class OpenController extends BaseApiController
         } catch (\phpmailerException $e) {
             return "邮件发送失败：" . $e->errorMessage();
         }
+    }
+
+    /**
+     * 长链接转为短链接
+     */
+    public function getShortUrl()
+    {
+        // AppKey
+        $source = config('oauth')['weibo']['app_key'];
+        $url_long = input('get.url');
+
+        // 单个链接转换
+        $data = get_sina_short_url($source, $url_long);
+
+        // 多个链接转换
+//        $url_long = array(
+//            'http://www.shuchengxian.com/article/670.html',
+//            'http://www.shuchengxian.com/article/654.html',
+//            'http://www.shuchengxian.com/index.html'
+//        );
+        //$data = get_sina_short_url($source, $url_long);
+        return json($data);
     }
 
     /**

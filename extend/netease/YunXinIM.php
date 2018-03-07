@@ -1325,14 +1325,17 @@ class YunXinIM
         return $result;
     }
 
-    // 2015-07-04 聊天室功能开发 gm
+    /**
+     * =======================聊天室功能开发
+     */
 
     /**
      * 创建聊天室
      * @param $accid 聊天室属主的账号accid
-     * @param $name  聊天室名称，长度限制128个字符
+     * @param $name 聊天室名称，长度限制128个字符
+     * @return array
      */
-    public function chatroomCreates($accid, $name)
+    public function createChatRoom($accid, $name)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/create.action';
         $data = array(
@@ -1353,7 +1356,7 @@ class YunXinIM
      * @param $name    聊天室名称
      * @return array
      */
-    public function chatroomUpdates($roomid, $name)
+    public function updateChatRoom($roomid, $name)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/update.action';
         $data = array(
@@ -1369,12 +1372,33 @@ class YunXinIM
     }
 
     /**
+     * 查询聊天室信息
+     * @param $roomId 聊天室ID
+     * @param $needOnlineUserCount 是否需要返回在线人数，true或false，默认false
+     * @return array
+     */
+    public function getChatRoom($roomId, $needOnlineUserCount)
+    {
+        $url = 'https://api.netease.im/nimserver/chatroom/get.action';
+        $data = array(
+            'roomid' => $roomId,
+            'needOnlineUserCount' => $needOnlineUserCount
+        );
+        if ($this->RequestType == 'curl') {
+            $result = $this->postDataCurl($url, $data);
+        } else {
+            $result = $this->postDataFsockopen($url, $data);
+        }
+        return $result;
+    }
+
+    /**
      * 修改聊天室开启或关闭聊天室
      * @param $roomid        聊天室ID
      * @param $operator      创建者ID
      * @param string $status 修改还是关闭  false => 关闭
      */
-    public function chatroomToggleCloses($roomid, $operator)
+    public function chatRoomToggleClose($roomid, $operator)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/toggleCloseStat.action';
         $data = array(
@@ -1390,7 +1414,7 @@ class YunXinIM
         return $result;
     }
 
-    public function chatroomToggleStats($roomid, $operator)
+    public function chatRoomToggleStats($roomid, $operator)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/toggleCloseStat.action';
         $data = array(
@@ -1418,7 +1442,7 @@ class YunXinIM
      * -2:设为禁言用户，operator必须是创建者或管理员
      * @param string $optvalue // true:设置；false:取消设置
      */
-    public function chatroomSetMemberRoles($roomid, $operator, $target, $opt, $optvalue)
+    public function chatRoomSetMemberRoles($roomid, $operator, $target, $opt, $optvalue)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/setMemberRole.action';
         $data = array(

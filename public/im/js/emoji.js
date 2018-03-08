@@ -32,7 +32,7 @@ function buildEmoji(text) {
 	var matches = text.match(re) || [];
 	for (var j = 0, len = matches.length; j < len; ++j) {
 		if(emoji[matches[j]]){
-			text = text.replace(matches[j], '<img class="emoji" src="images/emoji/' + emoji[matches[j]].file + '" />');
+			text = text.replace(matches[j], '<img class="emoji" src="https://www.tinywan.com/im/images/emoji/' + emoji[matches[j]].file + '" />');
 		}		
 	}
 	return text;

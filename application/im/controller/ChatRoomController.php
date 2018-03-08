@@ -27,7 +27,7 @@ class ChatRoomController extends BaseFrontendController
         $this->_im = new YunXinIM($this->_appKey, $this->_appSecret, 'curl');
     }
 
-    public function test()
+    public function testAction()
     {
         return "123";
     }
@@ -60,7 +60,7 @@ class ChatRoomController extends BaseFrontendController
      */
     public function createChatRoom()
     {
-        $accId = "Tinywan_60";
+        $accId = "Tinywan_61";
         $name = "天龙八部3 直播聊天室";
         $info = $this->_im->createChatRoom($accId, $name);
         if ($info['code'] == 200) {
@@ -80,7 +80,7 @@ class ChatRoomController extends BaseFrontendController
                 echo "创建聊天室成功";
             }
             // 4、注册通信ID
-        }else{
+        } else {
             echo "接口失败";
         }
         return 1;
@@ -92,11 +92,90 @@ class ChatRoomController extends BaseFrontendController
      */
     public function getChatRoom()
     {
-        $roomId = 22272267;
+        $roomId = 22136841;
         $needOnlineUserCount = true;
         $info = $this->_im->getChatRoom($roomId, $needOnlineUserCount);
-        halt($info);
+        $res = [
+            'res' => 200,
+            'msg' => [
+                'total' => 1,
+                'list' => $info
+            ]
+        ];
+        return json($res);
+    }
 
+    /**
+     * 获取所有聊天室
+     * @return \think\response\Json
+     */
+    public function getAllChatRoom()
+    {
+        $roomInfo = ImRoom::where('valid', '=', 1)->limit(10)->select();
+        // 遍历读取用户数据
+        $list = [];
+        foreach ($roomInfo as $room) {
+            $list[] = [
+                'creator' => $room->creator, //聊天室属主的账号accid
+                'name' => $room->name, // 聊天室名称
+                'status' => $room->valid,
+                'announcement' => $room->announcement, // 公告
+                'ext' => '',
+                'roomid' => $room->room_id,
+                'createtime' => $room->create_time,
+                'broadcasturl' => $room->broadcasturl, // 直播地址
+                'onlineusercount' => 12,
+            ];
+        }
+        $res = [
+            'res' => 200,
+            'msg' => [
+                'total' => 1,
+                'list' => $list
+            ]
+        ];
+        return json($res);
+    }
+
+    /**
+     * 获取连接房间地址(请求聊天室地址)
+     */
+    public function requestRoomAddress()
+    {
+        if (!request()->isPost()) return "非Post 请求";
+        $roomId = input('post.roomid');
+        $accId = "Tinywan_61";
+        $redis = messageRedis();
+        $redis->set("IM-requestRoomAddress", json_encode($_POST));
+
+        $info = $this->_im->requestRoomAddr($roomId, $accId);
+        if ($info['code'] == 200) {
+            $res = [
+                'res' => 200,
+                'errmsg' => '请求聊天室地址成功',
+                'msg' => [
+                    'addr' => $info['addr']
+                ]
+            ];
+        } else {
+            $res = [
+                'res' => 500,
+                'errmsg' => '请求聊天室地址失败',
+                'msg' => [
+                    'addr' => ''
+                ]
+            ];
+        }
+
+        return json($res);
+    }
+
+    /**
+     * 主播页面
+     */
+    public function anchor()
+    {
+        return "anchor";
     }
 
     /**
@@ -135,11 +214,38 @@ class ChatRoomController extends BaseFrontendController
     }
 
     /**
+     * 注册
+     */
+    public function register()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 创建用户
+     */
+    public function createUser()
+    {
+        $account = input('post.username');
+        $password = input('post.password');
+        $data = [
+            'username' => $account,
+            'password' => $password,
+        ];
+        $redis = messageRedis();
+        $redis->set("IM-createUser", json_encode($data));
+
+        return json(['code' => 200, 'data' => $data]);
+    }
+
+    /**
      * 房间页面
      * @return mixed
      */
     public function room()
     {
+        // 获取聊天室ID
+        $roomid = input('get.roomid');
         return $this->fetch();
     }
 

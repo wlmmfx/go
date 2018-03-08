@@ -20,7 +20,7 @@ body {
     font-size: 14px;
     padding-top: 108px;
     box-sizing: border-box;
-    background: url(../images/logo.png) no-repeat top center;
+    background: url(/im/images/logo.png) no-repeat top center;
 }
 .sub-title {
     position: relative;

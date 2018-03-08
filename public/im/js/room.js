@@ -10,8 +10,8 @@ var page = {
 	        token: util.readCookie("sdktoken"),
 	        chatroomNick:util.readCookie("nickName"),
 	        chatroomAvatar:util.readCookie("avatar")
-    	}
-    	this.account = util.readCookie("uid");
+    	};
+        this.account = util.readCookie("uid");
     	this.offsetTime = 0;
     	this.initNode();
     	this.initEmoji();
@@ -19,11 +19,11 @@ var page = {
 		var link = this.link = window.link =new LinkRoom(this,options);
 		this.data = link.data;
 		this.initVideo();
-		
+
 	},
 	//sdk连接后初始化页面
 	initReady:function(data){
-		var chatroom = data.chatroom,
+        var chatroom = data.chatroom,
 			member = data.member,
 			total,
 			that = this;
@@ -79,7 +79,8 @@ var page = {
 	},
 	//目前图片写死代替
 	initVideo:function(){
-		$("#video")[0].src = "./images/image"+util.getIdTag()+".jpg";
+		console.log('------------'+util.getIdTag());
+		$("#video")[0].src = "/im/images/image"+util.getIdTag()+".jpg";
 		$("#video").removeClass("hide");
 	},
 	initEmoji:function(){
@@ -88,7 +89,7 @@ var page = {
             'emojiList':emojiList,  //普通表情
             'width': 350,
             'height':300,
-            'imgpath':'./images/',     
+            'imgpath':"/im/images/",
             'callback':function(result){        
                 that.cbShowEmoji(result);
             }

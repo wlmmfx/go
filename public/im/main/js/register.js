@@ -54,7 +54,7 @@ var register = {
 			'nickname': nickname
 		};
 		$.ajax({
-			url: CONFIG.url+'/api/createDemoUser',
+			url: 'https://www.tinywan.com/im/chat_room/createUser',
 			type: 'POST',
 			data: params,
 			contentType: 'application/x-www-form-urlencoded',

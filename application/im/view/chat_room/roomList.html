@@ -40,8 +40,9 @@
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: CONFIG.url+"/api/chatroom/homeList",
-            contentType:"application/json",
+//            url: CONFIG.url+"/api/chatroom/homeList",
+            url: "https://www.tinywan.com/im/chat_room/getAllChatRoom",
+            //contentType:"application/json",
             beforeSend: function (req) {
                 req.setRequestHeader('appkey', CONFIG.appkey);
             }

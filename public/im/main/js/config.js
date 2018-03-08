@@ -1,14 +1,14 @@
 (function() {
     // 配置
-    var envir = 'online';
+    var envir = 'test';
     var configMap = {
         dev: {
             appkey: 'fe416640c8e8a72734219e1847ad2547',
             url: 'https://apptest.netease.im'
         },
         test: {
-            appkey: 'fe416640c8e8a72734219e1847ad2547',
-            url: 'https://apptest.netease.im'
+            appkey: '97437ca0ea2c1c333b90b9366f671743',
+            url: 'https://app.netease.im'
         },
         pre: {
             appkey: '45c6af3c98409b18a84451215d0bdd6e',

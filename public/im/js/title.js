@@ -2,18 +2,19 @@
  	function getAvatar(url) {
         var re=/^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
         if(re.test(url)){
-			return page.link.room.viewImageSync({
-				url: url,
-				quality: 85, // 图片质量 0 - 100 可选填
-				thumbnail: { // 生成缩略图， 可选填
-					width: 80,
-					height: 80,
-					mode: 'cover'
-				}
-			})
+			// return page.link.room.viewImageSync({
+			// 	url: url,
+			// 	quality: 85, // 图片质量 0 - 100 可选填
+			// 	thumbnail: { // 生成缩略图， 可选填
+			// 		width: 80,
+			// 		height: 80,
+			// 		mode: 'cover'
+			// 	}
+			// })
             // return url+"?imageView&thumbnail=80x80&quality=85";
+            return url + "?thumbnail=80x80&quality=85";
         }else{
-            return "./images/default-icon.png"
+            return "/im/images/default-icon.png"
         } 
 	}
 	function logout () {
@@ -22,7 +23,7 @@
 			util.delCookie('sdktoken')
 			util.delCookie('avatar')
 			util.delCookie('uid')
-			location.href = './list.html'
+			location.href = './roomList.html'
 		}
 	}
 	// var sdktoken = readCookie('sdktoken');
@@ -37,6 +38,10 @@
 	nickName = nickName || util.readCookie('uid') || '匿名'
 	$("#nickName").text(nickName)
 	$('#chatroom-logout').on('click', logout)
+	console.log("----------------------getAvatar(util.readCookie(avatar))---------1----------");
+ 	var test_data = util.readCookie("avatar");
+	console.log(test_data);
+    console.log("----------------------getAvatar(util.readCookie(avatar))------------2-------");
 	document.getElementById('avatar').src = getAvatar(util.readCookie("avatar"));
 	if (util.readCookie('sdktoken')) {
 		$('#chatroom-login').hide()

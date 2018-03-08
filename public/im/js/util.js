@@ -33,7 +33,7 @@ var util ={
             })
             // return url+"?imageView&thumbnail=80x80&quality=85";
         }else{
-            return "../images/default-icon.png"
+            return "/im/images/default-icon.png"
         } 
     },
 	buildEmoji:function(text) {
@@ -41,7 +41,7 @@ var util ={
 		var matches = text.match(re) || [];
 		for (var j = 0, len = matches.length; j < len; ++j) {
 			if(emoji[matches[j]]){
-				text = text.replace(matches[j], '<img class="emoji" src="images/emoji/' + emoji[matches[j]].file + '" />');
+				text = text.replace(matches[j], '<img class="emoji" src="/im/images/emoji/' + emoji[matches[j]].file + '" />');
 			}		
 		}
 		return text;
@@ -58,7 +58,7 @@ var util ={
                 }else{
                     var content = JSON.parse(data.content);
                     if(content.type===1){
-                        text = '<img src="images/play-'+content.data.value+'.png" onload="page.scrollToBottom()">';
+                        text = '<img src="/im/images/play-'+content.data.value+'.png" onload="page.scrollToBottom()">';
                     }   
                 }
                 break;

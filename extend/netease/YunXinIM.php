@@ -1393,6 +1393,29 @@ class YunXinIM
     }
 
     /**
+     * 请求聊天室地址
+     * @param $roomId 聊天室id
+     * @param $accId 进入聊天室的账号
+     * @param int $clientType 1:weblink（客户端为web端时使用）; 2:commonlink（客户端为非web端时使用）, 默认1
+     * @return array
+     */
+    public function requestRoomAddr($roomId, $accId, $clientType = 1)
+    {
+        $url = 'https://api.netease.im/nimserver/chatroom/requestAddr.action';
+        $data = array(
+            'roomid' => $roomId,
+            'accid' => $accId,
+            'clienttype' => $clientType
+        );
+        if ($this->RequestType == 'curl') {
+            $result = $this->postDataCurl($url, $data);
+        } else {
+            $result = $this->postDataFsockopen($url, $data);
+        }
+        return $result;
+    }
+
+    /**
      * 修改聊天室开启或关闭聊天室
      * @param $roomid        聊天室ID
      * @param $operator      创建者ID

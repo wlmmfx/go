@@ -2,12 +2,10 @@
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
+    // | development 生产环境：切换配置文件 development.php
+    // | production 正式环境：切换配置文件 production.php
     // +----------------------------------------------------------------------
 
-    /**
-     * development 生产环境：切换配置文件 development.php
-     * production 正式环境：切换配置文件 production.php
-     */
     'app_status' => 'production',
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
@@ -57,8 +55,10 @@ return [
         // 验证成功后是否重置
         'reset' => true
     ],
+
     //独立配置文件数据库配置文件
-    'extra_config_list' => ['database', 'session'],
+    //'extra_config_list' => ['database', 'session'],
+
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl' => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
     'dispatch_error_tmpl' => APP_PATH . 'common' . DS . 'view' . DS . 'tpl' . DS . 'dispatch_jump.tpl',
@@ -79,82 +79,5 @@ return [
     // 全局请求缓存排除规则
     'request_cache_except' => [],
 
-    // +----------------------------------------------------------------------
-    // | 日志设置
-    // +----------------------------------------------------------------------
-
-    'log'                    => [
-        // 日志记录方式，内置 file socket 支持扩展
-        'type'  => 'File',
-        // 日志保存目录
-        'path'  => LOG_PATH,
-        // 日志记录级别
-        'level' => [],
-        // error和sql日志单独记录
-        'apart_level'   =>  ['error','sql']
-    ],
-
-    // 使用 socket 远程打印日志
-//    'log' => [
-//        'type' => 'socket',
-//        'host' => 'slog.tinywan.com',
-//        //日志强制记录到配置的client_id
-//        'force_client_ids' => ['tinywan123456','Tinywan_123','www123456'],
-//        //限制允许读取日志的client_id
-//        'allow_client_ids' => ['tinywan123456'],
-//    ],
-
-    // 自定义日志格式
-//    'log' => [
-//        'type' => 'driver\log\Email',
-//        'email_addr' => '756684177@qq.com',
-//        //日志强制记录到配置的client_id
-//        'send_level' =>['error', 'info']
-//    ],
-
-    // +----------------------------------------------------------------------
-    // | 同时使用多个缓存类型
-    // +----------------------------------------------------------------------
-    'cache' => [
-        // 使用复合缓存类型
-        'type' => 'complex',
-        // 默认使用的缓存
-        'default' => [
-            // 驱动方式
-            'type' => 'redis',
-            // 服务器地址
-            'host' => '172.19.230.35',
-            'port' => '63789',
-            'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
-            // 缓存前缀
-            'prefix' => 'REDIS_CACHE:',
-            // 缓存有效期 0表示永久缓存
-            'expire' => 604800,
-        ],
-        // 文件缓存
-        'file' => [
-            // 驱动方式
-            'type' => 'file',
-            // 设置不同的缓存保存目录
-            'path' => RUNTIME_PATH . 'file/',
-            // 缓存前缀
-            'prefix' => 'FILE_CACHE:',
-            // 缓存有效期 0表示永久缓存
-            'expire' => 0,
-        ],
-        // redis缓存
-        'redis' => [
-            // 驱动方式
-            'type' => 'redis',
-            // 服务器地址
-            'host' => '172.19.230.35',
-            'port' => '63789',
-            'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
-            // 缓存前缀
-            'prefix' => 'REDIS_CACHE:',
-            // 缓存有效期 0表示永久缓存
-            'expire' => 604800,
-        ],
-    ],
 ];
 

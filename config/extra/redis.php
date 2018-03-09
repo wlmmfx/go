@@ -6,7 +6,7 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2018/1/26 10:53
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: Redis配置
+ * |  Function: 缓存Redis配置信息
  * '------------------------------------------------------------------------------------------------------------------*/
  return [
     'message'=>[

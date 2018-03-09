@@ -6,11 +6,21 @@
  * |  Author: Tinywan(ShaoBo Wan)
  * |  DateTime: 2017/9/2 8:12
  * |  Mail: Overcome.wan@Gmail.com
- * |  Function: 开发场景配置
+ * |  Function: 正式环境
  * '-------------------------------------------------------------------*/
 return [
+
+    // +----------------------------------------------------------------------
+    // | 应用设置
+    // +----------------------------------------------------------------------
+
     "app_address" => "正式环境",
     "web_home" => "www.tinywan.com",
+
+    // +----------------------------------------------------------------------
+    // | 数据库设置
+    // +----------------------------------------------------------------------
+
     "database" => [
         // 数据库类型
         'type' => 'mysql',
@@ -58,5 +68,96 @@ return [
         'query' => '\\think\\db\\Query',
         // Log 日志
         'log_table' => 'resty_logs'
-    ]
+    ],
+
+    // +----------------------------------------------------------------------
+    // | 会话设置
+    // +----------------------------------------------------------------------
+
+    'session' => [
+        'id' => '',
+        // SESSION_ID的提交变量,解决flash上传跨域
+        'var_session_id' => '',
+        // SESSION 前缀
+        'prefix' => 'think',
+        // 驱动方式 支持redis memcache memcached
+        'type' => '',
+        // 是否自动开启 SESSION
+        'auto_start' => true,
+        'httponly' => true,
+        'secure' => false,
+
+        'prefix' => 'module',
+        'type' => 'redis',
+        'host' => '172.19.230.35',
+        'port' => '63789',
+        'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
+        'select' => 0,
+        'expire' => '17200',
+        'timeout' => '0',
+        'persistent' => true,
+        'session_name' => 'RESTY_PHPSESSID:',
+        'record' => '1200'
+    ],
+
+    // +----------------------------------------------------------------------
+    // | 日志设置
+    // +----------------------------------------------------------------------
+
+    'log' => [
+        // 日志记录方式，内置 file socket 支持扩展
+        'type' => 'File',
+        // 日志保存目录
+        'path' => LOG_PATH,
+        // 日志记录级别
+        'level' => [],
+        // error和sql日志单独记录
+        'apart_level' => ['error', 'sql']
+    ],
+
+    // +----------------------------------------------------------------------
+    // | 同时使用多个缓存类型
+    // +----------------------------------------------------------------------
+
+    'cache' => [
+        // 使用复合缓存类型
+        'type' => 'complex',
+        // 默认使用的缓存
+        'default' => [
+            // 驱动方式
+            'type' => 'redis',
+            // 服务器地址
+            'host' => '172.19.230.35',
+            'port' => '63789',
+            'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
+            // 缓存前缀
+            'prefix' => 'REDIS_CACHE:',
+            // 缓存有效期 0表示永久缓存
+            'expire' => 604800,
+        ],
+        // 文件缓存
+        'file' => [
+            // 驱动方式
+            'type' => 'file',
+            // 设置不同的缓存保存目录
+            'path' => RUNTIME_PATH . 'file/',
+            // 缓存前缀
+            'prefix' => 'FILE_CACHE:',
+            // 缓存有效期 0表示永久缓存
+            'expire' => 0,
+        ],
+        // redis缓存
+        'redis' => [
+            // 驱动方式
+            'type' => 'redis',
+            // 服务器地址
+            'host' => '172.19.230.35',
+            'port' => '63789',
+            'password' => 'MMiTUXQLfWmycmSG3YSTAgtEMFAVFFnQ91r7QuC5Q38qribjE1nit6Jckes9oHaiCrWVvpUNVgM08SH7b8V61A==',
+            // 缓存前缀
+            'prefix' => 'REDIS_CACHE:',
+            // 缓存有效期 0表示永久缓存
+            'expire' => 604800,
+        ],
+    ],
 ];

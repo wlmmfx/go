@@ -13,10 +13,14 @@ namespace app\im\controller;
 
 use app\common\controller\BaseFrontendController;
 use app\common\model\ImRoom;
+use app\common\model\OpenUser;
 use netease\YunXinIM;
+use oauth\Qq;
 
 class ChatRoomController extends BaseFrontendController
 {
+    const QQ_CALLBACK_URL = 'https://www.tinywan.com/im/chat_room/qqRedirectUri';
+
     private $_im;
     private $_appKey = '97437ca0ea2c1c333b90b9366f671743';
     private $_appSecret = 'e95a72e68607';
@@ -175,7 +179,7 @@ class ChatRoomController extends BaseFrontendController
      */
     public function anchor()
     {
-        return "anchor";
+        return $this->fetch();
     }
 
     /**
@@ -256,5 +260,61 @@ class ChatRoomController extends BaseFrontendController
     public function roomManage()
     {
         return $this->fetch();
+    }
+
+    /**
+     * 登陆操作 ---------------------------------------------
+     * @return mixed
+     */
+    public function qq()
+    {
+        $qq = new Qq(config('oauth.qq')['app_id'],config('oauth.qq')['app_key'],config('oauth.qq')['call_back_url']);
+        return $qq->getAuthCode();
+    }
+
+    // QQ 回调
+    public function qqRedirectUri()
+    {
+        $qqInstance = new Qq(config('oauth.qq')['app_id'],config('oauth.qq')['app_key'],config('oauth.qq')['call_back_url']);
+        $qqInstance->setCallBackInfo();
+        $openId = $qqInstance->getOpenId();
+        $userInfo = $qqInstance->getUsrInfo();
+        $userJsonRes = json_decode($userInfo, true);
+        $condition['open_id'] = $openId;
+        $checkUserInfo = OpenUser::where($condition)->find();
+        if ($checkUserInfo) {
+            session('open_user_id', $checkUserInfo['id']);
+            session('open_user_username', $checkUserInfo['account']);
+            return $this->redirect("/im/chat_room/roomList");
+        } else {
+            $user = OpenUser::create([
+                'account' => $userJsonRes['nickname'],
+                'open_id' => $openId,
+                'password' => md5('123456'),
+                'realname' => $userJsonRes['nickname'],
+                'nickname' => $userJsonRes['nickname'],
+                'avatar' => $userJsonRes['figureurl_2'],
+                'company' => $userJsonRes['province'],
+                'type' => 'QQ',
+                'app_id' => get_rand_string(),
+                'app_secret' => get_rand_string(40),
+            ]);
+            if ($user) {
+                session('open_user_id', $user->id);
+                session('open_user_username', $userJsonRes['nickname']);
+                return $this->redirect("/im/chat_room/roomList");
+            } else {
+                return $this->redirect("/im/chat_room/roomList");
+            }
+        }
+    }
+
+    /**
+     * 打印session
+     * @return mixed
+     */
+    public function printSession()
+    {
+        halt(session('OAUTH_HTTP_REFERER'));
     }
 }

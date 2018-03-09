@@ -219,11 +219,11 @@ class NetEaseController extends BaseFrontendController
      */
     public function imLoginOption()
     {
-        if (!request()->isPost()) return json(['code' => 500, 'msg' => '非法访问']);
+        //if (!request()->isPost()) return json(['code' => 500, 'msg' => '非法访问']);
         // 1、获取数据
-        $account = input('post.username');
+        $account = input('param.username');
 //        $account = '本来想做个好人的';
-        $password = input('post.password');
+        $password = input('param.password');
 //        $password = 123456;
         $data = [
             'username' => $account,

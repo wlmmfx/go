@@ -15,5 +15,6 @@ return [
         "__JS__" => "/im/js",
         "__MAIN__" => "/im/main",
         "__IMAGES__" => "/im/images",
+        "__COMMON__" => "/common",
     ]
 ];

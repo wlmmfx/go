@@ -1,43 +1,162 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title> Web 聊天室 </title>
-    <link rel="stylesheet" href="__MAIN__/css/base.css"/>
-    <link rel="stylesheet" href="__MAIN__/css/animate.css"/>
-    <link rel="stylesheet" href="__MAIN__/css/index.css?v=1"/>
-    <link rel="icon" href="__IMAGES__/icon.ico" type="image/x-icon"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>微信登陆</title>
+
+
 </head>
 <body>
-<div class="bad-network hide tc radius5px" id="j-errorNetwork">已与服务器断开，请检查网络连接</div>
-<div class="wrapper radius10px" id="j-wrapper">
-    <div class="sub-title">(聊天室)</div>
-    <form action="/" method="post">
-        <div class="row tc">
-            <span class="icon icon-account"></span>
-            <input type="text" class="radius5px box-sizing" id="j-account" autofocus="autofocus" autocomplete="on" placeholder="请输入帐号"/>
+<style type="text/css">
+
+    body {
+        background-image: url('__COMMON__/images/woody-404.jpg');
+        font-family: "微软雅黑"
+    }
+
+    .main {
+        width: 700px;
+        height: 590px;
+        background-color: #fff;
+        margin: 150px auto 0;
+        position: relative;
+        padding-top: 80px;
+        box-shadow: 3px 3px 30px #888888;
+    }
+
+    .msk {
+        width: 700px;
+        height: 590px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        padding-top: 80px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+        display: block;
+        position: absolute;
+        top: -50px;
+        left: 300px;
+    }
+
+    .h2 {
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .h3 {
+        color: #999;
+        padding: 0 35px
+    }
+
+    .qq {
+        width: 49%;
+        float: left;
+        text-align: center;
+    }
+
+    .weixin {
+        width: 49%;
+        float: right;
+        text-align: center;
+    }
+
+    .qqimg, .weixinimg {
+        width: 200px;
+    }
+
+    .qqimg {
+    }
+
+    .main_main {
+        width: 70%;
+        margin: 80px auto;
+    }
+
+    #output {
+        display: none;
+        position: absolute;
+        top: 100px;
+        left: 200px;
+        background-color: #fff;
+        z-index: 1000;
+        border: 10px solid #fff;
+    }
+
+    .ver {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: right;
+        width: 100%;
+        padding-bottom: 8px;
+        color: #999
+    }
+</style>
+
+<div class="main">
+    <div class="msk" onclick="show('hide')"></div>
+    <img src="__COMMON__/images/logo.png" class="logo"/>
+    <div id="output"></div>
+    <h2 class="h2">IM 即时通讯系统</h2>
+    <h3 class="h3">　　支持群聊、私聊、发表情、发图片、发文件、历史消息、
+        离线消息、消息提醒、在线状态设置、好友分组展示、换肤
+        支持万人在线，支持分布式部署
+        消息存储为MySQL</h3>
+
+    <div class="main_main">
+
+        <div class="qq">
+            <a href="{:url('api/OAuth/qq')}">
+                <img src="__IMAGES__/qq.png" class="qqimg"/>
+            </a>
         </div>
-        <div class="row tc">
-            <span class="icon icon-pwd"></span>
-            <input type="password" class="radius5px box-sizing" id="j-secret" placeholder="请输入密码"/>
+        <div class="weixin">
+            <a href="javascript:show('show');">
+                <img src="__IMAGES__/wechat.png" class="weixinimg"/>
+            </a>
         </div>
-        <div class="row">
-            <div class="error-msg hide" id="j-errorMsg">密码错误</div>
-        </div>
-        <div class="row tc">
-            <button type="button" class="btn btn-login" id="j-loginBtn">登录</button>
-        </div>
-    </form>
-    <div class="u-redirect"><a href="/im/chat_room/register.html">注册</a></div>
+    </div>
+    <div class="ver">Tinywan　</div>
 </div>
-<div id="footer" class="footer tc">
-    <p class="hide">为了更好地体验本Demo，建议您使用IE10、Chrome、FireFox、Safari、360等主流浏览器。</p>
-    <p>&copy;1997 - 2017 网易公司版权所有</p>
-</div>
-<script src="__MAIN__/js/jquery-1.11.3.min.js"></script>
-<script src="__MAIN__/js/config.js"></script>
-<script src="__MAIN__/js/md5.js"></script>
-<script src="__MAIN__/js/util.js"></script>
-<script src="__MAIN__/js/login.js"></script>
+
+<script src='Scripts/jquery.2.0.0.min.js'></script>
+<script type="text/javascript" src="Scripts/jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+    var url = "http://php.77wx.cn/Yue/Index/wxlogin/rand/130409";
+    jQuery('#output').qrcode({width: 300, height: 300, correctLevel: 0, text: url});
+
+    function show(type) {
+
+        if (type == 'show') {
+            $(".msk , #output").show();
+        } else {
+
+            $(".msk, #output").hide();
+        }
+    }
+
+    function check() {
+        var rand = "130409";
+        $.post('', {rand, rand}, function (data) {
+
+            if (data.code == 200) {
+
+                window.location.href = " ";
+            }
+        });
+
+        setTimeout(check, 1500);
+    }
+    setTimeout(check, 1000);
+</script>
+
 </body>
 </html>

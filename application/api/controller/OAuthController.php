@@ -20,6 +20,8 @@ use think\Db;
 
 class OAuthController extends BaseApiController
 {
+
+    // GitHub
     const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize';
     const GITHUB_OAUTH_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
     const GITHUB_USER_ACCESS_TOKEN_URL = 'https://api.github.com/user?access_token=';
@@ -85,17 +87,26 @@ class OAuthController extends BaseApiController
         }
     }
 
-    // QQ
+    //
+
+    /**
+     * QQ
+     * $_SERVER['HTTP_REFERER'] //链接到当前页面的前一页面的 URL 地址。
+     */
     public function qq()
     {
-        $qq = new Qq();
+        $redis = messageRedis();
+        $redis->set("OAUTH_HTTP_REFERER", json_encode($_SERVER['HTTP_REFERER']));
+
+        session('OAUTH_HTTP_REFERER', $_SERVER['HTTP_REFERER']);
+        $qq = new Qq(config('oauth.qq')['app_id'], config('oauth.qq')['app_key'], config('oauth.qq')['call_back_url']);
         return $qq->getAuthCode();
     }
 
     // QQ 回调
     public function qqRedirectUri()
     {
-        $qqInstance = new Qq();
+        $qqInstance = new Qq(config('oauth.qq')['app_id'], config('oauth.qq')['app_key'], config('oauth.qq')['call_back_url']);
         $qqInstance->setCallBackInfo();
         $openId = $qqInstance->getOpenId();
         $userInfo = $qqInstance->getUsrInfo();
@@ -105,7 +116,8 @@ class OAuthController extends BaseApiController
         if ($checkUserInfo) {
             session('open_user_id', $checkUserInfo['id']);
             session('open_user_username', $checkUserInfo['account']);
-            return $this->redirect("/");
+            return $this->redirect(session('OAUTH_HTTP_REFERER'));
+            //return $this->redirect('frontend/net_ease/imLoginOption', ['username' => $checkUserInfo['account'], 'password' => 123456]);
         } else {
             $user = OpenUser::create([
                 'account' => $userJsonRes['nickname'],
@@ -122,9 +134,9 @@ class OAuthController extends BaseApiController
             if ($user) {
                 session('open_user_id', $user->id);
                 session('open_user_username', $userJsonRes['nickname']);
-                return $this->redirect("/");
+                return $this->redirect(session('OAUTH_HTTP_REFERER'));
             } else {
-                return $this->redirect("/");
+                return $this->redirect(session('OAUTH_HTTP_REFERER'));
             }
         }
     }

@@ -2,22 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>简易聊天室</title>
     <link rel="stylesheet" href="__CSS__/chartroom.css"/>
+    <link href="__COMMON__/videojs/videojs/video-js.css" rel="stylesheet">
+    <link href="__COMMON__/videojs/Skins/YouTouBe.css" rel="stylesheet" >
 </head>
 <body>
 <div class="m-head">
     <div class="g-doc">
-        <div class="logo item">聊天室demo</div>
+        <div class="logo item">首页</div>
         <div class="nav item">
-            <a href="../index.html">DEMO首页</a>
-        </div>
-        <div class="nav item">
-            <a href="./list.html">聊天室首页</a>
+            <a href="./roomList.html">聊天室</a>
         </div>
         <div class="info item">
-            <img src="__IMAGES__/default-icon.png" alt="头像" id="avatar">
-            <!--a href="./roomManage.html" id="nickName">匿名</a-->
+            <img src="/im/images/default-icon.png" alt="头像" id="avatar">
+            <!-- <a href="./roomManage.html" id="nickName">匿名</a> -->
             <span id="nickName">匿名</span>
             <a href="./login.html" id="chatroom-login">登录</a>
             <a id="chatroom-logout">注销</a>
@@ -38,7 +37,11 @@
                 </div>
             </div>
             <div class="media">
-                <img src="" id="video" class="hide">
+                <!--<img src="" id="video" class="hide">-->
+                <video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered" width='100%' height='100%' controls>
+                    <source src="http://qiniu-xpc0.xpccdn.com/59c362314b6cb.mp4"
+                            type="video/mp4">
+                </video>
             </div>
         </div>
         <div class="g-right">
@@ -102,8 +105,28 @@
 <script src="__JS__/link.js"></script>
 <script src="__JS__/room.js"></script>
 <script>
-    var $images = "__IMAGES__";
-    console.log("----------- __IMAGES__"+$images)
+    var options = {
+        width: 640,
+        height: 380
+    };
+    var player = videojs('live-stream', options);
+    player.addClass('vjs-matrix');
+
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
+        }
+    });
+
 </script>
 </body>
 </html>

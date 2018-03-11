@@ -32,11 +32,17 @@ class Qq
 
     private $openid = "";
 
-    public function __construct()
+    /**
+     * Qq constructor.
+     * @param $appId
+     * @param $appKey
+     * @param $callBackUrl
+     */
+    public function __construct($appId, $appKey, $callBackUrl)
     {
-        $this->app_id = config('oauth.qq')['app_id'];
-        $this->app_key = config('oauth.qq')['app_key'];
-        $this->callBackUrl = config('oauth.qq')['call_back_url'];
+        $this->app_id = $appId;
+        $this->app_key = $appKey;
+        $this->callBackUrl = $callBackUrl;
         //检查用户数据
         if (empty(session('QC_userData'))) {
             self::$data = [];

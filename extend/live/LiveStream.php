@@ -174,27 +174,44 @@ class LiveStream
         $output = curl_exec($ch);
         curl_close($ch);
         $outputs = self::FromXml($output);
-        // 单个
-        if ($outputs['server']['application'][0]['live']['nclients'] == 0) {
+        // 是否有流
+        $totalInfo = [];
+        if ($outputs['server']['application'][3]['live']['nclients'] == 0) {
             $totalInfo['status'] = 0;
-            $totalInfo['message'] = '没有打流';
+            $totalInfo['message'] = '没有打流1';
             return $totalInfo;
         }
-        $streamInfo = $outputs['server']['application'][0]['live']['stream'];
-        if (in_array($streamName, $streamInfo)) {
+        $streamInfo = $outputs['server']['application'][3]['live']['stream'];
+
+        // 单个流
+        if (isset($streamInfo['name']) && ($streamInfo['name'] == $streamName)) {
             $totalInfo['status'] = 1;
-            $totalInfo['message'] = '正在打流';
-            if ($streamInfo['name'] == $streamName) {
-                $totalInfo['dataList']['name'] = $streamInfo['name'];
-                $totalInfo['dataList']['bw_in'] = $streamInfo['bw_in'];
-                $totalInfo['dataList']['bw_out'] = $streamInfo['bw_out'];
-            }
-        } else {
+            $totalInfo['message'] = '正在打流1';
+            $totalInfo['dataList']['name'] = $streamName;
+            $totalInfo['dataList']['bw_in'] = $streamInfo['bw_in'];
+            $totalInfo['dataList']['bw_out'] = $streamInfo['bw_out'];
+        } elseif (isset($streamInfo['name']) && ($streamInfo['name'] != $streamName)) {
             $totalInfo['status'] = 0;
-            $totalInfo['message'] = '没有打流';
+            $totalInfo['message'] = '没有打流3';
             $totalInfo['dataList']['name'] = $streamName;
             $totalInfo['dataList']['bw_in'] = 0;
             $totalInfo['dataList']['bw_out'] = 0;
+        } else {
+            $streamArr = [];
+            foreach ($streamInfo as $value) {
+                $streamArr[] = $value['name'];
+            }
+            if (in_array($streamName, $streamArr)) {
+                $totalInfo['status'] = 1;
+                $totalInfo['message'] = '正在打流2';
+                $totalInfo['dataList']['name'] = $streamName;
+            } else {
+                $totalInfo['status'] = 0;
+                $totalInfo['message'] = '没有打流3';
+                $totalInfo['dataList']['name'] = $streamName;
+                $totalInfo['dataList']['bw_in'] = 0;
+                $totalInfo['dataList']['bw_out'] = 0;
+            }
         }
         return $totalInfo;
     }
@@ -223,7 +240,7 @@ class LiveStream
         }
         $streamInfo = $outputs['server']['application'][3]['live']['stream'];
         // 一个流
-        if (array_key_exists('name',$streamInfo) == 1) {
+        if (array_key_exists('name', $streamInfo) == 1) {
             if ($streamInfo['name'] == $streamName) {
                 $totalInfo['status'] = 1;
                 $totalInfo['message'] = '正在打流';

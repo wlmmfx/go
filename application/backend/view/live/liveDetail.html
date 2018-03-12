@@ -66,7 +66,7 @@
         background-image: url(__COMMON__/images/play1.png);
     }
 
-    .ace-thumbnails>li {
+    .ace-thumbnails > li {
         border: 1px solid #7cb4d8;
     }
 </style>
@@ -103,17 +103,17 @@
                 </li>
 
                 <!--<li>-->
-                    <!--<a data-toggle="tab" href="#live-comment">-->
-                        <!--<i class="red  icon-cogs bigger-110"></i>-->
-                        <!--评论管理-->
-                    <!--</a>-->
+                <!--<a data-toggle="tab" href="#live-comment">-->
+                <!--<i class="red  icon-cogs bigger-110"></i>-->
+                <!--评论管理-->
+                <!--</a>-->
                 <!--</li>-->
 
                 <!--<li>-->
-                    <!--<a data-toggle="tab" href="#email-config">-->
-                        <!--<i class="green  icon-envelope bigger-110"></i>-->
-                        <!--观看控制-->
-                    <!--</a>-->
+                <!--<a data-toggle="tab" href="#email-config">-->
+                <!--<i class="green  icon-envelope bigger-110"></i>-->
+                <!--观看控制-->
+                <!--</a>-->
                 <!--</li>-->
             </ul>
 
@@ -239,29 +239,42 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-                                {volist name="videos" id="vo"}
-                                <div class="col-sm-3 col-md-2">
-                                    <div class="thumbnail">
-                                        <img src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.fileName}.jpg"
-                                             alt="通用的占位符缩略图" width="263" height="220">
-                                        <div class="caption">
-                                            <span>名称：{$vo.name|mb_substr=0,12}</span><br/>
-                                            <span>时长：{$vo.duration}</span>
-                                            <p>
-                                                <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}" class="btn btn-sm btn-primary video-show-button" role="button">
-                                                    显示
-                                                </a>
-                                                <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}" class="btn btn-sm btn-success video-edit-button" role="button">
-                                                    编辑
-                                                </a>
-                                                <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}" class="btn btn-sm btn-warning video-cut-button" role="button">
-                                                    云剪辑
-                                                </a>
-                                            </p>
+                            {volist name="videos" id="vo"}
+                            <div class="col-xs-6 col-sm-2 pricing-box">
+                                <div class="widget-box pricing-box-small">
+                                    <div class="widget-header header-color-green">
+                                        <h6 class="bigger lighter">{$vo.name|mb_substr=0,24}</h6>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <img src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.fileName}.jpg"
+                                            onerror="this.src='/common/images/video-img-onerror.png'" alt="通用的占位符缩略图" width="100%" height="100%">
+                                            <p></p>
+                                            <span>时长:{$vo['duration']|gmstrftime="%H:%M:%S",###}&nbsp;&nbsp;&nbsp;&nbsp;大小:{$vo.fileSize|trans_byte}</span>
+                                        </div>
+
+                                        <div style="margin: 10px; text-align: center;">
+                                            <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
+                                               class="btn btn-minier btn-primary video-update" role="button">
+                                                <i class="icon-edit"></i>
+                                                修改
+                                            </a>
+                                            <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
+                                               class="btn btn-minier btn-warning video-cut-button" role="button">
+                                                <i class="icon-cut"></i>
+                                                云剪辑
+                                            </a>
+                                            <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
+                                               class="btn btn-minier btn-danger video-delete" role="button">
+                                                <i class="icon-trash"></i>
+                                                删除
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                                {/volist}
+                            </div>
+                            {/volist}
                         </div><!-- /.col -->
                         <p></p>
                         <div>{$videos->render()}</div>

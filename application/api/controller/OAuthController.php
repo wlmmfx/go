@@ -87,8 +87,6 @@ class OAuthController extends BaseApiController
         }
     }
 
-    //
-
     /**
      * QQ
      * $_SERVER['HTTP_REFERER'] //链接到当前页面的前一页面的 URL 地址。

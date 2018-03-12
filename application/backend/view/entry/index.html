@@ -2,55 +2,46 @@
     <div class="col-xs-12">
         <!-- PAGE CONTENT BEGINS -->
         <div class="profile-user-info profile-user-info-striped">
-            <div class="profile-info-row">
-                <div class="profile-info-name"> Username </div>
-
-                <div class="profile-info-value">
-                    <span class="editable" id="username">{$Think.session.admin.username}</span>
-                </div>
-            </div>
-
-            <div class="profile-info-row">
-                <div class="profile-info-name"> 国家、地区 </div>
-
-                <div class="profile-info-value">
-                    <i class="icon-map-marker light-orange bigger-110"></i>
-                    <span class="editable" id="country">Netherlands</span>
-                    <span class="editable" id="city">Amsterdam</span>
-                </div>
-            </div>
-
-            <div class="profile-info-row">
-                <div class="profile-info-name"> 年龄 </div>
-
-                <div class="profile-info-value">
-                    <span class="editable" id="age">38</span>
-                </div>
-            </div>
-
-            <div class="profile-info-row">
-                <div class="profile-info-name"> 加入时间 </div>
-
-                <div class="profile-info-value">
-                    <span class="editable" id="signup">20/06/2010</span>
-                </div>
-            </div>
-
-            <div class="profile-info-row">
-                <div class="profile-info-name"> 最近登录时间 </div>
-
-                <div class="profile-info-value">
-                    <span class="editable" id="login">{$user.login_points|points_to_level}</span>
-                </div>
-            </div>
-
-            <div class="profile-info-row">
-                <div class="profile-info-name"> 所属用户组 </div>
-
-                <div class="profile-info-value">
-                    <span class="editable" id="about">超级管理员</span>
-                </div>
-            </div>
+            <table class="table table-hover">
+                <tbody>
+                <tr>
+                    <td>网站域名</td>
+                    <td>{$config.url}</td>
+                </tr>
+                <tr>
+                    <td>网站目录</td>
+                    <td>{$config.document_root}</td>
+                </tr>
+                <tr>
+                    <td>服务器操作系统</td>
+                    <td>{$config.server_os}</td>
+                </tr>
+                <tr>
+                    <td>服务器端口</td>
+                    <td>{$config.server_port}</td>
+                </tr>
+                <tr>
+                    <td>服务器IP</td>
+                    <td>{$config.server_ip}</td>
+                </tr>
+                <tr>
+                    <td>服务器环境</td>
+                    <td>{$config.server_soft}</td>
+                </tr>
+                <tr>
+                    <td>PHP版本</td>
+                    <td>{$config.php_version}</td>
+                </tr>
+                <tr>
+                    <td>MySQL版本</td>
+                    <td>{$config.mysql_version}</td>
+                </tr>
+                <tr>
+                    <td>最大上传限制</td>
+                    <td>{$config.max_upload_size}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

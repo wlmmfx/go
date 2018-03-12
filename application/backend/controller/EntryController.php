@@ -22,9 +22,24 @@ class EntryController extends BaseBackendController
     //个人
     public function index()
     {
-        $user = Db::table('resty_user')->where('id',session('admin.admin_id'))->field("username,logintime,loginip,login_points")->find();
-        $this->assign('user',$user);
-        return $this->fetch();
+        $mysqlVer = Db::query('SELECT VERSION() AS ver');
+        $config = [
+            'url' => $_SERVER['HTTP_HOST'],
+            'document_root' => $_SERVER['DOCUMENT_ROOT'],
+            'server_os' => PHP_OS,
+            'server_port' => $_SERVER['SERVER_PORT'],
+            'server_ip' => $_SERVER['SERVER_ADDR'],
+            'server_soft' => $_SERVER['SERVER_SOFTWARE'],
+            'REMOTE_ADDR' => $_SERVER['REMOTE_ADDR'],
+            'php_version' => PHP_VERSION,
+            'PHP_EXTENSION_DIR' => PHP_EXTENSION_DIR,
+            'mysql_version' => $mysqlVer[0]['ver'],
+            'max_upload_size' => ini_get('upload_max_filesize')
+        ];
+        return $this->fetch('',[
+            'sub_title'=>"个人中心",
+            'config'=>$config,
+        ]);
     }
 
     /**
@@ -56,7 +71,7 @@ class EntryController extends BaseBackendController
     public function get_auth_key()
     {
 //        var_dump(get_auth_key("756684177@qq.com"));
-        halt(check_auth_key("756684177@qq.com","1499654985-0-0-e5dfc9987222d2ace9c7e35dd480bd82"));
+        halt(check_auth_key("756684177@qq.com", "1499654985-0-0-e5dfc9987222d2ace9c7e35dd480bd82"));
         die;
         // 1 邮件过期时间
         $email = "756684177@qq.com";
@@ -82,10 +97,10 @@ class EntryController extends BaseBackendController
      * @param $stream_name
      * @return bool
      */
-    public function check_auth_key($check_str = "NzU2Njg0MTc3QHFxLmNvbQ==", $auth_key="1499654261-0-0-46880d9e1469e99eca08dc420c54b15a")
+    public function check_auth_key($check_str = "NzU2Njg0MTc3QHFxLmNvbQ==", $auth_key = "1499654261-0-0-46880d9e1469e99eca08dc420c54b15a")
     {
         $send_email_expire_time = substr($auth_key, 0, 10);
-        echo $send_email_expire_time."<br/>";
+        echo $send_email_expire_time . "<br/>";
 //        if ($send_email_expire_time < time()) return ['valid' => 0, 'msg' => "已经过期了"];
         $uuid = 0;
         $uid = 0;
@@ -96,4 +111,5 @@ class EntryController extends BaseBackendController
 //        if ($hash_value != $sequest_hash_value) return ['valid' => 0, 'msg' => "改地址签名错误"];
 //        return ['valid' => 1, 'email' => "验证通过"];
     }
+
 }

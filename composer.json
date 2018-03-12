@@ -39,7 +39,7 @@
         "php-ai/php-ml": "^0.4.1",
         "fzaninotto/faker": "^1.6",
         "houdunwang/arr": "^1.0",
-        "phpoffice/phpexcel": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.2",
         "league/oauth2-github": "^2.0",
         "flc/alidayu": "^2.0",
         "aliyuncs/oss-sdk-php": "^2.2",
@@ -53,7 +53,10 @@
         "clue/redis-react": "2.1",
         "xiaosier/libweibo": "dev-master",
         "overtrue/wechat": "~4.0",
-        "jjonline/aliyun-dysms-php-sdk": "^2.0"
+        "jjonline/aliyun-dysms-php-sdk": "^2.0",
+        "mpdf/mpdf": "^7.0",
+        "dompdf/dompdf": "^0.8.2",
+        "tecnick.com/tcpdf": "^6.2"
     },
     "autoload": {
         "psr-4": {

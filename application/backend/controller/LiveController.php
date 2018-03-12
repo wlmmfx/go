@@ -104,6 +104,7 @@ class LiveController extends BaseBackendController
         $categorys = db('category')->where('pid', 116)->order('id desc')->select();
         $this->assign('lives', $lives);
         $this->assign('categorys', $categorys);
+        $this->assign('sub_title', "直播控制台");
         return $this->fetch();
     }
 

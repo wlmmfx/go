@@ -266,7 +266,7 @@ class IndexController extends BaseController
         //【4】如果号码为空，则不允许观看直播的,一定要判断的
         $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
         // 历史回顾列表
-        $liveVodList = Db::name('stream_video')->where(['streamName' => $streamInfo->stream_name])->field('id,streamName,fileName,fileSize,createTime,duration')->select();
+        $liveVodList = Db::name('stream_video')->where(['streamName' => $streamInfo->stream_name])->field('id,streamName,fileName,fileSize,createTime,duration')->order("createTime desc")->select();
         $this->assign('userInfo', $userInfo);
         $this->assign('streamInfo', $streamInfo);
         $this->assign('customerInfo', $customerInfo);

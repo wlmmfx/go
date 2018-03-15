@@ -74,7 +74,7 @@ function get_level($point)
 function ip_format($ip)
 {
     $res = get_city_by_ip($ip);
-    return $res['country'] . '、' . $res['region'] . '、' . $res['city'] . '&nbsp;（' . $res['isp'] . '）';
+    return $res['country'] . '-' . $res['region'] . '-' . $res['city'] . '&nbsp;(' . $res['isp'] . ')';
 }
 
 //计算该月有几天

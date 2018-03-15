@@ -15,6 +15,7 @@ namespace app\backend\controller;
 use aliyun\oss\Oss;
 use app\common\controller\BaseBackendController;
 use app\common\model\Live;
+use app\common\model\PushFlowRecord;
 use app\common\model\StreamName;
 use app\common\model\StreamVideo;
 use app\common\model\StreamVideoEdit;
@@ -567,6 +568,33 @@ class LiveController extends BaseBackendController
             add_operation_log($desc);
             return $this->error($res["msg"]);
         }
+    }
+
+    /**
+     * 推流记录
+     */
+    public function pushFlowRecord()
+    {
+        if ($this->request->isPost()) {
+            $keyword = input('post.keyword');
+            $condition = [
+                'account|address|nickname|type' => ['like', '%' . $keyword . '%'],
+            ];
+            $res = PushFlowRecord::where($condition)
+                ->field('id,open_id,account,realname,nickname,avatar,ip,company,address,create_time,type,score')
+                ->order('create_time desc')
+                ->paginate(10, false, [
+                    'var_page' => 'page',
+                    'query' => request()->param(),
+                ]);
+        } else {
+            // 查询分页数据 ,注意这里返回的是对象模型
+            $res = PushFlowRecord::where(1)
+                ->order('create_time desc')
+                ->paginate(10);
+        }
+        $this->assign('page', $res);
+        return $this->fetch();
     }
 
     /**---------------------------------------------视频编辑开始-------------------------------------------------------*/

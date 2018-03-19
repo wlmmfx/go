@@ -19,3 +19,9 @@ Route::rule('api/index','api/wechat/index');
 
 //路由地址=>流地址路由 这里修改要和阿里云数据回调地址一样哦
 //Route::rule('api/createTestAddress','api/Stream/createTestAddress');
+
+/**
+ * ---------------------------------------微信小程序---------------------------------------------------------------------
+ */
+//Banner
+Route::get("banner/:id","api/v1.Banner/getBanner"); //为啥Route:rule()不行

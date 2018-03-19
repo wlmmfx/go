@@ -258,12 +258,12 @@ class ThinkConsoleServer extends Command
     protected static function getEmailTitle($email_title)
     {
         $msg = [
-            '1' => '新用户注册',
+            '1' => '[Tinywan 工作室] 恭喜你成为 [Tinywan 工作室] 的新用户，么么哒！',
             '2' => '账号激活',
             '3' => '找回密码',
             '4' => '修改密码',
             '5' => '订阅 ',
-            '6' => '直播录制信息回调',
+            '6' => '[Tinywan 工作室] 视频直播-历史回顾录制信息提示信息',
             '7' => '系统消息',
         ];
         return $msg[$email_title];
@@ -339,13 +339,13 @@ html;
                 // 直播录制成功通知
                 case 1:
                     $link = "http://oss.tinywan.com/".$msg;
-                    $str = "请点击链接查看录制视频：<p></p>" . $link;
+                    $str = "[Tinywan 工作室] 提醒你：您的录制文件已经生成，击链接查看立即查看：<p></p>" . $link;
                     break;
                 // 回调
                 case 2:
                     $rand = rand(00000, 99999);
                     $str = <<<html
-                    "管理员发送给你的信息,有效验证码：<p></p>" $rand
+                    "[Tinywan 工作室] 管理员发送给你的信息,有效验证码：<p></p>" $rand
 html;
                     break;
                 default:

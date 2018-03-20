@@ -8,8 +8,10 @@
  * |  Mail: Overcome.wan@Gmail.com
  * |  Created by PhpStorm
  * '-------------------------------------------------------------------*/
+
 namespace app\common\model;
 
+use think\Exception;
 use think\Log;
 
 class Banner extends BaseModel
@@ -63,17 +65,30 @@ class Banner extends BaseModel
      * @param $id
      * @return array
      */
-    public function publish($id,$publishStatus)
+    public function publish($id, $publishStatus)
     {
-        if($publishStatus == 1){
+        if ($publishStatus == 1) {
             $status = 0;
-        }else{
+        } else {
             $status = 1;
         }
-        Log::error('--------------------$publishStatus----------------'.$publishStatus);
-        Log::error('--------------------$status----------------'.$status);
+        Log::error('--------------------$publishStatus----------------' . $publishStatus);
+        Log::error('--------------------$status----------------' . $status);
         $res = $this->where('id', $id)->update(['publish_status' => $status]);
         if (false === $res) return ['valid' => 0, 'msg' => "发布失败"];
         return ['valid' => 1, 'msg' => "发布成功"];
+    }
+
+    // ----------------------------------------------微信小程序--------------------------------------------------------
+    // 根据bannerId 获取banner 信息
+    public static function getBannerById($id)
+    {
+//        try{
+//            1/0;
+//        }catch (Exception $e){
+//            throw $e;
+//        }
+//        return "this is banner";
+        return null;
     }
 }

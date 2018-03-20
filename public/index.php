@@ -18,6 +18,8 @@ define('APP_PATH', __DIR__ . '/../application/');
 define('CONF_PATH', __DIR__ . '/../config/');
 // 定义多媒体存放路径
 define('CLI_PATH', __DIR__ . '/../cli/');
+// 日志文件路径
+define('LOG_PATH', __DIR__ . '/../log/');
 
 // 绑定模块
 #define("BIND_MODULE","backend");

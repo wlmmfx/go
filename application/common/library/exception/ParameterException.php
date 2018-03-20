@@ -4,27 +4,16 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/19 16:59
+ * |  DateTime: 2018/3/20 15:20
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\validate;
+namespace app\common\library\exception;
 
 
-
-class IDMustBePositiveInt extends BaseValidate
+class ParameterException extends BaseException
 {
-    protected $rule = [
-        'id' => 'require|isPositiveInteger',
-        'num' => 'in:1,2,3'
-    ];
-
-    //自定义验证规则
-    protected function isPositiveInteger($value, $rule='', $data='', $field='')
-    {
-        if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0) {
-            return true;
-        }
-        return $field . '必须是正整数';
-    }
+    public $code = 400;
+    public $msg = "参数错误";
+    public $errorCode = 10000;
 }

@@ -11,6 +11,7 @@
 
 namespace app\common\model;
 
+use think\Db;
 use think\Exception;
 use think\Log;
 
@@ -77,18 +78,5 @@ class Banner extends BaseModel
         $res = $this->where('id', $id)->update(['publish_status' => $status]);
         if (false === $res) return ['valid' => 0, 'msg' => "发布失败"];
         return ['valid' => 1, 'msg' => "发布成功"];
-    }
-
-    // ----------------------------------------------微信小程序--------------------------------------------------------
-    // 根据bannerId 获取banner 信息
-    public static function getBannerById($id)
-    {
-//        try{
-//            1/0;
-//        }catch (Exception $e){
-//            throw $e;
-//        }
-//        return "this is banner";
-        return null;
     }
 }

@@ -26,3 +26,14 @@ define('LOG_PATH', __DIR__ . '/../log/');
 #define("BIND_MODULE","backend/index");
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';
+
+// 初始化SQL日志（开发环境使用）
+\think\Log::init(
+    [
+        'type' => 'File',
+        'path' => LOG_PATH,
+        'level' => ['sql'],
+        // sql日志单独记录
+        'apart_level' => [ 'sql']
+    ]
+);

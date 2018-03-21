@@ -89,7 +89,7 @@ class FakerController extends Controller
     public function user2()
     {
         //如果需要设置允许所有域名发起的跨域请求，可以使用通配符 *
-        header('Access-Control-Allow-Origin:*');
+
         $sign = input('param.sign');
         $limit = input('param.limit',10,'int');
         if (empty($sign) || $sign!='hehuiyun' || empty($limit)) {
@@ -122,6 +122,7 @@ class FakerController extends Controller
                 'data' =>$fakerName
             ];
         }
+
         return json($resJson);
     }
 

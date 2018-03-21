@@ -24,4 +24,4 @@ Route::rule('api/index','api/wechat/index');
  * ---------------------------------------微信小程序---------------------------------------------------------------------
  */
 //Banner
-Route::get("banner/:id","api/v1.Banner/getBanner"); //为啥Route:rule()不行
+Route::get("api/v1/banner/:id","api/v1.Banner/getBanner"); //为啥Route:rule()不行

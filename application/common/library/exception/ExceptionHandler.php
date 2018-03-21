@@ -12,10 +12,10 @@
 namespace app\common\library\exception;
 
 
+use Exception;
 use think\exception\Handle;
 use think\Log;
 use think\Request;
-use Exception;
 
 class ExceptionHandler extends Handle
 {
@@ -45,7 +45,7 @@ class ExceptionHandler extends Handle
                 return parent::render($e);
             }
 
-            $this->code = 500;
+            $this->code = 404;
             $this->msg = 'sorry，we make a mistake. (^o^)Y';
             $this->errorCode = 999;
             $this->recordErrorLog($e);

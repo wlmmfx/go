@@ -9,7 +9,7 @@ return [
     'app_status' => 'production',
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
-    'app_debug' => false,
+    'app_debug' => true,
     // 开启应用Trace调试
     'app_trace' => false,
     // 控制器类后缀
@@ -68,7 +68,8 @@ return [
 
     // [自定义] 异常处理handle类 留空使用 \think\exception\Handle
     //'exception_handle'       => 'app\lib\exception\ExceptionHandler',
-    'exception_handle'       => 'app\common\library\exception\ExceptionHandler',
+    //'exception_handle'       => 'app\common\library\exception\ExceptionHandler',
+    //'exception_handle'       => '',
 
     'http_exception_template' => [
         // 定义404错误的模板文件地址

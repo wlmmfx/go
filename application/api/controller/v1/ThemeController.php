@@ -35,14 +35,14 @@ class ThemeController extends Controller
         $res = WxThemeModel::with('topicImg,headImg')->select($ids);
 
         // 数据库没有查询到，异常类处理
-        if (!$res) {
+        if ($res->isEmpty()) {
             throw new ThemeException();
         }
         return json($res);
     }
 
     /**
-     * api/v1/theme/121
+     * @url api/v1/theme/121
      * @param $id
      * @return string
      */

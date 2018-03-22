@@ -4,19 +4,24 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/19 16:59
+ * |  DateTime: 2018/3/22 13:13
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\validate;
+namespace app\common\model;
 
 
-
-class IDMustBePositiveInt extends BaseValidate
+class WxImage extends BaseModel
 {
-    protected $rule = [
-        'id' => 'require|isPositiveInteger',
-        'num' => 'in:1,2,3'
+    protected $table = 'resty_wx_image';
+    protected $hidden = [
+        'id',
+        'delete_time',
+        'update_time',
+        'from'
     ];
 
+    public function getUrlAttr($value,$data){
+        return $this->prefixImgUrl($value,$data);
+    }
 }

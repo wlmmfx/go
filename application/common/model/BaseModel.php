@@ -70,4 +70,14 @@ class BaseModel extends Model
         return $faker->name;
     }
 
+    // 获取图片url地址 AOP思路引用
+    protected function prefixImgUrl($value, $data)
+    {
+        $finalUrl = $value;
+        if ($data['from'] == 1) {
+            $finalUrl = config('setting.img_prefix') . $value;
+        }
+        return $finalUrl;
+    }
+
 }

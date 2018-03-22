@@ -11,21 +11,25 @@
 namespace app\common\model;
 
 
-use think\Db;
-
 class WxBanner extends BaseModel
 {
+    protected $table = "resty_wx_banner";
+
+    protected $hidden = [
+        'delete_time',
+        'update_time'
+    ];
+
+    // 查询具体的 banner 信息，使用关联模型
+    public function items()
+    {
+        return $this->hasMany('WxBannerItem', 'banner_id', 'id');
+    }
+
     // 根据bannerId 获取banner 信息
     public static function getBannerById($id)
     {
-//        $res = Db::query('select * from resty_wx_banner_item WHERE banner_id=?',[$id]);
-        //$res = Db::table('resty_wx_banner_item')->where('banner_id', '=', $id)// 返回的是一个query对象
-        //->find(); //query对象 执行SQL语句执行查询结果集
-
-        // 闭包查询发
-        $res = Db::table("resty_wx_banner_item")->where(function ($query) use ($id) {
-            $query->where('banner_id', '=', $id);
-        })->find();
-        return $res;
+        $banner = self::with(['items','items.img'])->find($id);
+        return $banner;
     }
 }

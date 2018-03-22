@@ -4,19 +4,16 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/19 16:59
+ * |  DateTime: 2018/3/22 16:05
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\validate;
+namespace app\common\library\exception;
 
 
-
-class IDMustBePositiveInt extends BaseValidate
+class ThemeException extends BaseException
 {
-    protected $rule = [
-        'id' => 'require|isPositiveInteger',
-        'num' => 'in:1,2,3'
-    ];
-
+    public $code = 404;
+    public $msg = "请求的 Theme 不存在";
+    public $errorCode = 30000;
 }

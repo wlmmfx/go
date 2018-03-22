@@ -24,6 +24,8 @@ return [
     //'auto_bind_module'       => true,
     // 是否开启路由
     'url_route_on' => true,
+    // 路由使用完整匹配
+    'route_complete_match'   => true,
     // 设置路由配置文件列表,必须指定呀！否则路由失败
     'route_config_file' => ['frontend', 'backend', 'blog', 'live', 'api', 'business','tianchi','im'],
     // 域名根，如thinkphp.cn

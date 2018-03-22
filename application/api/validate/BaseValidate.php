@@ -45,19 +45,12 @@ class BaseValidate extends Validate
         }
     }
 
-    /**
-     * 正整数验证器
-     * @param $value 验证数据
-     * @param string $rule 验证规则
-     * @param string $data 全部数据（数组）
-     * @param string $field 字段名
-     * @return bool|string
-     */
-    protected function isPositiveInteger($value, $rule = '', $data = '', $field = '')
+    //自定义验证规则
+    protected function isPositiveInteger($value, $rule='', $data='', $field='')
     {
         if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0) {
             return true;
         }
-        return $field . '必须是正整数';
+        return false;
     }
 }

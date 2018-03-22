@@ -4,19 +4,20 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/19 16:59
+ * |  DateTime: 2018/3/22 15:17
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\validate;
+namespace app\common\model;
 
 
-
-class IDMustBePositiveInt extends BaseValidate
+class WxProduct extends BaseModel
 {
-    protected $rule = [
-        'id' => 'require|isPositiveInteger',
-        'num' => 'in:1,2,3'
+    protected $hidden=[
+        'from',
+        'create_time',
+        'update_time',
+        'delete_time',
+        'pivot',
     ];
-
 }

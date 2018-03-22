@@ -4,19 +4,10 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/19 16:59
+ * |  DateTime: 2018/3/22 14:24
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Fun: 全局文件配置文件
  * '------------------------------------------------------------------------------------------------------------------*/
-
-namespace app\api\validate;
-
-
-
-class IDMustBePositiveInt extends BaseValidate
-{
-    protected $rule = [
-        'id' => 'require|isPositiveInteger',
-        'num' => 'in:1,2,3'
-    ];
-
-}
+return [
+    'img_prefix' => 'https://www.tinywan.com'
+];

@@ -8,7 +8,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\api\controller\v1;
+namespace app\api\controller\v2;
 
 use app\api\validate\IDMustBePositiveInt;
 use app\common\library\exception\BannerMissException;
@@ -25,14 +25,6 @@ class BannerController extends Controller
      */
     public function getBanner($id)
     {
-        // 数据验证
-        (new IDMustBePositiveInt())->goCheck();
-        // 1 异常 2 数据库数据不存在
-         $banner = WxBannerModel::getBannerById($id);
-        if (!$banner) {
-            // BannerMissException 必须继承 Exception 类的，这里使用自定义异常
-            throw new  BannerMissException();
-        }
-        return json($banner);
+        return json("this is V2");
     }
 }

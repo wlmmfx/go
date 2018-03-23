@@ -315,7 +315,6 @@ class IndexController extends BaseController
         return $this->fetch();
     }
 
-
     /**
      * 注销用户信息
      */
@@ -356,7 +355,6 @@ class IndexController extends BaseController
         return json(['403']);
     }
 
-
     /**
      * 维修开始
      * 【1】车辆入库获取车牌号信息，
@@ -387,12 +385,12 @@ class IndexController extends BaseController
         // 【4】开始推流，这里要做转换的
         $streamInfo = StreamName::get($customer->stream_id);
         //$deviceStreamAddr = "rtsp://192.168.18.240:554/onvif/live/1";
-        //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
-        //$action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
-        //system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
-        //if ($sysStatus != 0) {
-        //    Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
-        //}
+        $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001516151987";
+        $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . " -c copy  -f flv " . $streamInfo->push_flow_address;
+        system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
+        if ($sysStatus != 0) {
+            Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);
+        }
         halt($customer);
     }
 
@@ -401,6 +399,10 @@ class IndexController extends BaseController
         return $this->fetch();
     }
 
+    /**
+     * 上传图片识别车牌号同时开始推流
+     * @return \think\response\Json
+     */
     public function uploadImageFrom()
     {
         if (request()->isPost()) {
@@ -409,7 +411,7 @@ class IndexController extends BaseController
                 $id = input('param.id');
                 $savePath = ROOT_PATH . 'public' . DS . 'tmp';
                 // 增加服务端图片验证
-                $info = $file->validate(['size'=>config('upload_config')['web']['size']*1024,'ext'=>config('upload_config')['web']['ext']])->rule("uniqid")->move($savePath);
+                $info = $file->validate(['size' => config('upload_config')['web']['size'] * 1024, 'ext' => config('upload_config')['web']['ext']])->rule("uniqid")->move($savePath);
                 if ($info) {
                     // 成功上传后 获取车牌号
                     $originImg = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $info->getSaveName();
@@ -440,7 +442,9 @@ class IndexController extends BaseController
                     $streamInfo = StreamName::get($customer->stream_id);
                     // 摄像头流地址,如果是本地流，判断是否有流
                     //$liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
-                    $inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
+                    $redis = messageRedis();
+                    //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
+                    $inputStreamAddr = $redis->get('TC_INPUT_STREAM_ADDRESS');
                     $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
                     if ($sysStatus != 0) {
@@ -521,6 +525,31 @@ class IndexController extends BaseController
             }
         }
         return $this->fetch();
+    }
+
+    /**
+     * 切换推流地址
+     */
+    public function switchStreamAddress($addr)
+    {
+        $redis = messageRedis();
+        $origin_addr = $redis->get('TC_INPUT_STREAM_ADDRESS');
+        if ($redis->set('TC_INPUT_STREAM_ADDRESS', $addr)) {
+            $res = [
+                'code' => 200,
+                'msg' => "set success",
+                'data'=>[
+                    'old_addr'=>$origin_addr,
+                    'new_addr'=>$addr,
+                ]
+            ];
+        } else {
+            $res = [
+                'code' => 500,
+                'msg' => 'set fail'
+            ];
+        }
+        return json($res);
     }
 
     /**

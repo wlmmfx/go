@@ -22,6 +22,9 @@ class WxProduct extends BaseModel
         'pivot',
     ];
 
+    // 设置后，模型所有的数据集查询返回结果的类型都是think\model\Collection对象实例。
+    protected $resultSetType = 'collection';
+
     protected function getMainImgUrlAttr($value, $data)
     {
         return $this->prefixImgUrl($value, $data);

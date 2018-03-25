@@ -4,23 +4,19 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 17:07
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
 namespace app\common\model;
 
 
-class WxCategory extends BaseModel
+class WxUser extends BaseModel
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
-    ];
-
     protected $resultSetType = 'collection';
 
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
+    public static function getByOpenId($openId)
+    {
+        return self::where('openid', '=', $openId)->find();
     }
 }

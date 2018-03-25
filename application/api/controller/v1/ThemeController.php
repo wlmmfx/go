@@ -33,6 +33,7 @@ class ThemeController extends Controller
         (new IDCollection())->goCheck();
         $ids = explode(',', $ids);
         $res = WxThemeModel::with('topicImg,headImg')->select($ids);
+        $res = collection($res);
 
         // 数据库没有查询到，异常类处理
         if ($res->isEmpty()) {

@@ -481,6 +481,26 @@ function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
 }
 
 /**
+ * 无意义的随机字符串
+ * @param $length
+ * @return null|string
+ */
+function get_rand_char($length)
+{
+    $str = null;
+    $strPol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+    $max = strlen($strPol) - 1;
+
+    for ($i = 0;
+         $i < $length;
+         $i++) {
+        $str .= $strPol[rand(0, $max)];
+    }
+
+    return $str;
+}
+
+/**
  * 生成 auth_key
  * @param string $check_str
  * @return string

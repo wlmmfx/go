@@ -4,23 +4,18 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 17:43
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\model;
+namespace app\common\library\exception;
 
 
-class WxCategory extends BaseModel
+class WeChatException extends BaseException
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
-    ];
+    public $code = 400;
 
-    protected $resultSetType = 'collection';
+    public $msg = '微信接口服务器异常';
 
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
-    }
+    public $errorCode = 999;
 }

@@ -4,23 +4,20 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 17:01
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\model;
+namespace app\api\validate;
 
 
-class WxCategory extends BaseModel
+class TokenGet extends BaseValidate
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
+    protected $rule = [
+        'code'=>'require|isNotEmpty'
     ];
 
-    protected $resultSetType = 'collection';
-
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
-    }
+    protected $message = [
+        'code'=>'code 是必须的，不可以为空'
+    ];
 }

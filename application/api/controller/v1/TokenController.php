@@ -4,23 +4,26 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 17:00
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\model;
+namespace app\api\controller\v1;
 
 
-class WxCategory extends BaseModel
+use app\api\service\UserToken;
+use app\api\validate\TokenGet;
+use think\Controller;
+
+class TokenController extends Controller
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
-    ];
-
-    protected $resultSetType = 'collection';
-
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
+    public function getToken($code = '')
+    {
+        (new TokenGet())->goCheck();
+        $userToken = new UserToken($code);
+        $token = $userToken->get();
+        return json([
+            'token'=>$token
+        ]);
     }
 }

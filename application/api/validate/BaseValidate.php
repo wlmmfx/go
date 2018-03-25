@@ -46,11 +46,17 @@ class BaseValidate extends Validate
     }
 
     //自定义验证规则
-    protected function isPositiveInteger($value, $rule='', $data='', $field='')
+    protected function isPositiveInteger($value, $rule = '', $data = '', $field = '')
     {
         if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0) {
             return true;
         }
         return false;
+    }
+
+    protected function isNotEmpty($value, $rule = '', $data = '', $field = '')
+    {
+        if (empty($value)) return false;
+        return true;
     }
 }

@@ -4,23 +4,25 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 18:18
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\model;
+namespace app\api\service;
 
 
-class WxCategory extends BaseModel
+class Token
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
-    ];
-
-    protected $resultSetType = 'collection';
-
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
+    /**
+     * 获取令牌key
+     */
+    public static function generateToken()
+    {
+        // 32 字符组成的无意义的字符串
+        $randChar = get_rand_string(32);
+        $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
+        // salt
+        $tokenSalt = config('secure.token_salt');
+        return md5($randChar . $timestamp . $tokenSalt);
     }
 }

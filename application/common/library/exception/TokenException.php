@@ -4,23 +4,16 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |--------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/3/22 22:47
+ * |  DateTime: 2018/3/25 18:36
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\model;
+namespace app\common\library\exception;
 
 
-class WxCategory extends BaseModel
+class TokenException extends BaseException
 {
-    protected $hidden = [
-        'delete_time',
-        'update_time'
-    ];
-
-    protected $resultSetType = 'collection';
-
-    public function img(){
-        return $this->belongsTo('WxImage','topic_img_id','id');
-    }
+    public $code = 400;
+    public $msg = 'Token 无效或者已过期';
+    public $errorCode = 999;
 }

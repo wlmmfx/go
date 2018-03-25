@@ -28,11 +28,11 @@ class ProductController
     {
         (new Count())->goCheck();
         $products = WxProductModel::getMostRecent($count);
-        if(!$products->isEmpty()){
-            throw new ProductException();
-        }
         // 临时隐藏字段，保持模型的干净性
         $products = $products->hidden(['summary']);
+        if($products->isEmpty()){
+            throw new ProductException();
+        }
         return json($products);
     }
 
@@ -45,6 +45,8 @@ class ProductController
     public function getAllInCategory($id){
         (new IDMustBePositiveInt())->goCheck();
         $products = WxProductModel::getProductsByCategoryID($id);
+        // 单独转换为数据集
+        $products = collection($products);
         if($products->isEmpty()){
             throw new ProductException();
         }

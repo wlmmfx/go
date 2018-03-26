@@ -15,8 +15,14 @@ class WxUser extends BaseModel
 {
     protected $resultSetType = 'collection';
 
+    public function address()
+    {
+        return $this->hasOne('WxUserAddress', 'user_id', 'id');
+    }
+
     public static function getByOpenId($openId)
     {
         return self::where('openid', '=', $openId)->find();
     }
 }
+

@@ -17,6 +17,11 @@ use think\Controller;
 
 class TokenController extends Controller
 {
+    /**
+     * 获取接口令牌
+     * @param string $code
+     * @return \think\response\Json
+     */
     public function getToken($code = '')
     {
         (new TokenGet())->goCheck();

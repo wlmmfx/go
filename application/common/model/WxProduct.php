@@ -10,8 +10,6 @@
 
 namespace app\common\model;
 
-use app\common\model\WxProduct as WxProductModel;
-
 class WxProduct extends BaseModel
 {
     protected $hidden = [
@@ -42,5 +40,39 @@ class WxProduct extends BaseModel
     {
         $products = self::where('category_id', '=', $categoryID)->select();
         return $products;
+    }
+
+    /**
+     * 一对多
+     */
+    public function imgs()
+    {
+        return $this->hasMany('WxProductImage', 'product_id', 'id');
+    }
+
+    /**
+     * 一对多关系
+     * @return \think\model\relation\HasMany
+     */
+    public function products()
+    {
+        return $this->hasMany('WxProductProperty', 'product_id', 'id');
+    }
+
+    /**
+     * 获取商品详情
+     * 这里有二级模型的排序
+     * @static
+     */
+    public static function getProductDetail($id)
+    {
+        $product = self::with([
+            'imgs' => function ($query) {
+                $query->with(['imgUrl'])->order('order', 'asc');
+            }
+        ])
+        ->with('products')
+        ->find($id);
+        return $product;
     }
 }

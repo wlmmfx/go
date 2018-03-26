@@ -4,22 +4,18 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/1/5 13:27
+ * |  DateTime: 2018/3/26 10:33
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\common\model;
 
 
-use think\Controller;
-use app\api\service\Token as TokenService;
-
-class BaseApiController extends Controller
+class WxUserAddress extends BaseModel
 {
-    // 【前置方法】 验证初始scope方法
-    public function checkPrimaryScope()
-    {
-        TokenService::needPrimaryScope();
-    }
+    protected $table = 'resty_wx_user_address';
 
+    protected $update = [
+        'update_time'
+    ];
 }

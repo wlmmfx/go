@@ -4,22 +4,17 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/1/5 13:27
+ * |  DateTime: 2018/3/26 10:58
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\common\library\exception;
 
 
-use think\Controller;
-use app\api\service\Token as TokenService;
-
-class BaseApiController extends Controller
+class UserException extends BaseException
 {
-    // 【前置方法】 验证初始scope方法
-    public function checkPrimaryScope()
-    {
-        TokenService::needPrimaryScope();
-    }
-
+    public $code = 404;
+    public $msg = "该用户不存在";
+    public $errorCode = 100005;
 }

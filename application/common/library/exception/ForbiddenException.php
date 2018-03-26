@@ -4,22 +4,19 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/1/5 13:27
+ * |  DateTime: 2018/3/26 14:12
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\common\library\exception;
 
 
-use think\Controller;
-use app\api\service\Token as TokenService;
-
-class BaseApiController extends Controller
+class ForbiddenException extends BaseException
 {
-    // 【前置方法】 验证初始scope方法
-    public function checkPrimaryScope()
-    {
-        TokenService::needPrimaryScope();
-    }
+    public $code = 403;
 
+    public $msg = '权限不够';
+
+    public $errorCode = 999;
 }

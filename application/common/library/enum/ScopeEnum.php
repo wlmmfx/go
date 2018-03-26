@@ -4,22 +4,16 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/1/5 13:27
+ * |  DateTime: 2018/3/26 13:44
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 枚举，使用接口权限控制
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\common\library\enum;
 
 
-use think\Controller;
-use app\api\service\Token as TokenService;
-
-class BaseApiController extends Controller
+class ScopeEnum
 {
-    // 【前置方法】 验证初始scope方法
-    public function checkPrimaryScope()
-    {
-        TokenService::needPrimaryScope();
-    }
-
+    const USER = 16; // 普通
+    const SUPER = 32; // 管理员
 }

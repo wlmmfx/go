@@ -46,7 +46,8 @@ class OrderController extends BaseApiController
     }
 
     public function test(){
-        Log::error('11111111111111111111');
+        Log::error('----------------------------------');
+        return 1111;
         die;
         $data['name'] = '万少波';
         $data['address'] = 'tc/wechat';

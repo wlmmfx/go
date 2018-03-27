@@ -12,7 +12,10 @@
 namespace app\api\controller\v1;
 
 
+use app\api\service\Token as TokenSerice;
+use app\api\validate\OrderPlace;
 use app\common\controller\BaseApiController;
+use think\Log;
 
 class OrderController extends BaseApiController
 {
@@ -26,14 +29,28 @@ class OrderController extends BaseApiController
     // 8、成功：进行库存量扣除，失败：返回一个支付失败结果，
 
     protected $beforeActionList = [
-        ''
+        'checkPrimaryScope' => ['only' => 'placeOrder']
     ];
 
     /**
+     * 【下单接口】
      * 权限：用户可以访问，管理员不可以访问
      */
-    public function placeOrder(){
+    public function placeOrder()
+    {
+        // 数组类型验证器
+        (new OrderPlace())->goCheck();
+        $products = input('post.products/');
+        $uid = TokenSerice::getCurrentUid();
 
+    }
+
+    public function test(){
+        Log::error('11111111111111111111');
+        die;
+        $data['name'] = '万少波';
+        $data['address'] = 'tc/wechat';
+        halt(send_dayu_sms('13669361192','car_notice',$data));
     }
 
 }

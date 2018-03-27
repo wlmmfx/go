@@ -21,6 +21,7 @@ use EasyWeChat\Factory;
 use live\LiveStream;
 use think\Db;
 use think\Image;
+use think\Log;
 
 class IndexController extends BaseController
 {
@@ -445,13 +446,15 @@ class IndexController extends BaseController
                     $redis = messageRedis();
                     //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
                     $inputStreamAddr = $redis->get('TC_INPUT_STREAM_ADDRESS');
-                    $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . "\t -c copy  -f flv " . $streamInfo->push_flow_address;
+                    $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . " -c copy  -f flv " . $streamInfo->push_flow_address;
+                    Log::error('---------------------------',$action_str);
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
                     if ($sysStatus != 0) {
                         $res = ['code' => 500, 'msg' => "摄像头拉流失败，系统执行函数system()没有成功,返回状态码"];
                         return json($res);
                     }
                     unlink($originImg);
+                    send_dayu_sms($customer->c_tel, 'car_notice', ['name' => $customer->c_name, 'address' => 'gh_d0eb34e007dd']);
                     $res = [
                         'code' => 200,
                         'msg' => "OK",
@@ -538,9 +541,9 @@ class IndexController extends BaseController
             $res = [
                 'code' => 200,
                 'msg' => "set success",
-                'data'=>[
-                    'old_addr'=>$origin_addr,
-                    'new_addr'=>$addr,
+                'data' => [
+                    'old_addr' => $origin_addr,
+                    'new_addr' => $addr,
                 ]
             ];
         } else {

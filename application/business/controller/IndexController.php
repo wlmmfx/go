@@ -62,7 +62,7 @@ class IndexController extends BaseFrontendController
         if (empty($postId) || !is_numeric($postId)) {
             return json(['code' => 404]);
         }
-        $article = Db::table("resty_article")
+        $article = Db::name("article")
             ->alias('a')
             ->join('resty_category c', 'c.id = a.cate_id')
             ->join('resty_user u', 'u.id = a.admin_id')
@@ -72,7 +72,7 @@ class IndexController extends BaseFrontendController
             ->cache('RESTY_ARTICLE_DETAIL:' . $postId)
             ->find();
         // 更新缓存
-        Db::table('resty_article')->where('id', ':id')->bind(['id' => [$postId, \PDO::PARAM_INT]])->cache('RESTY_ARTICLE_DETAIL:' . $postId)->setInc('views');
+        Db::name('article')->where('id', ':id')->bind(['id' => [$postId, \PDO::PARAM_INT]])->cache('RESTY_ARTICLE_DETAIL:' . $postId)->setInc('views');
         $comments = $this->getCommentListByPostId($postId);
         $this->assign('article', $article);
         $this->assign('comments', $comments);

@@ -11,11 +11,16 @@
 namespace app\api\controller\v1;
 
 
+use app\common\controller\BaseApiController;
 use app\common\library\exception\CategoryException;
 use app\common\model\WxCategory as WxCategoryModel;
 
-class CategoryController
+class CategoryController extends BaseApiController
 {
+    protected $beforeActionList = [
+        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress'] // 执行createOrUpdateAddress 会自动调用 checkPrimaryScope方法
+    ];
+
     public function getAllCategories(){
         // [] 表示查询全部， 第二个参数表示关联一个方法
         $res = WxCategoryModel::all([],'img');

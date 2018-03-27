@@ -16,11 +16,23 @@ return [
         ],
         'template_live' => [
             'sign_name'=>'Tinywan工作室',
-            'code'=>'SMS_82985023'
+            'code'=>'SMS_83115011'
         ],
         'template_identity' => [
             'sign_name'=>'Tinywan工作室',
-            'code'=>'SMS_50285067'
+            'code'=>'SMS_82985023'
+        ],
+        'template_notice' => [
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_129475131'
+        ],
+        'template_car_live' => [
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_129475168'
+        ],
+        'template_car_notice' => [
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_129475168'
         ]
     ]
 ];

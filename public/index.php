@@ -34,6 +34,6 @@ require __DIR__ . '/../thinkphp/start.php';
         'path' => LOG_PATH,
         'level' => ['sql'],
         // sql日志单独记录
-        'apart_level' => [ 'sql']
+        'apart_level' => [ 'sql','error']
     ]
 );

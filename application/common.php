@@ -1057,8 +1057,14 @@ function send_dayu_sms($tel, $type, $data)
         case 'live':
             $req->setSmsParam('{"number":"' . $data['number'] . '","code":"' . $data['code'] . '"}');
             break;
-        case 'identity':
-            $req->setSmsParam('{"name":"' . $data['name'] . '"}');
+        case 'notice':
+            $req->setSmsParam('{"name":"' . $data['name'] . '","address":"' . $data['address'] . '"}');
+            break;
+        case 'car_live':
+            $req->setSmsParam('{"name":"' . $data['name'] . '","address":"' . $data['address'] . '"}');
+            break;
+        case 'car_notice':
+            $req->setSmsParam('{"name":"' . $data['name'] . '","address":"' . $data['address'] . '"}');
             break;
         default:
             $req->setSmsParam('{"code":"' . $data['code'] . '","product":"' . $data['product'] . '"}');

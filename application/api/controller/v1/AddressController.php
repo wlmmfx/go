@@ -20,25 +20,6 @@ use app\common\model\WxUser as WxUserModel;
 
 class AddressController extends BaseApiController
 {
-//    protected $beforeActionList = [
-//        'first' => ['only' => 'second,third']
-//    ];
-//
-//    public function first()
-//    {
-//        echo "first";
-//    }
-//
-//    public function second()
-//    {
-//        echo "second";
-//    }
-//
-//    public function third()
-//    {
-//        echo 'third';
-//    }
-
     protected $beforeActionList = [
         'checkPrimaryScope' => ['only' => 'createOrUpdateAddress'] // 执行createOrUpdateAddress 会自动调用 checkPrimaryScope方法
     ];

@@ -107,4 +107,18 @@ class Token
             throw new TokenException();
         }
     }
+
+    // 操作是否合法
+    public  static function isValidateOperate($checkUID)
+    {
+        if (!$checkUID) {
+            throw new Exception("必须传入一个UID");
+        }
+
+        $currentOperateId = self::getCurrentUid();
+        if ($currentOperateId == $checkUID) {
+            return true;
+        }
+        return false;
+    }
 }

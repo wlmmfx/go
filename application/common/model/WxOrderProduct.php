@@ -13,5 +13,5 @@ namespace app\common\model;
 
 class WxOrderProduct extends BaseModel
 {
-
+    protected $table = 'resty_wx_order_product';
 }

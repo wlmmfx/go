@@ -59,42 +59,33 @@ class OrderPlace extends BaseValidate
     ];
 
     protected $singleRule = [
-        'product_id'=>'require|isPositiveInteger',
-        'count'=>'require|isPositiveInteger',
+        'product_id' => 'require|isPositiveInteger',
+        'count' => 'require|isPositiveInteger',
     ];
 
-    /**
-     * 自定义验证器
-     */
+    //自定义验证器
     protected function checkProducts($values)
     {
-        // 数组
-        if (!is_array($values)) throw new ParameterException();
-        // 空
-        if (empty($values)){
+        if(empty($values)){
             throw new ParameterException([
-                'msg'=>'商品列表不能为空'
+                'msg' => '商品列表不能为空'
             ]);
         }
-
-        foreach ($values as $value){
+        foreach ($values as $value)
+        {
             $this->checkProduct($value);
         }
+        return true;
     }
 
-    /**
-     * 【重点】
-     * 单个商品验证
-     * @param $value
-     * @throws ParameterException
-     */
-    protected function checkProduct($value)
+    // 单个商品验证
+    private function checkProduct($value)
     {
         $validate = new BaseValidate($this->singleRule);
         $result = $validate->check($value);
         if(!$result){
             throw new ParameterException([
-                'msg'=>"商品列表参数错误"
+                'msg' => '商品列表参数错误',
             ]);
         }
     }

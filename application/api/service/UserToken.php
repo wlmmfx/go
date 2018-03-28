@@ -37,7 +37,6 @@ class UserToken extends Token
         $res = curl_request($this->wpLoginUrl);
         $wxResult = json_decode($res, true);
         if (empty($wxResult)) throw new Exception('获取session_key以及openId异常，微信内部错误');
-
         // 错误时返回JSON数据包(示例为Code无效)
         $loginFail = array_key_exists('errcode', $wxResult); // boole
         if ($loginFail) {

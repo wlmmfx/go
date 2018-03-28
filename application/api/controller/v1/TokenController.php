@@ -13,9 +13,9 @@ namespace app\api\controller\v1;
 
 use app\api\service\UserToken;
 use app\api\validate\TokenGet;
-use think\Controller;
+use app\common\controller\BaseApiController;
 
-class TokenController extends Controller
+class TokenController extends BaseApiController
 {
     /**
      * 获取接口令牌
@@ -28,7 +28,7 @@ class TokenController extends Controller
         $userToken = new UserToken($code);
         $token = $userToken->get();
         return json([
-            'token'=>$token
+            'token' => $token
         ]);
     }
 }

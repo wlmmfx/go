@@ -13,5 +13,16 @@ namespace app\common\model;
 
 class WxOrder extends BaseModel
 {
+    protected $table = 'resty_wx_order';
 
+    protected $autoWriteTimestamp = true;
+
+    protected $insert = [
+        "create_time"
+    ];
+
+    //更新自动完成
+    protected $update = [
+        "update_time"
+    ];
 }

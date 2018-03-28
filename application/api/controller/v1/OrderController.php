@@ -12,7 +12,8 @@
 namespace app\api\controller\v1;
 
 
-use app\api\service\Token as TokenSerice;
+use app\api\service\Token as TokenService;
+use app\api\service\Order as OrderService;
 use app\api\validate\OrderPlace;
 use app\common\controller\BaseApiController;
 use think\Log;
@@ -40,18 +41,23 @@ class OrderController extends BaseApiController
     {
         // 数组类型验证器
         (new OrderPlace())->goCheck();
-        $products = input('post.products/');
-        $uid = TokenSerice::getCurrentUid();
+        $products = input('post.products/a');
+        $uid = TokenService::getCurrentUid();
 
+        // 订单状态
+        $order = new OrderService();
+        $status = $order->place($uid, $products);
+        return json($status);
     }
 
-    public function test(){
+    public function test()
+    {
         Log::error('----------------------------------');
         return 1111;
         die;
         $data['name'] = '万少波';
         $data['address'] = 'tc/wechat';
-        halt(send_dayu_sms('13669361192','car_notice',$data));
+        halt(send_dayu_sms('13669361192', 'car_notice', $data));
     }
 
 }

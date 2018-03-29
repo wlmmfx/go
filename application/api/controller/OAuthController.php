@@ -20,7 +20,6 @@ use think\Db;
 
 class OAuthController extends BaseApiController
 {
-
     // GitHub
     const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize';
     const GITHUB_OAUTH_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';

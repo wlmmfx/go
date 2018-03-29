@@ -32,7 +32,7 @@ return [
         ],
         'template_car_notice' => [
             'sign_name'=>'Tinywan工作室',
-            'code'=>'SMS_129475168'
+            'code'=>'SMS_129755842'
         ]
     ]
 ];

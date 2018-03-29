@@ -17,6 +17,9 @@ use app\common\library\exception\TokenException;
 use app\common\model\WxOrder as WxOrderModel;
 use think\Exception;
 use app\api\service\Order as OrderService;
+use think\Loader;
+
+Loader::import('wechat.wxpay.WxPay', EXTEND_PATH . '.Api.php');
 
 class Pay
 {
@@ -47,13 +50,28 @@ class Pay
         }
     }
 
-    public function makeWxPreOrder()
+    public function makeWxPreOrder($totalPrice)
     {
         // open_id
         $openId = Token::getCurrentTokenVar('openid');
-        if(!$openId){
+        if (!$openId) {
             throw new TokenException();
         }
+
+        // 微信统一下单
+        $wxOrderData = new \WxPayUnifiedOrder();
+        $wxOrderData->SetOut_trade_no($this->orderID);
+        $wxOrderData->SetTrade_type('JSAPI');
+        $wxOrderData->SetTotal_fee($totalPrice);
+        $wxOrderData->SetBody('零食商贩');
+        $wxOrderData->SetOpenid($openId);
+        $wxOrderData->SetNotify_url(''); //微信支付接口结果
+        halt($wxOrderData);
+    }
+
+    // 发送到微信预订单中去
+    public function getPaySignature($wxOrderData)
+    {
     }
 
     // 订单的有效性

@@ -15,6 +15,12 @@ class WxOrder extends BaseModel
 {
     protected $table = 'resty_wx_order';
 
+    protected $hidden = [
+        'delete_time',
+        'create_time',
+        'update_time'
+    ];
+
     protected $autoWriteTimestamp = true;
 
     protected $insert = [

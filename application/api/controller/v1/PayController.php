@@ -13,8 +13,10 @@
 namespace app\api\controller\v1;
 
 
+use app\api\service\Pay as PayService;
 use app\api\validate\IDMustBePositiveInt;
 use app\common\controller\BaseApiController;
+use think\Loader;
 
 class PayController extends BaseApiController
 {
@@ -22,10 +24,15 @@ class PayController extends BaseApiController
         'checkPrimaryScope' => ['only' => 'getPreOrder']
     ];
 
-    // 生成预订单信息
+    // 生成预订单信息 $id = 551
     public function getPreOrder($id = '')
     {
         // orderNo/orderId
         (new IDMustBePositiveInt())->goCheck();
+
+        $pay = new PayService($id);
+        $res = $pay->pay();
+        $wxOrder = \WxPayApi::unifiedOrder();
+        return json($wxOrder);
     }
 }

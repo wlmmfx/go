@@ -13,7 +13,7 @@ namespace app\common\library\exception;
 
 class TokenException extends BaseException
 {
-    public $code = 400;
+    public $code = 401;
     public $msg = 'Token 无效或者已过期';
     public $errorCode = 999;
 }

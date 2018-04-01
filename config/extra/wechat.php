@@ -14,4 +14,5 @@ return [
     "WP_APP_SECRET" => '06f0580a6742752246ccd54f6b65ff78',
     "WP_LOGIN_URL" => "https://api.weixin.qq.com/sns/jscode2session?" .
         "appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+    "WP_NOTIFY_URL" => 'https://www.tinywan.com/api/v1/',
 ];

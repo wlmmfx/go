@@ -18,8 +18,10 @@ use app\common\model\WxOrder as WxOrderModel;
 use think\Exception;
 use app\api\service\Order as OrderService;
 use think\Loader;
+use think\Log;
 
-Loader::import('wechat.wxpay.WxPay', EXTEND_PATH . '.Api.php');
+Loader::import('wechat.wxpay.WxPay', EXTEND_PATH, '.Data.php');
+Loader::import('wechat.wxpay.WxPay', EXTEND_PATH, '.Api.php');
 
 class Pay
 {
@@ -29,7 +31,7 @@ class Pay
 
     public function __construct($orderID)
     {
-        if (!$$orderID) {
+        if (!$orderID) {
             throw  new Exception("订单号不能为空");
         }
         $this->orderID = $orderID;
@@ -48,30 +50,55 @@ class Pay
         if (!$status['pass']) {
             return $status;
         }
+        return $this->makeWxPreOrder($status['orderPrice']);
     }
 
-    public function makeWxPreOrder($totalPrice)
+    public function makeWxPreOrder($orderPrice)
     {
         // open_id
         $openId = Token::getCurrentTokenVar('openid');
         if (!$openId) {
             throw new TokenException();
         }
-
         // 微信统一下单
         $wxOrderData = new \WxPayUnifiedOrder();
         $wxOrderData->SetOut_trade_no($this->orderID);
         $wxOrderData->SetTrade_type('JSAPI');
-        $wxOrderData->SetTotal_fee($totalPrice);
+        $wxOrderData->SetTotal_fee($orderPrice);
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openId);
-        $wxOrderData->SetNotify_url(''); //微信支付接口结果
-        halt($wxOrderData);
+        $wxOrderData->SetNotify_url('http://www.qq.com'); //微信支付接口结果
+        return $this->getPaySignature($wxOrderData);
     }
 
     // 发送到微信预订单中去
     public function getPaySignature($wxOrderData)
     {
+        // 统一下单
+        $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+        return $wxOrder;
+        if ($wxOrder['result_code'] != 'SUCCESS' || $wxOrder['return_code'] != 'SUCCESS') {
+            Log::record($wxOrder, 'error');
+            Log::record('获取预支付订单失败', 'error');
+        }
+        return null;
+    }
+
+    // 签名
+    private function sign($wxOrder)
+    {
+        $jsApiPayData = new \WxPayJsApiPay();
+        $jsApiPayData->SetAppid(config(''));
+        $jsApiPayData->SetTimeStamp((string)time());
+
+        $rand = md5(tim() . rand(0, 9999));
+        $jsApiPayData->SetNonceStr($rand);
+
+        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
+        $jsApiPayData->SetSignType('ms5');
+
+        // 生成签名
+        $sign = $jsApiPayData->MakeSign();
     }
 
     // 订单的有效性

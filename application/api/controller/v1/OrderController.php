@@ -14,8 +14,13 @@ namespace app\api\controller\v1;
 
 use app\api\service\Token as TokenService;
 use app\api\service\Order as OrderService;
+use app\api\service\Token;
+use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
+use app\api\validate\PagingParameter;
 use app\common\controller\BaseApiController;
+use app\common\library\exception\OrderException;
+use app\common\model\WxOrder as WxOrderModel;
 use think\Log;
 
 class OrderController extends BaseApiController
@@ -30,7 +35,8 @@ class OrderController extends BaseApiController
     // 8、成功：进行库存量扣除，失败：返回一个支付失败结果，
 
     protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'placeOrder']
+        'checkExclusiveScope' => ['only' => 'placeOrder'],
+        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
     ];
 
     /**
@@ -48,6 +54,41 @@ class OrderController extends BaseApiController
         $order = new OrderService();
         $status = $order->place($uid, $products);
         return json($status);
+    }
+
+    // 订单列表
+    public function getSummaryByUser($page = 1, $size = 15)
+    {
+        (new PagingParameter())->goCheck();
+        $uID = Token::getCurrentUid();
+        $pagingOrders = WxOrderModel::getSummaryByUser($uID, $page, $size);
+        if ($pagingOrders->isEmpty()) {
+            $res = [
+                'data' => [],
+                'current_page' => $pagingOrders->getCurrentPage()
+            ];
+            return json($res);
+        }
+        $data = $pagingOrders->hidden(['prepay_id', 'snap_items', 'snap_address'])->toArray();
+        $res = [
+            'data' => $data,
+            'current_page' => $pagingOrders->getCurrentPage()
+        ];
+        return json($res);
+    }
+
+    /**
+     * 订单详情
+     * https://www.tinywan.com/api/v1/order/557
+     */
+    public function getDetail($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
+        $orderDetail = WxOrderModel::get($id);
+        if (!$orderDetail) {
+            throw new OrderException();
+        }
+        return $orderDetail->hidden(['prepay_id']);
     }
 
     public function test()

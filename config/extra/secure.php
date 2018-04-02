@@ -8,5 +8,6 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 return [
-    'token_salt'=>'wx94c43716d8a91f3f'
+    'token_salt'=>'wx94c43716d8a91f3f',
+    'pay_back_url' => "https://www.tinywan.com/api/v1/pay/notify" // 微信支付回调地址
 ];

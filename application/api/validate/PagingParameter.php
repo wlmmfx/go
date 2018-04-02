@@ -4,27 +4,23 @@
  * |  Blog: http://www.cnblogs.com/Tinywan
  * |-------------------------------------------------------------------------------------------------------------------
  * |  Author: Tinywan(ShaoBo Wan)
- * |  DateTime: 2018/1/5 13:27
+ * |  DateTime: 2018/4/2 15:20
  * |  Mail: Overcome.wan@Gmail.com
+ * |  Desc: 描述信息
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\common\controller;
+namespace app\api\validate;
 
 
-use think\Controller;
-use app\api\service\Token as TokenService;
-
-class BaseApiController extends Controller
+class PagingParameter extends BaseValidate
 {
-    // 【前置方法】 验证初始scope方法
-    public function checkPrimaryScope()
-    {
-        TokenService::needPrimaryScope();
-    }
+    protected $rule = [
+        'page'=>'isPositiveInteger',
+        'size'=>'isPositiveInteger'
+    ];
 
-    protected function checkExclusiveScope()
-    {
-        TokenService::needExclusiveScope();
-    }
-
+    protected $message= [
+        'page'=>'分页参数必须是正整数',
+        'size'=>'分页参数必须是正整数'
+    ];
 }

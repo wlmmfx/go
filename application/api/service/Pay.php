@@ -11,17 +11,16 @@
 namespace app\api\service;
 
 
+use app\api\service\Order as OrderService;
 use app\common\library\enum\OrderStatusEnum;
 use app\common\library\exception\OrderException;
 use app\common\library\exception\TokenException;
 use app\common\model\WxOrder as WxOrderModel;
 use think\Exception;
-use app\api\service\Order as OrderService;
 use think\Loader;
 use think\Log;
 
-Loader::import('wechat.wxpay.WxPay', EXTEND_PATH, '.Data.php');
-Loader::import('wechat.wxpay.WxPay', EXTEND_PATH, '.Api.php');
+Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 
 class Pay
 {
@@ -67,38 +66,49 @@ class Pay
         $wxOrderData->SetTotal_fee($orderPrice);
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openId);
-        $wxOrderData->SetNotify_url('http://www.qq.com'); //微信支付接口结果
+        $wxOrderData->SetNotify_url(config('secure.pay_back_url')); //微信支付接口结果
         return $this->getPaySignature($wxOrderData);
     }
 
-    // 发送到微信预订单中去
-    public function getPaySignature($wxOrderData)
+    //向微信请求订单号并生成签名
+    private function getPaySignature($wxOrderData)
     {
-        // 统一下单
         $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
-        return $wxOrder;
-        if ($wxOrder['result_code'] != 'SUCCESS' || $wxOrder['return_code'] != 'SUCCESS') {
+        return $wxOrder; // mch_id 参数格式错误
+        // 失败时不会返回result_code
+        if ($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] != 'SUCCESS') {
             Log::record($wxOrder, 'error');
             Log::record('获取预支付订单失败', 'error');
+//            throw new Exception('获取预支付订单失败');
         }
-        return null;
+        $this->recordPreOrder($wxOrder);
+        $signature = $this->sign($wxOrder);
+        return $signature;
+    }
+
+    private function recordPreOrder($wxOrder)
+    {
+        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id 是不同的
+        WxOrderModel::where('id', '=', $this->orderID)
+            ->update(['prepay_id' => $wxOrder['prepay_id']]);
     }
 
     // 签名
     private function sign($wxOrder)
     {
         $jsApiPayData = new \WxPayJsApiPay();
-        $jsApiPayData->SetAppid(config(''));
+        $jsApiPayData->SetAppid(config('wechat.WP_APP_ID'));
         $jsApiPayData->SetTimeStamp((string)time());
-
-        $rand = md5(tim() . rand(0, 9999));
+        $rand = md5(time() . mt_rand(0, 1000));
         $jsApiPayData->SetNonceStr($rand);
-
         $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
-        $jsApiPayData->SetSignType('ms5');
-
+        $jsApiPayData->SetSignType('md5');
         // 生成签名
         $sign = $jsApiPayData->MakeSign();
+        $rawValues = $jsApiPayData->GetValues();
+        $rawValues['paySign'] = $sign;
+        unset($rawValues['appId']);
+        return $rawValues;
     }
 
     // 订单的有效性

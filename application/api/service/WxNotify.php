@@ -21,7 +21,7 @@ use think\Exception;
 use think\Loader;
 use think\Log;
 
-Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
+Loader::import('wxpay.wxpay', EXTEND_PATH, '.Api.php');
 
 class WxNotify extends \WxPayNotify
 {

@@ -52,10 +52,19 @@ class PayController extends BaseApiController
 
     public function receiveNotify()
     {
-        $xmlData = file_get_contents('php://input');
-        Log::error($xmlData);
-        $result = curl_post_raw('https://www.tinywan.com/api/v1/pay/redirectNotify?XDEBUG_SESSION_START=13133',
-            $xmlData);
-        return $result;
+//        $xmlData = file_get_contents('php://input');
+//        Log::error($xmlData);
+//        $result = curl_post_raw('https://www.tinywan.com/api/v1/pay/redirectNotify?XDEBUG_SESSION_START=13133',
+//            $xmlData);
+//        return $result;
+        // 通知频率 15/15/30/180/1800/1800/1800/3600 单位：秒
+        // 1、检测库存量，超卖
+        // 2、真实的更改数据库状态,修改 status 状态值
+        // 3、减少库存
+        // 4、如果成功处理，返回给微信成功处理消息。否则，返回给返回微信处理失败消息
+
+        // 特点：POST接受，XML格式，不会携带参数
+        $notify = new WxNotify();
+        $notify->Handle();
     }
 }

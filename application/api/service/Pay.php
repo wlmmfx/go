@@ -20,7 +20,7 @@ use think\Exception;
 use think\Loader;
 use think\Log;
 
-Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
+Loader::import('wxpay.WxPay', EXTEND_PATH, '.Api.php');
 
 class Pay
 {

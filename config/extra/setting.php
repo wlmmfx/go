@@ -9,6 +9,6 @@
  * |  Fun: 全局文件配置文件
  * '------------------------------------------------------------------------------------------------------------------*/
 return [
-    'img_prefix' => 'https://www.tinywan.com',
+    'img_prefix' => 'https://www.tinywan.com/api/images',
     'token_expire_in' => 7200 // token 令牌过期时间
 ];

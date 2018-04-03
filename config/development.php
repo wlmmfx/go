@@ -31,9 +31,9 @@ return [
         // 数据库名
         'database' => 'resty',
         // 数据库用户名
-        'username' => 'tinywan_resty',
+        'username' => 'root',
         // 数据库密码
-        'password' => 'tinywan_resty_123456',
+        'password' => 'root',
         // 数据库连接端口
         'hostport' => '',
         // 数据库连接参数

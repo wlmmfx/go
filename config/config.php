@@ -7,6 +7,7 @@ return [
     // +----------------------------------------------------------------------
 
     'app_status' => 'production',
+    //'app_status' => 'development',
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
     'app_debug' => true,

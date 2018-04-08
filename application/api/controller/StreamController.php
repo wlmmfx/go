@@ -118,7 +118,7 @@ class StreamController extends BaseApiController
             //-----------------------------使用FFmpeg推送流到指定的流媒体服务器上去（录像服务器）-----------------------------
             $recordServiceIP = 'live.tinywan.com';
             $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $rtmp_address . " -c:a copy -c:v copy -f flv rtmp://{$recordServiceIP}/record/" . $streamName;
-            Log::error('------使用FFmpeg推送流到指定的流媒体服务器上去------------------------' . $action_str);
+            Log::error('[2]------FFmpeg拉 Tinywan阿里云直播流 到 Tinywan私有录像服务器------------------------' . $action_str);
             system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
             if ($sysStatus != 0) {
                 Log::error('[' . getCurrentDate() . ']:' . '系统执行函数system()没有成功,返回状态码：' . $sysStatus);

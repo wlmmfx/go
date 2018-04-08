@@ -48,11 +48,10 @@ class ProductController extends BaseApiController
         (new IDMustBePositiveInt())->goCheck();
         $products = WxProductModel::getProductsByCategoryID($id);
         // 单独转换为数据集
-        $products = collection($products);
+        $products = $products->hidden(['summary']);
         if ($products->isEmpty()) {
             throw new ProductException();
         }
-        $products = $products->hidden(['summary']);
         return json($products);
     }
 

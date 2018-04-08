@@ -257,12 +257,12 @@ class IndexController extends BaseController
             // 【2】获取4S店客户信息表
             $customerInfo = CarCustomer::where(['c_tel' => $userInfo->mobile])->find();
         if (empty($customerInfo) || $customerInfo == null) {
-            return "你还没有在4S店登记过自己的信息吧！登记后才可以观看哦！";
+            return "<h1>你还没有在4S店登记过自己的信息吧！登记后才可以观看哦</h1>";
         }
         //【3】如何客户4S店客户的基本信息没有登记，则该客户不可以观看直播哦
         $streamInfo = StreamName::where(['id' => $customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
         if (empty($customerInfo) || $customerInfo == null) {
-            return "你的车还没有开始维修呢！只支持观看自己的修车信息";
+            return "<h1>你的车还没有开始维修呢！只支持观看自己的修车信息</h1>";
         }
         //【4】如果号码为空，则不允许观看直播的,一定要判断的
         $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
@@ -286,12 +286,12 @@ class IndexController extends BaseController
             // 【2】获取4S店客户信息表
             $customerInfo = CarCustomer::where(['c_tel' => $userInfo->mobile])->find();
         if (empty($customerInfo) || $customerInfo == null) {
-            return "你还没有在4S店登记过自己的信息吧！登记后才可以观看哦！";
+            return "<h1>你还没有在4S店登记过自己的信息吧！登记后才可以观看哦</h1>";
         }
         //【3】如何客户4S店客户的基本信息没有登记，则该客户不可以观看直播哦
         $streamInfo = StreamName::where(['id' => $customerInfo->stream_id])->field('stream_name,play_m3u8_address,push_flow_address')->find();
         if (empty($customerInfo) || $customerInfo == null) {
-            return "你的车还没有开始维修呢！只支持观看自己的修车信息";
+            return "<h1>你的车还没有开始维修呢！只支持观看自己的修车信息</h1>";
         }
         //【4】如果号码为空，则不允许观看直播的,一定要判断的
         $liveStatus = LiveStream::getRecordLiveStreamNameStatus($streamInfo->stream_name)['status'];
@@ -447,7 +447,7 @@ class IndexController extends BaseController
                     //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
                     $inputStreamAddr = $redis->get('TC_INPUT_STREAM_ADDRESS');
                     $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . " -c copy  -f flv " . $streamInfo->push_flow_address;
-                    Log::error('---------------------------',$action_str);
+                    Log::error('[1]------FFmpeg拉 阿麦直播流 到 Tinywan阿里云直播服务器 ------------------------'.$action_str);
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
                     if ($sysStatus != 0) {
                         $res = ['code' => 500, 'msg' => "摄像头拉流失败，系统执行函数system()没有成功,返回状态码"];

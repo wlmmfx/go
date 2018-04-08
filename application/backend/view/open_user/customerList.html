@@ -41,18 +41,13 @@
                         </thead>
                         <tbody>
                         {volist name='lists' id='user'}
-                        <tr class="text-c">
+                        <tr class="text-c" id="tag-{$user['c_no']}">
                             <td>{$user['c_no']}</td>
                             <td>{$user['c_name']}</td>
                             <td>{$user['c_tel']}</td>
                             <td>{$user['num_plate']}</td>
                             <td>{$user['unit']}</td>
                             <td>
-                                <a href="{:url('backend/open_user/editCustomer',['id'=>$user['c_no']])}">
-                                    <button class="btn btn-primary btn-xs">
-                                        <i class="icon-edit"></i>编辑
-                                    </button>
-                                </a>
                                 <a href="javascript:delHanderModal({$user['c_no']});" class="btn btn-danger btn-xs">
                                     <i class="icon-trash"></i>删除
                                 </a>
@@ -110,21 +105,36 @@
 
 </div><!-- /row -->
 <script type="text/javascript">
-    function group_del($id) {
-        var $msg = confirm('确认删除该用户组吗？删除后不可恢复！');
-        var url = "{:url('/backend/auth.auth_group/delete')}";
-        var data = {
-            "id": $id
-        };
-        var success = function (response) {
-            if (response.status == 200) {
-                alert('删除success');
-                window.location.reload();
-            } else {
-                alert('请求错误');
-            }
-        };
-        if($msg) $.post(url, data, success, 'json');
+    var $id;
+    function delHanderModal(id) {
+        $id = id;
+        $("#delHanderModal").modal("show");
     }
-
+    $(document).ready(function(){
+        $('body').delegate('.del-hander', 'click', function () {
+            $("#delHanderModal").modal("hide");
+            var $url = "{:url('backend/open_user/delCustomer')}";
+            var $_data = {
+                'id': $id
+            };
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                success: function ($response) {
+                    console.log($response)
+                    if ($response.code == 200) {
+                        $('#tag-' + $id).remove();
+                        successShow($response.msg);
+                    } else {
+                        failShow($response.msg);
+                    }
+                },
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+    });
 </script>

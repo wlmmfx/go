@@ -15,6 +15,7 @@ use app\common\controller\BaseBackendController;
 use app\common\model\CarCustomer;
 use app\common\model\OpenUser;
 use think\Db;
+use think\Exception;
 
 class OpenUserController extends BaseBackendController
 {
@@ -182,6 +183,31 @@ class OpenUserController extends BaseBackendController
                 return $this->success("成功");
             } else {
                 return $this->error("失败");
+            }
+        }
+    }
+
+    /**
+     * 删除客户信息
+     */
+    public function delCustomer()
+    {
+        if (request()->isAjax()) {
+            $id = input('post.id');
+            try {
+                Db::startTrans();
+                $carUser = CarCustomer::get($id);
+                $openUserInfo = OpenUser::where('mobile', '=', $carUser->c_tel)->setField('mobile', '');
+                $delRes = $carUser->delete();
+                if ($openUserInfo && $delRes) {
+                    Db::commit();
+                    return json(['code' => 200, 'msg' => '删除成功']);
+                } else {
+                    return json(['code' => 500, 'msg' => '删除失败']);
+                }
+            } catch (Exception $e) {
+                Db::rollback();
+                return json(['code' => 500, 'msg' => json_encode($e->getMessage())]);
             }
         }
     }

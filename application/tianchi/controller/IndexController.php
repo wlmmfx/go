@@ -19,6 +19,7 @@ use app\common\model\StreamName;
 use app\common\model\StreamVideo;
 use EasyWeChat\Factory;
 use live\LiveStream;
+use redis\BaseRedis;
 use think\Db;
 use think\Image;
 use think\Log;
@@ -447,7 +448,7 @@ class IndexController extends BaseController
                     //$inputStreamAddr = "rtmp://tinywan.amai8.com/live/4001489565547";
                     $inputStreamAddr = $redis->get('TC_INPUT_STREAM_ADDRESS');
                     $action_str = "nohup /usr/bin/ffmpeg -r 25 -i " . $inputStreamAddr . " -c copy  -f flv " . $streamInfo->push_flow_address;
-                    Log::error('[1]------FFmpeg拉 阿麦直播流 到 Tinywan阿里云直播服务器 ------------------------'.$action_str);
+                    Log::error('[1]------FFmpeg拉 阿麦直播流 到 Tinywan阿里云直播服务器 ------------------------' . $action_str);
                     system("{$action_str} > /dev/null 2>&1 &", $sysStatus);
                     if ($sysStatus != 0) {
                         $res = ['code' => 500, 'msg' => "摄像头拉流失败，系统执行函数system()没有成功,返回状态码"];
@@ -564,18 +565,145 @@ class IndexController extends BaseController
     }
 
     /**
+     * @return 阿麦设备Redis备份
+     */
+    public function backRedisDeviceData()
+    {
+        $redis = BaseRedis::instance();
+        $redis->connect('121.40.30.105');
+        $keys = $redis->keys('*');
+        $currentTime = time(); //当前时间-必须存储在队列中
+        $redis->lPush('DEVICE_REDIS_LIST', $currentTime);
+        foreach ($keys as $val) {
+            if (is_numeric($val)) {
+                $liveId = $redis->hGet($val, 'liveId');
+                $redis->zAdd('DEVICE_REDIS_ZADD:' . $val, $currentTime, $liveId);
+            }
+        }
+        echo 1111111111;
+        die;
+    }
+
+    /**
+     * 删除集合：ZREMRANGEBYSCORE key 当前时间-7天时间戳 当前时间-3天时间戳
+     *  eg:ZREMRANGEBYSCORE DEVICE_REDIS_ZADD:13669361192 1523261400 1523261436
+     */
+    public function readRedisDeviceData($deviceId = 201)
+    {
+        $redis = BaseRedis::instance();
+        $redis->connect('121.40.30.105');
+        $list = $redis->lRange('DEVICE_REDIS_LIST', 0, -1);
+        $resArr = [];
+        $backKey = 'DEVICE_REDIS_ZADD:' . $deviceId;
+        $currentTime = time();
+        foreach ($list as $val) {
+            if (!empty($redis->zRangeByScore($backKey, $val, $currentTime))) {
+                $resArr[] = [
+                    'time' => date('Y年m月d日 H:i:s', $val),
+                    'liveId' => $redis->zRangeByScore($backKey, $val, $currentTime)[0]
+                ];
+            } else {
+                $resArr = null;
+            }
+        }
+
+        //保持列表长度
+        $listKey = 'DEVICE_REDIS_LIST';
+        $listLen = $redis->lLen($listKey);
+        if ($listLen > 5) {
+            // 删除列表成员
+            $redis->lTrim($listKey, 0, 5);
+            // 删除集合成员
+            $minTime = $currentTime - 604800; // 7天前
+            $maxTime = $currentTime - 259200; // 3天前
+            $redis->zRemRangeByScore($backKey, $minTime, $maxTime);
+        }
+        return $this->fetch('', [
+            'resArr' => $resArr,
+            'deviceId' => $deviceId
+        ]);
+    }
+
+    /**
+     * shell执行文件移动操作
+     */
+    public function recordFileMove()
+    {
+        if (request()->isAjax()) {
+            $deviceId = input('param.deviceId');
+            $targetLiveId = input('param.targetLiveId');
+            $shortVideoName = input('param.shortVideoName');
+
+            $host = "121.40.133.183";
+            $username = "www";
+            $password = "wwwOracle11f";
+            $connection = ssh2_connect($host, 22);
+            if (!ssh2_auth_password($connection, $username, $password)) return 0;
+            $formatShortVideoName = $shortVideoName . '.flv';
+            $cmdStr = "cd /data/recorded_flvs && /home/www/bin/pubFlv.sh {$deviceId} {$formatShortVideoName} {$targetLiveId}";
+            Log::error(getCurrentDate().'---shell执行文件移动操作 '.$cmdStr);
+            $stream = ssh2_exec($connection, $cmdStr);
+            $res = stream_set_blocking($stream, true); // 这里必须设置为阻塞模式
+            Log::error('shell 脚本执行结果为 '.$stream);
+            $cmdRes = stream_get_contents($stream);
+            if ($res) {
+                $res = [
+                    'code' => 200,
+                    'msg' => "恭喜你执行成功",
+                    'cmdRes' => $cmdRes
+                ];
+            } else {
+                $res = [
+                    'code' => 500,
+                    'msg' => "远程命令执行失败"
+                ];
+            }
+            return json($res);
+        }
+        return json(['403']);
+    }
+
+    /**
+     * ssh 远程链接操作
+     * @return int|\think\response\Json
+     */
+    public function connectShellTest()
+    {
+        $originLiveId = "L00325";
+        $targetLiveId = "L04343";
+        $deviceId = '201';
+        $shortVideoName = '201-1523324506';
+        $fotmatShortVideoName = $shortVideoName . '.flv';
+
+        $host = "121.40.133.183";
+        $username = "www";
+        $password = "wwwOracle11f";
+        // 连接服务器
+        $connection = ssh2_connect($host, 22);
+        if (!ssh2_auth_password($connection, $username, $password)) return 0;
+        //执行远程服务器上的命令并取返回值
+        // /home/www/bin/pubFlv.sh 201 201-1520318940.flv L04343
+        $cmdStr = "cd /data/recorded_flvs && /home/www/bin/pubFlv.sh {$deviceId} {$fotmatShortVideoName} {$targetLiveId}";
+        echo $cmdStr . "\r\n";
+        $stream = ssh2_exec($connection, $cmdStr);
+        // 为资源流设置阻塞或者阻塞模式 如果 mode 为0，资源流将会被转换为非阻塞模式；如果是1，资源流将会被转换为阻塞模式。
+        $res = stream_set_blocking($stream, 0);
+        return json($res);
+    }
+
+
+    /**
      * @return mixed
      */
     public function test()
     {
         // 注意：这里的图片必须是在服务器本地，才可转换的哦，所以要使用OSS下载车辆牌照照片
-        $str = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao002.jpg';
-        $base64Str = self::base64EncodeImage($str);
-        $base64StrFotmat = explode(',', $base64Str)[1];
-        $res = self::getNumberPlate($base64StrFotmat);
-        if ($res['status'] != 0) return $res['msg'];
-        $busCode = $res['result']['number'];
-        echo $busCode;
+        $currentTime = time();
+        $param = 60 * 60 * 24 * 3;
+        echo $param;
+        $minTime = $currentTime - 604800; // 7天前
+        $maxTime = $currentTime - 259200; // 3天前
+        halt($currentTime - $param);
     }
 
 }

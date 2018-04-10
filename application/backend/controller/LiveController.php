@@ -117,7 +117,7 @@ class LiveController extends BaseBackendController
         if (request()->isPost()) {
             $data = input('post.');
             $apiData = self::apiCreateAddress($data['service_provider'], $data['auth_key_status']);
-            if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败".json_encode($apiData));
+            if ($apiData['status_code'] != 200) $this->error("创建推流接口调用失败" . json_encode($apiData));
             $data['stream_id'] = $apiData['data']['streamId'];
             $data['stream_name'] = $apiData['data']['streamName'];
             $res = $this->db->store($data);
@@ -505,14 +505,15 @@ class LiveController extends BaseBackendController
             ->alias('v')
             ->join('resty_vod_tag vt', 'v.id = vt.vod_id')
             ->join('resty_category c', 'c.id = v.cid')
-            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
+            ->field('v.id,v.status,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
             ->order('v.create_time desc')
-            ->paginate(6);
-        $this->assign('categorys', db('category')->where('pid', 116)->order('id desc')->select());
-        $this->assign('vods', $vods);
-        $this->assign('lives', db('live')->where('deleted', 0)->select());
-        $this->assign('tags', db('tag')->where(['deleted' => 0, 'cid' => 110])->select());
-        return $this->fetch();
+            ->paginate(10);
+        return $this->fetch('', [
+            'categorys' => db('category')->where('pid', 116)->order('id desc')->select(),
+            'vods' => $vods,
+            'lives' => db('live')->where('deleted', 0)->select(),
+            'tags' => db('tag')->where(['deleted' => 0, 'cid' => 110])->select(),
+        ]);
     }
 
     /**

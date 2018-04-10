@@ -36,14 +36,17 @@ class IndexController extends BaseFrontendController
         $vods = Db::table("resty_vod")
             ->alias('v')
             ->join('resty_category c', 'c.id = v.cid', 'left')
-            ->field('v.id,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
+            ->where('v.status', '=', 0)
+            ->field('v.id,v.status,v.create_time,v.name,v.hls_url,v.image_url,v.content,v.download_data,c.name as cName')
             ->order('v.create_time desc')
-            ->limit(6)
+            ->limit(8)
             ->cache('RESTY_VOD_LIVE_MODULE')
             ->select();
-        $this->assign('banners', Db::table('resty_banner')->where(['publish_status' => 1, 'deleted' => 0])->order('id desc')->cache('RESTY_BANNER')->select());
-        $this->assign('vods', $vods);
-        return $this->fetch();
+        $banners = Db::table('resty_banner')->where(['publish_status' => 1, 'deleted' => 0])->order('id desc')->cache('RESTY_BANNER')->select();
+        return $this->fetch('', [
+            'banners' => $banners,
+            'vods' => $vods,
+        ]);
     }
 
     /**

@@ -10,7 +10,7 @@ return [
     //'app_status' => 'development',
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
-    'app_debug' => false,
+    'app_debug' => true,
     // 开启应用Trace调试
     'app_trace' => false,
     // 控制器类后缀

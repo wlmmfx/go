@@ -28,6 +28,7 @@
         </ul>
     </div>
 </nav>
+
 <div class="container" style="margin-top: 5px;">
     <div class="row"><h3>当前设备号：{$deviceId}</h3></div>
     <div class="row">
@@ -39,7 +40,7 @@
     <form method="get">
         <div class="row">
             <div class="input-group">
-                <input type="text" placeholder="请输入设备ID" name="deviceId" class="form-control" class="form-control"
+                <input type="text" placeholder="请输入设备ID" name="deviceId" value="{$deviceId}" class="form-control" class="form-control"
                        required="required">
                 <span class="input-group-btn">
                         <button class="btn btn-success" type="submit">开始搜索</button>
@@ -132,7 +133,7 @@
     $(document).ready(function () {
         $('body').delegate('.stream_hander', 'click', function () {
             $("#streamHanderModal").modal("hide");
-            var $url = "{:url('tianchi/index/recordFileMove')}";
+            var $url = "{:url('tianchi/redis/recordFileMove')}";
             var $_data = {
                 'deviceId': $deviceId,
                 'targetLiveId': $("#targetLiveId").val(),

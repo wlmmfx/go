@@ -638,14 +638,32 @@ class IndexController extends BaseController
             $username = "www";
             $password = "wwwOracle11f";
             $connection = ssh2_connect($host, 22);
-            if (!ssh2_auth_password($connection, $username, $password)) return 0;
+
+            if (!$connection) {
+                $res = [
+                    'code' => 200,
+                    'msg' => 'connection to ' . $host . ':3600 failed'
+                ];
+                return json($res);
+            }
+
+            // 通过password方式登录远程服务器
+            if (!ssh2_auth_password($connection, $username, $password)) {
+                $res = [
+                    'code' => 200,
+                    'msg' => "Authentication Failed..."
+                ];
+                return json($res);
+            }
+
             $formatShortVideoName = $shortVideoName . '.flv';
             $cmdStr = "cd /data/recorded_flvs && /home/www/bin/pubFlv.sh {$deviceId} {$formatShortVideoName} {$targetLiveId}";
-            Log::error(getCurrentDate().'---shell执行文件移动操作 '.$cmdStr);
+            Log::error(getCurrentDate() . '---shell执行文件移动操作 ' . $cmdStr);
             $stream = ssh2_exec($connection, $cmdStr);
+            // 为资源流设置阻塞或者阻塞模式 如果 mode 为0，资源流将会被转换为非阻塞模式；如果是1，资源流将会被转换为阻塞模式。
             $res = stream_set_blocking($stream, true); // 这里必须设置为阻塞模式
-            Log::error('shell 脚本执行结果为 '.$stream);
-            $cmdRes = stream_get_contents($stream);
+            Log::error('shell 脚本执行结果为 ' . $stream);
+            $cmdRes = stream_get_contents($stream); // 这个内容最好是shell脚本返回 exit $value
             if ($res) {
                 $res = [
                     'code' => 200,
@@ -669,25 +687,54 @@ class IndexController extends BaseController
      */
     public function connectShellTest()
     {
-        $originLiveId = "L00325";
         $targetLiveId = "L04343";
         $deviceId = '201';
         $shortVideoName = '201-1523324506';
         $fotmatShortVideoName = $shortVideoName . '.flv';
 
-        $host = "121.40.133.183";
+        $host = "www.tinywan.com";
         $username = "www";
-        $password = "wwwOracle11f";
+        $password = "www_klwdws1988";
         // 连接服务器
         $connection = ssh2_connect($host, 22);
-        if (!ssh2_auth_password($connection, $username, $password)) return 0;
+        if (!$connection) {
+            return 'connection to ' . $host . ':3600 failed';
+        }
+
+        // 通过password方式登录远程服务器
+        if (!ssh2_auth_password($connection, $username, $password)) {
+            return 'Authentication Failed...';
+        }
+
         //执行远程服务器上的命令并取返回值
         // /home/www/bin/pubFlv.sh 201 201-1520318940.flv L04343
-        $cmdStr = "cd /data/recorded_flvs && /home/www/bin/pubFlv.sh {$deviceId} {$fotmatShortVideoName} {$targetLiveId}";
+        $cmdStr = " cat /proc/meminfo | grep 'MemFree:' | awk '{print $2}'";
+        //$cmdStr = "cd /data/recorded_flvs && /home/www/bin/pubFlv.sh {$deviceId} {$fotmatShortVideoName} {$targetLiveId}";
         echo $cmdStr . "\r\n";
-        $stream = ssh2_exec($connection, $cmdStr);
-        // 为资源流设置阻塞或者阻塞模式 如果 mode 为0，资源流将会被转换为非阻塞模式；如果是1，资源流将会被转换为阻塞模式。
-        $res = stream_set_blocking($stream, 0);
+        $stream = ssh2_exec($connection, $cmdStr); //执行结果以流的形式返回
+        if ($stream === FALSE) {
+            return '命令执行错误';
+        }
+        $dioStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO); // 获得标准输入输出流
+        $errStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR); // 获得错误输流
+        stream_set_blocking($dioStream, true);
+        stream_set_blocking($errStream, true);
+        $resultErr = stream_get_contents($errStream);
+        $resultDio = stream_get_contents($dioStream); //获取流的内容，即命令的返回内容
+        fclose($stream);
+        if ($resultErr == "") {
+            $res = [
+                'code' => 200,
+                'msg' => '执行成功',
+                'errorCode' => $resultDio
+            ];
+        } else {
+            $res = [
+                'code' => 500,
+                'msg' => '执行失败',
+                'errorCode' => 60001
+            ];
+        }
         return json($res);
     }
 

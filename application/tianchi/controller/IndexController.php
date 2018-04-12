@@ -750,7 +750,9 @@ class IndexController extends BaseController
         echo $param;
         $minTime = $currentTime - 604800; // 7天前
         $maxTime = $currentTime - 259200; // 3天前
-        halt($currentTime - $param);
+
+        $res = send_aliyun_sms('13669361192', 'register', ['code' => '123456']);
+        halt($res);
     }
 
 }

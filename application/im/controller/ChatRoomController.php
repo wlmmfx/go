@@ -249,8 +249,11 @@ class ChatRoomController extends BaseFrontendController
     public function room()
     {
         // 获取聊天室ID
-        $roomid = input('get.roomid');
-        return $this->fetch();
+        $roomId = input('get.id');
+        $roomInfo = ImRoom::where('room_id', '=', $roomId)->find();
+        return $this->fetch('',[
+            'roomInfo'=>$roomInfo
+        ]);
     }
 
     /**

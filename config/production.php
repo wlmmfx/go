@@ -27,13 +27,13 @@ return [
         // 数据库连接DSN配置
         'dsn' => '',
         // 服务器地址
-        'hostname' => 'rdshcnvt1o401vaib374.mysql.rds.aliyuncs.com',
+        'hostname' => '172.19.230.35',
         // 数据库名
         'database' => 'resty',
         // 数据库用户名
-        'username' => 'tinywan_resty',
+        'username' => 'www',
         // 数据库密码
-        'password' => 'tinywan_resty_123456',
+        'password' => 'www_resty_test_123456',
         // 数据库连接端口
         'hostport' => '',
         // 数据库连接参数

@@ -13,6 +13,8 @@
 namespace live;
 
 
+use think\Log;
+
 class PrivateCloudLive
 {
     /**
@@ -27,7 +29,7 @@ class PrivateCloudLive
      */
     public static function createPushFlowAddress($sourceName, $domainName, $appName, $expireTime, $authKeyStatus, $cdn)
     {
-        $streamName = '800' . time();
+        $streamName = '136' . time();
         $startTime = date('Y-m-d H:i:s', time());
         if ($authKeyStatus == 1) {
             $authUrl = self::getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime, $cdn);
@@ -76,10 +78,12 @@ class PrivateCloudLive
      */
     public static function getAuthPushUrl($sourceName, $domainName, $appName, $streamName, $startTime, $expireTime, $cdn)
     {
-        $authKey = self::getAuthKey($appName,$streamName,$expireTime);
+        $redis = messageRedis();
+        $authKey = $redis->get("PRIVATE_CLOUD_LIVE_PRIVATE_KEY");
         $rand = 0;
         $uid = 0;
         $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime($startTime . "+" . $expireTime . " minute ")));
+
         $rtmp_auth_md5 = md5("/" . $appName . "/" . $streamName . "-" . $timestatmp . "-".$rand."-".$uid."-" . $authKey);
         $hls_auth_md5 = md5("/" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey);
         $flv_auth_md5 = md5("/" . $appName . "/" . $streamName . ".flv-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey);
@@ -90,23 +94,6 @@ class PrivateCloudLive
         $authUrl['play_flv_address'] = "http://$cdn/$appName/$streamName.flv?auth_key=" . $timestatmp .  "-".$rand."-".$uid."-" . $flv_auth_md5;
         $authUrl['hash_value'] = 'startTime = ' . $startTime . ' expireTime = ' . $expireTime . ' timestatmp = ' . $timestatmp . "uri = /" . $appName . "/" . $streamName . ".m3u8-" . $timestatmp .  "-".$rand."-".$uid."-" . $authKey;
         return $authUrl;
-    }
-
-    /**
-     * 获取auth_key
-     */
-    protected static function getAuthKey($appName, $streamName, $expireTime)
-    {
-        $redis = messageRedis();
-        //$private_key = $redis->get("private_key");
-        $private_key = "Tinywan123";
-        $timestatmp = strtotime(date('Y-m-d H:i:s', strtotime("+" . $expireTime . "minute")));
-        $uri = "/" . $appName . '/' . $streamName;
-        $rand = 0;
-        $uid = 0;
-        $hash_value = md5($uri . '-' . $timestatmp . '-' . $rand . '-' . $uid . '-' . $private_key);
-        $auth_key = $timestatmp . '-' . $rand . '-' . $uid . '-' . $hash_value;
-        return $auth_key;
     }
 
     /**

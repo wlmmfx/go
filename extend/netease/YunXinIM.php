@@ -1484,7 +1484,7 @@ class YunXinIM
     }
 
     // 获取聊天室的信息
-    public function chatroomgets($roomid)
+    public function getChatRoomByRoomId($roomid)
     {
         $url = 'https://api.netease.im/nimserver/chatroom/get.action';
         $data = array(

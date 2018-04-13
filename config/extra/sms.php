@@ -34,7 +34,15 @@ return [
             'sign_name'=>'Tinywan工作室',
             'code'=>'SMS_129755842'
         ]
-    ]
+    ],
+    'aliyun'  => [
+        'app_key'=>'LTAIjgvouVdHSeas',
+        'app_secret'=>'sLcZ2dEpyvVUW6EETb8epwGoklwCtW',
+        'template_register' => [
+            'sign_name'=>'Tinywan工作室',
+            'code'=>'SMS_130917543'
+        ]
+    ],
 ];
 
 

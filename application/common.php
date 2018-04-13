@@ -1109,14 +1109,14 @@ function send_dayu_sms($tel, $type, $data)
  * @param $data  模板发送的数据，如：["number" => '89', 'code' => "888888"]
  * @return mixed
  */
-function send_ali_sms($tel, $type, $data)
+function send_aliyun_sms($tel, $type, $data)
 {
     $dayu_template = 'template_' . $type; //template_register
-    $signname = config("sms")['dayu'][$dayu_template]["sign_name"];
-    $templatecode = config("sms")['dayu'][$dayu_template]["code"];
+    $signname = config("sms")['aliyun'][$dayu_template]["sign_name"];
+    $templatecode = config("sms")['aliyun'][$dayu_template]["code"];
     $config = [
-        'app_key' => config("sms")['dayu']['app_key'], //阿里大于APPKEY
-        'app_secret' => config("sms")['dayu']['app_secret'] //阿里大于secretKey
+        'app_key' => config("sms")['aliyun']['app_key'],
+        'app_secret' => config("sms")['aliyun']['app_secret']
     ];
     $client = new \Flc\Alidayu\Client(new \Flc\Alidayu\App($config));
     $req = new \Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend();

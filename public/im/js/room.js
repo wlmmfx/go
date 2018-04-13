@@ -79,7 +79,7 @@ var page = {
 	},
 	//目前图片写死代替
 	initVideo:function(){
-		console.log('------------'+util.getIdTag());
+		console.log('-------111111-----'+util.getIdTag());
 		$("#video")[0].src = "/im/images/image"+util.getIdTag()+".jpg";
 		$("#video").removeClass("hide");
 	},

@@ -3,5 +3,5 @@ production.php
 *.xml
 *.log
 runtime/*
-vendor/*
 .idea/*
+/vendor/*

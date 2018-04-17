@@ -12,7 +12,7 @@
 namespace app\test\controller;
 
 
-use baidu\sdk\AipOcr;
+use baidu\sdk\BaiDuOcr;
 use think\Controller;
 
 class Php7Controller extends Controller
@@ -140,10 +140,10 @@ class Php7Controller extends Controller
      */
     public function baiDuOcr01()
     {
-        $APP_ID = '10715277';
-        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
-        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
-        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+        $APP_ID = config('baidu')['api']['APP_ID'];
+        $API_KEY = config('baidu')['api']['API_KEY'];
+        $SECRET_KEY = config('baidu')['api']['SECRET_KEY'];
+        $client = new BaiDuOcr($APP_ID, $API_KEY, $SECRET_KEY);
         $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ocr0004.png');
 
         // 如果有可选参数
@@ -170,10 +170,10 @@ class Php7Controller extends Controller
      */
     public function baiDuOcr02()
     {
-        $APP_ID = '10715277';
-        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
-        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
-        $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
+        $APP_ID = config('baidu')['api']['APP_ID'];
+        $API_KEY = config('baidu')['api']['API_KEY'];
+        $SECRET_KEY = config('baidu')['api']['SECRET_KEY'];
+        $client = new BaiDuOcr($APP_ID, $API_KEY, $SECRET_KEY);
         $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ocr0007.png');
 
         // 调用通用文字识别（高精度版）
@@ -200,9 +200,9 @@ class Php7Controller extends Controller
      */
     public function baiDuOcr03()
     {
-        $APP_ID = '10715277';
-        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
-        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $APP_ID = config('baidu')['api']['APP_ID'];
+        $API_KEY = config('baidu')['api']['API_KEY'];
+        $SECRET_KEY = config('baidu')['api']['SECRET_KEY'];
         $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
         $url = "http://oss.tinywan.com/uploads/article/ocr0002.png";
 
@@ -222,9 +222,9 @@ class Php7Controller extends Controller
      */
     public function baiDuOcr04()
     {
-        $APP_ID = '10715277';
-        $API_KEY = 'Dd99XzzyS3W12Uqlu60iuPaR';
-        $SECRET_KEY = '71puOI1fLlNfYVgYAjK0NGyPuHlK5XDE';
+        $APP_ID = config('baidu')['api']['APP_ID'];
+        $API_KEY = config('baidu')['api']['API_KEY'];
+        $SECRET_KEY = config('baidu')['api']['SECRET_KEY'];
         $client = new AipOcr($APP_ID, $API_KEY, $SECRET_KEY);
 
         $image = file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'chepaihao003.jpg');
@@ -235,31 +235,6 @@ class Php7Controller extends Controller
             '车牌号'=>$res['words_result']['number'],
         ];
         return json($resArr);
-    }
-
-    public function test(){
-        //请求参数
-        $appId = 75715888;
-        $domainName = '10.51.10.172';
-        $appName = 'live';
-        //签名密钥
-        $appSecret = 'f48d03070f4572069dfafab41027a913a50ea06e';
-        //拼接字符串，注意这里的字符为首字符大小写，采用驼峰命名
-        $str = "AppId" . $appId . "AppName" . $appName . "DomainName" . $domainName . $appSecret;
-        //签名串，由签名算法sha1生成
-        $sign = strtoupper(sha1($str));
-        //请求资源访问路径以及请求参数，参数名必须为大写
-        $url = "http://ssconsole.amaitech.com/openapi/createPushFlowAddress?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
-        //CURL方式请求
-        $ch = curl_init() or die (curl_error());
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 360);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        //返回数据为JSON格式，进行转换为数组打印输出
-        var_dump(json_decode($response, true));
     }
 }
 

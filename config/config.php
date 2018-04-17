@@ -28,7 +28,7 @@ return [
     // 路由使用完整匹配
     'route_complete_match'   => true,
     // 设置路由配置文件列表,必须指定呀！否则路由失败
-    'route_config_file' => ['frontend', 'backend', 'blog', 'live', 'api', 'business','tianchi','im'],
+    'route_config_file' => ['frontend', 'backend', 'blog', 'live', 'api', 'business','tianchi','im','share'],
     // 域名根，如thinkphp.cn
     'url_domain_root' => 'tinywan.com',
     // 是否强制使用路由

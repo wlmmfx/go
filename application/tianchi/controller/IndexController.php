@@ -12,6 +12,7 @@
 namespace app\tianchi\controller;
 
 
+use app\api\controller\v1\OcrApiController;
 use app\common\controller\BaseController;
 use app\common\model\CarCustomer;
 use app\common\model\OpenUser;
@@ -570,7 +571,7 @@ class IndexController extends BaseController
     public function backRedisDeviceData()
     {
         $redis = BaseRedis::instance();
-        $redis->connect('121.40.30.105');
+        $redis->connect('127.0.0.1');
         $keys = $redis->keys('*');
         $currentTime = time(); //当前时间-必须存储在队列中
         $redis->lPush('DEVICE_REDIS_LIST', $currentTime);
@@ -591,7 +592,7 @@ class IndexController extends BaseController
     public function readRedisDeviceData($deviceId = 201)
     {
         $redis = BaseRedis::instance();
-        $redis->connect('121.40.30.105');
+        $redis->connect('127.0.0.1');
         $list = $redis->lRange('DEVICE_REDIS_LIST', 0, -1);
         $resArr = [];
         $backKey = 'DEVICE_REDIS_ZADD:' . $deviceId;
@@ -634,9 +635,9 @@ class IndexController extends BaseController
             $targetLiveId = input('param.targetLiveId');
             $shortVideoName = input('param.shortVideoName');
 
-            $host = "121.40.133.183";
+            $host = "121.40.11";
             $username = "www";
-            $password = "wwwOracle11f";
+            $password = "111";
             $connection = ssh2_connect($host, 22);
 
             if (!$connection) {
@@ -694,7 +695,7 @@ class IndexController extends BaseController
 
         $host = "www.tinywan.com";
         $username = "www";
-        $password = "www_klwdws1988";
+        $password = "www";
         // 连接服务器
         $connection = ssh2_connect($host, 22);
         if (!$connection) {
@@ -753,6 +754,49 @@ class IndexController extends BaseController
 
         $res = send_aliyun_sms('13669361192', 'register', ['code' => '123456']);
         halt($res);
+    }
+
+    /**
+     * ==================================================图片转换为文字操作
+     */
+    public function imageChangeTextContent()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 识别图片上传
+     * @return \think\response\Json
+     */
+    public function imageChangeTextContentPost()
+    {
+        if (request()->isPost()) {
+            $file = request()->file("img_file");
+            if ($file) {
+                $savePath = ROOT_PATH . 'public' . DS . 'tmp';
+                $info = $file->validate(['size' => config('upload_config')['web']['size'] * 1024, 'ext' => config('upload_config')['web']['ext']])->rule("uniqid")->move($savePath);
+                if ($info) {
+                    $originImg = ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $info->getSaveName();
+                    $strContent = OcrApiController::baiDuBasicAccurate($originImg);
+                    unlink($originImg);
+                    $res = [
+                        'code' => 200,
+                        'msg' => "OK",
+                        'data' => [
+                            'content' => $strContent,
+                            'image_path' => 'thumb_' . $info->getSaveName()
+                        ]
+                    ];
+                } else {
+                    $res = [
+                        'code' => 500,
+                        'msg' => $file->getError()
+                    ];
+                }
+                return json($res);
+            }
+            return json(['code' => 500, 'msg' => "upload file name error"]);
+        }
     }
 
 }

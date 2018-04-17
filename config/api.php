@@ -59,3 +59,6 @@ Route::get("api/:version/order/:id","api/:version.Order/getDetail",[],['id'=>'\d
 // Pay
 Route::post("api/:version/pay/pre_order","api/:version.Pay/getPreOrder");
 Route::post("api/:version/pay/notify","api/:version.Pay/receiveNotify");
+
+// Ocr
+Route::get("api/:version/ocr/baiDuBasicAccurate","api/:version.OcrApi/baiDuBasicAccurate");

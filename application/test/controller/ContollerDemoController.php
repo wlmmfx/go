@@ -13,6 +13,8 @@ namespace app\test\controller;
 
 use redis\BaseRedis;
 use think\Controller;
+use think\Db;
+use think\db\Query;
 
 class ContollerDemoController extends Controller
 {
@@ -52,8 +54,6 @@ class ContollerDemoController extends Controller
      */
     public function hello($name = 'World')
     {
-        var_dump(BaseRedis::instance());
-        var_dump(BaseRedis::instance());
         return 'Hello,' . $name . '!';
     }
 

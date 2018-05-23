@@ -280,8 +280,69 @@
     </div>
 </div>
 
+<!-- 视频发布模态框（Modal） -->
+<div class="modal fade" id="videoPublishHanderModal" tabindex="-1" role="dialog" aria-labelledby="videoPublishHanderModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title "><i class="icon-lightbulb bigger-110"></i> &nbsp;提示信息!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    确定要发布该视频吗？
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-danger publish-hander" >确定</a>
+                <a type="button" class="btn btn-success" data-dismiss="modal" >取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
+    /**
+     * 视频发布
+     */
+    function videoPublish(id) {
+        $id = id;
+        $("#videoPublishHanderModal").modal("show");
+    }
+
+    $(document).ready(function () {
+        /**
+         * 视频发布异步处理
+         * 说明：在这里可以发布到直播活动下面，或者发布到点播视频也可以的哦
+         */
+        $('body').delegate('.publish-hander', 'click', function () {
+            $("#videoPublishHanderModal").modal("hide");
+            var $url = "{:url('backend/live/videoPublishToLive')}";
+            var $_data = {
+                'id': $id
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response);
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+    });
+
     /**
      * 视频异步上传
      */

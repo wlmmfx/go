@@ -96,6 +96,13 @@
                 </li>
 
                 <li>
+                    <a href="/backend/live/uploadVideoManage.html" target="_blank">
+                        <i class="blue icon-laptop bigger-110"></i>
+                        上传视频
+                    </a>
+                </li>
+
+                <li>
                     <a href="{:url('live/Index/detail',['id'=>$liveId])}" target="_blank">
                         <i class="blue icon-laptop bigger-110"></i>
                         预览
@@ -257,17 +264,18 @@
                                         <div style="margin: 10px; text-align: center;">
                                             <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
                                                class="btn btn-minier btn-primary video-update" role="button">
-                                                <i class="icon-edit"></i>
                                                 修改
                                             </a>
                                             <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
                                                class="btn btn-minier btn-warning video-cut-button" role="button">
-                                                <i class="icon-cut"></i>
                                                 云剪辑
                                             </a>
                                             <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
                                                class="btn btn-minier btn-danger video-delete" role="button">
-                                                <i class="icon-trash"></i>
+                                                显示
+                                            </a>
+                                            <a href="####" data-id="{$vo.id}" data-live-id="{$liveId}"
+                                               class="btn btn-minier btn-danger video-delete" role="button">
                                                 删除
                                             </a>
                                         </div>

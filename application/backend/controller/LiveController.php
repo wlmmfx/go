@@ -1205,6 +1205,7 @@ class LiveController extends BaseBackendController
     /**
      * -----------------------------------------------------------------发布--------------------------------------------
      * 通过任视频ID把视频源发布到对应的活动当中去
+     * 该视频是否可以所发发布到不同的活动当中去
      * @return mixed
      */
     public function videoPublishToLive()
@@ -1224,9 +1225,9 @@ class LiveController extends BaseBackendController
                 'createTime' => getCurrentDate(),
             ]);
             if ($res) {
-                return json(['code' => 200, 'msg' => '删除成功']);
+                return json(['code' => 200, 'msg' => '发布成功']);
             }
-            return json(['code' => 500, 'msg' => "删除失败"]);
+            return json(['code' => 500, 'msg' => "发布失败"]);
         }
         return json(['code' => 401, 'msg' => "Not Forbidden"]);
     }

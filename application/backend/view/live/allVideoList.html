@@ -81,107 +81,79 @@
     <div class="col-sm-12">
         <div class="tabbable">
             <ul class="nav nav-tabs" id="myTab">
-                <li>
-                    <a data-toggle="tab" href="#tag-add">
-                        <i class="blue icon-upload bigger-110"></i>
-                        上传视频
+                <li class="active">
+                    <a data-toggle="tab" href="#tag-list">
+                        <i class="blue icon-list bigger-110"></i>
+                        视频素材列表
                     </a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="tag-add" class="tab-pane in active">
-                    <div class="widget-box">
-                        <div class="widget-header">
-                            <h4>视频上传模块</h4>
-                            <span class="widget-toolbar">
-                                <a href="#" data-action="collapse">
-                                    <i class="icon-chevron-up"></i>
+                <div id="tag-list" class="tab-pane in active">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr class="text-c">
+                            <th>视频信息</th>
+                            <th>素材ID</th>
+                            <th>视频大小</th>
+                            <th>视频时长</th>
+                            <th>来源(全部)</th>
+                            <th>时间(降序)</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!---->
+                        {foreach name='videos' key='key' item='vo'}
+                        <tr class="text-c" id="tag-{$vo['id']}">
+                            <td>
+                                <a href="javascript:playModal('{$vo.streamName}','{$vo.fileName}','0');">
+                                    <div class="wrapper_player"
+                                         style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}data/{$vo.streamName}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_70,w_120');">
+                                        <div id="video_player">
+                                        </div>
+                                    </div>
                                 </a>
-                                <a href="#" data-action="close">
-                                    <i class="icon-remove"></i>
-                                </a>
-                            </span>
-                        </div>
-
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <div class="alert alert-warning">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <i class="icon-remove"></i>
+                            </td>
+                            <td style="vertical-align: middle;">{$vo['streamName']}</td>
+                            <td style="vertical-align: middle;">{$vo['fileSize']|trans_byte}</td>
+                            <td style="vertical-align: middle;">{$vo['duration']|gmstrftime="%H:%M:%S",###}</td>
+                            <td style="vertical-align: middle;">
+                                {switch name="vo.type"}
+                                {case value="1"}
+                                    录制同步
+                                {/case}
+                                {case value="2"}
+                                    上传
+                                {/case}
+                                {case value="3"}
+                                    编辑
+                                {/case}
+                                {case value="4"}
+                                    WebRTC录制
+                                {/case}
+                                {default /}
+                                未知来源
+                                {/switch}
+                            </td>
+                            <td style="vertical-align: middle;">{$vo['createTime']}</td>
+                            <td style="vertical-align: middle;">
+                                <a href="javascript:videoPublish('{$vo.id}');" target="_blank">
+                                    <button class="btn btn-warning btn-xs">
+                                        <i class="icon-reply"></i> 发布
                                     </button>
-                                    <strong>上传说明</strong>
-                                    <ul>
-                                        <li>Nginx配置文件：client_max_body_size 800m;</li>
-                                        <li>php.ini配置文件：
-                                            max_execution_time = 3600;
-                                            max_input_time = 3600;
-                                            post_max_size = 800M;
-                                            file_uploads = On;
-                                            upload_max_filesize = 800M;
-                                            max_file_uploads = 20;
-                                        </li>
-                                    </ul>
-                                    <br>
-                                </div>
-                                <form action="{:url('backend/live/liveVideoUploadFrom')}" method="post"
-                                      enctype="multipart/form-data">
-                                    <div>
-                                        <label for="form-field-1">
-                                            直播ID(可以自定义修改)
-                                        </label>
-                                        <div>
-                                            <input class="input-medium" type="text" name="id" value="{$liveId}">
-                                        </div>
-                                    </div>
-                                    <div class="space-4"></div>
-                                    <div>
-                                        <label for="form-field-1">
-                                            视频截图时间(秒)
-                                        </label>
-                                        <div>
-                                            <input class="input-medium " type="text" name="cut_image_time" value="10">
-                                        </div>
-                                    </div>
-                                    <div class="space-4"></div>
-                                    <div>
-                                        <label for="form-field-2">上传描述信息</label>
-                                        <textarea class="form-control" id="upload_desc" name="upload_desc"
-                                                  placeholder="请输入上传描述信息">直播ID为{$liveId}视频描述信息</textarea>
-                                    </div>
-                                    <div>
-                                        <label for="form-field-1">
-                                            是否显示上传详细信息
-                                        </label>
-                                        <div>
-                                            <label>
-                                                <input name="view" type="checkbox" class="ace" value="1">
-                                                <span class="lbl"> 是</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="space-4"></div>
-                                    <div class="ace-file-input ace-file-multiple">
-                                        <div class="ace-file-input ace-file-multiple">
-                                            <input multiple="" type="file" id="id-input-file-3" class="video_file"
-                                                   name="video_file">
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-info btn-block" type="submit">Upload File to Server</button>
-                                </form>
-                                <p></p>
-                                <div class="progress">
-                                    <div class="bar"></div>
-                                    <div class="percent">0%</div>
-                                </div>
-                                <hr>
-                                <div id="status">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                </a>
+                                <a href="javascript:delHanderModal({$vo['id']});" class="btn btn-danger btn-xs">
+                                    <i class="icon-trash"></i>删除
+                                </a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div>{$videos->render()}</div>
                 </div>
-
             </div>
         </div>
     </div><!-- /span -->
@@ -232,6 +204,43 @@
 
 <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
+    /**
+     * 视频发布
+     */
+    function videoPublish(id) {
+        $id = id;
+        $("#videoPublishHanderModal").modal("show");
+    }
+
+    $(document).ready(function () {
+        /**
+         * 视频发布异步处理
+         * 说明：在这里可以发布到直播活动下面，或者发布到点播视频也可以的哦
+         */
+        $('body').delegate('.publish-hander', 'click', function () {
+            $("#videoPublishHanderModal").modal("hide");
+            var $url = "{:url('backend/live/videoPublishToLive')}";
+            var $_data = {
+                'id': $id
+            };
+            console.log($_data);
+            $.ajax({
+                url: $url,
+                type: 'post',
+                data: $_data,
+                dataType: "json",
+                //服务器成功响应处理函数
+                success: function ($response) {
+                    console.log($response);
+                },
+                //服务器响应失败处理函数
+                error: function (data, status, e) {
+                    alert(e);
+                }
+            })
+        });
+
+    });
 
     /**
      * 视频异步上传

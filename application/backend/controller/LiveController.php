@@ -275,9 +275,19 @@ class LiveController extends BaseBackendController
     }
 
     /**
-     * 素材管理，上传视频管理
+     * 上传视频管理
      */
-    public function uploadVideoManage()
+    public function uploadVideoManage($id)
+    {
+        return $this->fetch('',[
+            'liveId'=>$id
+        ]);
+    }
+
+    /**
+     * 素材管理
+     */
+    public function allVideoList()
     {
         $videos = Db::table('resty_stream_video_edit')->whereNotIn('type', 3)->order('id desc')->paginate(6);
         $this->assign('videos', $videos);

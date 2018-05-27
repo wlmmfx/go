@@ -15,7 +15,7 @@ use app\common\model\Admin;
 use think\Controller;
 use think\Db;
 
-class DataBaseDemo extends Controller
+class DataBaseController extends Controller
 {
     /**
      * 【建议】实际开发中其实并不建议
@@ -213,6 +213,33 @@ class DataBaseDemo extends Controller
         $isNull = Db::table('resty_user')->whereNull('mobile')->select();
         $notNull = Db::table('resty_user')->whereNotNull('mobile')->select();
         halt($notNull);
+    }
+
+    /**
+     * MySQL 优化查询
+     */
+
+    public function query002(){
+        $res = Db::query('SELECT title,image_origin FROM resty_article WHERE create_time >= CURDATE()');
+        var_dump($res);
+        $today = date("Y-m-d");
+        $res2 = Db::query("SELECT title,image_origin FROM resty_article WHERE create_time >= {$today}");
+        var_dump($res2);
+    }
+
+    public function query003(){
+        $res = Db::query('SELECT username,mobile FROM resty_user WHERE mobile = 123456789');
+        var_dump($res);
+        $res2 = Db::query('SELECT username,mobile FROM resty_user WHERE mobile = 123456789 Limit 1');
+        var_dump($res2);
+
+        $res3 = Db::query("SELECT COUNT(*) FROM resty_open_user WHERE account LIKE 'T%'");
+        var_dump($res3);
+
+$res4 = Db::query("SELECT account,id FROM resty_open_user ORDER BY id");
+
+$res5 = Db::query("SELECT * FROM resty_open_user ORDER BY id");
+
     }
 
 }

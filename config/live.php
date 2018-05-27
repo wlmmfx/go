@@ -19,3 +19,4 @@ Route::rule('vod/:id','live/Index/vodDetail','GET');
 Route::rule('eventlist','live/Index/eventList','GET');
 Route::rule('livelist','live/Index/liveList','GET'  );
 Route::get('live/:id', 'live/Index/detail', [], ['id' => '\d+']);
+Route::get('lives/:id', 'live/Live/detail', [], ['id' => '\d+']);

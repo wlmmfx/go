@@ -7,7 +7,10 @@
 <script type="text/javascript" src="__JS__/jquery.min.js"></script>
 <script type="text/javascript" src="__JS__/detail.js"></script>
 <script type="text/javascript" src="__JS__/jquery.qrcode.min.js"></script>
-<!--<script type="text/javascript" src="__JS__/layer.js"></script>-->
+
+<link href="__COMMON__/videojs/videojs/video-js.css" rel="stylesheet">
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 
 <!-- 数据 -->
 <input id="userIdPage" value="" hidden>
@@ -94,28 +97,6 @@
         cursor: pointer;
     }
 
-    .meeting_views {
-        height: 24px;
-        float: left;
-        line-height: 24px;
-        margin-right: 50px;
-    }
-
-    /*#newBridge .icon-right-center{*/
-    /*display:none;*/
-    /*}*/
-
-    .big-play-button {
-        z-index: 100;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: block;
-        height: 420px;
-        top: 20px;
-        position: absolute;
-        width: 820px;
-
-    }
-
     .big-play-button a {
         position: absolute;
         left: 50%;
@@ -137,51 +118,7 @@
         background-size: 64px;
     }
 
-    .popup {
-        width: 30%;
-        height: auto;
-        background: #ffffff;
-        position: fixed;
-        z-index: 11;
-        left: 35%;
-        top: 20%;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .mask-layer, .mask-layer-strong {
-        display: none;
-        width: 100%;
-        height: 100%;
-        background-color: #000000;
-        opacity: 0.5;
-        filter: alpha(opacity=50);
-        position: fixed;
-        z-index: 10;
-        top: 0;
-        left: 0;
-    }
-
-    .page-login .btn-submit {
-        background-color: #0397E0;
-    }
-
-    .page-login .btn-submit:hover {
-        background-color: #0397E0
-    }
-
-    .bottommenus {
-        z-index: 9;
-    }
-
 </style>
-<link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.2.0/skins/default/aliplayer-min.css"/>
-<script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.2.0/aliplayer-min.js"></script>
 <div class="detail_title" meeetImg="http://static.itdks.com/files/article/2017/10-13/142639fb5644726515.jpeg?6.17.4">
     <div class="detail_title_left">
         <p class="detail_title_main"><span>{$live.name}</span>
@@ -211,8 +148,10 @@
     <div class="clear"></div>
 </div>
 <div class="detail_part1">
-    <div style="width: 100%;height:600px; background-color: #892E65; position: relative; background-image: url('http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}')">
-        <div class="prism-player" id="J_prismPlayer" style="position: absolute;left:0%;"></div>
+    <div>
+        <video id="example-video"  class="video-js vjs-default-skin vjs-big-play-centered" controls>
+
+        </video>
     </div>
 </div>
 <!-- 中部 -->
@@ -271,53 +210,51 @@
 <div class="meetingInfourl" style="display:none">/order/show?targetId=1431&amp;targetType=meeting</div>
 <input type="hidden" class="member" value="0">
 
-<script>
-    var $liveStatus = 0;
-    var $defaultSource = "https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4";
+<script type="text/javascript">
+    var $defaultSource = 'https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4';
     $liveStatus = "{$liveStatus}";
     console.log("status == " + $liveStatus);
     if ($liveStatus == 1) {
         var $m3u8Source = "{$streamInfo.play_m3u8_address}";
         $defaultSource = $m3u8Source.replace('http', 'https');
     }
-
-    console.log($defaultSource);
-    var player = new Aliplayer({
-            id: "J_prismPlayer",
-            autoplay: false,
-            isLive: false,
-            playsinline: true,
-            width: "100%",
-            height: "600px",
-            controlBarVisibility: "always",
-            useH5Prism: false,
-            useFlashPrism: false,
-            cover: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}",
-            source: $defaultSource,
-            skinLayout: [{
-                "name": "controlBar",
-                "align": "blabs",
-                "x": 0,
-                "y": 0,
-                "children": [{"name": "snapshot", "align": "tr", "x": 20, "y": 25},
-                    {"name": "streamButton", "align": "tr", "x": 20, "y": 23},
-                    {"name": "playButton", "align": "tl", "x": 15, "y": 26},
-                    {"name": "fullScreenButton", "align": "tr", "x": 20, "y": 25},
-                    {"name": "volume", "align": "tr", "x": 20, "y": 25}]
-            },
-                {"name": "bigPlayButton", "align": "blabs", "x": 30, "y": 80},
-                {
-                    "name": "fullControlBar",
-                    "align": "tlabs",
-                    "x": 0,
-                    "y": 0,
-                    "children": [{"name": "fullTitle", "align": "tl", "x": 25, "y": 6},
-                        {"name": "fullNormalScreenButton", "align": "tr", "x": 24, "y": 13},
-                        {"name": "fullZoom", "align": "cc"},
-                        {"name": "fullTimeDisplay", "align": "tr", "x": 10, "y": 12}]
-                }]
-        }, function (player) {
-            console.log("播放器创建了。");
+    console.log("defaultSource == " + $defaultSource);
+    var options = {
+        width: "1240rem",
+        height: "620rem",
+        poster: "http://tinywan-oss.oss-cn-shanghai.aliyuncs.com/data/{$live.id}/video/{$live.path}",
+        autoplay: false,
+        controls: true,
+        loop: true,
+        preload: 'auto',
+        sourceOrder: true,
+        sources: [{
+            src: $defaultSource,
+            type: 'application/x-mpegURL'
+        }, {
+            src: '//path/to/video.webm',
+            type: 'video/webm'
+        }],
+        techOrder: ['html5', 'flash'],
+        flash: {
+            swf: 'videojs/video-js.swf'
         }
-    );
+    };
+    var player = videojs('example-video', options);
+
+    player.addClass('vjs-matrix');
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
+        }
+    });
+
 </script>

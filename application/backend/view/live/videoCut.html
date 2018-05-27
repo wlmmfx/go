@@ -75,14 +75,14 @@
     <div class="col-sm-12">
         <div class="row"
              style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
-            <div class="col-sm-5">
+            <div class="col-md-6">
                 <video id="live-stream" class="video-js vjs-default-skin" controls >
                     <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
                             type="video/mp4">
                 </video>
             </div><!-- /span -->
 
-            <div class="col-sm-7">
+            <div class="col-md-6">
                 <div class="row" style="margin-left: 10px;">
                     <h5><i class="icon-facetime-video"></i> 视频素材</h5>
                     <hr>
@@ -337,8 +337,8 @@
 <script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
 <script>
     var options = {
-        width: 640,
-        height: 380
+        width: "640rem",
+        height: "380rem"
     };
     var player = videojs('live-stream', options);
     player.addClass('vjs-matrix');

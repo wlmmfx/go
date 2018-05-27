@@ -109,6 +109,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{:url('live/Live/detail',['id'=>$liveId])}" target="_blank">
+                        <i class="blue icon-laptop bigger-110"></i>
+                        VideoJs预览
+                    </a>
+                </li>
+
                 <!--<li>-->
                 <!--<a data-toggle="tab" href="#live-comment">-->
                 <!--<i class="red  icon-cogs bigger-110"></i>-->
@@ -225,9 +232,9 @@
                                          src="{$Think.config.aliyun_oss.DOMAIN}data/{$vo.id}/video/{$vo.path}"
                                          width="180" height="180">
                                     <p>
-                                        <button class="btn">
-                                            <i class="icon-pencil align-top"></i>
-                                            Default
+                                        <br/>
+                                        <button class="btn btn-primary btn-sm">
+                                            设置为封面
                                         </button>
                                     </p>
                                 </li>

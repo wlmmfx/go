@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 pricing-box">
+        <div class="tabbable">
+            <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                <li class="active">
+                    <a data-toggle="tab" href="#home4">防盗链</a>
+                </li>
+
+                <li class="">
+                    <a data-toggle="tab" href="#profile4">URL鉴权</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="home4" class="tab-pane active">
+                    <form action="{:url('/backend/live/safetySetStore')}" method="post" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 防盗链</label>
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="auth_key_status" type="radio" class="ace" {if condition="$status eq 0"}checked{/if} value="0">
+                                    <span class="lbl"> 关闭</span>
+                                </label>
+                                <label>
+                                    <input name="auth_key_status" type="radio" class="ace" {if condition="$status eq 1"}checked{/if} value="1">
+                                    <span class="lbl"> 开启</span>
+                                </label>
+                            </div>
+                        </div>
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 黑白名单：</label>
+                        <div class="col-sm-9">
+                            <select name="cate_id" id="cate_id">
+                                <option value="black">黑名单</option>
+                                <option value="white-list">白名单</option>
+                            </select>
+                        </div>
+                        <p></p>
+                    </form>
+                    <table class="table table-border table-bordered table-bg">
+                        <thead>
+                        <tr class="text-c">
+                            <th>[]</th>
+                            <th>域名</th>
+                            <th>操作</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="domains" id="vo"}
+                        <tr class="text-c">
+                            <td>[]</td>
+                            <td>{$vo}</td>
+                            <td>
+                                <a href="javascript:delHanderModal('{$vo}');" class="btn btn-danger btn-sm">
+                                    <i class="icon-trash"></i>删除
+                                </a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="profile4" class="tab-pane">
+                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(":radio").click(function () {
+            var url = "{:url('backend/live/safetySetStore')}";
+            var data = {
+                "status": $(this).val()
+            };
+            var success = function (data) {
+                console.log(data);
+            };
+            $.post(url, data, success, 'json');
+
+        });
+    });
+</script>

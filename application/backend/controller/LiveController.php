@@ -22,6 +22,7 @@ use app\common\model\StreamVideoEdit;
 use \FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use OSS\Core\OssException;
+use redis\BaseRedis;
 use Swoole\Table;
 use think\Cache;
 use think\Db;
@@ -279,8 +280,8 @@ class LiveController extends BaseBackendController
      */
     public function uploadVideoManage($id)
     {
-        return $this->fetch('',[
-            'liveId'=>$id
+        return $this->fetch('', [
+            'liveId' => $id
         ]);
     }
 
@@ -1379,8 +1380,7 @@ class LiveController extends BaseBackendController
     /**
      * 【安全管理】URL鉴权
      */
-    public
-    function urlAuth()
+    public function urlAuth()
     {
 
     }
@@ -1388,10 +1388,34 @@ class LiveController extends BaseBackendController
     /**
      * 【安全管理】播放鉴权
      */
-    public
-    function playAuthentication()
+    public function safetySet()
     {
+        $redis = BaseRedis::instance();
+        $redis->connect('172.19.230.35');
+        $status = $redis->get("HTTP_LIVE_ORIGIN");
+        $domains = $redis->sMembers("HTTP_REQUEST_ORIGIN_LIVE");
+        return $this->fetch('',[
+            'status'=>$status,
+            'domains'=>$domains
+        ]);
+    }
 
+    /**
+     * 安全设置存储
+     */
+    public function safetySetStore()
+    {
+        if($this->request->isAjax()){
+            $status = input('post.status');
+            $redis = BaseRedis::instance();
+            $redis->connect('172.19.230.35');
+            $res = $redis->set("HTTP_LIVE_ORIGIN",$status);
+            if($res) {
+                return json(['status' => 200, 'msg' => 'success']);
+            }else{
+                return json(['status' => 500, 'msg' => 'fail']);
+            }
+        }
     }
 
     /**

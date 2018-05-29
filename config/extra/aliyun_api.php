@@ -7,8 +7,8 @@
  * ****************************OSS 信息**********************************
  */
 return [
-    'ACCESSKEYID'        => 'LTAIjgvouVdHSeas', // 阿里云oss key_id
-    'ACCESSKEYSECRET'    => 'sLcZ2dEpyvVUW6EETb8epwGoklwCtW', // 阿里云oss key_secret
+    'ACCESSKEYID'        => 'LTAIQkWsqzzxvOjB', // 阿里云oss key_id
+    'ACCESSKEYSECRET'    => 'oIlscoaMtJ6HMxt9VnL0JYLABY0YTC', // 阿里云oss key_secret
     'CDN_SERVER_ADDRESS'             => 'https://cdn.aliyuncs.com',
     'ALI_AUTH_DOMAIN'             => 'https://cdn.aliyuncs.com',
     'ALI_AUTH_PRIVATEKEY'             => 'https://cdn.aliyuncs.com',

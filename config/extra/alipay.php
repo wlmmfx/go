@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: tinywan
  * Date: 2017/6/23
  * Time: 22:07

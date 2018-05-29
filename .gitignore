@@ -5,4 +5,4 @@ production.php
 runtime/*
 .idea/*
 /vendor/*
-/config/extra/*
+/config/extra/ali*

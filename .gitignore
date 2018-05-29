@@ -7,4 +7,5 @@ runtime/*
 /vendor/*
 
 #aliyun config
+ali*.php
 

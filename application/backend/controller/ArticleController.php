@@ -152,7 +152,7 @@ class ArticleController extends BaseBackendController
      */
     public function saveInfo()
     {
-        $ueditor_config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents(ROOT_PATH . 'public' . DS . "common/plugins/ueditor/php/config.json")), true);
+        $ueditor_config = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents(ROOT_PATH . 'public' . DIRECTORY_SEPARATOR . "common/plugins/ueditor/php/config.json")), true);
         $action = $_GET['action'];
         switch ($action) {
             case 'config':
@@ -182,7 +182,7 @@ class ArticleController extends BaseBackendController
                         if ($res['info']['http_code'] == 200) {
                             // 返回数据
                             $url = config('aliyun_oss.DOMAIN') . $object;
-                            Log::info("url == " . $url);
+                            Log::info("url =11= " . $url);
                             $result = json_encode(array(
                                 'url' => $url,
                                 'title' => htmlspecialchars("11111111111", ENT_QUOTES),

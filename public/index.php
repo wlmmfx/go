@@ -33,8 +33,8 @@ require __DIR__ . '/../thinkphp/start.php';
         'type' => 'File',
         'path' => LOG_PATH,
        // 日志记录级别
-        'level' => ['error','sql','notice'],
+        'level' => ['error','sql','notice','info'],
         // error和sql日志单独记录
-        'apart_level' => ['error', 'sql']
+        'apart_level' => ['error', 'sql'] //
     ]
 );

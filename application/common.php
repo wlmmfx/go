@@ -464,6 +464,8 @@ function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
     curl_setopt($curl, CURLOPT_TIMEOUT, 10);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    // 使用curl_exec()之前跳过ssl检查项
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     $data = curl_exec($curl);
     if (curl_errno($curl)) {
         return curl_error($curl);
@@ -699,14 +701,14 @@ function send_email_qq($address, $subject, $content)
             if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
                 return ["error" => 1, "message" => '邮箱格式错误'];
             }
-            $phpmailer->AddAddress($addressv, 'lsgo在线通知');
+            $phpmailer->AddAddress($addressv, $subject);
         }
     } else {
         //验证邮件地址,非邮箱地址返回为false
         if (false === filter_var($address, FILTER_VALIDATE_EMAIL)) {
             return ["error" => 1, "message" => '邮箱格式错误'];
         }
-        $phpmailer->AddAddress($address, 'lsgo在线通知');
+        $phpmailer->AddAddress($address, $subject);
     }
     // 设置邮件标题
     $phpmailer->Subject = $subject;

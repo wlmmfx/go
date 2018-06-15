@@ -57,7 +57,8 @@
         "mpdf/mpdf": "^7.0",
         "dompdf/dompdf": "^0.8.2",
         "tecnickcom/tcpdf": "^6.2",
-        "spiral/goridge": "^2.0"
+        "spiral/goridge": "^2.0",
+        "yansongda/pay": "^2.3"
     },
     "autoload": {
         "psr-4": {

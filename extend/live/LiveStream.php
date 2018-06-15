@@ -167,12 +167,7 @@ class LiveStream
     public static function getLiveStreamNameStatus($streamName)
     {
         $url = "https://live.tinywan.com/stat";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $output = curl_exec($ch);
-        curl_close($ch);
+        $output = curl_request($url);
         $outputs = self::FromXml($output);
         // 是否有流
         $totalInfo = [];
@@ -229,6 +224,8 @@ class LiveStream
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        // 使用curl_exec()之前跳过ssl检查项
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($ch);
         curl_close($ch);
         $outputs = self::FromXml($output);

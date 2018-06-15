@@ -12,6 +12,7 @@ use think\Controller;
 use think\Db;
 use think\Request;
 use alipay\Pay;
+
 class AliPayController extends Controller
 {
     public $alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';

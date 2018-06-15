@@ -11,6 +11,8 @@
 namespace app\test\controller;
 
 
+use think\App;
+
 class NsqController
 {
     public function pub()
@@ -64,5 +66,13 @@ class NsqController
     {
         $redis = messageRedis();
         var_dump($redis->keys("*"));
+    }
+
+    public function app123()
+    {
+        $class = \app\common\library\components\paychannel\HeePay::class; // app\common\library\components\paychannel\HeePay
+        $pay = App::invokeClass($class);
+        var_dump($pay->channelId);
+        var_dump($pay->test());
     }
 }

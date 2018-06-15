@@ -9,4 +9,3 @@
      'EMAIL_SEND_PRIVATE_KEY' => 'tinywan_private_key',
      'DB_PORT' => 'www.tinywan.com',
 );
-?>

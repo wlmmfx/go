@@ -62,7 +62,7 @@
 
     //添加或者修改json数据
     function setJson(jsonStr, name, value) {
-        if (!jsonStr)jsonStr = "{}";
+        if (!jsonStr) jsonStr = "{}";
         var jsonObj = JSON.parse(jsonStr);
         jsonObj[name] = value;
         return JSON.stringify(jsonObj)

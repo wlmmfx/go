@@ -159,13 +159,7 @@ class LiveController extends BaseBackendController
         //$url = "https://www.tinywan.com/api/stream/createPushAddressOpen?AppId=" . $appId . "&AppName=" . $appName . "&DomainName=" . $domainName . "&Sign=" . $sign;
         $url = "https://www.tinywan.com/api/stream/createPushAddress?AppId=" . $appId . "&AppName=" . $appName . "&AuthKeyStatus=" . $authKeyStatus . "&DomainName=" . $domainName . "&ServiceProvider=" . $serviceProvider . "&Sign=" . $sign;
         //CURL方式请求
-        $ch = curl_init() or die (curl_error());
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 360);
-        $response = curl_exec($ch);
-        curl_close($ch);
+        $response = curl_request($url);
         //返回数据为JSON格式，进行转换为数组打印输出
         return json_decode($response, true);
     }

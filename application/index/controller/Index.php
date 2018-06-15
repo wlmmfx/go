@@ -19,7 +19,7 @@ class Index extends Controller
 {
     protected $beforeActionList = [
         'first',
-        'second' =>  ['except'=>'hello'],
+        'second' =>  ['except'=>'hello111'],
         'three'  =>  ['only'=>'hello,data'],
     ];
 

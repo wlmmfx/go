@@ -18,14 +18,14 @@ use Yansongda\Pay\Pay;
 class PayController extends Controller
 {
     protected $config = [
-      'app_id' => '2016082000295641',
-      'notify_url' => 'https://www.tinywan.com/api/open/notifyUrl',
-      'return_url' => 'https://www.tinywan.com/api/open/returnUrl',
-      'ali_public_key' => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuWJKrQ6SWvS6niI+4vEVZiYfjkCfLQfoFI2nCp9ZLDS42QtiL4Ccyx8scgc3nhVwmVRte8f57TFvGhvJD0upT4O5O/lRxmTjechXAorirVdAODpOu0mFfQV9y/T9o9hHnU+VmO5spoVb3umqpq6D/Pt8p25Yk852/w01VTIczrXC4QlrbOEe3sr1E9auoC7rgYjjCO6lZUIDjX/oBmNXZxhRDrYx4Yf5X7y8FRBFvygIE2FgxV4Yw+SL3QAa2m5MLcbusJpxOml9YVQfP8iSurx41PvvXUMo49JG3BDVernaCYXQCoUJv9fJwbnfZd7J5YByC+5KM4sblJTq7bXZWQIDAQAB',
+      'app_id' => '2016090900470841',
+      'notify_url' => 'https://www.tinywan.com/api/notify',
+      'return_url' => 'https://www.tinywan.com/api/return',
+      'ali_public_key' => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArZGRS0dVo9HvAD2EBWQ9w1DOfc+DIS3tssyTksHDOVW+q1ECaYgaEqGC4xJXN/dh5HUP5kYKr0BofE2ECiGdLmY/gOP9en8Wyqz7NYjGUrSfN8hvsaEl/utsmv8/0Ov7TZmdiQycw3Zi30X4Gvd0hiGjXWRFPmMTrNM3u5roYL0jdF4bmCNbc2Mh1TGVENJhdqK7vwnFR5qvTqdmPHWI5oBLZdf6Y607YPIcIkCPYaGISH6Mt9hFD2FWkZIIWj3PHU9JQCJgMzP7NU+T9lis/wqJ3301pevbs3rZC1fcWCUAFktlWEZ4HdmllGf8eCiVqUqwPbWcOHFHMxwoFnPtDwIDAQAB',
         // 加密方式： **RSA2**
-      'private_key' => 'MIIEpAIBAAKCAQEAs6+F2leOgOrvj9jTeDhb5q46GewOjqLBlGSs/bVL4Z3fMr3p+Q1Tux/6uogeVi/eHd84xvQdfpZ87A1SfoWnEGH5z15yorccxSOwWUI+q8gz51IWqjgZxhWKe31BxNZ+prnQpyeMBtE25fXp5nQZ/pftgePyUUvUZRcAUisswntobDQKbwx28VCXw5XB2A+lvYEvxmMv/QexYjwKK4M54j435TuC3UctZbnuynSPpOmCu45ZhEYXd4YMsGMdZE5/077ZU1aU7wx/gk07PiHImEOCDkzqsFo0Buc/knGcdOiUDvm2hn2y1XvwjyFOThsqCsQYi4JmwZdRa8kvOf57nwIDAQABAoIBAQCw5QCqln4VTrTvcW+msB1ReX57nJgsNfDLbV2dG8mLYQemBa9833DqDK6iynTLNq69y88ylose33o2TVtEccGp8Dqluv6yUAED14G6LexS43KtrXPgugAtsXE253ZDGUNwUggnN1i0MW2RcMqHdQ9ORDWvJUCeZj/AEafgPN8AyiLrZeL07jJz/uaRfAuNqkImCVIarKUX3HBCjl9TpuoMjcMhz/MsOmQ0agtCatO1eoH1sqv5Odvxb1i59c8Hvq/mGEXyRuoiDo05SE6IyXYXr84/Nf2xvVNHNQA6kTckj8shSi+HGM4mO1Y4Pbb7XcnxNkT0Inn6oJMSiy56P+CpAoGBAO1O+5FE1ZuVGuLb48cY+0lHCD+nhSBd66B5FrxgPYCkFOQWR7pWyfNDBlmO3SSooQ8TQXA25blrkDxzOAEGX57EPiipXr/hy5e+WNoukpy09rsO1TMsvC+v0FXLvZ+TIAkqfnYBgaT56ku7yZ8aFGMwdCPL7WJYAwUIcZX8wZ3dAoGBAMHWplAqhe4bfkGOEEpfs6VvEQxCqYMYVyR65K0rI1LiDZn6Ij8fdVtwMjGKFSZZTspmsqnbbuCE/VTyDzF4NpAxdm3cBtZACv1Lpu2Om+aTzhK2PI6WTDVTKAJBYegXaahBCqVbSxieR62IWtmOMjggTtAKWZ1P5LQcRwdkaB2rAoGAWnAPT318Kp7YcDx8whOzMGnxqtCc24jvk2iSUZgb2Dqv+3zCOTF6JUsV0Guxu5bISoZ8GdfSFKf5gBAo97sGFeuUBMsHYPkcLehM1FmLZk1Q+ljcx3P1A/ds3kWXLolTXCrlpvNMBSN5NwOKAyhdPK/qkvnUrfX8sJ5XK2H4J8ECgYAGIZ0HIiE0Y+g9eJnpUFelXvsCEUW9YNK4065SD/BBGedmPHRC3OLgbo8X5A9BNEf6vP7fwpIiRfKhcjqqzOuk6fueA/yvYD04v+Da2MzzoS8+hkcqF3T3pta4I4tORRdRfCUzD80zTSZlRc/h286Y2eTETd+By1onnFFe2X01mwKBgQDaxo4PBcLL2OyVT5DoXiIdTCJ8KNZL9+kV1aiBuOWxnRgkDjPngslzNa1bK+klGgJNYDbQqohKNn1HeFX3mYNfCUpuSnD2Yag53Dd/1DLO+NxzwvTu4D6DCUnMMMBVaF42ig31Bs0jI3JQZVqeeFzSET8fkoFopJf3G6UXlrIEAQ==',
-      'log' => [ // optional
-        'file' => './logs/alipay.log',
+      'private_key' => 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCtkZFLR1Wj0e8APYQFZD3DUM59z4MhLe2yzJOSwcM5Vb6rUQJpiBoSoYLjElc392HkdQ/mRgqvQGh8TYQKIZ0uZj+A4/16fxbKrPs1iMZStJ83yG+xoSX+62ya/z/Q6/tNmZ2JDJzDdmLfRfga93SGIaNdZEU+YxOs0ze7muhgvSN0XhuYI1tzYyHVMZUQ0mF2oru/CcVHmq9Op2Y8dYjmgEtl1/pjrTtg8hwiQI9hoYhIfoy32EUPYVaRkghaPc8dT0lAImAzM/s1T5P2WKz/ConffTWl69uzetkLV9xYJQAWS2VYRngd2aWUZ/x4KJWpSrA9tZw4cUczHCgWc+0PAgMBAAECggEAAtjXbEewRO6ln/hiWQBK7xA9Qt0LhpjNRFiMtySMgj1A0miSxI5h9xpFHlpnqdhZ97hf2WQeur8wt5FB8DSa8m7k7cVPnBnHku2BdWBX+HVUA0M7act95w+PiX9UWaX1SlGRvvTBAYfImWb5ad/TPnwAxQBnDl3rrbMNP/uLgkKxDKZ3YBa3YupbZsILDND7ZL90lPRbCMFY6dUZXkOqlzoTPaw820gu6iBg+wLRyPiGKR32MsYK+wIH2IMP+/zTvnZffLX44I6jJUBRFkrmmKPY/cauJfMeJ2AUsALACis9Jv7B8OmCBYJPGk7r09eiaMm++w5anNgBIU8Ny3dMKQKBgQDdl6BmxQ6VS4YzjGXTKa9hk2r7dIl+wr/pXJzgv/8EeZPVdD8iMJekmfjXn3jh4p//pCbSTbJ73LSyRaJXb3P7ommyjhLeXmtTgtT7muJOXga99h41B2H/Nt1NSWsUYXeEX+nz1ONKb15T5ppkVJi4WbqfIKrt83Q9rHXVluO3LQKBgQDIhPud1LnuA0Ao1tv/I2DdqOjZMrO3XuZIZzPo8SShvfh+k6f1mudX1ash40YtqkYWLqwxTy4t6zrYjuAYBQdUe5VY/1i2z2wW71UgbZBac6mhItdH6UBAY1EWkjFacEz10oCnpkl5pOCe7WFyVL8xv+14/Uoa0GQoaNaj0XYaqwKBgBsti6jPJni9KJqN77c0d6Q6Fnb81hhL/om6qCsQoVCFMNKPTWb+Grs/fzvC/WqHByStl21XxjpW2Xq7+6tJqioEw3342uuXHQbDFyg82ODPu3f1BcNvQl+w9PeTt6RqR+Redy1GwRHSEvmrYOhJT+ncZ3043n4MzAb8bf9iYE+JAoGAPNgNOXEJEe2ulDXN/3cOt3O/Y9h8q9GB8spN+Arj4KgyNMY9GstsEzzkdp3t94FJTwXOfg/WpVxRONDxspgkB0CQqraghqgd1j+9Bt/4A1pBSIG37TwboO4B9uVZUGXvFFBRdY2BkgWzmsXQ4c5RTZk9R48j40sEeTaGmqK+QY0CgYEAr7fPjLFJUEwVKB0RYrfqd4nXNTUHfEvjvoKg+bvGNI2QL9MqdZu9qDdYZ6hDbdlojrjZKftvygqOE+LElZTX1I2VPIVkNPgcbU7h+M1AkZ51FJ1QmwOFoiclCsuTkjl6ITKMq/d9Hf6cDf+9CXrWk9tU22tp/8r2B3TXQxc527o=',
+      'logs' => [ // optional
+        'file' => '../logs/alipay.logs',
         'level' => 'debug'
       ],
       'mode' => 'dev', // optional,设置此参数，将进入沙箱模式
@@ -34,11 +34,12 @@ class PayController extends Controller
     public function index()
     {
         $order = [
-          'out_trade_no' => time(),
-          'total_amount' => '0.01',
-          'subject' => 'test subject - 测试',
+          'out_trade_no' => rand(11111,99999).time(),
+          'total_amount' => '50',
+          'subject' => '商品测试001',
         ];
         $alipay = Pay::alipay($this->config)->web($order);
         return $alipay->send();
     }
+
 }

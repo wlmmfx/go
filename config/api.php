@@ -62,3 +62,9 @@ Route::post("api/:version/pay/notify","api/:version.Pay/receiveNotify");
 
 // Ocr
 Route::get("api/:version/ocr/baiDuBasicAccurate","api/:version.OcrApi/baiDuBasicAccurate");
+
+/**
+ * ---------------------------------------支付宝支付---------------------------------------------------------------------
+ */
+Route::rule("api/notify","api/Pay/notifyUrl");
+Route::rule("api/return","api/Pay/returnUrl");

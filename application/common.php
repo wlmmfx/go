@@ -1152,6 +1152,17 @@ function messageRedis()
     return \redis\BaseRedis::message();
 }
 
+// 生成商品订单号
+function make_order_no()
+{
+    $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+    $orderSn =
+      $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
+        'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
+        '%02d', rand(0, 99));
+    return $orderSn;
+}
+
 /**
  * 手机短信发送Redis任务短信队列
  * @param $user_mobile

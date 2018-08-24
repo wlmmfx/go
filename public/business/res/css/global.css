@@ -575,3 +575,9 @@ body .fly-user-main{position: relative; min-height: 600px;}
   -webkit-background-size: 32px;
   background-size: 32px;
 }
+
+body {
+  background: rgba(12, 100, 129, 0.7) url("https://source.unsplash.com/random/1920x1080") fixed no-repeat;
+  background-position: 50% 5%;
+  background-size: cover;
+}

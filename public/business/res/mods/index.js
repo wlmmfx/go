@@ -119,9 +119,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload'], function (exports
     //点击@
     $('body').on('click', '.comment-reply', function () {
         var othis = $(this), text = othis.text();
-        if (othis.attr('href') !== 'javascript:;') {
-            return;
-        }
+        // if (othis.attr('href') !== 'javascript:;') {
+        //     return;
+        // }
         // text = text.replace(/^@|（[\s\S]+?）/g, '');
         layer.msg(text);
         // othis.attr({

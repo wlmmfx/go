@@ -23,7 +23,7 @@
 			util.delCookie('sdktoken')
 			util.delCookie('avatar')
 			util.delCookie('uid')
-			location.href = './roomList.html'
+			location.href = './room_list.html'
 		}
 	}
 	// var sdktoken = readCookie('sdktoken');
@@ -52,7 +52,7 @@
 	}
 	$('#nickName').on('click', function () {
 		if (util.readCookie('sdktoken')) {
-			location.href = './roomManage.html'
+			location.href = './room_manage.html'
 		} else {
 			alert('聊天室匿名登录不支持房间管理')
 		}

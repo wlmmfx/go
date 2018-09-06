@@ -87,7 +87,7 @@ var Login = {
             setCookie('uid', res.data.neteaseAccid);
             //括号里的内容换成后端程序员哥哥给你返回的id和token
             setCookie('sdktoken', res.data.neteaseToken);
-            window.location.href = './roomList.html';
+            window.location.href = './room_list.html';
         }, function () {
             console.log('操作失败');
         });

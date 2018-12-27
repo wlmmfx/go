@@ -10,8 +10,8 @@
 use think\Route;
 
 // 定义路由规则 并设置60秒的缓存
-Route::get('/business', 'business/Index/index');
-Route::get('hls', 'business/media/hls');
+Route::get('/', 'source/Index/index');
+Route::get('hls', 'source/media/hls');
 //Route::get('im', 'business/IM/userLogin');
-Route::get('p/:id', 'business/Index/detail', [], ['id' => '\d+']);
-Route::get('u/:id', 'business/user/home', [], ['id' => '\d+']);
+Route::get('p/:id', 'source/Index/detail', [], ['id' => '\d+']);
+Route::get('u/:id', 'source/user/home', [], ['id' => '\d+']);

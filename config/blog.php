@@ -11,7 +11,7 @@
 use think\Route;
 
 // 定义路由规则 并设置60秒的缓存
-Route::get('/', 'blog/Index/index');
+Route::get('/blog', 'blog/Index/index');
 // 文章详情路由
 Route::get('bd/:id', 'blog/Index/detail', [], ['id' => '\d+']);
 //Route::group(['prefix' => 'blog/Index/', 'ext' => 'html'], function () {

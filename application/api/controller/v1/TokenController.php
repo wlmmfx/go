@@ -21,6 +21,8 @@ class TokenController extends BaseApiController
      * 获取接口令牌
      * @param string $code
      * @return \think\response\Json
+     * @throws \app\common\library\exception\ParameterException
+     * @throws \think\Exception
      */
     public function getToken($code = '')
     {

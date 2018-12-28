@@ -34,7 +34,7 @@ return [
     // 是否强制使用路由
     // 'url_route_must'         => false
     // 默认模块名
-    'default_module' => 'business',
+    'default_module' => 'source',
     // 是否自动转换URL中的控制器和操作名
     'url_convert' => false,
     'captcha' => [

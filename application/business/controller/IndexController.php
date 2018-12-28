@@ -38,8 +38,11 @@ class IndexController extends BaseFrontendController
             ->join('resty_user u', 'u.id = a.admin_id')
             ->field("a.title,a.create_time,a.content,a.id,a.views,a.image_thumb,a.desc,c.name as c_name,u.username")
             ->order("a.create_time desc,a.id desc")
-            ->cache("RESTY_ARTICLE")
-            ->paginate(4);
+//            ->cache("RESTY_ARTICLE")
+            ->paginate(6, false, [
+                'var_page' => 'page',
+                'query' => request()->param()
+            ]);
         $articlesList = Db::table("resty_article")
             ->alias('a')
             ->join('resty_category c', 'c.id    = a.cate_id')

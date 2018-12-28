@@ -99,8 +99,6 @@
         .fly-list li h2 a {
             line-height: 40px;
         }
-
-
     }
 
 </style>
@@ -138,8 +136,10 @@
                 </ul>
             </div>
             <div style="text-align: center">
-                <div class="laypage-main">
-                    {$articles->render()}
+                <div class="laypage-main" style="border: 0px solid #009E94;">
+                    <div class="layui-laypage layui-laypage-default" style="border-right: 0px solid #009E94;border-bottom: 0px solid #009E94;">
+                        {$articles->render()}
+                    </div>
                 </div>
             </div>
         </div>

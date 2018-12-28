@@ -13,7 +13,7 @@ return [
     'url_route_must'         => false,
     // 视图输出字符串内容替换
     'view_replace_str' => [
-        "__COMMON__" => "/common",
+        "__COMMON__" => "common",
         "__STATIC__" => "/source",
         "__PLUG__" => "/source/plug",
     ],

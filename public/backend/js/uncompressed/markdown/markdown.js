@@ -158,7 +158,7 @@ function count_lines( str ) {
   return n;
 }
 
-// Internal - split source into rough blocks
+// Internal - split sources into rough blocks
 Markdown.prototype.split_blocks = function splitBlocks( input, startLine ) {
   // [\s\S] matches _anything_ (newline or space)
   var re = /([\s\S]+?)($|\n(?:\s*\n|$)+)/g,
@@ -231,10 +231,10 @@ Markdown.prototype.processInline = function processInline( block ) {
 };
 
 /**
- *  Markdown#toTree( source ) -> JsonML
- *  - source (String): markdown source to parse
+ *  Markdown#toTree( sources ) -> JsonML
+ *  - sources (String): markdown sources to parse
  *
- *  Parse `source` into a JsonML tree representing the markdown document.
+ *  Parse `sources` into a JsonML tree representing the markdown document.
  **/
 // custom_tree means set this.tree to `custom_tree` and restore old value on return
 Markdown.prototype.toTree = function toTree( source, custom_root ) {

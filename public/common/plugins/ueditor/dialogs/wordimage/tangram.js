@@ -75,7 +75,7 @@ baidu.array = baidu.array || {};
  * 遍历数组中所有元素
  * @name baidu.array.each
  * @function
- * @grammar baidu.array.each(source, iterator[, thisObject])
+ * @grammar baidu.array.each(sources, iterator[, thisObject])
  * @param {Array} source 需要遍历的数组
  * @param {Function} iterator 对每个数组元素进行调用的函数，该函数有两个参数，第一个为数组元素，第二个为数组索引值，function (item, index)。
  * @param {Object} [thisObject] 函数调用时的this指针，如果没有此参数，默认是当前遍历的数组
@@ -114,7 +114,7 @@ baidu.lang = baidu.lang || {};
  * 判断目标参数是否为function或Function实例
  * @name baidu.lang.isFunction
  * @function
- * @grammar baidu.lang.isFunction(source)
+ * @grammar baidu.lang.isFunction(sources)
  * @param {Any} source 目标参数
  * @version 1.2
  * @see baidu.lang.isString,baidu.lang.isObject,baidu.lang.isNumber,baidu.lang.isArray,baidu.lang.isElement,baidu.lang.isBoolean,baidu.lang.isDate
@@ -129,7 +129,7 @@ baidu.lang.isFunction = function (source) {
  * 判断目标参数是否string类型或String对象
  * @name baidu.lang.isString
  * @function
- * @grammar baidu.lang.isString(source)
+ * @grammar baidu.lang.isString(sources)
  * @param {Any} source 目标参数
  * @shortcut isString
  * @meta standard
@@ -256,7 +256,7 @@ baidu.string = baidu.string || {};
  * 对目标字符串进行html编码
  * @name baidu.string.encodeHTML
  * @function
- * @grammar baidu.string.encodeHTML(source)
+ * @grammar baidu.string.encodeHTML(sources)
  * @param {string} source 目标字符串
  * @remark
  * 编码字符有5个：&<>"'
@@ -479,7 +479,7 @@ baidu.browser.ie = baidu.ie = /msie (\d+\.\d+)/i.test(navigator.userAgent) ? (do
  * 移除数组中的项
  * @name baidu.array.remove
  * @function
- * @grammar baidu.array.remove(source, match)
+ * @grammar baidu.array.remove(sources, match)
  * @param {Array} source 需要移除项的数组
  * @param {Any} match 要移除的项
  * @meta standard
@@ -502,7 +502,7 @@ baidu.array.remove = function (source, match) {
  * 判断目标参数是否Array对象
  * @name baidu.lang.isArray
  * @function
- * @grammar baidu.lang.isArray(source)
+ * @grammar baidu.lang.isArray(sources)
  * @param {Any} source 目标参数
  * @meta standard
  * @see baidu.lang.isString,baidu.lang.isObject,baidu.lang.isNumber,baidu.lang.isElement,baidu.lang.isBoolean,baidu.lang.isDate
@@ -519,7 +519,7 @@ baidu.lang.isArray = function (source) {
  * 将一个变量转换成array
  * @name baidu.lang.toArray
  * @function
- * @grammar baidu.lang.toArray(source)
+ * @grammar baidu.lang.toArray(sources)
  * @param {mix} source 需要转换成array的变量
  * @version 1.3
  * @meta standard
@@ -830,7 +830,7 @@ baidu.object = baidu.object || {};
  * @author erik
  * @name baidu.object.extend
  * @function
- * @grammar baidu.object.extend(target, source)
+ * @grammar baidu.object.extend(target, sources)
  * @param {Object} target 目标对象
  * @param {Object} source 源对象
  * @see baidu.array.merge
@@ -1299,8 +1299,8 @@ baidu.json.parse = function (data) {
  * 将字符串解析成json对象，为过时接口，今后会被baidu.json.parse代替
  * @name baidu.json.decode
  * @function
- * @grammar baidu.json.decode(source)
- * @param {string} source 需要解析的字符串
+ * @grammar baidu.json.decode(sources)
+ * @param {string} sources 需要解析的字符串
  * @meta out
  * @see baidu.json.encode,baidu.json.parse
  *             

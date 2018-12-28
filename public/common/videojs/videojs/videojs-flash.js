@@ -46,17 +46,17 @@ function FlashRtmpDecorator(Flash) {
    * @typedef {Object} Flash~PartsObject
    *
    * @property {string} connection
-   *           The connection string of a source, defaults to an empty string.
+   *           The connection string of a sources, defaults to an empty string.
    *
    * @property {string} stream
-   *           The stream string of the source, defaults to an empty string.
+   *           The stream string of the sources, defaults to an empty string.
    */
 
   /**
-   * Convert a source url into a stream and connection parts.
+   * Convert a sources url into a stream and connection parts.
    *
    * @param {string} src
-   *        the source url
+   *        the sources url
    *
    * @return {Flash~PartsObject}
    *         The parts object that contains a connection and a stream
@@ -95,14 +95,14 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Check if the source type is a streaming type.
+   * Check if the sources type is a streaming type.
    *
    * @param {string} srcType
    *        The mime type to check.
    *
    * @return {boolean}
-   *          - True if the source type is a streaming type.
-   *          - False if the source type is not a streaming type.
+   *          - True if the sources type is a streaming type.
+   *          - False if the sources type is not a streaming type.
    */
   Flash.isStreamingType = function (srcType) {
     return srcType in Flash.streamingFormats;
@@ -112,28 +112,28 @@ function FlashRtmpDecorator(Flash) {
   // with one of these protocols should be valid
 
   /**
-   * Regular expression used to check if the source is an rtmp source.
+   * Regular expression used to check if the sources is an rtmp sources.
    *
    * @property {RegExp} Flash.RTMP_RE
    */
   Flash.RTMP_RE = /^rtmp[set]?:\/\//i;
 
   /**
-   * Check if the source itself is a streaming type.
+   * Check if the sources itself is a streaming type.
    *
    * @param {string} src
-   *        The url to the source.
+   *        The url to the sources.
    *
    * @return {boolean}
-   *          - True if the source url indicates that the source is streaming.
-   *          - False if the shource url indicates that the source url is not streaming.
+   *          - True if the sources url indicates that the sources is streaming.
+   *          - False if the shource url indicates that the sources url is not streaming.
    */
   Flash.isStreamingSrc = function (src) {
     return Flash.RTMP_RE.test(src);
   };
 
   /**
-   * A source handler for RTMP urls
+   * A sources handler for RTMP urls
    * @type {Object}
    */
   Flash.rtmpSourceHandler = {};
@@ -156,10 +156,10 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Check if Flash can handle the source natively
+   * Check if Flash can handle the sources natively
    *
    * @param {Object} source
-   *        The source object
+   *        The sources object
    *
    * @param {Object} [options]
    *        The options passed to the tech
@@ -182,16 +182,16 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Pass the source to the flash object.
+   * Pass the sources to the flash object.
    *
    * @param {Object} source
-   *        The source object
+   *        The sources object
    *
    * @param {Flash} tech
    *        The instance of the Flash tech
    *
    * @param {Object} [options]
-   *        The options to pass to the source
+   *        The options to pass to the sources
    */
   Flash.rtmpSourceHandler.handleSource = function (source, tech, options) {
     var srcParts = Flash.streamToParts(source.src);
@@ -200,7 +200,7 @@ function FlashRtmpDecorator(Flash) {
     tech.setRtmpStream(srcParts.stream);
   };
 
-  // Register the native source handler
+  // Register the native sources handler
   Flash.registerSourceHandler(Flash.rtmpSourceHandler);
 
   return Flash;
@@ -282,7 +282,7 @@ var Flash = function (_Tech) {
   function Flash(options, ready) {
     _classCallCheck(this, Flash);
 
-    // Set the source when ready
+    // Set the sources when ready
     var _this = _possibleConstructorReturn(this, _Tech.call(this, options, ready));
 
     if (options.source) {
@@ -402,14 +402,14 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * A getter/setter for the `Flash` Tech's source object.
+   * A getter/setter for the `Flash` Tech's sources object.
    * > Note: Please use {@link Flash#setSource}
    *
    * @param {Tech~SourceObject} [src]
-   *        The source object you want to set on the `Flash` techs.
+   *        The sources object you want to set on the `Flash` techs.
    *
    * @return {Tech~SourceObject|undefined}
-   *         - The current source object when a source is not passed in.
+   *         - The current sources object when a sources is not passed in.
    *         - undefined when setting
    *
    * @deprecated Since version 5.
@@ -426,13 +426,13 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * A getter/setter for the `Flash` Tech's source object.
+   * A getter/setter for the `Flash` Tech's sources object.
    *
    * @param {Tech~SourceObject} [src]
-   *        The source object you want to set on the `Flash` techs.
+   *        The sources object you want to set on the `Flash` techs.
    *
    * @return {Tech~SourceObject|undefined}
-   *         - The current source object when a source is not passed in.
+   *         - The current sources object when a sources is not passed in.
    *         - undefined when setting
    */
 
@@ -440,12 +440,12 @@ var Flash = function (_Tech) {
   Flash.prototype.setSrc = function setSrc(src) {
     var _this2 = this;
 
-    // Make sure source URL is absolute.
+    // Make sure sources URL is absolute.
     src = Url.getAbsoluteURL(src);
     this.el_.vjs_src(src);
 
-    // Currently the SWF doesn't autoplay if you load a source later.
-    // e.g. Load player w/ no source, wait 2s, set src.
+    // Currently the SWF doesn't autoplay if you load a sources later.
+    // e.g. Load player w/ no sources, wait 2s, set src.
     if (this.autoplay()) {
       this.setTimeout(function () {
         return _this2.play();
@@ -507,11 +507,11 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * Get the current source
+   * Get the current sources
    *
    * @method currentSrc
    * @return {Tech~SourceObject}
-   *         The current source
+   *         The current sources
    */
 
 
@@ -1057,10 +1057,10 @@ Flash.isSupported = function () {
 Tech.withSourceHandlers(Flash);
 
 /*
- * Native source handler for flash,  simply passes the source to the swf element.
+ * Native sources handler for flash,  simply passes the sources to the swf element.
  *
- * @property {Tech~SourceObject} source
- *           The source object
+ * @property {Tech~SourceObject} sources
+ *           The sources object
  *
  * @property {Flash} tech
  *           The instance of the Flash tech
@@ -1085,10 +1085,10 @@ Flash.nativeSourceHandler.canPlayType = function (type) {
 };
 
 /**
- * Check if the media element can handle a source natively.
+ * Check if the media element can handle a sources natively.
  *
  * @param {Tech~SourceObject} source
- *         The source object
+ *         The sources object
  *
  * @param {Object} [options]
  *         Options to be passed to the tech.
@@ -1119,27 +1119,27 @@ Flash.nativeSourceHandler.canHandleSource = function (source, options) {
 };
 
 /**
- * Pass the source to the swf.
+ * Pass the sources to the swf.
  *
  * @param {Tech~SourceObject} source
- *        The source object
+ *        The sources object
  *
  * @param {Flash} tech
  *        The instance of the Flash tech
  *
  * @param {Object} [options]
- *        The options to pass to the source
+ *        The options to pass to the sources
  */
 Flash.nativeSourceHandler.handleSource = function (source, tech, options) {
   tech.setSrc(source.src);
 };
 
 /**
- * noop for native source handler dispose, as cleanup will happen automatically.
+ * noop for native sources handler dispose, as cleanup will happen automatically.
  */
 Flash.nativeSourceHandler.dispose = function () {};
 
-// Register the native source handler
+// Register the native sources handler
 Flash.registerSourceHandler(Flash.nativeSourceHandler);
 
 /**

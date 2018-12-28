@@ -223,7 +223,7 @@ extend(Chart.prototype, {
 			height: chart.chartHeight + PX
 		}, doc.body);
 		
-		// get the source size
+		// get the sources size
 		cssWidth = chart.renderTo.style.width;
 		cssHeight = chart.renderTo.style.height;
 		sourceWidth = options.exporting.sourceWidth ||

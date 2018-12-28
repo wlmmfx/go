@@ -10,7 +10,7 @@ return [
     //'app_status' => 'development',
     'app_author' => 'Tinywan',
     'app_email' => '756684177@qq.com',
-    'app_debug' => true,
+    'app_debug' => false,
     // 开启应用Trace调试
     'app_trace' => false,
     // 控制器类后缀
@@ -34,7 +34,7 @@ return [
     // 是否强制使用路由
     // 'url_route_must'         => false
     // 默认模块名
-    'default_module' => 'source',
+    'default_module' => 'sources',
     // 是否自动转换URL中的控制器和操作名
     'url_convert' => false,
     'captcha' => [

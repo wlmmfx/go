@@ -7600,14 +7600,14 @@ for (var errNum = 0; errNum < MediaError.errorTypes.length; errNum++) {
  */
 
 /**
- * W3C error code for any time that a source is not supported.
+ * W3C error code for any time that a sources is not supported.
  *
  * @member MediaError#MEDIA_ERR_SRC_NOT_SUPPORTED
  * @constant {number}
  * @default 4
  */
 /**
- * W3C error code for any time that a source is not supported.
+ * W3C error code for any time that a sources is not supported.
  *
  * @member MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED
  * @constant {number}
@@ -7615,14 +7615,14 @@ for (var errNum = 0; errNum < MediaError.errorTypes.length; errNum++) {
  */
 
 /**
- * W3C error code for any time that a source is encrypted.
+ * W3C error code for any time that a sources is encrypted.
  *
  * @member MediaError#MEDIA_ERR_ENCRYPTED
  * @constant {number}
  * @default 5
  */
 /**
- * W3C error code for any time that a source is encrypted.
+ * W3C error code for any time that a sources is encrypted.
  *
  * @member MediaError.MEDIA_ERR_ENCRYPTED
  * @constant {number}
@@ -9462,7 +9462,7 @@ var Player = function (_Component) {
     }
 
     // insertElFirst seems to cause the networkState to flicker from 3 to 2, so
-    // keep track of the original for later so we can know if the source originally failed
+    // keep track of the original for later so we can know if the sources originally failed
     tag.initNetworkState_ = tag.networkState;
 
     // Wrap video tag in div (el/box) container
@@ -9712,7 +9712,7 @@ var Player = function (_Component) {
    *        name of the playback technology
    *
    * @param {string} source
-   *        video source
+   *        video sources
    *
    * @private
    */
@@ -9738,7 +9738,7 @@ var Player = function (_Component) {
     // Turn off API access because we're loading a new tech that might load asynchronously
     this.isReady_ = false;
 
-    // Grab tech-specific options from player options and add source and parent element to use.
+    // Grab tech-specific options from player options and add sources and parent element to use.
     var techOptions = (0, _obj.assign)({
       source: source,
       'nativeControlsForTouch': this.options_.nativeControlsForTouch,
@@ -9998,7 +9998,7 @@ var Player = function (_Component) {
 
     // If it's already playing we want to trigger a firstplay event now.
     // The firstplay event relies on both the play and loadstart events
-    // which can happen in any order for a new source
+    // which can happen in any order for a new sources
     if (!this.paused()) {
       /**
        * Fired when the user agent begins looking for media data
@@ -11098,15 +11098,15 @@ var Player = function (_Component) {
   };
 
   /**
-   * Select source based on tech-order or source-order
-   * Uses source-order selection if `options.sourceOrder` is truthy. Otherwise,
+   * Select sources based on tech-order or sources-order
+   * Uses sources-order selection if `options.sourceOrder` is truthy. Otherwise,
    * defaults to tech-order selection
    *
    * @param {Array} sources
    *        The sources for a media asset
    *
    * @return {Object|boolean}
-   *         Object of source and tech order or false
+   *         Object of sources and tech order or false
    */
 
 
@@ -11182,17 +11182,17 @@ var Player = function (_Component) {
   };
 
   /**
-   * The source function updates the video source
+   * The sources function updates the video sources
    * There are three types of variables you can pass as the argument.
    * **URL string**: A URL to the the video file. Use this method if you are sure
-   * the current playback technology (HTML5/Flash) can support the source you
+   * the current playback technology (HTML5/Flash) can support the sources you
    * provide. Currently only MP4 files can be used in both HTML5 and Flash.
    *
    * @param {Tech~SourceObject|Tech~SourceObject[]} [source]
    *        One SourceObject or an array of SourceObjects
    *
    * @return {string|Player}
-   *         - The current video source when getting
+   *         - The current video sources when getting
    *         - The player when setting
    */
 
@@ -11210,21 +11210,21 @@ var Player = function (_Component) {
       currentTech = _component2['default'].getComponent(this.techName_);
     }
 
-    // case: Array of source objects to choose from and pick the best to play
+    // case: Array of sources objects to choose from and pick the best to play
     if (Array.isArray(source)) {
       this.sourceList_(source);
 
       // case: URL String (http://myvideo...)
     } else if (typeof source === 'string') {
-      // create a source object from the string
+      // create a sources object from the string
       this.src({ src: source });
 
       // case: Source object { src: '', type: '' ... }
     } else if (source instanceof Object) {
-      // check if the source has a type and the loaded tech cannot play the source
+      // check if the sources has a type and the loaded tech cannot play the sources
       // if there's no type we'll just try the current tech
       if (source.type && !currentTech.canPlaySource(source, this.options_[this.techName_.toLowerCase()])) {
-        // create a source list with the current source and send through
+        // create a sources list with the current sources and send through
         // the tech loop to check for a compatible technology
         this.sourceList_([source]);
       } else {
@@ -11234,13 +11234,13 @@ var Player = function (_Component) {
 
         this.currentType_ = source.type || '';
 
-        // wait until the tech is ready to set the source
+        // wait until the tech is ready to set the sources
         this.ready(function () {
 
-          // The setSource tech method was added with source handlers
+          // The setSource tech method was added with sources handlers
           // so older techs won't support it
           // We need to check the direct prototype for the case where subclasses
-          // of the tech do not support source handlers
+          // of the tech do not support sources handlers
           if (currentTech.prototype.hasOwnProperty('setSource')) {
             this.techCall_('setSource', source);
           } else {
@@ -11255,7 +11255,7 @@ var Player = function (_Component) {
             this.play();
           }
 
-          // Set the source synchronously if possible (#2326)
+          // Set the sources synchronously if possible (#2326)
         }, true);
       }
     }
@@ -11264,10 +11264,10 @@ var Player = function (_Component) {
   };
 
   /**
-   * Handle an array of source objects
+   * Handle an array of sources objects
    *
    * @param  {Tech~SourceObject[]} sources
-   *         Array of source objects
+   *         Array of sources objects
    *
    * @private
    */
@@ -11278,10 +11278,10 @@ var Player = function (_Component) {
 
     if (sourceTech) {
       if (sourceTech.tech === this.techName_) {
-        // if this technology is already loaded, set the source
+        // if this technology is already loaded, set the sources
         this.src(sourceTech.source);
       } else {
-        // load this technology with the chosen source
+        // load this technology with the chosen sources
         this.loadTech_(sourceTech.tech, sourceTech.source);
       }
 
@@ -11327,10 +11327,10 @@ var Player = function (_Component) {
   };
 
   /**
-   * Returns all of the current source objects.
+   * Returns all of the current sources objects.
    *
    * @return {Tech~SourceObject[]}
-   *         The current source objects
+   *         The current sources objects
    */
 
 
@@ -11347,10 +11347,10 @@ var Player = function (_Component) {
   };
 
   /**
-   * Returns the current source object.
+   * Returns the current sources object.
    *
    * @return {Tech~SourceObject}
-   *         The current source object
+   *         The current sources object
    */
 
 
@@ -11366,11 +11366,11 @@ var Player = function (_Component) {
   };
 
   /**
-   * Returns the fully qualified URL of the current source value e.g. http://mysite.com/video.mp4
-   * Can be used in conjuction with `currentType` to assist in rebuilding the current source object.
+   * Returns the fully qualified URL of the current sources value e.g. http://mysite.com/video.mp4
+   * Can be used in conjuction with `currentType` to assist in rebuilding the current sources object.
    *
    * @return {string}
-   *         The current source
+   *         The current sources
    */
 
 
@@ -11379,12 +11379,12 @@ var Player = function (_Component) {
   };
 
   /**
-   * Get the current source type e.g. video/mp4
-   * This can allow you rebuild the current source object so that you could load the same
-   * source and tech later
+   * Get the current sources type e.g. video/mp4
+   * This can allow you rebuild the current sources object so that you could load the same
+   * sources and tech later
    *
    * @return {string}
-   *         The source MIME type
+   *         The sources MIME type
    */
 
 
@@ -11459,12 +11459,12 @@ var Player = function (_Component) {
   };
 
   /**
-   * Get or set the poster image source url
+   * Get or set the poster image sources url
    *
    * @fires Player#posterchange
    *
    * @param {string} [src]
-   *        Poster image source URL
+   *        Poster image sources URL
    *
    * @return {string|Player}
    *         - the current value of poster when getting
@@ -11502,9 +11502,9 @@ var Player = function (_Component) {
   };
 
   /**
-   * Some techs (e.g. YouTube) can provide a poster source in an
+   * Some techs (e.g. YouTube) can provide a poster sources in an
    * asynchronous way. We want the poster component to use this
-   * poster source so that it covers up the tech's controls.
+   * poster sources so that it covers up the tech's controls.
    * (YouTube's play button). However we only want to use this
    * soruce if the player user hasn't set a poster through
    * the normal APIs.
@@ -12036,7 +12036,7 @@ var Player = function (_Component) {
 
   /**
    * Create a remote {@link TextTrack} and an {@link HTMLTrackElement}. It will
-   * automatically removed from the video element whenever the source changes, unless
+   * automatically removed from the video element whenever the sources changes, unless
    * manualCleanup is set to false.
    *
    * @param {Object} options
@@ -12346,7 +12346,7 @@ Player.prototype.options_ = {
   languages: {},
 
   // Default message to show when a video cannot be played.
-  notSupportedMessage: 'No compatible source was found for this media.'
+  notSupportedMessage: 'No compatible sources was found for this media.'
 };
 
 [
@@ -12831,7 +12831,7 @@ var PosterImage = function (_ClickableComponent) {
 
     this.setSrc(url);
 
-    // If there's no poster source we should display:none on this component
+    // If there's no poster sources we should display:none on this component
     // so it's not still clickable or right-clickable
     if (url) {
       this.show();
@@ -12841,10 +12841,10 @@ var PosterImage = function (_ClickableComponent) {
   };
 
   /**
-   * Set the source of the `PosterImage` depending on the display method.
+   * Set the sources of the `PosterImage` depending on the display method.
    *
    * @param {string} url
-   *        The URL to the source for the `PosterImage`.
+   *        The URL to the sources for the `PosterImage`.
    */
 
 
@@ -13439,17 +13439,17 @@ function FlashRtmpDecorator(Flash) {
    * @typedef {Object} Flash~PartsObject
    *
    * @property {string} connection
-   *           The connection string of a source, defaults to an empty string.
+   *           The connection string of a sources, defaults to an empty string.
    *
    * @property {string} stream
-   *           The stream string of the source, defaults to an empty string.
+   *           The stream string of the sources, defaults to an empty string.
    */
 
   /**
-   * Convert a source url into a stream and connection parts.
+   * Convert a sources url into a stream and connection parts.
    *
    * @param {string} src
-   *        the source url
+   *        the sources url
    *
    * @return {Flash~PartsObject}
    *         The parts object that contains a connection and a stream
@@ -13488,14 +13488,14 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Check if the source type is a streaming type.
+   * Check if the sources type is a streaming type.
    *
    * @param {string} srcType
    *        The mime type to check.
    *
    * @return {boolean}
-   *          - True if the source type is a streaming type.
-   *          - False if the source type is not a streaming type.
+   *          - True if the sources type is a streaming type.
+   *          - False if the sources type is not a streaming type.
    */
   Flash.isStreamingType = function (srcType) {
     return srcType in Flash.streamingFormats;
@@ -13505,28 +13505,28 @@ function FlashRtmpDecorator(Flash) {
   // with one of these protocols should be valid
 
   /**
-   * Regular expression used to check if the source is an rtmp source.
+   * Regular expression used to check if the sources is an rtmp sources.
    *
    * @property {RegExp} Flash.RTMP_RE
    */
   Flash.RTMP_RE = /^rtmp[set]?:\/\//i;
 
   /**
-   * Check if the source itself is a streaming type.
+   * Check if the sources itself is a streaming type.
    *
    * @param {string} src
-   *        The url to the source.
+   *        The url to the sources.
    *
    * @return {boolean}
-   *          - True if the source url indicates that the source is streaming.
-   *          - False if the shource url indicates that the source url is not streaming.
+   *          - True if the sources url indicates that the sources is streaming.
+   *          - False if the shource url indicates that the sources url is not streaming.
    */
   Flash.isStreamingSrc = function (src) {
     return Flash.RTMP_RE.test(src);
   };
 
   /**
-   * A source handler for RTMP urls
+   * A sources handler for RTMP urls
    * @type {Object}
    */
   Flash.rtmpSourceHandler = {};
@@ -13549,10 +13549,10 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Check if Flash can handle the source natively
+   * Check if Flash can handle the sources natively
    *
    * @param {Object} source
-   *        The source object
+   *        The sources object
    *
    * @param {Object} [options]
    *        The options passed to the tech
@@ -13575,16 +13575,16 @@ function FlashRtmpDecorator(Flash) {
   };
 
   /**
-   * Pass the source to the flash object.
+   * Pass the sources to the flash object.
    *
    * @param {Object} source
-   *        The source object
+   *        The sources object
    *
    * @param {Flash} tech
    *        The instance of the Flash tech
    *
    * @param {Object} [options]
-   *        The options to pass to the source
+   *        The options to pass to the sources
    */
   Flash.rtmpSourceHandler.handleSource = function (source, tech, options) {
     var srcParts = Flash.streamToParts(source.src);
@@ -13593,7 +13593,7 @@ function FlashRtmpDecorator(Flash) {
     tech.setRtmpStream(srcParts.stream);
   };
 
-  // Register the native source handler
+  // Register the native sources handler
   Flash.registerSourceHandler(Flash.rtmpSourceHandler);
 
   return Flash;
@@ -13674,7 +13674,7 @@ var Flash = function (_Tech) {
   function Flash(options, ready) {
     _classCallCheck(this, Flash);
 
-    // Set the source when ready
+    // Set the sources when ready
     var _this = _possibleConstructorReturn(this, _Tech.call(this, options, ready));
 
     if (options.source) {
@@ -13794,14 +13794,14 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * A getter/setter for the `Flash` Tech's source object.
+   * A getter/setter for the `Flash` Tech's sources object.
    * > Note: Please use {@link Flash#setSource}
    *
    * @param {Tech~SourceObject} [src]
-   *        The source object you want to set on the `Flash` techs.
+   *        The sources object you want to set on the `Flash` techs.
    *
    * @return {Tech~SourceObject|undefined}
-   *         - The current source object when a source is not passed in.
+   *         - The current sources object when a sources is not passed in.
    *         - undefined when setting
    *
    * @deprecated Since version 5.
@@ -13818,13 +13818,13 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * A getter/setter for the `Flash` Tech's source object.
+   * A getter/setter for the `Flash` Tech's sources object.
    *
    * @param {Tech~SourceObject} [src]
-   *        The source object you want to set on the `Flash` techs.
+   *        The sources object you want to set on the `Flash` techs.
    *
    * @return {Tech~SourceObject|undefined}
-   *         - The current source object when a source is not passed in.
+   *         - The current sources object when a sources is not passed in.
    *         - undefined when setting
    */
 
@@ -13832,12 +13832,12 @@ var Flash = function (_Tech) {
   Flash.prototype.setSrc = function setSrc(src) {
     var _this2 = this;
 
-    // Make sure source URL is absolute.
+    // Make sure sources URL is absolute.
     src = Url.getAbsoluteURL(src);
     this.el_.vjs_src(src);
 
-    // Currently the SWF doesn't autoplay if you load a source later.
-    // e.g. Load player w/ no source, wait 2s, set src.
+    // Currently the SWF doesn't autoplay if you load a sources later.
+    // e.g. Load player w/ no sources, wait 2s, set src.
     if (this.autoplay()) {
       this.setTimeout(function () {
         return _this2.play();
@@ -13899,11 +13899,11 @@ var Flash = function (_Tech) {
   };
 
   /**
-   * Get the current source
+   * Get the current sources
    *
    * @method currentSrc
    * @return {Tech~SourceObject}
-   *         The current source
+   *         The current sources
    */
 
 
@@ -14449,10 +14449,10 @@ Flash.isSupported = function () {
 _tech2['default'].withSourceHandlers(Flash);
 
 /*
- * Native source handler for flash,  simply passes the source to the swf element.
+ * Native sources handler for flash,  simply passes the sources to the swf element.
  *
- * @property {Tech~SourceObject} source
- *           The source object
+ * @property {Tech~SourceObject} sources
+ *           The sources object
  *
  * @property {Flash} tech
  *           The instance of the Flash tech
@@ -14477,10 +14477,10 @@ Flash.nativeSourceHandler.canPlayType = function (type) {
 };
 
 /**
- * Check if the media element can handle a source natively.
+ * Check if the media element can handle a sources natively.
  *
  * @param {Tech~SourceObject} source
- *         The source object
+ *         The sources object
  *
  * @param {Object} [options]
  *         Options to be passed to the tech.
@@ -14511,27 +14511,27 @@ Flash.nativeSourceHandler.canHandleSource = function (source, options) {
 };
 
 /**
- * Pass the source to the swf.
+ * Pass the sources to the swf.
  *
  * @param {Tech~SourceObject} source
- *        The source object
+ *        The sources object
  *
  * @param {Flash} tech
  *        The instance of the Flash tech
  *
  * @param {Object} [options]
- *        The options to pass to the source
+ *        The options to pass to the sources
  */
 Flash.nativeSourceHandler.handleSource = function (source, tech, options) {
   tech.setSrc(source.src);
 };
 
 /**
- * noop for native source handler dispose, as cleanup will happen automatically.
+ * noop for native sources handler dispose, as cleanup will happen automatically.
  */
 Flash.nativeSourceHandler.dispose = function () {};
 
-// Register the native source handler
+// Register the native sources handler
 Flash.registerSourceHandler(Flash.nativeSourceHandler);
 
 /**
@@ -14858,9 +14858,9 @@ var Html5 = function (_Tech) {
     var source = options.source;
     var crossoriginTracks = false;
 
-    // Set the source if one is provided
-    // 1) Check if the source is new (if not, we want to keep the original so playback isn't interrupted)
-    // 2) Check to see if the network state of the tag was failed at init, and if so, reset the source
+    // Set the sources if one is provided
+    // 1) Check if the sources is new (if not, we want to keep the original so playback isn't interrupted)
+    // 2) Check to see if the network state of the tag was failed at init, and if so, reset the sources
     // anyway so the error gets fired.
     if (source && (_this.el_.currentSrc !== source.src || options.tag && options.tag.initNetworkState_ === 3)) {
       _this.setSource(source);
@@ -15077,8 +15077,8 @@ var Html5 = function (_Tech) {
 
   Html5.prototype.handleLateInit_ = function handleLateInit_(el) {
     if (el.networkState === 0 || el.networkState === 3) {
-      // The video element hasn't started loading the source yet
-      // or didn't find a source
+      // The video element hasn't started loading the sources yet
+      // or didn't find a sources
       return;
     }
 
@@ -15475,14 +15475,14 @@ var Html5 = function (_Tech) {
   };
 
   /**
-   * A getter/setter for the `Html5` Tech's source object.
+   * A getter/setter for the `Html5` Tech's sources object.
    * > Note: Please use {@link Html5#setSource}
    *
    * @param {Tech~SourceObject} [src]
-   *        The source object you want to set on the `HTML5` techs element.
+   *        The sources object you want to set on the `HTML5` techs element.
    *
    * @return {Tech~SourceObject|undefined}
-   *         - The current source object when a source is not passed in.
+   *         - The current sources object when a sources is not passed in.
    *         - undefined when setting
    *
    * @deprecated Since version 5.
@@ -15509,12 +15509,12 @@ var Html5 = function (_Tech) {
   };
 
   /**
-   * Get the current source on the `HTML5` Tech. Falls back to returning the source from
+   * Get the current sources on the `HTML5` Tech. Falls back to returning the sources from
    * the HTML5 media element.
    *
    * @return {Tech~SourceObject}
-   *         The current source object from the HTML5 tech. With a fallback to the
-   *         elements source.
+   *         The current sources object from the HTML5 tech. With a fallback to the
+   *         elements sources.
    */
 
 
@@ -15585,7 +15585,7 @@ var Html5 = function (_Tech) {
    *        The internal id to assign this track.
    *
    * @param {string} [options.src]
-   *        A source url for the track.
+   *        A sources url for the track.
    *
    * @return {HTMLTrackElement}
    *         The track element that gets created.
@@ -15626,7 +15626,7 @@ var Html5 = function (_Tech) {
    * @param {Object} options The object should contain values for
    * kind, language, label, and src (location of the WebVTT file)
    * @param {Boolean} [manualCleanup=true] if set to false, the TextTrack will be
-   * automatically removed from the video element whenever the source changes
+   * automatically removed from the video element whenever the sources changes
    * @return {HTMLTrackElement} An Html Track Element.
    * This can be an emulated {@link HTMLTrackElement} or a native one.
    * @deprecated The default value of the "manualCleanup" parameter will default
@@ -15922,7 +15922,7 @@ Html5.disposeMediaElement = function (el) {
     el.parentNode.removeChild(el);
   }
 
-  // remove any child track or source nodes to prevent their loading
+  // remove any child track or sources nodes to prevent their loading
   while (el.hasChildNodes()) {
     el.removeChild(el.firstChild);
   }
@@ -16317,7 +16317,7 @@ Html5.resetMediaElement = function (el) {
  *
  * @method Html5#setSrc
  * @param {Tech~SourceObject} src
- *        The source object to set as the current source.
+ *        The sources object to set as the current sources.
  *
  * @see [Spec]{@link https://www.w3.org/TR/html5/embedded-content-0.html#dom-media-src}
  */
@@ -16430,10 +16430,10 @@ Html5.resetMediaElement = function (el) {
 _tech2['default'].withSourceHandlers(Html5);
 
 /**
- * Native source handler for Html5, simply passes the source to the media element.
+ * Native sources handler for Html5, simply passes the sources to the media element.
  *
- * @proprety {Tech~SourceObject} source
- *        The source object
+ * @proprety {Tech~SourceObject} sources
+ *        The sources object
  *
  * @proprety {Html5} tech
  *        The instance of the HTML5 tech.
@@ -16460,10 +16460,10 @@ Html5.nativeSourceHandler.canPlayType = function (type) {
 };
 
 /**
- * Check if the media element can handle a source natively.
+ * Check if the media element can handle a sources natively.
  *
  * @param {Tech~SourceObject} source
- *         The source object
+ *         The sources object
  *
  * @param {Object} [options]
  *         Options to be passed to the tech.
@@ -16488,16 +16488,16 @@ Html5.nativeSourceHandler.canHandleSource = function (source, options) {
 };
 
 /**
- * Pass the source to the native media element.
+ * Pass the sources to the native media element.
  *
  * @param {Tech~SourceObject} source
- *        The source object
+ *        The sources object
  *
  * @param {Html5} tech
  *        The instance of the Html5 tech
  *
  * @param {Object} [options]
- *        The options to pass to the source
+ *        The options to pass to the sources
  */
 Html5.nativeSourceHandler.handleSource = function (source, tech, options) {
   tech.setSrc(source.src);
@@ -16508,7 +16508,7 @@ Html5.nativeSourceHandler.handleSource = function (source, tech, options) {
  */
 Html5.nativeSourceHandler.dispose = function () {};
 
-// Register the native source handler
+// Register the native sources handler
 Html5.registerSourceHandler(Html5.nativeSourceHandler);
 
 _component2['default'].registerComponent('Html5', Html5);
@@ -16591,7 +16591,7 @@ var MediaLoader = function (_Component) {
       }
     } else {
       // Loop through playback technologies (HTML5, Flash) and check for support.
-      // Then load the best source.
+      // Then load the best sources.
       // A few assumptions here:
       //   All playback technologies respect preload false.
       player.src(options.playerOptions.sources);
@@ -16689,10 +16689,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @typedef {Object|string} Tech~SourceObject
  *
  * @property {string} src
- *           The url to the source
+ *           The url to the sources
  *
  * @property {string} type
- *           The mime type of the source
+ *           The mime type of the sources
  */
 
 /**
@@ -16767,7 +16767,7 @@ var Tech = function (_Component) {
     // This is done manually in addControlsListeners
     options.reportTouchActivity = false;
 
-    // keep track of whether the current source has played at all to
+    // keep track of whether the current sources has played at all to
     // implement a very limited played()
     var _this = _possibleConstructorReturn(this, _Component.call(this, null, options, ready));
 
@@ -16838,7 +16838,7 @@ var Tech = function (_Component) {
 
     this.manualProgress = true;
 
-    // Trigger progress watching when a source begins loading
+    // Trigger progress watching when a sources begins loading
     this.one('ready', this.trackProgress);
   };
 
@@ -17045,7 +17045,7 @@ var Tech = function (_Component) {
   /**
    * Clear out a single `TrackList` or an array of `TrackLists` given their names.
    *
-   * > Note: Techs without source handlers should call this between sources for `video`
+   * > Note: Techs without sources handlers should call this between sources for `video`
    *         & `audio` tracks. You don't want to use them between tracks!
    *
    * @param {string[]|string} types
@@ -17120,10 +17120,10 @@ var Tech = function (_Component) {
   };
 
   /**
-   * Returns the `TimeRange`s that have been played through for the current source.
+   * Returns the `TimeRange`s that have been played through for the current sources.
    *
    * > NOTE: This implementation is incomplete. It does not track the played `TimeRange`.
-   *         It only checks wether the source has played at all or not.
+   *         It only checks wether the sources has played at all or not.
    *
    * @return {TimeRange}
    *         - A single time range if this video has played
@@ -17502,7 +17502,7 @@ var Tech = function (_Component) {
    *
    * @param {boolean} [manualCleanup=true]
    *        - When false: the TextTrack will be automatically removed from the video
-   *          element whenever the source changes
+   *          element whenever the sources changes
    *        - When True: The TextTrack will have to be cleaned up manually
    *
    * @return {HTMLTrackElement}
@@ -17567,7 +17567,7 @@ var Tech = function (_Component) {
   /*
    * Check if the tech can support the given mime-type.
    *
-   * The base tech does not support any type, but source handlers might
+   * The base tech does not support any type, but sources handlers might
    * overwrite this.
    *
    * @param  {string} type
@@ -17739,22 +17739,22 @@ Tech.prototype.featuresNativeTextTracks = false;
 /**
  * A functional mixin for techs that want to use the Source Handler pattern.
  * Source handlers are scripts for handling specific formats.
- * The source handler pattern is used for adaptive formats (HLS, DASH) that
+ * The sources handler pattern is used for adaptive formats (HLS, DASH) that
  * manually load video data and feed it into a Source Buffer (Media Source Extensions)
  * Example: `Tech.withSourceHandlers.call(MyTech);`
  *
  * @param {Tech} _Tech
- *        The tech to add source handler functions to.
+ *        The tech to add sources handler functions to.
  *
  * @mixes Tech~SourceHandlerAdditions
  */
 Tech.withSourceHandlers = function (_Tech) {
 
   /**
-   * Register a source handler
+   * Register a sources handler
    *
    * @param {Function} handler
-   *        The source handler class
+   *        The sources handler class
    *
    * @param {number} [index]
    *        Register it at the following index
@@ -17800,19 +17800,19 @@ Tech.withSourceHandlers = function (_Tech) {
   };
 
   /**
-   * Returns the first source handler that supports the source.
+   * Returns the first sources handler that supports the sources.
    *
    * TODO: Answer question: should 'probably' be prioritized over 'maybe'
    *
    * @param {Tech~SourceObject} source
-   *        The source object
+   *        The sources object
    *
    * @param {Object} options
    *        The options passed to the tech
    *
    * @return {SourceHandler|null}
-   *          The first source handler that supports the source or null if
-   *          no SourceHandler supports the source
+   *          The first sources handler that supports the sources or null if
+   *          no SourceHandler supports the sources
    */
   _Tech.selectSourceHandler = function (source, options) {
     var handlers = _Tech.sourceHandlers || [];
@@ -17830,10 +17830,10 @@ Tech.withSourceHandlers = function (_Tech) {
   };
 
   /**
-   * Check if the tech can support the given source.
+   * Check if the tech can support the given sources.
    *
    * @param {Tech~SourceObject} srcObj
-   *        The source object
+   *        The sources object
    *
    * @param {Object} options
    *        The options passed to the tech
@@ -17852,7 +17852,7 @@ Tech.withSourceHandlers = function (_Tech) {
   };
 
   /**
-   * When using a source handler, prefer its implementation of
+   * When using a sources handler, prefer its implementation of
    * any function normally provided by the tech.
    */
   var deferrable = ['seekable', 'duration'];
@@ -17887,12 +17887,12 @@ Tech.withSourceHandlers = function (_Tech) {
   }, _Tech.prototype);
 
   /**
-   * Create a function for setting the source using a source object
-   * and source handlers.
-   * Should never be called unless a source handler was found.
+   * Create a function for setting the sources using a sources object
+   * and sources handlers.
+   * Should never be called unless a sources handler was found.
    *
    * @param {Tech~SourceObject} source
-   *        A source object with src and type keys
+   *        A sources object with src and type keys
    *
    * @return {Tech}
    *         Returns itself; this method is chainable
@@ -17901,16 +17901,16 @@ Tech.withSourceHandlers = function (_Tech) {
     var sh = _Tech.selectSourceHandler(source, this.options_);
 
     if (!sh) {
-      // Fall back to a native source hander when unsupported sources are
+      // Fall back to a native sources hander when unsupported sources are
       // deliberately set
       if (_Tech.nativeSourceHandler) {
         sh = _Tech.nativeSourceHandler;
       } else {
-        _log2['default'].error('No source hander found for the current source.');
+        _log2['default'].error('No sources hander found for the current sources.');
       }
     }
 
-    // Dispose any existing source handler
+    // Dispose any existing sources handler
     this.disposeSourceHandler();
     this.off('dispose', this.disposeSourceHandler);
 
@@ -17918,7 +17918,7 @@ Tech.withSourceHandlers = function (_Tech) {
       this.currentSource_ = source;
 
       // Catch if someone replaced the src without calling setSource.
-      // If they do, set currentSource_ to null and dispose our source handler.
+      // If they do, set currentSource_ to null and dispose our sources handler.
       this.off(this.el_, 'loadstart', _Tech.prototype.firstLoadStartListener_);
       this.off(this.el_, 'loadstart', _Tech.prototype.successiveLoadStartListener_);
       this.one(this.el_, 'loadstart', _Tech.prototype.firstLoadStartListener_);
@@ -17956,7 +17956,7 @@ Tech.withSourceHandlers = function (_Tech) {
    * @listens Tech#dispose
    */
   _Tech.prototype.disposeSourceHandler = function () {
-    // if we have a source and get another one
+    // if we have a sources and get another one
     // then we are loading something new
     // than clear all of our current tracks
     if (this.currentSource_) {
@@ -24165,7 +24165,7 @@ videojs.xhr = _xhr2['default'];
 videojs.TextTrack = _textTrack2['default'];
 
 /**
- * export the AudioTrack class so that source handlers can create
+ * export the AudioTrack class so that sources handlers can create
  * AudioTracks and then add them to the players AudioTrackList
  *
  * @borrows AudioTrack as videojs.AudioTrack
@@ -24173,7 +24173,7 @@ videojs.TextTrack = _textTrack2['default'];
 videojs.AudioTrack = _audioTrack2['default'];
 
 /**
- * export the VideoTrack class so that source handlers can create
+ * export the VideoTrack class so that sources handlers can create
  * VideoTracks and then add them to the players VideoTrackList
  *
  * @borrows VideoTrack as videojs.VideoTrack

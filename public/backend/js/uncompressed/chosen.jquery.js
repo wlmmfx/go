@@ -2,7 +2,7 @@
 // by Patrick Filler for Harvest, http://getharvest.com
 //
 // Version 1.0.0
-// Full source at https://github.com/harvesthq/chosen
+// Full sources at https://github.com/harvesthq/chosen
 // Copyright (c) 2011 Harvest http://getharvest.com
 
 // MIT License, https://github.com/harvesthq/chosen/blob/master/LICENSE.md

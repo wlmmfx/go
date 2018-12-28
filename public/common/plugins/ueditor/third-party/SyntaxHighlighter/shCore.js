@@ -657,7 +657,7 @@ if (XRegExp) {
      RegExp.prototype.addFlags = function (s) {return clone(this, s);};
      RegExp.prototype.execAll = function (s) {var r = []; XRegExp.iterate(s, this, function (m) {r.push(m);}); return r;};
      RegExp.prototype.forEachExec = function (s, f, c) {return XRegExp.iterate(s, this, f, c);};
-     RegExp.prototype.validate = function (s) {var r = RegExp("^(?:" + this.source + ")$(?!\\s)", getNativeFlags(this)); if (this.global) this.lastIndex = 0; return s.search(r) === 0;};
+     RegExp.prototype.validate = function (s) {var r = RegExp("^(?:" + this.sources + ")$(?!\\s)", getNativeFlags(this)); if (this.global) this.lastIndex = 0; return s.search(r) === 0;};
      */
 
 })();
@@ -743,7 +743,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
             tagName : 'pre',
 
             strings : {
-                expandSource : 'expand source',
+                expandSource : 'expand sources',
                 help : '?',
                 alert: 'SyntaxHighlighter\n\n',
                 noBrush : 'Can\'t find brush for: ',
@@ -940,7 +940,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
 
         /**
          * Shorthand to highlight all elements on the page that are marked as
-         * SyntaxHighlighter source code.
+         * SyntaxHighlighter sources code.
          *
          * @param {Object} globalParams		Optional parameters which override element's
          * 									parameters. Only used if element is specified.
@@ -1060,7 +1060,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
     };
 
     /**
-     * Converts the source to array object. Mostly used for function arguments and
+     * Converts the sources to array object. Mostly used for function arguments and
      * lists returned by getElementsByTagName() which aren't Array objects.
      * @param {List} source Source list.
      * @return {Array} Returns array.
@@ -1785,7 +1785,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
 
         highlighter = getHighlighterById(highlighterDiv.id);
 
-        // add source class name
+        // add sources class name
         addClass(highlighterDiv, 'source');
 
         // Have to go over each line and grab it's text, can't just do it on the
@@ -2154,7 +2154,7 @@ if (typeof(SyntaxHighlighter) == 'undefined') var SyntaxHighlighter = function()
         },
 
         /**
-         * Finds all matches in the source code.
+         * Finds all matches in the sources code.
          * @param {String} code		Source code to process matches in.
          * @param {Array} matches	Discovered regex matches.
          * @return {String} Returns formatted HTML with processed mathes.
@@ -2501,7 +2501,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 						'mv netstat nice nl nohup nslookup open op passwd paste pathchk ping popd pr printcap ' +
 						'printenv printf ps pushd pwd quota quotacheck quotactl ram rcp read readonly renice ' +
 						'remsync rm rmdir rsync screen scp sdiff sed select seq set sftp shift shopt shutdown ' +
-						'sleep sort source split ssh strace su sudo sum symlink sync tail tar tee test time ' +
+						'sleep sort sources split ssh strace su sudo sum symlink sync tail tar tee test time ' +
 						'times touch top traceroute trap tr true tsort tty type ulimit umask umount unalias ' +
 						'uname unexpand uniq units unset unshar useradd usermod users uuencode uudecode v vdir ' +
 						'vi watch wc whereis which who whoami Wget xargs yes'

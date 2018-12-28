@@ -8,12 +8,12 @@
  *
  * @copyright Copyright 2008-2012 Allan Jardine, all rights reserved.
  *
- * This source file is free software, under either the GPL v2 license or a
+ * This sources file is free software, under either the GPL v2 license or a
  * BSD style license, available at:
  *   http://datatables.net/license_gpl2
  *   http://datatables.net/license_bsd
  * 
- * This source file is distributed in the hope that it will be useful, but 
+ * This sources file is distributed in the hope that it will be useful, but 
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  * 
@@ -452,8 +452,8 @@
 		
 		/**
 		 * Add a data array to the table, creating DOM node etc. This is the parallel to 
-		 * _fnGatherData, but for adding rows from a Javascript source, rather than a
-		 * DOM source.
+		 * _fnGatherData, but for adding rows from a Javascript sources, rather than a
+		 * DOM sources.
 		 *  @param {object} oSettings dataTables settings object
 		 *  @param {array} aData data array to be added
 		 *  @returns {int} >=0 if successful (index of new aoData entry), -1 if failed
@@ -463,7 +463,7 @@
 		{
 			var oCol;
 			
-			/* Take an independent copy of the data source so we can bash it about as we wish */
+			/* Take an independent copy of the data sources so we can bash it about as we wish */
 			var aDataIn = ($.isArray(aDataSupplied)) ?
 				aDataSupplied.slice() :
 				$.extend( true, {}, aDataSupplied );
@@ -539,7 +539,7 @@
 			/*
 			 * Process by row first
 			 * Add the data object for the whole table - storing the tr node. Note - no point in getting
-			 * DOM based data if we are going to go and replace it with Ajax source data.
+			 * DOM based data if we are going to go and replace it with Ajax sources data.
 			 */
 			if ( oSettings.bDeferLoading || oSettings.sAjaxSource === null )
 			{
@@ -779,20 +779,20 @@
 				{
 					_fnLog( oSettings, 0, "Requested unknown parameter "+
 						(typeof oCol.mData=='function' ? '{mData function}' : "'"+oCol.mData+"'")+
-						" from the data source for row "+iRow );
+						" from the data sources for row "+iRow );
 					oSettings.iDrawError = oSettings.iDraw;
 				}
 				return oCol.sDefaultContent;
 			}
 		
-			/* When the data source is null, we can use default column data */
+			/* When the data sources is null, we can use default column data */
 			if ( sData === null && oCol.sDefaultContent !== null )
 			{
 				sData = oCol.sDefaultContent;
 			}
 			else if ( typeof sData === 'function' )
 			{
-				/* If the data source is a function, then we run it and use the return */
+				/* If the data sources is a function, then we run it and use the return */
 				return sData();
 			}
 		
@@ -825,9 +825,9 @@
 		var __reArray = /\[.*?\]$/;
 		
 		/**
-		 * Return a function that can be used to get data from a source object, taking
-		 * into account the ability to use nested objects as a source
-		 *  @param {string|int|function} mSource The data source for the object
+		 * Return a function that can be used to get data from a sources object, taking
+		 * into account the ability to use nested objects as a sources
+		 *  @param {string|int|function} mSource The data sources for the object
 		 *  @returns {function} Data get function
 		 *  @memberof DataTable#oApi
 		 */
@@ -848,7 +848,7 @@
 			}
 			else if ( typeof mSource === 'string' && (mSource.indexOf('.') !== -1 || mSource.indexOf('[') !== -1) )
 			{
-				/* If there is a . in the source string then the data source is in a 
+				/* If there is a . in the sources string then the data sources is in a 
 				 * nested object so we loop over the data for each level to get the next
 				 * level down. On each loop we test for undefined, and if found immediately
 				 * return. This allows entire objects to be missing and sDefaultContent to
@@ -889,7 +889,7 @@
 								data = (join==="") ? out : out.join(join);
 		
 								// The inner call to fetchData has already traversed through the remainder
-								// of the source requested, so we exit from the loop
+								// of the sources requested, so we exit from the loop
 								break;
 							}
 		
@@ -919,9 +919,9 @@
 		
 		
 		/**
-		 * Return a function that can be used to set data from a source object, taking
-		 * into account the ability to use nested objects as a source
-		 *  @param {string|int|function} mSource The data source for the object
+		 * Return a function that can be used to set data from a sources object, taking
+		 * into account the ability to use nested objects as a sources
+		 *  @param {string|int|function} mSource The data sources for the object
 		 *  @returns {function} Data set function
 		 *  @memberof DataTable#oApi
 		 */
@@ -929,7 +929,7 @@
 		{
 			if ( mSource === null )
 			{
-				/* Nothing to do when the data source is null */
+				/* Nothing to do when the data sources is null */
 				return function (data, val) {};
 			}
 			else if ( typeof mSource === 'function' )
@@ -969,7 +969,7 @@
 							}
 		
 							// The inner call to setData has already traversed through the remainder
-							// of the source and has set the data, thus we can exit here
+							// of the sources and has set the data, thus we can exit here
 							return;
 						}
 		
@@ -1104,7 +1104,7 @@
 				 */
 				oData.nTr._DT_RowIndex = iRow;
 		
-				/* Special parameters can be given by the data source to be used on the row */
+				/* Special parameters can be given by the data sources to be used on the row */
 				if ( oData._aData.DT_RowId )
 				{
 					oData.nTr.id = oData._aData.DT_RowId;
@@ -1122,7 +1122,7 @@
 					nTd = document.createElement( oCol.sCellType );
 		
 					/* Render if needed - if bUseRendered is true then we already have the rendered
-					 * value in the data source - so can just use that
+					 * value in the data sources - so can just use that
 					 */
 					nTd.innerHTML = (typeof oCol.fnRender === 'function' && (!oCol.bUseRendered || oCol.mData === null)) ?
 						_fnRender( oSettings, iRow, i ) :
@@ -1765,7 +1765,7 @@
 		
 		
 		/**
-		 * Use the DOM source to create up an array of header cells. The idea here is to
+		 * Use the DOM sources to create up an array of header cells. The idea here is to
 		 * create a layout grid (array) of rows x columns, which contains a reference
 		 * to the cell that that point in the grid (regardless of col/rowspan), such that
 		 * any column / row could be removed and the new grid constructed
@@ -2618,7 +2618,7 @@
 			}
 			
 			/* If there is default sorting required - let's do it. The sort function will do the
-			 * drawing for us. Otherwise we draw the table regardless of the Ajax source - this allows
+			 * drawing for us. Otherwise we draw the table regardless of the Ajax sources - this allows
 			 * the table to look initialised for Ajax sourcing data (show 'loading' message possibly)
 			 */
 			if ( oSettings.oFeatures.bSort )
@@ -2636,7 +2636,7 @@
 				_fnDraw( oSettings );
 			}
 			
-			/* if there is an ajax source load the data */
+			/* if there is an ajax sources load the data */
 			if ( oSettings.sAjaxSource !== null && !oSettings.oFeatures.bServerSide )
 			{
 				var aoData = [];
@@ -2685,7 +2685,7 @@
 		/**
 		 * Draw the table for the first time, adding all required features
 		 *  @param {object} oSettings dataTables settings object
-		 *  @param {object} [json] JSON from the server that completed the table, if using Ajax source
+		 *  @param {object} [json] JSON from the server that completed the table, if using Ajax sources
 		 *    with client-side processing (optional)
 		 *  @memberof DataTable#oApi
 		 */
@@ -4008,7 +4008,7 @@
 					}
 				}
 				
-				/* Do the sort - here we want multi-column sorting based on a given data source (column)
+				/* Do the sort - here we want multi-column sorting based on a given data sources (column)
 				 * and sorting function (from oSort) in a certain direction. It's reasonably complex to
 				 * follow on it's own, but this is what we want (example two column sorting):
 				 *  fnLocalSorting = function(a,b){
@@ -4728,7 +4728,7 @@
 		/**
 		 * See if a property is defined on one object, if so assign it to the other object
 		 *  @param {object} oRet target object
-		 *  @param {object} oSrc source object
+		 *  @param {object} oSrc sources object
 		 *  @param {string} sName property
 		 *  @param {string} [sMappedName] name to map too - optional, sName used if not given
 		 *  @memberof DataTable#oApi
@@ -5070,7 +5070,7 @@
 		 * rows - as such, the jQuery selector used should match TR row nodes or TD/TH cell nodes
 		 * rather than any descendants, so the data can be obtained for the row/cell. If matching
 		 * rows are found, the data returned is the original data array/object that was used to  
-		 * create the row (or a generated array if from a DOM source).
+		 * create the row (or a generated array if from a DOM sources).
 		 *
 		 * This method is often useful in-combination with $ where both functions are given the
 		 * same parameters and the array indexes will match identically.
@@ -5131,7 +5131,7 @@
 		 * Add a single new row or multiple rows of data to the table. Please note
 		 * that this is suitable for client-side processing only - if you are using 
 		 * server-side processing (i.e. "bServerSide": true), then to add data, you
-		 * must add it to the data source, i.e. the server-side, through an Ajax call.
+		 * must add it to the data sources, i.e. the server-side, through an Ajax call.
 		 *  @param {array|object} mData The data to be added to the table. This can be:
 		 *    <ul>
 		 *      <li>1D array of data - add a single row with the data provided</li>
@@ -5654,7 +5654,7 @@
 		 * Get the data for the whole table, an individual row or an individual cell based on the 
 		 * provided parameters.
 		 *  @param {int|node} [mRow] A TR row node, TD/TH cell node or an integer. If given as
-		 *    a TR node then the data source for the whole row will be returned. If given as a
+		 *    a TR node then the data sources for the whole row will be returned. If given as a
 		 *    TD/TH cell node then iCol will be automatically calculated and the data for the
 		 *    cell returned. If given as an integer, then this is treated as the aoData internal
 		 *    data index for the row (see fnGetPosition) and the data for that row used.
@@ -6121,7 +6121,7 @@
 		/**
 		 * Update a table cell or row - this method will accept either a single value to
 		 * update the cell with, an array of values with one element for each column or
-		 * an object in the same format as the original data source. The function is
+		 * an object in the same format as the original data sources. The function is
 		 * self-referencing in order to make the multi column updates easier.
 		 *  @param {object|array|string} mData Data to update the cell/row with
 		 *  @param {node|int} mRow TR element you want to update or the aoData index
@@ -6951,7 +6951,7 @@
 		 *       <ul>
 		 *         <li>{object} DataTables settings object: see {@link DataTable.models.oSettings}.</li>
 		 *         <li>{array|object} Data for the row to be processed (same as the original format
-		 *           that was passed in as the data source, or an array from a DOM data source</li>
+		 *           that was passed in as the data sources, or an array from a DOM data sources</li>
 		 *         <li>{int} Row index in aoData ({@link DataTable.models.oSettings.aoData}), which can
 		 *           be useful to retrieve the TR element if you need DOM interaction.</li>
 		 *       </ul>
@@ -7512,11 +7512,11 @@
 		"nTr": null,
 	
 		/**
-		 * Data object from the original data source for the row. This is either
+		 * Data object from the original data sources for the row. This is either
 		 * an array if using the traditional form of DataTables, or an object if
 		 * using mData options. The exact type will depend on the passed in
-		 * data from the data source, or will be an array if using DOM a data 
-		 * source.
+		 * data from the data sources, or will be an array if using DOM a data 
+		 * sources.
 		 *  @type array|object
 		 *  @default []
 		 */
@@ -7637,8 +7637,8 @@
 		"_bAutoType": true,
 		
 		/**
-		 * Developer definable function that is called whenever a cell is created (Ajax source,
-		 * etc) or processed for input (DOM source). This can be used as a compliment to mRender
+		 * Developer definable function that is called whenever a cell is created (Ajax sources,
+		 * etc) or processed for input (DOM sources). This can be used as a compliment to mRender
 		 * allowing you to modify the DOM element (add background colour for example) when the
 		 * element is available.
 		 *  @type function
@@ -7700,7 +7700,7 @@
 		
 		/**
 		 * Property to read the value for the cells in the column from the data 
-		 * source array / object. If null, then the default content is used, if a
+		 * sources array / object. If null, then the default content is used, if a
 		 * function is given then the return from the function is used.
 		 *  @type function|int|string|null
 		 *  @default null
@@ -7756,8 +7756,8 @@
 		
 		/**
 		 * Allows a default value to be given for a column's data, and will be used
-		 * whenever a null data source is encountered (this can be because mData
-		 * is set to null, or because the data source itself is null).
+		 * whenever a null data sources is encountered (this can be because mData
+		 * is set to null, or because the data sources itself is null).
 		 *  @type string
 		 *  @default null
 		 */
@@ -7839,7 +7839,7 @@
 		 *  @dtopt Option
 		 * 
 		 *  @example
-		 *    // Using a 2D array data source
+		 *    // Using a 2D array data sources
 		 *    $(document).ready( function () {
 		 *      $('#example').dataTable( {
 		 *        "aaData": [
@@ -7857,7 +7857,7 @@
 		 *    } );
 		 *    
 		 *  @example
-		 *    // Using an array of objects as a data source (mData)
+		 *    // Using an array of objects as a data sources (mData)
 		 *    $(document).ready( function () {
 		 *      $('#example').dataTable( {
 		 *        "aaData": [
@@ -8066,7 +8066,7 @@
 	
 		/**
 		 * Deferred rendering can provide DataTables with a huge speed boost when you
-		 * are using an Ajax or JS data source for the table. This option, when set to
+		 * are using an Ajax or JS data sources for the table. This option, when set to
 		 * true, will cause DataTables to defer the creation of the table elements for
 		 * each row until they are needed for a draw - saving a significant amount of
 		 * time.
@@ -8324,7 +8324,7 @@
 		/**
 		 * Configure DataTables to use server-side processing. Note that the
 		 * sAjaxSource parameter must also be given in order to give DataTables a
-		 * source to obtain the required data for each draw.
+		 * sources to obtain the required data for each draw.
 		 *  @type boolean
 		 *  @default false
 		 *  @dtopt Features
@@ -8445,7 +8445,7 @@
 	
 		/**
 		 * This function is called when a TR element is created (and all TD child
-		 * elements have been inserted), or registered if using a DOM source, allowing
+		 * elements have been inserted), or registered if using a DOM sources, allowing
 		 * manipulation of the TR element (adding classes etc).
 		 *  @type function
 		 *  @param {node} nRow "TR" element for the current row
@@ -8708,7 +8708,7 @@
 		 * a Gears or AIR database.
 		 *  @type function
 		 *  @member
-		 *  @param {string} sSource HTTP source to obtain the data from (sAjaxSource)
+		 *  @param {string} sSource HTTP sources to obtain the data from (sAjaxSource)
 		 *  @param {array} aoData A key/value pair object containing the data to send
 		 *    to the server
 		 *  @param {function} fnCallback to be called on completion of the data get
@@ -9552,9 +9552,9 @@
 	
 		/**
 		 * By default DataTables will look for the property 'aaData' when obtaining
-		 * data from an Ajax source or for server-side processing - this parameter
+		 * data from an Ajax sources or for server-side processing - this parameter
 		 * allows that property to be changed. You can use Javascript dotted object
-		 * notation to get a data source for multiple levels of nesting.
+		 * notation to get a data sources for multiple levels of nesting.
 		 *  @type string
 		 *  @default aaData
 		 *  @dtopt Options
@@ -9582,10 +9582,10 @@
 	
 	
 		/**
-		 * You can instruct DataTables to load data from an external source using this
+		 * You can instruct DataTables to load data from an external sources using this
 		 * parameter (use aData if you want to pass data in you already have). Simply
 		 * provide a url a JSON object can be obtained from. This object must include
-		 * the parameter 'aaData' which is the data source for the table.
+		 * the parameter 'aaData' which is the data sources for the table.
 		 *  @type string
 		 *  @default null
 		 *  @dtopt Options
@@ -9965,8 +9965,8 @@
 		
 		
 		/**
-		 * Developer definable function that is called whenever a cell is created (Ajax source,
-		 * etc) or processed for input (DOM source). This can be used as a compliment to mRender
+		 * Developer definable function that is called whenever a cell is created (Ajax sources,
+		 * etc) or processed for input (DOM sources). This can be used as a compliment to mRender
 		 * allowing you to modify the DOM element (add background colour for example) when the
 		 * element is available.
 		 *  @type function
@@ -10061,15 +10061,15 @@
 	
 	
 		/**
-		 * This property can be used to read data from any JSON data source property,
+		 * This property can be used to read data from any JSON data sources property,
 		 * including deeply nested objects / properties. mData can be given in a
 		 * number of different ways which effect its behaviour:
 		 *   <ul>
-		 *     <li>integer - treated as an array index for the data source. This is the
+		 *     <li>integer - treated as an array index for the data sources. This is the
 		 *       default that DataTables uses (incrementally increased for each column).</li>
-		 *     <li>string - read an object property from the data source. Note that you can
+		 *     <li>string - read an object property from the data sources. Note that you can
 		 *       use Javascript dotted notation to read deep properties / arrays from the
-		 *       data source.</li>
+		 *       data sources.</li>
 		 *     <li>null - the sDefaultContent option will be used for the cell (null
 		 *       by default, so you will need to specify the default content you want -
 		 *       typically an empty string). This can be useful on generated columns such 
@@ -10078,7 +10078,7 @@
 		 *       needs to set or get the data for a cell in the column. The function 
 		 *       takes three parameters:
 		 *       <ul>
-		 *         <li>{array|object} The data source for the row</li>
+		 *         <li>{array|object} The data sources for the row</li>
 		 *         <li>{string} The type call data requested - this will be 'set' when
 		 *           setting data or 'filter', 'display', 'type', 'sort' or undefined when 
 		 *           gathering data. Note that when <i>undefined</i> is given for the type
@@ -10120,22 +10120,22 @@
 		 *      var oTable = $('#example').dataTable( {
 		 *        "aoColumnDefs": [ {
 		 *          "aTargets": [ 0 ],
-		 *          "mData": function ( source, type, val ) {
+		 *          "mData": function ( sources, type, val ) {
 		 *            if (type === 'set') {
-		 *              source.price = val;
+		 *              sources.price = val;
 		 *              // Store the computed dislay and filter values for efficiency
-		 *              source.price_display = val=="" ? "" : "$"+numberFormat(val);
-		 *              source.price_filter  = val=="" ? "" : "$"+numberFormat(val)+" "+val;
+		 *              sources.price_display = val=="" ? "" : "$"+numberFormat(val);
+		 *              sources.price_filter  = val=="" ? "" : "$"+numberFormat(val)+" "+val;
 		 *              return;
 		 *            }
 		 *            else if (type === 'display') {
-		 *              return source.price_display;
+		 *              return sources.price_display;
 		 *            }
 		 *            else if (type === 'filter') {
-		 *              return source.price_filter;
+		 *              return sources.price_filter;
 		 *            }
 		 *            // 'sort', 'type' and undefined all just use the integer
-		 *            return source.price;
+		 *            return sources.price;
 		 *          }
 		 *        } ]
 		 *      } );
@@ -10154,23 +10154,23 @@
 		 * supporting array syntax for easy outputting of arrays (including arrays of
 		 * objects):
 		 *   <ul>
-		 *     <li>integer - treated as an array index for the data source. This is the
+		 *     <li>integer - treated as an array index for the data sources. This is the
 		 *       default that DataTables uses (incrementally increased for each column).</li>
-		 *     <li>string - read an object property from the data source. Note that you can
+		 *     <li>string - read an object property from the data sources. Note that you can
 		 *       use Javascript dotted notation to read deep properties / arrays from the
-		 *       data source and also array brackets to indicate that the data reader should
-		 *       loop over the data source array. When characters are given between the array
-		 *       brackets, these characters are used to join the data source array together.
+		 *       data sources and also array brackets to indicate that the data reader should
+		 *       loop over the data sources array. When characters are given between the array
+		 *       brackets, these characters are used to join the data sources array together.
 		 *       For example: "accounts[, ].name" would result in a comma separated list with
 		 *       the 'name' value from the 'accounts' array of objects.</li>
 		 *     <li>function - the function given will be executed whenever DataTables 
 		 *       needs to set or get the data for a cell in the column. The function 
 		 *       takes three parameters:
 		 *       <ul>
-		 *         <li>{array|object} The data source for the row (based on mData)</li>
+		 *         <li>{array|object} The data sources for the row (based on mData)</li>
 		 *         <li>{string} The type call data requested - this will be 'filter', 'display', 
 		 *           'type' or 'sort'.</li>
-		 *         <li>{array|object} The full data source for the row (not based on mData)</li>
+		 *         <li>{array|object} The full data sources for the row (not based on mData)</li>
 		 *       </ul>
 		 *       The return value from the function is what will be used for the data
 		 *       requested.</li>
@@ -10196,7 +10196,7 @@
 		 *    } );
 		 * 
 		 *  @example
-		 *    // Use as a function to create a link from the data source
+		 *    // Use as a function to create a link from the data sources
 		 *    $(document).ready( function() {
 		 *      var oTable = $('#example').dataTable( {
 		 *        "aoColumnDefs": [
@@ -10302,8 +10302,8 @@
 	
 		/**
 		 * Allows a default value to be given for a column's data, and will be used
-		 * whenever a null data source is encountered (this can be because mData
-		 * is set to null, or because the data source itself is null).
+		 * whenever a null data sources is encountered (this can be because mData
+		 * is set to null, or because the data sources itself is null).
 		 *  @type string
 		 *  @default null
 		 *  @dtopt Columns
@@ -10384,7 +10384,7 @@
 	
 	
 		/**
-		 * Defines a data source type for the sorting which can be used to read
+		 * Defines a data sources type for the sorting which can be used to read
 		 * real-time information from the table (updating the internally cached
 		 * version) prior to sorting. This allows sorting to occur on user editable
 		 * elements such as form inputs.
@@ -10575,7 +10575,7 @@
 			/**
 			 * Delay the creation of TR and TD elements until they are actually
 			 * needed by a driven page draw. This can give a significant speed
-			 * increase for Ajax source and Javascript source data, but makes no
+			 * increase for Ajax sources and Javascript sources data, but makes no
 			 * difference at all fro DOM and server-side processing tables.
 			 * Note that this parameter will be set by the initialisation routine. To
 			 * set a default use {@link DataTable.defaults}.

@@ -24,7 +24,7 @@
  *
  * - complete : Function(chartOptions)
  * The callback that is evaluated when the data is finished loading, optionally from an 
- * external source, and parsed. The first argument passed is a finished chart options
+ * external sources, and parsed. The first argument passed is a finished chart options
  * object, containing series and an xAxis with categories if applicable. Thise options
  * can be extended with additional options and passed directly to the chart constructor.
  *

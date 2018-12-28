@@ -373,7 +373,7 @@ UE.I18N['en'] = {
         'urlError':"The video url format may be wrong!",
         'loading':" &nbsp;The video is loading, please wait…",
         'clickToSelect':"Click to select",
-        'goToSource':'Visit source video ',
+        'goToSource':'Visit sources video ',
         'noVideo':" &nbsp; &nbsp;Sorry,can't find the video,please try again!",
 
         'browseFiles':'Open files',
@@ -478,7 +478,7 @@ UE.I18N['en'] = {
     },
     'charts':{
         'static':{
-            'lang_data_source':'Data source:',
+            'lang_data_source':'Data sources:',
             'lang_chart_format': 'Chart format:',
             'lang_data_align': 'Align',
             'lang_chart_align_same': 'Consistent with the X-axis Y-axis',
@@ -522,7 +522,7 @@ UE.I18N['en'] = {
         'static':{
             'lang_input_about':'About',
             'lang_input_shortcuts':'Shortcuts',
-            'lang_input_introduction':"UEditor is developed by Baidu Co.ltd.  It is lightweight, customizable , focusing on user experience and etc. , UEditor is based on open source BSD license , allowing free use and redistribution.",
+            'lang_input_introduction':"UEditor is developed by Baidu Co.ltd.  It is lightweight, customizable , focusing on user experience and etc. , UEditor is based on open sources BSD license , allowing free use and redistribution.",
             'lang_Txt_shortcuts':'Shortcuts',
             'lang_Txt_func':'Function',
             'lang_Txt_bold':'Bold',

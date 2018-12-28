@@ -82,7 +82,7 @@ vjs.options = {
   'html5': {},
   'flash': {},
 
-  // Default of web browser is 300x150. Should rely on source width/height.
+  // Default of web browser is 300x150. Should rely on sources width/height.
   'width': 300,
   'height': 150,
   // defaultVolume: 0.85,
@@ -99,7 +99,7 @@ vjs.options = {
   },
 
   // Default message to show when a video cannot be played.
-  'notSupportedMessage': 'Sorry, no compatible source and playback ' +
+  'notSupportedMessage': 'Sorry, no compatible sources and playback ' +
       'technology were found for this video. Try using another browser ' +
       'like <a href="http://bit.ly/ccMUEC">Chrome</a> or download the ' +
       'latest <a href="http://adobe.ly/mwfN1">Adobe Flash Player</a>.'
@@ -1966,7 +1966,7 @@ vjs.Component.prototype.triggerReady = function(){
     // Reset Ready Queue
     this.readyQueue_ = [];
 
-    // Allow for using event listeners also, in case you want to do something everytime a source is ready.
+    // Allow for using event listeners also, in case you want to do something everytime a sources is ready.
     this.trigger('ready');
   }
 };
@@ -2810,7 +2810,7 @@ vjs.MenuButton.prototype.unpressButton = function(){
  *
  * ```html
  * <video id="example_video_1" data-setup='{}' controls>
- *   <source src="my-source.mp4" type="video/mp4">
+ *   <sources src="my-sources.mp4" type="video/mp4">
  * </video>
  * ```
  *
@@ -3079,7 +3079,7 @@ vjs.Player.prototype.loadTech = function(techName, source){
     }
   };
 
-  // Grab tech-specific options from player options and add source and parent element to use.
+  // Grab tech-specific options from player options and add sources and parent element to use.
   var techOptions = vjs.obj.merge({ 'source': source, 'parentEl': this.el_ }, this.options_[techName.toLowerCase()]);
 
   if (source) {
@@ -3111,7 +3111,7 @@ vjs.Player.prototype.unloadTech = function(){
 // There's many issues around changing the size of a Flash (or other plugin) object.
 // First is a plugin reload issue in Firefox that has been around for 11 years: https://bugzilla.mozilla.org/show_bug.cgi?id=90268
 // Then with the new fullscreen API, Mozilla and webkit browsers will reload the flash object after going to fullscreen.
-// To get around this, we're unloading the tech, caching source and currentTime values, and reloading the tech once the plugin is resized.
+// To get around this, we're unloading the tech, caching sources and currentTime values, and reloading the tech once the plugin is resized.
 // reloadTech: function(betweenFn){
 //   vjs.log('unloadingTech')
 //   this.unloadTech();
@@ -3129,7 +3129,7 @@ vjs.Player.prototype.unloadTech = function(){
 vjs.Player.prototype.manualProgressOn = function(){
   this.manualProgress = true;
 
-  // Trigger progress watching when a source begins loading
+  // Trigger progress watching when a sources begins loading
   this.trackProgress();
 
   // Watch for a native progress event call on the tech element
@@ -3223,7 +3223,7 @@ vjs.Player.prototype.onLoadedMetaData;
 vjs.Player.prototype.onLoadedData;
 
 /**
- * Fired when the player has finished downloading the source data
+ * Fired when the player has finished downloading the sources data
  * @event loadedalldata
  */
 vjs.Player.prototype.onLoadedAllData;
@@ -3279,7 +3279,7 @@ vjs.Player.prototype.onTimeUpdate;
  * @event progress
  */
 vjs.Player.prototype.onProgress = function(){
-  // Add custom event for when source is finished downloading.
+  // Add custom event for when sources is finished downloading.
   if (this.bufferedPercent() == 1) {
     this.trigger('loadedalldata');
   }
@@ -3776,11 +3776,11 @@ vjs.Player.prototype.selectSource = function(sources){
 
     // Check if the browser supports this technology
     if (tech.isSupported()) {
-      // Loop through each source object
+      // Loop through each sources object
       for (var a=0,b=sources;a<b.length;a++) {
         var source = b[a];
 
-        // Check if source can be played with this technology
+        // Check if sources can be played with this technology
         if (tech['canPlaySource'](source)) {
           return { source: source, tech: techName };
         }
@@ -3792,25 +3792,25 @@ vjs.Player.prototype.selectSource = function(sources){
 };
 
 /**
- * The source function updates the video source
+ * The sources function updates the video sources
  *
  * There are three types of variables you can pass as the argument.
  *
  * **URL String**: A URL to the the video file. Use this method if you are sure
- * the current playback technology (HTML5/Flash) can support the source you
+ * the current playback technology (HTML5/Flash) can support the sources you
  * provide. Currently only MP4 files can be used in both HTML5 and Flash.
  *
  *     myPlayer.src("http://www.example.com/path/to/video.mp4");
  *
  * **Source Object (or element):** A javascript object containing information
- * about the source file. Use this method if you want the player to determine if
+ * about the sources file. Use this method if you want the player to determine if
  * it can support the file using the type information.
  *
  *     myPlayer.src({ type: "video/mp4", src: "http://www.example.com/path/to/video.mp4" });
  *
- * **Array of Source Objects:** To provide multiple versions of the source so
+ * **Array of Source Objects:** To provide multiple versions of the sources so
  * that it can be played using HTML5 across browsers you can use an array of
- * source objects. Video.js will detect which version is supported and load that
+ * sources objects. Video.js will detect which version is supported and load that
  * file.
  *
  *     myPlayer.src([
@@ -3819,11 +3819,11 @@ vjs.Player.prototype.selectSource = function(sources){
  *       { type: "video/ogg", src: "http://www.example.com/path/to/video.ogv" }
  *     ]);
  *
- * @param  {String|Object|Array=} source The source URL, object, or array of sources
+ * @param  {String|Object|Array=} source The sources URL, object, or array of sources
  * @return {vjs.Player} self
  */
 vjs.Player.prototype.src = function(source){
-  // Case: Array of source objects to choose from and pick the best to play
+  // Case: Array of sources objects to choose from and pick the best to play
   if (source instanceof Array) {
 
     var sourceTech = this.selectSource(source),
@@ -3833,10 +3833,10 @@ vjs.Player.prototype.src = function(source){
         source = sourceTech.source;
         techName = sourceTech.tech;
 
-      // If this technology is already loaded, set source
+      // If this technology is already loaded, set sources
       if (techName == this.techName) {
-        this.src(source); // Passing the source object
-      // Otherwise load this technology with chosen source
+        this.src(source); // Passing the sources object
+      // Otherwise load this technology with chosen sources
       } else {
         this.loadTech(techName, source);
       }
@@ -3858,7 +3858,7 @@ vjs.Player.prototype.src = function(source){
 
   // Case: URL String (http://myvideo...)
   } else {
-    // Cache for getting last set source
+    // Cache for getting last set sources
     this.cache_.src = source;
 
     if (!this.isReady_) {
@@ -3917,14 +3917,14 @@ vjs.Player.prototype.loop = function(value){
 };
 
 /**
- * the url of the poster image source
+ * the url of the poster image sources
  * @type {String}
  * @private
  */
 vjs.Player.prototype.poster_;
 
 /**
- * get or set the poster image source url
+ * get or set the poster image sources url
  *
  * ##### EXAMPLE:
  *
@@ -3934,7 +3934,7 @@ vjs.Player.prototype.poster_;
  *     // setting
  *     myPlayer.poster('http://example.com/myImage.jpg');
  *
- * @param  {String=} [src] Poster image source URL
+ * @param  {String=} [src] Poster image sources URL
  * @return {String} poster URL when getting
  * @return {vjs.Player} self when setting
  */
@@ -4178,7 +4178,7 @@ vjs.Player.prototype.listenForUserActivity = function(){
 
 // TODO
 // currentSrcList: the array of sources including other formats and bitrates
-// playList: array of source lists in order of playback
+// playList: array of sources lists in order of playback
 
 // RequestFullscreen API
 (function(){
@@ -5268,12 +5268,12 @@ vjs.Html5 = vjs.MediaTechController.extend({
 
     var source = options['source'];
 
-    // If the element source is already set, we may have missed the loadstart event, and want to trigger it.
-    // We don't want to set the source again and interrupt playback.
+    // If the element sources is already set, we may have missed the loadstart event, and want to trigger it.
+    // We don't want to set the sources again and interrupt playback.
     if (source && this.el_.currentSrc === source.src && this.el_.networkState > 0) {
       player.trigger('loadstart');
 
-    // Otherwise set the source if one was provided.
+    // Otherwise set the sources if one was provided.
     } else if (source) {
       this.el_.src = source.src;
     }
@@ -5513,7 +5513,7 @@ vjs.Html5.disposeMediaElement = function(el){
     el.parentNode.removeChild(el);
   }
 
-  // remove any child track or source nodes to prevent their loading
+  // remove any child track or sources nodes to prevent their loading
   while(el.hasChildNodes()) {
     el.removeChild(el.firstChild);
   }
@@ -5603,7 +5603,7 @@ vjs.Flash = vjs.MediaTechController.extend({
         lastSeekTarget
     ;
 
-    // If source was supplied pass as a flash var.
+    // If sources was supplied pass as a flash var.
     if (source) {
       if (source.type && vjs.Flash.isStreamingType(source.type)) {
         var parts = vjs.Flash.streamToParts(source.src);
@@ -5662,7 +5662,7 @@ vjs.Flash = vjs.MediaTechController.extend({
 
     // There's on particularly annoying issue with this method which is that Firefox throws a security error on an offsite Flash object loaded into a dynamically created iFrame.
     // Even though the iframe was inserted into a page on the web, Firefox + Flash considers it a local app trying to access an internet file.
-    // I tried mulitple ways of setting the iframe src attribute but couldn't find a src that worked well. Tried a real/fake source, in/out of domain.
+    // I tried mulitple ways of setting the iframe src attribute but couldn't find a src that worked well. Tried a real/fake sources, in/out of domain.
     // Also tried a method from stackoverflow that caused a security error in all browsers. http://stackoverflow.com/questions/2486901/how-to-set-document-domain-for-a-dynamically-generated-iframe
     // In the end the solution I found to work was setting the iframe window.location.href right before doing a document.write of the Flash object.
     // The only downside of this it seems to trigger another http request to the original page (no matter what's put in the href). Not sure why that is.
@@ -5699,7 +5699,7 @@ vjs.Flash = vjs.MediaTechController.extend({
       //  var temp = vjs.createEl('a', { id:'asdf', innerHTML: 'asdf' } );
       //  iDoc.body.appendChild(temp);
 
-      // Tried embedding the flash object through javascript in the iframe source.
+      // Tried embedding the flash object through javascript in the iframe sources.
       // This works in webkit but still triggers the firefox security error
       // iFrm.src = 'javascript: document.write('"+vjs.Flash.getEmbedCode(options['swf'], flashVars, params, attributes)+"');";
 
@@ -5802,13 +5802,13 @@ vjs.Flash.prototype.src = function(src){
     this.setRtmpStream(src.stream);
   }
   else {
-    // Make sure source URL is abosolute.
+    // Make sure sources URL is abosolute.
     src = vjs.getAbsoluteURL(src);
     this.el_.vjs_src(src);
   }
 
-  // Currently the SWF doesn't autoplay if you load a source later.
-  // e.g. Load player w/ no source, wait 2s, set src.
+  // Currently the SWF doesn't autoplay if you load a sources later.
+  // e.g. Load player w/ no sources, wait 2s, set src.
   if (this.player_.autoplay()) {
     var tech = this;
     setTimeout(function(){ tech.play(); }, 0);
@@ -6132,7 +6132,7 @@ vjs.MediaLoader = vjs.Component.extend({
       }
     } else {
       // // Loop through playback technologies (HTML5, Flash) and check for support.
-      // // Then load the best source.
+      // // Then load the best sources.
       // // A few assumptions here:
       // //   All playback technologies respect preload false.
       player.src(player.options_['sources']);

@@ -184,7 +184,7 @@ var scrawl = function (options) {
                     me._addColorSelect(target);
 
                     me.brushColor = color;
-                    context.globalCompositeOperation = "source-over";
+                    context.globalCompositeOperation = "sources-over";
                     context.lineWidth = me.brushWidth;
                     context.strokeStyle = color;
                 }
@@ -198,7 +198,7 @@ var scrawl = function (options) {
                 if (!!size) {
                     me._addBESelect(target);
 
-                    context.globalCompositeOperation = "source-over";
+                    context.globalCompositeOperation = "sources-over";
                     context.lineWidth = parseInt(size);
                     context.strokeStyle = me.brushColor;
                     me.brushWidth = context.lineWidth;

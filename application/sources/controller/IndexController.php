@@ -9,7 +9,7 @@
  * |  Mail: Overcome.wan@Gmail.com
  * '------------------------------------------------------------------------------------------------------------------*/
 
-namespace app\source\controller;
+namespace app\sources\controller;
 
 use app\common\controller\BaseFrontendController;
 use app\common\model\Comments;
@@ -179,6 +179,35 @@ class IndexController extends BaseFrontendController
             $res = ["code" => 200, "msg" => 'success'];
             return json($res);
         }
+    }
+
+    /**
+     * 资源分享
+     */
+    public function resources()
+    {
+        return $this->fetch();
+    }
+
+    public function about()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 资源分享
+     */
+    public function imageToText()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 资源分享
+     */
+    public function imageToText2()
+    {
+        return $this->fetch();
     }
 
 }

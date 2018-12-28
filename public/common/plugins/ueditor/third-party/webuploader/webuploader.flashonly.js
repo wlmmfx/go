@@ -1981,7 +1981,7 @@
     
                         // 如果压缩后，比原来还大则不用压缩后的。
                         if ( blob.size < size ) {
-                            // file.source.destroy && file.source.destroy();
+                            // file.sources.destroy && file.sources.destroy();
                             file.source = blob;
                             file.size = blob.size;
     
@@ -2027,7 +2027,7 @@
          * 文件类
          * @class File
          * @constructor 构造函数
-         * @grammar new File( source ) => File
+         * @grammar new File( sources ) => File
          * @param {Lib.File} source [lib.File](#Lib.File)实例, 此source对象是带有Runtime信息的。
          */
         function WUFile( source ) {

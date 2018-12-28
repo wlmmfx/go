@@ -659,7 +659,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
 
         /**
         * function to parse JSON in *single* quotes. (jquery automatically parse only double quotes)
-        * That allows such code as: <a data-source="{'a': 'b', 'c': 'd'}">
+        * That allows such code as: <a data-sources="{'a': 'b', 'c': 'd'}">
         * safe = true --> means no exception will be thrown
         * for details see http://stackoverflow.com/questions/7410348/how-to-set-json-format-to-html5-data-attributes-in-the-jquery
         */
@@ -1476,7 +1476,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             this.options.name = this.options.name || this.$element.attr('id');
              
             //create input of specified type. Input needed already here to convert value for initial display (e.g. show text by id for select)
-            //also we set scope option to have access to element inside input specific callbacks (e. g. source as function)
+            //also we set scope option to have access to element inside input specific callbacks (e. g. sources as function)
             this.options.scope = this.$element[0]; 
             this.input = $.fn.editableutils.createInput(this.options);
             if(!this.input) {
@@ -1614,7 +1614,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 return;
             }
             
-            //if input has `value2htmlFinal` method, we pass callback in third param to be called when source is loaded
+            //if input has `value2htmlFinal` method, we pass callback in third param to be called when sources is loaded
             if(this.input.value2htmlFinal) {
                 return this.input.value2html(this.value, this.$element[0], this.options.display, response); 
             //if display method defined --> use it    
@@ -2229,7 +2229,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
           <!-- empty -->
           <a href="#" data-name="username" data-type="text" class="editable-click editable-empty" data-value="" title="Username">Empty</a>
           <!-- non-empty -->
-          <a href="#" data-name="group" data-type="select" data-source="/groups" data-value="1" class="editable-click" title="Group">Operator</a>
+          <a href="#" data-name="group" data-type="select" data-sources="/groups" data-value="1" class="editable-click" title="Group">Operator</a>
         </div>     
         
         <script>
@@ -2450,7 +2450,7 @@ To create your own input you can inherit from this class.
         @default input-medium
         **/         
         inputclass: 'input-medium',
-        //scope for external methods (e.g. source defined as function)
+        //scope for external methods (e.g. sources defined as function)
         //for internal use only
         scope: null,
         
@@ -2463,7 +2463,7 @@ To create your own input you can inherit from this class.
 }(window.jQuery));
 
 /**
-List - abstract class for inputs that have source option loaded from js array or via ajax
+List - abstract class for inputs that have sources option loaded from js array or via ajax
 
 @class list
 @extends abstractinput
@@ -2509,7 +2509,7 @@ List - abstract class for inputs that have source option loaded from js array or
                     deferred.resolve();
                };
             
-            //for null value just call success without loading source
+            //for null value just call success without loading sources
             if(value === null) {
                success.call(this);   
             } else {
@@ -2522,12 +2522,12 @@ List - abstract class for inputs that have source option loaded from js array or
         // ------------- additional functions ------------
 
         onSourceReady: function (success, error) {
-            //run source if it function
+            //run sources if it function
             var source;
             if ($.isFunction(this.options.source)) {
                 source = this.options.source.call(this.options.scope);
                 this.sourceData = null;
-                //note: if function returns the same source as URL - sourceData will be taken from cahce and no extra request performed
+                //note: if function returns the same sources as URL - sourceData will be taken from cahce and no extra request performed
             } else {
                 source = this.options.source;
             }            
@@ -2559,7 +2559,7 @@ List - abstract class for inputs that have source option loaded from js array or
                     cache = $(document).data(cacheID);
 
                     //check for cached data
-                    if (cache.loading === false && cache.sourceData) { //take source from cache
+                    if (cache.loading === false && cache.sourceData) { //take sources from cache
                         this.sourceData = cache.sourceData;
                         this.doPrepend();
                         success.call(this);
@@ -2596,7 +2596,7 @@ List - abstract class for inputs that have source option loaded from js array or
                             if(cache) {
                                 //store result in cache
                                 cache.sourceData = this.sourceData;
-                                //run success callbacks for other fields waiting for this source
+                                //run success callbacks for other fields waiting for this sources
                                 $.each(cache.callbacks, function () { this.call(); }); 
                             }
                             this.doPrepend();
@@ -2604,7 +2604,7 @@ List - abstract class for inputs that have source option loaded from js array or
                         } else {
                             error.call(this);
                             if(cache) {
-                                //run error callbacks for other fields waiting for this source
+                                //run error callbacks for other fields waiting for this sources
                                 $.each(cache.err_callbacks, function () { this.call(); }); 
                             }
                         }
@@ -2739,7 +2739,7 @@ List - abstract class for inputs that have source option loaded from js array or
         If **array** - it should be in format: `[{value: 1, text: "text1"}, {value: 2, text: "text2"}, ...]`  
         For compability, object format is also supported: `{"1": "text1", "2": "text2" ...}` but it does not guarantee elements order.
         
-        If **string** - considered ajax url to load items. In that case results will be cached for fields with the same source and name. See also `sourceCache` option.
+        If **string** - considered ajax url to load items. In that case results will be cached for fields with the same sources and name. See also `sourceCache` option.
           
         If **function**, it should return data in format above (since 1.4.0).
         
@@ -2769,7 +2769,7 @@ List - abstract class for inputs that have source option loaded from js array or
         **/          
         sourceError: 'Error when loading list',
         /**
-        if <code>true</code> and source is **string url** - results will be cached for fields with the same source.    
+        if <code>true</code> and sources is **string url** - results will be cached for fields with the same sources.    
         Usefull for editable column in grid to prevent extra requests.
         
         @property sourceCache 
@@ -3043,7 +3043,7 @@ Select (dropdown)
 $(function(){
     $('#status').editable({
         value: 2,    
-        source: [
+        sources: [
               {value: 1, text: 'Active'},
               {value: 2, text: 'Blocked'},
               {value: 3, text: 'Deleted'}
@@ -3140,7 +3140,7 @@ Internally value stored as javascript array of values.
 $(function(){
     $('#options').editable({
         value: [2, 3],    
-        source: [
+        sources: [
               {value: 1, text: 'option1'},
               {value: 2, text: 'option2'},
               {value: 3, text: 'option3'}
@@ -3512,7 +3512,7 @@ To make it **bootstrap-styled** you can use css from [here](https://github.com/t
 
     <link href="select2-bootstrap.css" rel="stylesheet" type="text/css"></link>    
     
-**Note:** currently `autotext` feature does not work for select2 with `ajax` remote source.    
+**Note:** currently `autotext` feature does not work for select2 with `ajax` remote sources.    
 You need initially put both `data-value` and element's text youself:    
 
     <a href="#" data-type="select2" data-value="1">Text1</a>
@@ -3526,9 +3526,9 @@ You need initially put both `data-value` and element's text youself:
 <a href="#" id="country" data-type="select2" data-pk="1" data-value="ru" data-url="/post" data-title="Select country"></a>
 <script>
 $(function(){
-    //local source
+    //local sources
     $('#country').editable({
-        source: [
+        sources: [
               {id: 'gb', text: 'Great Britain'},
               {id: 'us', text: 'United States'},
               {id: 'ru', text: 'Russia'}
@@ -3537,11 +3537,11 @@ $(function(){
            multiple: true
         }
     });
-    //remote source (simple)
+    //remote sources (simple)
     $('#country').editable({
-        source: '/getCountries'  
+        sources: '/getCountries'  
     });
-    //remote source (advanced)
+    //remote sources (advanced)
     $('#country').editable({
         select2: {
             placeholder: 'Select Country',
@@ -3591,10 +3591,10 @@ $(function(){
             options.select2.placeholder = options.placeholder;
         }
        
-        //if not `tags` mode, use source
+        //if not `tags` mode, use sources
         if(!options.select2.tags && options.source) {
             var source = options.source;
-            //if source is function, call it (once!)
+            //if sources is function, call it (once!)
             if ($.isFunction(options.source)) {
                 source = options.source.call(options.scope);
             }               
@@ -3624,7 +3624,7 @@ $(function(){
         this.isRemote = ('ajax' in this.options.select2);
         
         //store function returning ID of item
-        //should be here as used inautotext for local source
+        //should be here as used inautotext for local sources
         this.idFunc = this.options.select2.id;
         if (typeof(this.idFunc) !== "function") {
             var idKey = this.idFunc || 'id';
@@ -3673,7 +3673,7 @@ $(function(){
            } else if(this.sourceData) {
               data = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc); 
            } else {
-              //can not get list of possible values (e.g. autotext for select2 with ajax source) 
+              //can not get list of possible values (e.g. autotext for select2 with ajax sources) 
            }
            
            //data may be array (when multiple values allowed)          
@@ -3697,7 +3697,7 @@ $(function(){
        }, 
        
        value2input: function(value) {
-           //for local source use data directly from source (to allow autotext)
+           //for local sources use data directly from sources (to allow autotext)
            /*
            if(!this.isRemote && !this.isMultiple) {
                var items = $.fn.editableutils.itemsByValue(value, this.sourceData, this.idFunc);
@@ -3708,10 +3708,10 @@ $(function(){
            } 
            */
            
-           //for remote source just set value, text is updated by initSelection    
+           //for remote sources just set value, text is updated by initSelection    
            this.$input.val(value).trigger('change', true); //second argument needed to separate initial change from user's click (for autosubmit)
            
-           //if remote source AND no user's initSelection provided --> try to use element's text
+           //if remote sources AND no user's initSelection provided --> try to use element's text
            if(this.isRemote && !this.isMultiple && !this.options.select2.initSelection) {
                var customId = this.options.select2.id,
                    customText = this.options.select2.formatSelection;
@@ -3755,7 +3755,7 @@ $(function(){
         },
         
         /*
-        Converts source from x-editable format: {value: 1, text: "1"} to
+        Converts sources from x-editable format: {value: 1, text: "1"} to
         select2 format: {id: 1, text: "1"}
         */
         convertSource: function(source) {
@@ -6558,15 +6558,15 @@ Automatically shown in inline mode.
 }(window.jQuery));
 /**
 Typeahead input (bootstrap only). Based on Twitter Bootstrap [typeahead](http://twitter.github.com/bootstrap/javascript.html#typeahead).  
-Depending on `source` format typeahead operates in two modes:
+Depending on `sources` format typeahead operates in two modes:
 
 * **strings**:  
-  When `source` defined as array of strings, e.g. `['text1', 'text2', 'text3' ...]`.  
-  User can submit one of these strings or any text entered in input (even if it is not matching source).
+  When `sources` defined as array of strings, e.g. `['text1', 'text2', 'text3' ...]`.  
+  User can submit one of these strings or any text entered in input (even if it is not matching sources).
   
 * **objects**:  
-  When `source` defined as array of objects, e.g. `[{value: 1, text: "text1"}, {value: 2, text: "text2"}, ...]`.  
-  User can submit only values that are in source (otherwise `null` is submitted). This is more like *dropdown* behavior.
+  When `sources` defined as array of objects, e.g. `[{value: 1, text: "text1"}, {value: 2, text: "text2"}, ...]`.  
+  User can submit only values that are in sources (otherwise `null` is submitted). This is more like *dropdown* behavior.
 
 @class typeahead
 @extends list
@@ -6578,7 +6578,7 @@ Depending on `source` format typeahead operates in two modes:
 $(function(){
     $('#country').editable({
         value: 'ru',    
-        source: [
+        sources: [
               {value: 'gb', text: 'Great Britain'},
               {value: 'us', text: 'United States'},
               {value: 'ru', text: 'Russia'}
@@ -6609,7 +6609,7 @@ $(function(){
         renderList: function() {
             this.$input = this.$tpl.is('input') ? this.$tpl : this.$tpl.find('input[type="text"]');
             
-            //set source of typeahead
+            //set sources of typeahead
             this.options.typeahead.source = this.sourceData;
             
             //apply typeahead
@@ -6656,7 +6656,7 @@ $(function(){
                 if(items.length && items[0].text.toLowerCase() === this.$input.val().toLowerCase()) {
                    return value;
                 } else {
-                   return null; //entered string not found in source
+                   return null; //entered string not found in sources
                 }                 
             } else {
                 return this.$input.val();

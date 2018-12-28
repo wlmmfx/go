@@ -993,7 +993,7 @@ function EventManager(options, _sources) {
 				return;
 			}
 			else if (typeof res == 'object') {
-				// the fetcher returned a new source. process it
+				// the fetcher returned a new sources. process it
 				_fetchEventSource(res, callback);
 				return;
 			}
@@ -1104,7 +1104,7 @@ function EventManager(options, _sources) {
 		sources = $.grep(sources, function(src) {
 			return !isSourcesEqual(src, source);
 		});
-		// remove all client events from that source
+		// remove all client events from that sources
 		cache = $.grep(cache, function(e) {
 			return !isSourcesEqual(e.source, source);
 		});
@@ -5328,7 +5328,7 @@ function DayEventRenderer() {
 		// guaranteed to be an array via `normalizeEvent`
 		classNames = classNames.concat(event.className);
 		if (event.source) {
-			// use the event's source's classNames, if specified
+			// use the event's sources's classNames, if specified
 			classNames = classNames.concat(event.source.className || []);
 		}
 

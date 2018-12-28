@@ -7,15 +7,15 @@
  */
 return [
     'app_title'          => 'Tinywan杂货摊',
-    //    // 是否开启路由
+    // 是否开启路由
     'url_route_on'           => true,
     // 是否强制使用路由
-    'url_route_must'         => false,
+    'url_route_must'         => true,
     // 视图输出字符串内容替换
     'view_replace_str' => [
         "__COMMON__" => "common",
-        "__STATIC__" => "/source",
-        "__PLUG__" => "/source/plug",
+        "__STATIC__" => "/sources",
+        "__PLUG__" => "/sources/plug",
     ],
     'template'               => [
         // 模板引擎类型 支持 php think 支持扩展

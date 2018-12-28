@@ -1284,7 +1284,7 @@ function get_sina_short_url($source, $url_long){
     // 新浪生成短链接接口
     $api = 'http://api.t.sina.com.cn/short_url/shorten.json';
     // 请求url
-    $request_url = sprintf($api.'?source=%s%s', $source, $url_param);
+    $request_url = sprintf($api.'?sources=%s%s', $source, $url_param);
     $result = array();
     // 执行请求
     $ch = curl_init();

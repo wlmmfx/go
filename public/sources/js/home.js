@@ -1,12 +1,4 @@
-﻿/*
-
-@Name：不落阁整站模板源码 
-@Author：Absolutely 
-@Site：http://www.lyblogs.cn
-
-*/
-
-layui.use('jquery', function () {
+﻿layui.use('jquery', function () {
     var $ = layui.jquery;
     $(function () {
         //播放公告
@@ -25,7 +17,7 @@ layui.use('jquery', function () {
         }, interval);
     }
     //画canvas
-    DrawCanvas();
+    //DrawCanvas();
 });
 
 function DrawCanvas() {
@@ -56,7 +48,7 @@ function DrawCanvas() {
         dotCount = 200;
         dotRadius = 150;
         dotDistance = 80;
-    } 
+    }
     //默认鼠标位置 canvas 中间
     var mousePosition = {
         x: 50 * canvas.width / 100,
@@ -187,7 +179,7 @@ function DrawCanvas() {
         mousePosition.y = e.pageY;
     });
 
-    //鼠标移出canvas
+    //鼠标移出canvasshare.baidu
     $('canvas').on('mouseleave', function (e) {
         mousePosition.x = canvas.width / 2;
         mousePosition.y = canvas.height / 2;

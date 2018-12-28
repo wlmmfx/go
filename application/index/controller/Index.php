@@ -44,11 +44,10 @@ class Index extends Controller
         return '是否AJAX请求:' . var_export(request()->header(), true);
     }
 
-    public function data()
+    public function index()
     {
-        // 通过hook方法注入动态方法
-        $info = $this->request->user(9);
-        halt($info);
+        halt(111111111111111);
+        return $this->fetch();
     }
 
 }

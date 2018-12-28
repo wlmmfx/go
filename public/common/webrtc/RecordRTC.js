@@ -2403,7 +2403,7 @@ if (typeof RecordRTC !== 'undefined') {
     RecordRTC.MediaStreamRecorder = MediaStreamRecorder;
 }
 
-// source code from: http://typedarray.org/wp-content/projects/WebAudioRecorder/script.js
+// sources code from: http://typedarray.org/wp-content/projects/WebAudioRecorder/script.js
 // https://github.com/mattdiamond/Recorderjs#license-mit
 // ______________________
 // StereoAudioRecorder.js

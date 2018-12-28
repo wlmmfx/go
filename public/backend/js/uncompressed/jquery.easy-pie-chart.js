@@ -7,7 +7,7 @@ and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
 
 Built on top of the jQuery library (http://jquery.com)
 
-@source: http://github.com/rendro/easy-pie-chart/
+@sources: http://github.com/rendro/easy-pie-chart/
 @autor: Robert Fleischmann
 @version: 1.2.5
 

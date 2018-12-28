@@ -497,7 +497,7 @@ var mimeTypesForPlaylist_ = function mimeTypesForPlaylist_(master, media) {
   // for both scenarios
   for (var groupId in audioGroup) {
     if (previousGroup && !!audioGroup[groupId].uri !== !!previousGroup.uri) {
-      // one source buffer with muxed video and audio and another for
+      // one sources buffer with muxed video and audio and another for
       // the alternate audio
       return ['video/' + container + '; codecs="' + codecs.videoCodec + codecs.videoObjectTypeIndicator + ', mp4a.40.' + codecs.audioProfile + '"', 'audio/' + container + '; codecs="mp4a.40.' + codecs.audioProfile + '"'];
     }
@@ -570,7 +570,7 @@ var MasterPlaylistController = (function (_videojs$EventTarget) {
     this.audioinfo_ = null;
     this.mediaSource.on('audioinfo', this.handleAudioinfoUpdate_.bind(this));
 
-    // load the media source into the player
+    // load the media sources into the player
     this.mediaSource.addEventListener('sourceopen', this.handleSourceOpen_.bind(this));
 
     this.seekable_ = _videoJs2['default'].createTimeRanges();
@@ -1340,8 +1340,8 @@ var MasterPlaylistController = (function (_videojs$EventTarget) {
   }, {
     key: 'handleSourceOpen_',
     value: function handleSourceOpen_() {
-      // Only attempt to create the source buffer if none already exist.
-      // handleSourceOpen is also called when we are "re-opening" a source buffer
+      // Only attempt to create the sources buffer if none already exist.
+      // handleSourceOpen is also called when we are "re-opening" a sources buffer
       // after `endOfStream` has been called (in response to a seek for instance)
       try {
         this.setupSourceBuffers_();
@@ -1352,7 +1352,7 @@ var MasterPlaylistController = (function (_videojs$EventTarget) {
 
       // if autoplay is enabled, begin playback. This is duplicative of
       // code in video.js but is required because play() must be invoked
-      // *after* the media source has opened.
+      // *after* the media sources has opened.
       if (this.tech_.autoplay()) {
         this.tech_.play();
       }
@@ -1661,7 +1661,7 @@ var MasterPlaylistController = (function (_videojs$EventTarget) {
     }
 
     /**
-     * setup our internal source buffers on our segment Loaders
+     * setup our internal sources buffers on our segment Loaders
      *
      * @private
      */
@@ -4054,9 +4054,9 @@ var initPlugin = function initPlugin(player, options) {
   };
 
   /**
-   * Set the source on the player element, play, and seek if necessary
+   * Set the sources on the player element, play, and seek if necessary
    *
-   * @param {Object} sourceObj An object specifying the source url and mime-type to play
+   * @param {Object} sourceObj An object specifying the sources url and mime-type to play
    * @private
    */
   var setSource = function setSource(sourceObj) {
@@ -4072,14 +4072,14 @@ var initPlugin = function initPlugin(player, options) {
   };
 
   /**
-   * Attempt to get a source from either the built-in getSource function
+   * Attempt to get a sources from either the built-in getSource function
    * or a custom function provided via the options
    *
    * @private
    */
   var errorHandler = function errorHandler() {
-    // Do not attempt to reload the source if a source-reload occurred before
-    // 'errorInterval' time has elapsed since the last source-reload
+    // Do not attempt to reload the sources if a sources-reload occurred before
+    // 'errorInterval' time has elapsed since the last sources-reload
     if (Date.now() - lastCalled < localOptions.errorInterval * 1000) {
       return;
     }
@@ -4124,7 +4124,7 @@ var initPlugin = function initPlugin(player, options) {
 };
 
 /**
- * Reload the source when an error is detected as long as there
+ * Reload the sources when an error is detected as long as there
  * wasn't an error previously within the last 30 seconds
  *
  * @param {Object} [options] an object with plugin options
@@ -4308,7 +4308,7 @@ var _videoJs = (typeof window !== "undefined" ? window['videojs'] : typeof globa
 
 var _videoJs2 = _interopRequireDefault(_videoJs);
 
-var _sourceUpdater = require('./source-updater');
+var _sourceUpdater = require('./sources-updater');
 
 var _sourceUpdater2 = _interopRequireDefault(_sourceUpdater);
 
@@ -4332,7 +4332,7 @@ var _mediaSegmentRequest = require('./media-segment-request');
 var CHECK_BUFFER_DELAY = 500;
 
 /**
- * Determines if we should call endOfStream on the media source based
+ * Determines if we should call endOfStream on the media sources based
  * on the state of the buffer or if appened segment was the final
  * segment in the playlist.
  *
@@ -4590,8 +4590,8 @@ var SegmentLoader = (function (_videojs$EventTarget) {
     key: 'couldBeginLoading_',
     value: function couldBeginLoading_() {
       return this.playlist_ && (
-      // the source updater is created when init_ is called, so either having a
-      // source updater or being in the INIT state with a mimeType is enough
+      // the sources updater is created when init_ is called, so either having a
+      // sources updater or being in the INIT state with a mimeType is enough
       // to say we have all the needed configuration to start loading.
       this.sourceUpdater_ || this.mimeType_ && this.state === 'INIT') && !this.paused();
     }
@@ -4808,7 +4808,7 @@ var SegmentLoader = (function (_videojs$EventTarget) {
     }
 
     /**
-     * Remove any data in the source buffer between start and end times
+     * Remove any data in the sources buffer between start and end times
      * @param {Number} start - the start time of the region to remove from the buffer
      * @param {Number} end - the end time of the region to remove from the buffer
      */
@@ -5053,7 +5053,7 @@ var SegmentLoader = (function (_videojs$EventTarget) {
         // when a key is defined for this segment, the encrypted bytes
         encryptedBytes: null,
         // The target timestampOffset for this segment when we append it
-        // to the source buffer
+        // to the sources buffer
         timestampOffset: null,
         // The timeline that the segment is in
         timeline: segment.timeline,
@@ -5091,7 +5091,7 @@ var SegmentLoader = (function (_videojs$EventTarget) {
 
     /**
      * trim the back buffer so that we don't have too much data
-     * in the source buffer
+     * in the sources buffer
      *
      * @private
      *
@@ -5108,7 +5108,7 @@ var SegmentLoader = (function (_videojs$EventTarget) {
       // buffer and a very conservative "garbage collector"
       // We manually clear out the old buffer to ensure
       // we don't trigger the QuotaExceeded error
-      // on the source buffer during subsequent appends
+      // on the sources buffer during subsequent appends
 
       // If we have a seekable range use that as the limit for what can be removed safely
       // otherwise remove anything older than 1 minute before the current play head
@@ -5473,7 +5473,7 @@ module.exports = exports['default'];
 },{"./bin-utils":2,"./config":3,"./media-segment-request":6,"./playlist":9,"./source-updater":15,"global/window":30,"videojs-contrib-media-sources/es5/remove-cues-from-track.js":71}],15:[function(require,module,exports){
 (function (global){
 /**
- * @file source-updater.js
+ * @file sources-updater.js
  */
 'use strict';
 
@@ -5681,7 +5681,7 @@ var SourceUpdater = (function () {
     }
 
     /**
-     * dispose of the source updater and the underlying sourceBuffer
+     * dispose of the sources updater and the underlying sourceBuffer
      */
   }, {
     key: 'dispose',
@@ -6019,7 +6019,7 @@ var SyncController = (function (_videojs$EventTarget) {
    * a segment-index in the current playlist.
    *
    * @param {Playlist} media - The playlist that needs a sync-point
-   * @param {Number} duration - Duration of the MediaSource (Infinite if playing a live source)
+   * @param {Number} duration - Duration of the MediaSource (Infinite if playing a live sources)
    * @param {Number} currentTimeline - The last timeline from which a segment was loaded
    * @returns {Object} - A sync-point object
    */
@@ -6386,7 +6386,7 @@ var VTTSegmentLoader = (function (_SegmentLoader) {
     _get(Object.getPrototypeOf(VTTSegmentLoader.prototype), 'constructor', this).call(this, options);
 
     // SegmentLoader requires a MediaSource be specified or it will throw an error;
-    // however, VTTSegmentLoader has no need of a media source, so delete the reference
+    // however, VTTSegmentLoader has no need of a media sources, so delete the reference
     this.mediaSource_ = null;
 
     this.subtitlesTrack_ = null;
@@ -6502,7 +6502,7 @@ var VTTSegmentLoader = (function (_SegmentLoader) {
     }
 
     /**
-     * Remove any data in the source buffer between start and end times
+     * Remove any data in the sources buffer between start and end times
      * @param {Number} start - the start time of the region to remove from the buffer
      * @param {Number} end - the end time of the region to remove from the buffer
      */
@@ -6865,11 +6865,11 @@ module.exports = exports['default'];
  * Copyright 2009-2010 Emily Stark, Mike Hamburg, Dan Boneh.
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
+ * Redistribution and use in sources and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
  *
- * 1. Redistributions of source code must retain the above copyright
+ * 1. Redistributions of sources code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above
@@ -15307,10 +15307,10 @@ var durationOfVideo = function durationOfVideo(duration) {
   return dur;
 };
 /**
- * Add text track data to a source handler given the captions and
+ * Add text track data to a sources handler given the captions and
  * metadata from the buffer.
  *
- * @param {Object} sourceHandler the flash or virtual source buffer
+ * @param {Object} sourceHandler the flash or virtual sources buffer
  * @param {Array} captionArray an array of caption data
  * @param {Array} cue an array of meta data
  * @private
@@ -15538,7 +15538,7 @@ var _cleanupTextTracks = require('./cleanup-text-tracks');
  * Create text tracks on video.js if they exist on a segment.
  *
  * @param {Object} sourceBuffer the VSB or FSB
- * @param {Object} mediaSource the HTML or Flash media source
+ * @param {Object} mediaSource the HTML or Flash media sources
  * @param {Object} segment the segment that may contain the text track
  * @private
  */
@@ -15596,7 +15596,7 @@ module.exports = exports["default"];
 },{}],67:[function(require,module,exports){
 (function (global){
 /**
- * @file flash-media-source.js
+ * @file flash-media-sources.js
  */
 'use strict';
 
@@ -15622,7 +15622,7 @@ var _videoJs = (typeof window !== "undefined" ? window['videojs'] : typeof globa
 
 var _videoJs2 = _interopRequireDefault(_videoJs);
 
-var _flashSourceBuffer = require('./flash-source-buffer');
+var _flashSourceBuffer = require('./flash-sources-buffer');
 
 var _flashSourceBuffer2 = _interopRequireDefault(_flashSourceBuffer);
 
@@ -15704,11 +15704,11 @@ var FlashMediaSource = (function (_videojs$EventTarget) {
     // intentional no-op
 
     /**
-     * Create a new flash source buffer and add it to our flash media source.
+     * Create a new flash sources buffer and add it to our flash media sources.
      *
      * @link https://developer.mozilla.org/en-US/docs/Web/API/MediaSource/addSourceBuffer
-     * @param {String} type the content-type of the source
-     * @return {Object} the flash source buffer
+     * @param {String} type the content-type of the sources
+     * @return {Object} the flash sources buffer
      */
 
   }, {
@@ -15719,7 +15719,7 @@ var FlashMediaSource = (function (_videojs$EventTarget) {
 
       // if this is an FLV type, we'll push data to flash
       if (parsedType.type === 'video/mp2t') {
-        // Flash source buffers
+        // Flash sources buffers
         sourceBuffer = new _flashSourceBuffer2['default'](this);
       } else {
         throw new Error('NotSupportedError (Video.js)');
@@ -15812,7 +15812,7 @@ module.exports = exports['default'];
 },{"./cleanup-text-tracks":63,"./codec-utils":64,"./flash-constants":66,"./flash-source-buffer":68,"global/document":29}],68:[function(require,module,exports){
 (function (global){
 /**
- * @file flash-source-buffer.js
+ * @file flash-sources-buffer.js
  */
 'use strict';
 
@@ -15911,7 +15911,7 @@ var toDecimalPlaces = function toDecimalPlaces(num, places) {
  * A SourceBuffer implementation for Flash rather than HTML.
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
- * @param {Object} mediaSource the flash media source
+ * @param {Object} mediaSource the flash media sources
  * @class FlashSourceBuffer
  * @extends videojs.EventTarget
  */
@@ -16559,7 +16559,7 @@ module.exports = exports['default'];
 },{"global/window":30,"mux.js/lib/flv":44}],70:[function(require,module,exports){
 (function (global){
 /**
- * @file html-media-source.js
+ * @file html-media-sources.js
  */
 'use strict';
 
@@ -16589,7 +16589,7 @@ var _videoJs = (typeof window !== "undefined" ? window['videojs'] : typeof globa
 
 var _videoJs2 = _interopRequireDefault(_videoJs);
 
-var _virtualSourceBuffer = require('./virtual-source-buffer');
+var _virtualSourceBuffer = require('./virtual-sources-buffer');
 
 var _virtualSourceBuffer2 = _interopRequireDefault(_virtualSourceBuffer);
 
@@ -16674,7 +16674,7 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
     this.activeSourceBuffers_ = [];
 
     /**
-     * update the list of active source buffers based upon various
+     * update the list of active sources buffers based upon various
      * imformation from HLS and video.js
      *
      * @private
@@ -16683,8 +16683,8 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
       // Retain the reference but empty the array
       _this.activeSourceBuffers_.length = 0;
 
-      // By default, the audio in the combined virtual source buffer is enabled
-      // and the audio-only source buffer (if it exists) is disabled.
+      // By default, the audio in the combined virtual sources buffer is enabled
+      // and the audio-only sources buffer (if it exists) is disabled.
       var combined = false;
       var audioOnly = true;
 
@@ -16695,14 +16695,14 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
 
         if (track.enabled && track.kind !== 'main') {
           // The enabled track is an alternate audio track so disable the audio in
-          // the combined source buffer and enable the audio-only source buffer.
+          // the combined sources buffer and enable the audio-only sources buffer.
           combined = true;
           audioOnly = false;
           break;
         }
       }
 
-      // Since we currently support a max of two source buffers, add all of the source
+      // Since we currently support a max of two sources buffers, add all of the sources
       // buffers (in order).
       _this.sourceBuffers.forEach(function (sourceBuffer) {
         /* eslinst-disable */
@@ -16716,8 +16716,8 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
           // combined
           sourceBuffer.audioDisabled_ = combined;
         } else if (sourceBuffer.videoCodec_ && !sourceBuffer.audioCodec_) {
-          // If the "combined" source buffer is video only, then we do not want
-          // disable the audio-only source buffer (this is mostly for demuxed
+          // If the "combined" sources buffer is video only, then we do not want
+          // disable the audio-only sources buffer (this is mostly for demuxed
           // audio and video hls)
           sourceBuffer.audioDisabled_ = true;
           audioOnly = false;
@@ -16836,11 +16836,11 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
     }
 
     /**
-     * Add a source buffer to the media source.
+     * Add a sources buffer to the media sources.
      *
      * @link https://developer.mozilla.org/en-US/docs/Web/API/MediaSource/addSourceBuffer
      * @param {String} type the content-type of the content
-     * @return {Object} the created source buffer
+     * @return {Object} the created sources buffer
      */
   }, {
     key: 'addSourceBuffer',
@@ -16870,14 +16870,14 @@ var HtmlMediaSource = (function (_videojs$EventTarget) {
         if (this.sourceBuffers.length !== 0) {
           // If another VirtualSourceBuffer already exists, then we are creating a
           // SourceBuffer for an alternate audio track and therefore we know that
-          // the source has both an audio and video track.
+          // the sources has both an audio and video track.
           // That means we should trigger the manual creation of the real
           // SourceBuffers instead of waiting for the transmuxer to return data
           this.sourceBuffers[0].createRealSourceBuffers_();
           buffer.createRealSourceBuffers_();
 
-          // Automatically disable the audio on the first source buffer if
-          // a second source buffer is ever created
+          // Automatically disable the audio on the first sources buffer if
+          // a second sources buffer is ever created
           this.sourceBuffers[0].audioDisabled_ = true;
         }
       } else {
@@ -17161,11 +17161,11 @@ var _globalWindow = require('global/window');
 
 var _globalWindow2 = _interopRequireDefault(_globalWindow);
 
-var _flashMediaSource = require('./flash-media-source');
+var _flashMediaSource = require('./flash-media-sources');
 
 var _flashMediaSource2 = _interopRequireDefault(_flashMediaSource);
 
-var _htmlMediaSource = require('./html-media-source');
+var _htmlMediaSource = require('./html-media-sources');
 
 var _htmlMediaSource2 = _interopRequireDefault(_htmlMediaSource);
 
@@ -17196,7 +17196,7 @@ _videoJs2['default'].mediaSources = {};
 
 /**
  * Provide a method for a swf object to notify JS that a
- * media source is now open.
+ * media sources is now open.
  *
  * @param {String} msObjectURL string referencing the MSE Object URL
  * @param {String} swfId the swf id
@@ -17269,7 +17269,7 @@ var URL = {
    * @param {MediaSource} object the object to create a blob url to
    */
   createObjectURL: function createObjectURL(object) {
-    var objectUrlPrefix = 'blob:vjs-media-source/';
+    var objectUrlPrefix = 'blob:vjs-media-sources/';
     var url = undefined;
 
     // use the native MediaSource to generate an object URL
@@ -17306,7 +17306,7 @@ _videoJs2['default'].URL = URL;
 },{"./flash-media-source":67,"./html-media-source":70,"global/window":30}],74:[function(require,module,exports){
 (function (global){
 /**
- * @file virtual-source-buffer.js
+ * @file virtual-sources-buffer.js
  */
 'use strict';
 
@@ -17350,7 +17350,7 @@ var _codecUtils = require('./codec-utils');
 
 /**
  * VirtualSourceBuffers exist so that we can transmux non native formats
- * into a native format, but keep the same api as a native source buffer.
+ * into a native format, but keep the same api as a native sources buffer.
  * It creates a transmuxer, that works in its own thread (a web worker) and
  * that transmuxer muxes the data into a native format. VirtualSourceBuffer will
  * then send all of that data to the naive sourcebuffer so that it is
@@ -17429,7 +17429,7 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
       }
     });
 
-    // setting the append window affects both source buffers
+    // setting the append window affects both sources buffers
     Object.defineProperty(this, 'appendWindowStart', {
       get: function get() {
         return (this.videoBuffer_ || this.audioBuffer_).appendWindowStart;
@@ -17452,7 +17452,7 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
     });
 
     // the buffered property is the intersection of the buffered
-    // ranges of the native source buffers
+    // ranges of the native sources buffers
     Object.defineProperty(this, 'buffered', {
       get: function get() {
         var start = null;
@@ -17584,7 +17584,7 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
     }
 
     /**
-     * Create our internal native audio/video source buffers and add
+     * Create our internal native audio/video sources buffers and add
      * event handlers to them with the following conditions:
      * 1. they do not already exist on the mediaSource
      * 2. this VSB has a codec for them
@@ -17656,7 +17656,7 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
      * Emulate the native mediasource function, but our function will
      * send all of the proposed segments to the transmuxer so that we
      * can transmux them before we append them to our internal
-     * native source buffers in the correct format.
+     * native sources buffers in the correct format.
      *
      * @link https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendBuffer
      * @param {Uint8Array} segment the segment to append to the buffer
@@ -17768,8 +17768,8 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
         return segmentObj;
       }, sortedSegments);
 
-      // Create the real source buffers if they don't exist by now since we
-      // finally are sure what tracks are contained in the source
+      // Create the real sources buffers if they don't exist by now since we
+      // finally are sure what tracks are contained in the sources
       if (!this.videoBuffer_ && !this.audioBuffer_) {
         // Remove any codecs that may have been specified by default but
         // are no longer applicable now
@@ -17821,7 +17821,7 @@ var VirtualSourceBuffer = (function (_videojs$EventTarget) {
      * to the destination buffer
      *
      * @param {Object} segmentObj
-     * @param {SourceBuffer} destinationBuffer native source buffer to append data to
+     * @param {SourceBuffer} destinationBuffer native sources buffer to append data to
      * @private
      */
   }, {
@@ -18010,7 +18010,7 @@ var _playbackWatcher = require('./playback-watcher');
 
 var _playbackWatcher2 = _interopRequireDefault(_playbackWatcher);
 
-var _reloadSourceOnError = require('./reload-source-on-error');
+var _reloadSourceOnError = require('./reload-sources-on-error');
 
 var _reloadSourceOnError2 = _interopRequireDefault(_reloadSourceOnError);
 
@@ -18207,7 +18207,7 @@ Hls.STANDARD_PLAYLIST_SELECTOR = function () {
   return resolutionPlusOne || resolutionBestVariant || bandwidthBestVariant || sortedPlaylists[0];
 };
 
-// HLS is a source handler, not a tech. Make sure attempts to use it
+// HLS is a sources handler, not a tech. Make sure attempts to use it
 // as one do not cause exceptions.
 Hls.canPlaySource = function () {
   return _videoJs2['default'].log.warn('HLS is no longer a tech. Please remove it from ' + 'your player\'s techOrder.');
@@ -18244,7 +18244,7 @@ Hls.supportsNativeHls = (function () {
 })();
 
 /**
- * HLS is a source handler, not a tech. Make sure attempts to use it
+ * HLS is a sources handler, not a tech. Make sure attempts to use it
  * as one do not cause exceptions.
  */
 Hls.isSupported = function () {
@@ -18393,9 +18393,9 @@ var HlsHandler = (function (_Component) {
     }
 
     /**
-     * called when player.src gets called, handle a new source
+     * called when player.src gets called, handle a new sources
      *
-     * @param {Object} src the source object to handle
+     * @param {Object} src the sources object to handle
      */
   }, {
     key: 'src',
@@ -18689,7 +18689,7 @@ var HlsSourceHandler = function HlsSourceHandler(mode) {
   return {
     canHandleSource: function canHandleSource(srcObj) {
       // this forces video.js to skip this tech/mode if its not the one we have been
-      // overriden to use, by returing that we cannot handle the source.
+      // overriden to use, by returing that we cannot handle the sources.
       if (_videoJs2['default'].options.hls && _videoJs2['default'].options.hls.mode && _videoJs2['default'].options.hls.mode !== mode) {
         return false;
       }
@@ -18698,7 +18698,7 @@ var HlsSourceHandler = function HlsSourceHandler(mode) {
     handleSource: function handleSource(source, tech, options) {
       if (mode === 'flash') {
         // We need to trigger this asynchronously to give others the chance
-        // to bind to the event when a source is set at player creation
+        // to bind to the event when a sources is set at player creation
         tech.setTimeout(function () {
           tech.trigger('loadstart');
         }, 1);
@@ -18808,7 +18808,7 @@ if (typeof _videoJs2['default'].MediaSource === 'undefined' || typeof _videoJs2[
 
 var flashTech = _videoJs2['default'].getTech('Flash');
 
-// register source handlers with the appropriate techs
+// register sources handlers with the appropriate techs
 if (_videojsContribMediaSources.MediaSource.supportsNativeMediaSources()) {
   _videoJs2['default'].getTech('Html5').registerSourceHandler(HlsSourceHandler('html5'), 0);
 }

@@ -820,7 +820,7 @@ jQuery(function() {
 					break;
 
 					case 'viewSource':
-						toolbar += ' <a class="btn btn-sm '+className+'" data-view="source" title="'+button.title+'"><i class="'+button.icon+'"></i></a> ';
+						toolbar += ' <a class="btn btn-sm '+className+'" data-view="sources" title="'+button.title+'"><i class="'+button.icon+'"></i></a> ';
 					break;
 					default:
 						toolbar += ' <a class="btn btn-sm '+className+'" data-edit="'+button.name+'" title="'+button.title+'"><i class="'+button.icon+'"></i></a> ';
@@ -858,10 +858,10 @@ jQuery(function() {
 			} else speech_input = null
 			
 			
-			//view source
+			//view sources
 			var self = $(this);
 			var view_source = false;
-			toolbar.find('a[data-view=source]').on('click', function(e){
+			toolbar.find('a[data-view=sources]').on('click', function(e){
 				e.preventDefault();
 				
 				if(!view_source) {

@@ -389,17 +389,17 @@ var utils = UE.utils = {
      * @remind 该方法将强制把source对象上的属性复制到target对象上
      * @see UE.utils.extend(Object,Object,Boolean)
      * @param { Object } target 目标对象， 新的属性将附加到该对象上
-     * @param { Object } source 源对象， 该对象的属性会被附加到target对象上
+     * @param { Object } sources 源对象， 该对象的属性会被附加到target对象上
      * @return { Object } 返回target对象
      * @example
      * ```javascript
      *
      * var target = { name: 'target', sex: 1 },
-     *      source = { name: 'source', age: 17 };
+     *      sources = { name: 'sources', age: 17 };
      *
-     * UE.utils.extend( target, source );
+     * UE.utils.extend( target, sources );
      *
-     * //output: { name: 'source', sex: 1, age: 17 }
+     * //output: { name: 'sources', sex: 1, age: 17 }
      * console.log( target );
      *
      * ```
@@ -410,16 +410,16 @@ var utils = UE.utils = {
      * 源对象属性名相同的属性值。
      * @method extend
      * @param { Object } target 目标对象， 新的属性将附加到该对象上
-     * @param { Object } source 源对象， 该对象的属性会被附加到target对象上
+     * @param { Object } sources 源对象， 该对象的属性会被附加到target对象上
      * @param { Boolean } isKeepTarget 是否保留目标对象中与源对象中属性名相同的属性
      * @return { Object } 返回target对象
      * @example
      * ```javascript
      *
      * var target = { name: 'target', sex: 1 },
-     *      source = { name: 'source', age: 17 };
+     *      sources = { name: 'sources', age: 17 };
      *
-     * UE.utils.extend( target, source, true );
+     * UE.utils.extend( target, sources, true );
      *
      * //output: { name: 'target', sex: 1, age: 17 }
      * console.log( target );
@@ -444,18 +444,18 @@ var utils = UE.utils = {
      * @remind 该方法支持两个及以上的参数， 从第二个参数开始， 其属性都会被复制到第一个参数上。 如果遇到同名的属性，
      *          将会覆盖掉之前的值。
      * @param { Object } target 目标对象， 新的属性将附加到该对象上
-     * @param { Object... } source 源对象， 支持多个对象， 该对象的属性会被附加到target对象上
+     * @param { Object... } sources 源对象， 支持多个对象， 该对象的属性会被附加到target对象上
      * @return { Object } 返回target对象
      * @example
      * ```javascript
      *
      * var target = {},
-     *     source1 = { name: 'source', age: 17 },
+     *     source1 = { name: 'sources', age: 17 },
      *     source2 = { title: 'dev' };
      *
      * UE.utils.extend2( target, source1, source2 );
      *
-     * //output: { name: 'source', age: 17, title: 'dev' }
+     * //output: { name: 'sources', age: 17, title: 'dev' }
      * console.log( target );
      *
      * ```
@@ -16174,7 +16174,7 @@ UE.plugins['list'] = function () {
 
 
 
-// plugins/source.js
+// plugins/sources.js
 /**
  * 源码编辑插件
  * @file
@@ -16280,24 +16280,24 @@ UE.plugins['list'] = function () {
 
         /**
          * 切换源码模式和编辑模式
-         * @command source
+         * @command sources
          * @method execCommand
          * @param { String } cmd 命令字符串
          * @example
          * ```javascript
-         * editor.execCommand( 'source');
+         * editor.execCommand( 'sources');
          * ```
          */
 
         /**
          * 查询当前编辑区域的状态是源码模式还是可视化模式
-         * @command source
+         * @command sources
          * @method queryCommandState
          * @param { String } cmd 命令字符串
          * @return { int } 如果当前是源码编辑模式，返回1，否则返回0
          * @example
          * ```javascript
-         * editor.queryCommandState( 'source' );
+         * editor.queryCommandState( 'sources' );
          * ```
          */
 
@@ -17666,7 +17666,7 @@ UE.plugins['video'] = function (){
                 if(ext == 'ogv') ext = 'ogg';
                 str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') +
                     ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
-                    '<source src="' + url + '" type="video/' + ext + '" /></video>';
+                    '<sources src="' + url + '" type="video/' + ext + '" /></video>';
                 break;
         }
         return str;
@@ -23494,7 +23494,7 @@ UE.commands['insertparagraph'] = {
 //        switchImgAndIframe( false );
 //    } );
 //    me.addListener( 'aftergetcontent', function ( cmdName ) {
-//        if ( cmdName == 'aftergetcontent' && me.queryCommandState( 'source' ) ){
+//        if ( cmdName == 'aftergetcontent' && me.queryCommandState( 'sources' ) ){
 //            return;
 //        }
 //        switchImgAndIframe( false );

@@ -2,22 +2,25 @@
 <div class="blog-body">
     <div class="blog-container">
         <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
-            <a href="home.html" title="网站首页">网站首页</a>
-            <a href="article.html" title="文章专栏">文章专栏</a>
+            <a href="/" title="网站首页">网站首页</a>
+            <!--<a href="article.html" title="文章专栏">文章专栏</a>-->
             <a><cite>基于layui的laypage扩展模块！</cite></a>
         </blockquote>
         <div class="blog-main">
-            <div class="blog-main-left">
+            <div class="blog-main-left" style="background-color: #fff;">
                 <!-- 文章内容（使用Kingeditor富文本编辑器发表的） -->
-                <div class="article-detail shadow">
+                <div class="article-detail shadow" style="padding: 20px;">
                     <div class="article-detail-title">
-                        {$article["title"]}
+                        <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                            <legend>{$article["title"]}</legend>
+                        </fieldset>
                     </div>
                     <div class="article-detail-info">
-                        <span>编辑时间：{$article["create_time"]|date="Y/m/d H:i:s",###}</span>
-                        <span>作者：Absolutely</span>
+                        <span>时间：{$article["create_time"]|date="Y/m/d H:i:s",###}</span>
+                        <span>作者：Tinywan</span>
                         <span>浏览量：{$article['views']}</span>
                     </div>
+
                     <div class="article-detail-content">
                         {$article.content}
                     </div>
@@ -41,13 +44,13 @@
                     <ul class="blog-comment">
                         <li>
                             <div class="comment-parent">
-                                <img src="../images/Absolutely.jpg" alt="absolutely" />
+                                <img src="/sources/images/error_default.jpg" alt="absolutely" />
                                 <div class="info">
-                                    <span class="username">Absolutely</span>
-                                    <span class="time">2017-03-18 18:46:06</span>
+                                    <span class="username">Tinywan</span>
+                                    <span class="time">2018-03-18 18:46:06</span>
                                 </div>
                                 <div class="content">
-                                    我为大家做了模拟评论功能！还有，这个评论功能也可以改成和留言一样，但是目前没改，有兴趣可以自己改
+                                    全面示范了Angular在浏览器、移动端、Electron环境中的用法
                                 </div>
                             </div>
                         </li>

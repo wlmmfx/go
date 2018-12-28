@@ -339,7 +339,7 @@ class OpenController extends BaseApiController
 //            'http://www.shuchengxian.com/article/654.html',
 //            'http://www.shuchengxian.com/index.html'
 //        );
-        //$data = get_sina_short_url($source, $url_long);
+        //$data = get_sina_short_url($sources, $url_long);
         return json($data);
     }
 

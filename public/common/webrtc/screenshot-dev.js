@@ -8815,7 +8815,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Returns source of this color (where source is an array representation; ex: [200, 200, 100, 1])
+     * Returns sources of this color (where sources is an array representation; ex: [200, 200, 100, 1])
      * @return {Array}
      */
     getSource: function() {
@@ -8823,7 +8823,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
     },
 
     /**
-     * Sets source of this color (where source is an array representation; ex: [200, 200, 100, 1])
+     * Sets sources of this color (where sources is an array representation; ex: [200, 200, 100, 1])
      * @param {Array} source
      */
     setSource: function(source) {
@@ -9055,7 +9055,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
    * Returns array represenatation (ex: [100, 100, 200, 1]) of a color that's in RGB or RGBA format
    * @memberOf fabric.Color
    * @param {String} color Color value ex: rgb(0-255,0-255,0-255), rgb(0%-100%,0%-100%,0%-100%)
-   * @return {Array} source
+   * @return {Array} sources
    */
   fabric.Color.sourceFromRgb = function(color) {
     var match = color.match(Color.reRGBa);
@@ -9098,7 +9098,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
    * Adapted from <a href="https://rawgithub.com/mjijackson/mjijackson.github.com/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.html">https://github.com/mjijackson</a>
    * @memberOf fabric.Color
    * @param {String} color Color value ex: hsl(0-360,0%-100%,0%-100%) or hsla(0-360,0%-100%,0%-100%, 0-1)
-   * @return {Array} source
+   * @return {Array} sources
    * @see http://http://www.w3.org/TR/css3-color/#hsl-color
    */
   fabric.Color.sourceFromHsl = function(color) {
@@ -9158,7 +9158,7 @@ fabric.ElementsParser.prototype.checkIfDone = function() {
    * @static
    * @memberOf fabric.Color
    * @param {String} color ex: FF5555
-   * @return {Array} source
+   * @return {Array} sources
    */
   fabric.Color.sourceFromHex = function(color) {
     if (color.match(Color.reHex)) {
@@ -10212,11 +10212,11 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
      * canvas.setOverlayColor('rgba(255, 73, 64, 0.6)', canvas.renderAll.bind(canvas));
      * @example <caption>fabric.Pattern used as overlayColor</caption>
      * canvas.setOverlayColor({
-     *   source: 'http://fabricjs.com/assets/escheresque_ste.png'
+     *   sources: 'http://fabricjs.com/assets/escheresque_ste.png'
      * }, canvas.renderAll.bind(canvas));
      * @example <caption>fabric.Pattern used as overlayColor with repeat and offset</caption>
      * canvas.setOverlayColor({
-     *   source: 'http://fabricjs.com/assets/escheresque_ste.png',
+     *   sources: 'http://fabricjs.com/assets/escheresque_ste.png',
      *   repeat: 'repeat',
      *   offsetX: 200,
      *   offsetY: 100
@@ -10237,11 +10237,11 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
      * canvas.setBackgroundColor('rgba(255, 73, 64, 0.6)', canvas.renderAll.bind(canvas));
      * @example <caption>fabric.Pattern used as backgroundColor</caption>
      * canvas.setBackgroundColor({
-     *   source: 'http://fabricjs.com/assets/escheresque_ste.png'
+     *   sources: 'http://fabricjs.com/assets/escheresque_ste.png'
      * }, canvas.renderAll.bind(canvas));
      * @example <caption>fabric.Pattern used as backgroundColor with repeat and offset</caption>
      * canvas.setBackgroundColor({
-     *   source: 'http://fabricjs.com/assets/escheresque_ste.png',
+     *   sources: 'http://fabricjs.com/assets/escheresque_ste.png',
      *   repeat: 'repeat',
      *   offsetX: 200,
      *   offsetY: 100
@@ -13135,7 +13135,7 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
      * @type String
      * @default
      */
-    fillRule:                 'source-over',
+    fillRule:                 'sources-over',
 
     /**
      * Background color of an object. Only works with text objects at the moment.
@@ -14004,7 +14004,7 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
     /**
      * Sets pattern fill of an object
      * @param {Object} options Options object
-     * @param {(String|HTMLImageElement)} options.source Pattern source
+     * @param {(String|HTMLImageElement)} options.sources Pattern sources
      * @param {String} [options.repeat=repeat] Repeat property of a pattern (one of repeat, repeat-x, repeat-y or no-repeat)
      * @param {Number} [options.offsetX=0] Pattern horizontal offset from object's left/top corner
      * @param {Number} [options.offsetY=0] Pattern vertical offset from object's left/top corner
@@ -14014,7 +14014,7 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, /** @lends fabric.Stati
      * @example <caption>Set pattern</caption>
      * fabric.util.loadImage('http://fabricjs.com/assets/escheresque_ste.png', function(img) {
      *   object.setPatternFill({
-     *     source: img,
+     *     sources: img,
      *     repeat: 'repeat'
      *   });
      *   canvas.renderAll();
@@ -18376,7 +18376,7 @@ fabric.util.object.extend(fabric.Object.prototype, /** @lends fabric.Object.prot
     /* _TO_SVG_END_ */
 
     /**
-     * Returns source of an image
+     * Returns sources of an image
      * @return {String} Source of an image
      */
     getSrc: function() {
@@ -18879,7 +18879,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
           var sy = y,
               sx = x,
               dstOff = (y * w + x) * 4,
-              // calculate the weighed sum of the source image pixels that
+              // calculate the weighed sum of the sources image pixels that
               // fall under the convolution matrix
               r = 0, g = 0, b = 0, a = 0;
 

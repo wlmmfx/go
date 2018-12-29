@@ -771,7 +771,7 @@ class IndexController extends BaseController
     public function imageChangeTextContentPost()
     {
         if (request()->isPost()) {
-            $file = request()->file("img_file");
+            $file = request()->file("file");
             if ($file) {
                 $savePath = ROOT_PATH . 'public' . DS . 'tmp';
                 $info = $file->validate(['size' => config('upload_config')['web']['size'] * 1024, 'ext' => config('upload_config')['web']['ext']])->rule("uniqid")->move($savePath);

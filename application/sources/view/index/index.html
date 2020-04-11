@@ -15,9 +15,9 @@
             <div class="blog-main-left">
                 {volist name="articles" id="vo"}
                 <div class="article shadow">
-                    <div class="article-left">
+                    <!-- <div class="article-left">
                         <img src="{$Think.config.aliyun_oss.DOMAIN}{$vo.image_thumb}" onerror=this.src="__STATIC__/images/error_default.jpg" alt="基于laypage的" />
-                    </div>
+                    </div> -->
                     <div class="article-right">
                         <div class="article-title">
                             <a href="{:url('sources/Index/detail',['id'=>$vo['id']])}">{$vo.title}</a>

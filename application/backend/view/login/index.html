@@ -351,6 +351,7 @@
                     remote: {
                         url: "{:url('backend/login/loginCheckUser')}",
                         type: 'post',
+                        async: false,
                         dataType: 'json',
                         data: {
                             email: function () {
@@ -364,6 +365,7 @@
                     remote: {
                         url: "{:url('backend/login/loginCheckPwd')}",
                         type: 'post',
+                        async: false,
                         dataType: 'json',
                         data: {
                             password: function () {
@@ -419,6 +421,7 @@
                     remote: {
                         url: "{:url('backend/login/registerCheckUser')}",
                         type: 'post',
+                        async: false,
                         dataType: 'json',
                         data: {
                             email: function () {
